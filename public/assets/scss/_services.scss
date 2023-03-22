@@ -1,0 +1,113 @@
+
+
+
+/*===========================
+      08.SERVICES css 
+===========================*/
+
+.services_area{}
+
+.single_services{
+    @include transition(0.3s);
+    background-color: $white;
+    padding: 30px 25px;
+    border-radius: 10px;
+    
+    &::before{
+        position: absolute;
+        z-index: -1;
+        content: '';
+        bottom: -10px;
+        left: 0;
+        right: 0;
+        margin: 0 auto;
+        width: 80%;
+        height: 90%;
+        background-color: $theme-color;
+        opacity: 0;
+        filter: blur(10px);
+        @include transition(0.3s);
+    }
+    
+    & .services_icon{
+        & i{          
+            color: $theme-color;
+            @include transition(0.3s);
+            font-size: 46px;
+        }
+    }
+    & .services_content{
+        padding-left: 20px;
+        
+        & .title{
+            & a{
+                font-size: 24px;
+                font-weight: 500;
+                color: $heading-color;
+                @include transition(0.3s);
+                
+                @media #{$lg}{
+                    font-size: 18px;
+                }
+            }
+        }
+        
+        & p{
+            margin-top: 10px;
+            @include transition(0.3s);
+        }
+        
+        & .more{
+            font-size: 16px;
+            font-weight: 500;
+            color: $heading-color;
+            @include transition(0.3s);
+            margin-top: 10px;
+            
+            & i{
+                margin-left: 5px;
+                font-size: 18px;
+            }
+        }
+    }
+    
+    &:hover{
+        background-color: $theme-color;
+        
+        &::before{
+            opacity: 0.5;
+        }
+        
+        & .services_icon{
+            & i{
+                color: $white;
+            }
+        }
+        
+        & .services_content{
+
+            & .title{
+                & a{
+                    color: $white;
+                }
+            }
+
+            & p{
+                color: $white;
+            }
+
+            & .more{
+                color: $white;
+            }
+        }
+    }
+}
+
+
+
+
+
+
+
+
+

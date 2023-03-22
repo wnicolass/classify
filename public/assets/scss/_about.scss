@@ -1,0 +1,213 @@
+
+
+
+/*===========================
+       14.ABOUT css 
+===========================*/
+
+.about_area{
+    background-color: $white;
+}
+
+.about_image{
+    height: 550px;
+    width: 100%;
+    border-radius: 10px;
+    
+    @media #{$xs}{
+        height: 450px;
+    }
+}
+
+.about_content{
+    padding-left: 30px;
+    
+    @media #{$md}{
+        padding-left: 0;
+    }
+    @media #{$xs}{
+        padding-left: 0;
+    }
+    
+    & .title{
+        font-size: 50px;
+        font-weight: 400;
+        
+        @media #{$xs}{
+            font-size: 34px;
+        }
+        @media #{$sm}{
+            font-size: 40px;
+        }
+        
+        & span{
+            font-weight: 700;
+        }
+    }
+    & p{
+        margin-top: 25px;
+    }
+    & .signechar{
+        padding-left: 70px;
+        margin-top: 40px;
+        
+        & .name{
+            font-size: 18px;
+            font-weight: 500;
+            color: $theme-color;
+            position: relative;
+            
+            &::before{
+                position: absolute;
+                content: '';
+                width: 50px;
+                height: 1px;
+                background-color: $theme-color;
+                left: -70px;
+                top: 50%;
+                @include transform(translateY(-50%));
+            }
+        }
+        & img{
+            margin-top: 15px;
+        }
+    }
+}
+
+
+/*===== About 2 =====*/
+
+.about_area_2{
+    background-color: $white;
+}
+
+
+.about_content_2{
+    & .title{
+        font-size: 46px;
+        font-weight: 400;
+        
+        @media #{$lg}{
+            font-size: 40px;
+        }
+        @media #{$xs}{
+            font-size: 32px;
+        }
+        @media #{$sm}{
+            font-size: 38px;
+        }
+        
+        & span{
+            font-weight: 700;
+        }
+    }
+    & p{
+        margin-top: 25px;
+    }
+    
+    & .about_items{
+        margin-top: 25px;
+        
+        & .items_title{
+            font-size: 30px;
+            font-weight: 400;
+            
+            @media #{$xs}{
+                font-size: 24px;
+            }
+        }
+        & p{
+            margin-top: 10px;
+        }
+    }
+}
+
+
+.about_image_2{
+    position: relative;
+    
+    & .image_1{
+        padding-left: 70px;
+        
+        @media #{$xs}{
+            padding-left: 0;
+        }
+        @media #{$sm}{
+            padding-left: 50px;
+        }
+        
+        & img{
+            width: 100%;
+            border-radius: 10px;
+        }
+    }
+    & .image_2{
+        position: relative;
+        margin-top: -20px;
+        padding-right: 120px;
+        
+        @media #{$xs}{
+            padding-right: 0;
+            margin-top: 0;
+        }
+        @media #{$sm}{
+            padding-right: 70px;
+            margin-top: -20px;
+        }
+        
+        & .about_counter{
+            background-color: $theme-color;
+            padding: 20px;
+            border-radius: 10px;
+            position: absolute;
+            top: 0;
+            left: 0;
+            @include transform(translateY(-50%));
+            text-align: center;
+            
+            & .count{
+                color: $white;
+                font-size: 40px;
+                font-weight: 700;
+                line-height: 45px;
+            }
+            & p{
+                color: $white;
+                margin-top: 5px;
+            }
+        }
+        
+        & img{
+            width: 100%;
+            border-radius: 10px;
+        }
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,89 @@
+
+
+
+/*===========================
+      07.COUNTER css 
+===========================*/
+
+.counter_area{
+    padding-top: 400px;
+}
+
+.counter_wrapper{
+    background-color: $theme-color-2;
+    padding: 25px;
+    padding-top: 0;
+    border-radius: 5px;
+}
+
+
+.single_counter{
+    padding-top: 25px;
+    
+    @media #{$xs}{
+        width: 100%;
+    }
+    @media #{$sm}{
+        width: 33.33%;
+    }
+    
+    & .counter_items{
+        & .counter_icon{
+            padding-right: 10px;
+            
+            & img{
+                @media #{$sm}{
+                    width: 30px;
+                }
+            }
+        }
+        & .counter_count{
+            & .count{
+                font-size: 50px;
+                font-weight: 700;
+                color: $white;
+                line-height: 50px;
+                
+                @media #{$lg}{
+                    font-size: 44px;
+                }
+                @media #{$md}{
+                    font-size: 44px;
+                }
+                @media #{$xs}{
+                    font-size: 44px;
+                }
+                @media #{$sm}{
+                    font-size: 32px;
+                    line-height: 32px;
+                }
+            }
+        }
+    }
+    & p{
+        font-size: 24px;
+        color: $white;
+        margin-top: 10px;
+        
+        @media #{$lg}{
+            font-size: 20px;
+        }
+        @media #{$md}{
+            font-size: 20px;
+        }
+        @media #{$xs}{
+            font-size: 20px;
+        }
+        @media #{$sm}{
+            font-size: 16px;
+        }
+    }
+}
+ 
+
+
+
+
+
+
+

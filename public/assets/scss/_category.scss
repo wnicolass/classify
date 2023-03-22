@@ -1,0 +1,135 @@
+
+
+
+/*===========================
+    03.CATeGORY css 
+===========================*/
+
+
+.category_wrapper{
+    margin-left: -15px;
+    margin-right: -15px;
+    position: relative;
+}
+
+.category_btn{
+    position: absolute;
+    top: -60px;
+    right: 0;
+    
+    @media #{$xs}{
+        position: relative;
+        top: 0;
+        margin-top: 50px;
+    }
+}
+
+.category-column{
+    padding-left: 15px;
+    padding-right: 15px;
+    width: 20%;
+    
+    @media #{$md}{
+        width: 25%;
+    }
+    @media #{$xs}{
+        width: 50%;
+    }
+}
+
+.single_category{
+    padding: 40px 30px;
+    @include transition(0.3s);
+    background-color: $white;
+    border-radius: 5px;
+    position: relative;
+    z-index: 9;
+    
+    @media #{$xs}{
+        padding: 20px 10px;
+    }
+    @media #{$sm}{
+        padding: 40px 30px;
+    }
+    
+    &::before{
+        position: absolute;
+        z-index: -1;
+        content: '';
+        bottom: -10px;
+        left: 0;
+        right: 0;
+        margin: 0 auto;
+        width: 80%;
+        height: 90%;
+        background-color: $theme-color;
+        opacity: 0;
+        filter: blur(10px);
+        @include transition(0.3s);
+    }
+    
+    & .icon{
+        
+        & i{
+            font-size: 70px;
+            color: $black;
+            @include transition(0.3s);
+        }
+    }
+    & .content{
+        & .title{
+            color: $body-color;
+            font-size: 16px;
+            font-weight: 500;
+            margin-top: 20px;
+            @include transition(0.3s);
+            
+            @media #{$xs}{
+                font-size: 14px;
+            }
+            @media #{$sm}{
+                font-size: 16px;
+            }
+        }
+    }
+    
+    & a{
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        top: 0;
+        left: 0;
+        z-index: 5;
+    }
+    
+    &:hover{
+        background-color: $theme-color;
+        
+        &::before{
+            opacity: 0.5;
+        }
+        
+        & .icon{
+            & i{
+                color: $white;
+                @include transition(0.3s);
+            }
+        }
+        & .content{
+            & .title{
+                color: $white;
+            }
+        }
+    }
+}
+
+
+
+
+
+
+
+
+
+
+

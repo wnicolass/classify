@@ -1,0 +1,147 @@
+/*===========================
+23.SIGN IN & SIGN UP PAGE css 
+===========================*/
+
+
+.sign_in_form {
+    padding: 20px;
+    padding-top: 0;
+    background-color: $white;
+    border-radius: 10px;
+}
+
+
+.sign_title {
+    padding-top: 10px;
+
+    & .title {
+        font-size: 18px;
+        font-weight: 700;
+        color: $heading-color;
+        border-bottom: 1px solid rgba($border-color, 0.4);
+        position: relative;
+        padding: 10px 0;
+
+        &::before {
+            position: absolute;
+            content: '';
+            width: 3px;
+            height: 15px;
+            background-color: $theme-color;
+            border-top-right-radius: 5px;
+            border-bottom-right-radius: 5px;
+            top: 50%;
+            left: -20px;
+            @include transform(translateY(-50%));
+
+            @media #{$lg} {
+                left: -15px;
+            }
+        }
+    }
+}
+
+
+
+.sign_in_form {}
+
+.sign_form_wrapper {
+    & .single_form {
+        margin-top: 20px;
+        position: relative;
+
+        & textarea,
+        & input {
+            width: 100%;
+            height: 50px;
+            padding: 0 25px;
+            padding-left: 40px;
+            border-radius: 5px;
+            border: 1px solid #BCC1CE;
+            @include transition(0.3s);
+
+            &:focus {
+                border-color: $theme-color;
+            }
+        }
+
+        & i {
+            position: absolute;
+            top: 17px;
+            left: 15px;
+            font-size: 16px;
+            color: $body-color;
+        }
+
+        & textarea {
+            resize: none;
+            padding: 0 25px;
+            padding-top: 15px;
+            height: 175px;
+        }
+
+        & .sign_checkbox {
+            & input[type="checkbox"] {
+                display: none;
+
+                & + label {
+                    display: inline-block;
+                    width: 16px;
+                    height: 16px;
+                    margin: -1px 8px 0 0;
+                    vertical-align: middle;
+                    cursor: pointer;
+                    -moz-border-radius: 50%;
+                    border: 0;
+                    position: relative;
+                    @include transition(0.3s);
+                    background-color: $theme-color;
+                    border-radius: 3px;
+
+                    &::before {
+                        position: absolute;
+                        content: "\f00c";
+                        font-family: "Font Awesome 5 Pro";
+                        font-weight: 400;
+                        background: none;
+                        color: $white;
+                        width: 100%;
+                        height: 100%;
+                        line-height: 100%;
+                        text-align: center;
+                        @include transform(scale(0));
+                        top: 0;
+                        left: 0;
+                        @include transition(0.3s);
+                        border-radius: 3px;
+                        font-size: 14px;
+                    }
+                }
+
+                &:checked {
+                    & + label {
+                        border-color: $theme-color;
+
+                        &::before {
+                            background-color: $theme-color;
+                            border-color: $theme-color;
+                            @include transform(scale(1));
+                        }
+                    }
+                }
+            }
+
+            & span {
+                font-size: 14px;
+                display: contents;
+            }
+        }
+
+        & .sign_forgot {
+            & a {
+                font-size: 14px;
+                color: $theme-color;
+            }
+        }
+    }
+}

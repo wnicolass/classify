@@ -1,0 +1,917 @@
+<!DOCTYPE html>
+<html class="no-js" lang="en">
+  <head>
+    <meta charset="utf-8" />
+
+    <!--====== Title ======-->
+    <title>Dashboard | ClassiFied</title>
+
+    <meta name="description" content="" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <!--====== Favicon Icon ======-->
+    <link
+      rel="shortcut icon"
+      href="/public/assets/images/favicon.png"
+      type="image/png"
+    />
+
+    <!--====== Magnific Popup CSS ======-->
+    <link rel="stylesheet" href="/public/assets/css/magnific-popup.css" />
+
+    <!--====== Nice Select CSS ======-->
+    <link rel="stylesheet" href="/public/assets/css/nice-select.css" />
+
+    <!--====== Slick CSS ======-->
+    <link rel="stylesheet" href="/public/assets/css/slick.css" />
+
+    <!--====== Price Range CSS ======-->
+    <link rel="stylesheet" href="/public/assets/css/ion.rangeSlider.min.css" />
+
+    <!--====== Font Awesome CSS ======-->
+    <link rel="stylesheet" href="/public/assets/css/fontawesome.min.css" />
+
+    <!--====== Bootstrap CSS ======-->
+    <link rel="stylesheet" href="/public/assets/css/bootstrap.min.css" />
+
+    <!--====== Default CSS ======-->
+    <link rel="stylesheet" href="/public/assets/css/default.css" />
+
+    <!--====== Style CSS ======-->
+    <link rel="stylesheet" href="/public/assets/css/style.css" />
+  </head>
+
+  <body class="gray-bg">
+    <!--====== PRELOADER PART START ======-->
+
+    <div class="preloader">
+      <div class="loader">
+        <div class="ytp-spinner">
+          <div class="ytp-spinner-container">
+            <div class="ytp-spinner-rotator">
+              <div class="ytp-spinner-left">
+                <div class="ytp-spinner-circle"></div>
+              </div>
+              <div class="ytp-spinner-right">
+                <div class="ytp-spinner-circle"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!--====== PRELOADER PART ENDS ======-->
+
+    <!--====== HEADER PART START ======-->
+
+    <header class="header_area">
+      <div class="header_navbar">
+        <div class="container">
+          <nav class="navbar navbar-expand-lg">
+            <a class="navbar-brand" href="index.html">
+              <img src="/public/assets/images/logo.png" alt="logo" />
+            </a>
+
+            <button
+              class="navbar-toggler"
+              type="button"
+              data-toggle="collapse"
+              data-target="#navbarSupportedContent"
+              aria-controls="navbarSupportedContent"
+              aria-expanded="false"
+              aria-label="Toggle navigation"
+            >
+              <span class="toggler-icon"></span>
+              <span class="toggler-icon"></span>
+              <span class="toggler-icon"></span>
+            </button>
+
+            <div
+              class="collapse navbar-collapse sub-menu-bar"
+              id="navbarSupportedContent"
+            >
+              <ul class="navbar-nav m-auto">
+                <li>
+                  <a href="index.html">Home <span class="line"></span></a>
+                </li>
+                <li>
+                  <a href="categories.html"
+                    >Categories <span class="line"></span
+                  ></a>
+                </li>
+                <li>
+                  <a href="#"
+                    >Pages <i class="fa fa-angle-down"></i>
+                    <span class="line"></span
+                  ></a>
+
+                  <ul class="sub-menu">
+                    <li><a href="about.html">About</a></li>
+                    <li><a href="product.html">Listing</a></li>
+                    <li><a href="product-details.html">Product Details</a></li>
+                    <li><a href="error-404.html">404</a></li>
+                    <li><a href="faq.html">FAQ</a></li>
+                    <li><a href="pricing.html">Pricing</a></li>
+                    <li><a href="sign-in.html">Sign In</a></li>
+                    <li><a href="sign-up.html">Sign Up</a></li>
+                  </ul>
+                </li>
+
+                <li>
+                  <a href="#"
+                    >Blog <i class="fa fa-angle-down"></i>
+                    <span class="line"></span
+                  ></a>
+                  <ul class="sub-menu">
+                    <li><a href="blog.html">Blog</a></li>
+                    <li><a href="blog-details.html">Blog Details</a></li>
+                  </ul>
+                </li>
+                <li>
+                  <a href="contact.html">Contact <span class="line"></span></a>
+                </li>
+              </ul>
+            </div>
+
+            <div class="navbar_btn">
+              <ul>
+                <li>
+                  <div class="dropdown">
+                    <a
+                      href="#"
+                      class="dropdown-toggle"
+                      id="dropdownMenuLink"
+                      data-toggle="dropdown"
+                      aria-haspopup="true"
+                      aria-expanded="false"
+                      >My Account</a
+                    >
+
+                    <div
+                      class="dropdown-menu"
+                      aria-labelledby="dropdownMenuLink"
+                    >
+                      <ul>
+                        <li>
+                          <a class="active" href="dashboard.html"
+                            ><i class="fal fa-tachometer-alt-average"></i>
+                            Dashboard</a
+                          >
+                        </li>
+                        <li>
+                          <a href="profile-settings.html"
+                            ><i class="fal fa-cog"></i> Profile Settings</a
+                          >
+                        </li>
+                        <li>
+                          <a href="my-ads.html"
+                            ><i class="fal fa-layer-group"></i> My Ads</a
+                          >
+                        </li>
+                        <li>
+                          <a href="offermessages.html"
+                            ><i class="fal fa-envelope"></i> Offers/Messages</a
+                          >
+                        </li>
+                        <li>
+                          <a href="payments.html"
+                            ><i class="fal fa-wallet"></i> Payments</a
+                          >
+                        </li>
+                        <li>
+                          <a href="favourite-ads.html"
+                            ><i class="fal fa-heart"></i> My Favourites</a
+                          >
+                        </li>
+                        <li>
+                          <a href="privacy-setting.html"
+                            ><i class="fal fa-star"></i> Privacy Settings</a
+                          >
+                        </li>
+                        <li>
+                          <a href="#"
+                            ><i class="fal fa-sign-out"></i> Sign Out</a
+                          >
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                </li>
+                <li><a class="sign-up" href="post-ads.html">Post Ads</a></li>
+              </ul>
+            </div>
+          </nav>
+        </div>
+      </div>
+
+      <div
+        class="page_banner bg_cover"
+        style="background-image: url(/public/assets/images/page-banner.jpg)"
+      >
+        <div class="container">
+          <div class="page_banner_content">
+            <h3 class="title">Dashboard</h3>
+            <ul class="breadcrumb">
+              <li><a href="#">Home</a></li>
+              <li>Dashboard</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!--====== HEADER PART ENDS ======-->
+
+    <!--====== DASHBOARD PART START ======-->
+
+    <section class="dashboard_page pt-70 pb-120">
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-3">
+            <div class="sidebar_profile mt-50">
+              <div class="profile_user">
+                <div class="user_author d-flex align-items-center">
+                  <div class="author">
+                    <img src="/public/assets/images/author-1.jpg" alt="" />
+                  </div>
+                  <div class="user_content media-body">
+                    <h6 class="author_name">User</h6>
+                    <p>Administrator</p>
+                  </div>
+                </div>
+                <div class="user_list">
+                  <ul>
+                    <li>
+                      <a class="active" href="dashboard.html"
+                        ><i class="fal fa-tachometer-alt-average"></i>
+                        Dashboard</a
+                      >
+                    </li>
+                    <li>
+                      <a href="profile-settings.html"
+                        ><i class="fal fa-cog"></i> Profile Settings</a
+                      >
+                    </li>
+                    <li>
+                      <a href="my-ads.html"
+                        ><i class="fal fa-layer-group"></i> My Ads</a
+                      >
+                    </li>
+                    <li>
+                      <a href="offermessages.html"
+                        ><i class="fal fa-envelope"></i> Offers/Messages</a
+                      >
+                    </li>
+                    <li>
+                      <a href="payments.html"
+                        ><i class="fal fa-wallet"></i> Payments</a
+                      >
+                    </li>
+                    <li>
+                      <a href="favourite-ads.html"
+                        ><i class="fal fa-heart"></i> My Favourites</a
+                      >
+                    </li>
+                    <li>
+                      <a href="privacy-setting.html"
+                        ><i class="fal fa-star"></i> Privacy Settings</a
+                      >
+                    </li>
+                    <li>
+                      <a href="#"><i class="fal fa-sign-out"></i> Sign Out</a>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-9">
+            <div class="dashboard_content mt-50">
+              <div class="post_title">
+                <h5 class="title">Dashboard</h5>
+              </div>
+              <div class="row">
+                <div class="col-sm-4">
+                  <div class="single_dashboard_box d-flex">
+                    <div class="box_icon">
+                      <i class="fal fa-file-alt"></i>
+                    </div>
+                    <div class="box_content media-body">
+                      <h6 class="title"><a href="#">Total Ad Posted</a></h6>
+                      <p>480 Add Posted</p>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-sm-4">
+                  <div class="single_dashboard_box d-flex">
+                    <div class="box_icon">
+                      <i class="fal fa-file-plus"></i>
+                    </div>
+                    <div class="box_content media-body">
+                      <h6 class="title"><a href="#">Featured Ads</a></h6>
+                      <p>80 Add Posted</p>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-sm-4">
+                  <div class="single_dashboard_box d-flex">
+                    <div class="box_icon">
+                      <i class="fal fa-envelope-open-text"></i>
+                    </div>
+                    <div class="box_content media-body">
+                      <h6 class="title"><a href="#">Offers / Messages</a></h6>
+                      <p>2040 Add Posted</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="ads_table table-responsive mt-30">
+                <table class="table">
+                  <thead>
+                    <tr>
+                      <th class="checkbox">
+                        <div class="table_checkbox">
+                          <input type="checkbox" id="checkbox1" />
+                          <label for="checkbox1"></label>
+                        </div>
+                      </th>
+                      <th class="photo">Photo</th>
+                      <th class="title">Title</th>
+                      <th class="category">Category</th>
+                      <th class="status">Ad Status</th>
+                      <th class="price">Price</th>
+                      <th class="action">Action</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td class="checkbox">
+                        <div class="table_checkbox">
+                          <input type="checkbox" id="checkbox2" />
+                          <label for="checkbox2"></label>
+                        </div>
+                      </td>
+                      <td class="photo">
+                        <div class="table_photo">
+                          <img
+                            src="/public/assets/images/ads-1.png"
+                            alt="ads"
+                          />
+                        </div>
+                      </td>
+                      <td class="title">
+                        <div class="table_title">
+                          <h6 class="titles">8 GB DDR4 Ram, 4th Gen</h6>
+                          <p>Ad ID: ng3D5hAMHPajQrM</p>
+                        </div>
+                      </td>
+                      <td class="category">
+                        <div class="table_category">
+                          <p>Ram & Laptop</p>
+                        </div>
+                      </td>
+                      <td class="status">
+                        <div class="table_status">
+                          <span class="active">active</span>
+                        </div>
+                      </td>
+                      <td class="price">
+                        <div class="table_price">
+                          <span>$299.00</span>
+                        </div>
+                      </td>
+                      <td class="action">
+                        <div class="table_action">
+                          <ul>
+                            <li>
+                              <a href="#"><i class="fal fa-eye"></i></a>
+                            </li>
+                            <li>
+                              <a href="#"><i class="fal fa-pencil"></i></a>
+                            </li>
+                            <li>
+                              <a href="#"><i class="fal fa-trash-alt"></i></a>
+                            </li>
+                          </ul>
+                        </div>
+                      </td>
+                    </tr>
+
+                    <tr>
+                      <td class="checkbox">
+                        <div class="table_checkbox">
+                          <input type="checkbox" id="checkbox3" />
+                          <label for="checkbox3"></label>
+                        </div>
+                      </td>
+                      <td class="photo">
+                        <div class="table_photo">
+                          <img
+                            src="/public/assets/images/ads-2.png"
+                            alt="ads"
+                          />
+                        </div>
+                      </td>
+                      <td class="title">
+                        <div class="table_title">
+                          <h6 class="titles">8 GB DDR4 Ram, 4th Gen</h6>
+                          <p>Ad ID: ng3D5hAMHPajQrM</p>
+                        </div>
+                      </td>
+                      <td class="category">
+                        <div class="table_category">
+                          <p>Ram & Laptop</p>
+                        </div>
+                      </td>
+                      <td class="status">
+                        <div class="table_status">
+                          <span class="active">active</span>
+                        </div>
+                      </td>
+                      <td class="price">
+                        <div class="table_price">
+                          <span>$299.00</span>
+                        </div>
+                      </td>
+                      <td class="action">
+                        <div class="table_action">
+                          <ul>
+                            <li>
+                              <a href="#"><i class="fal fa-eye"></i></a>
+                            </li>
+                            <li>
+                              <a href="#"><i class="fal fa-pencil"></i></a>
+                            </li>
+                            <li>
+                              <a href="#"><i class="fal fa-trash-alt"></i></a>
+                            </li>
+                          </ul>
+                        </div>
+                      </td>
+                    </tr>
+
+                    <tr>
+                      <td class="checkbox">
+                        <div class="table_checkbox">
+                          <input type="checkbox" id="checkbox4" />
+                          <label for="checkbox4"></label>
+                        </div>
+                      </td>
+                      <td class="photo">
+                        <div class="table_photo">
+                          <img
+                            src="/public/assets/images/ads-3.png"
+                            alt="ads"
+                          />
+                        </div>
+                      </td>
+                      <td class="title">
+                        <div class="table_title">
+                          <h6 class="titles">8 GB DDR4 Ram, 4th Gen</h6>
+                          <p>Ad ID: ng3D5hAMHPajQrM</p>
+                        </div>
+                      </td>
+                      <td class="category">
+                        <div class="table_category">
+                          <p>Ram & Laptop</p>
+                        </div>
+                      </td>
+                      <td class="status">
+                        <div class="table_status">
+                          <span class="sold">Sold</span>
+                        </div>
+                      </td>
+                      <td class="price">
+                        <div class="table_price">
+                          <span>$299.00</span>
+                        </div>
+                      </td>
+                      <td class="action">
+                        <div class="table_action">
+                          <ul>
+                            <li>
+                              <a href="#"><i class="fal fa-eye"></i></a>
+                            </li>
+                            <li>
+                              <a href="#"><i class="fal fa-pencil"></i></a>
+                            </li>
+                            <li>
+                              <a href="#"><i class="fal fa-trash-alt"></i></a>
+                            </li>
+                          </ul>
+                        </div>
+                      </td>
+                    </tr>
+
+                    <tr>
+                      <td class="checkbox">
+                        <div class="table_checkbox">
+                          <input type="checkbox" id="checkbox5" />
+                          <label for="checkbox5"></label>
+                        </div>
+                      </td>
+                      <td class="photo">
+                        <div class="table_photo">
+                          <img
+                            src="/public/assets/images/ads-4.png"
+                            alt="ads"
+                          />
+                        </div>
+                      </td>
+                      <td class="title">
+                        <div class="table_title">
+                          <h6 class="titles">8 GB DDR4 Ram, 4th Gen</h6>
+                          <p>Ad ID: ng3D5hAMHPajQrM</p>
+                        </div>
+                      </td>
+                      <td class="category">
+                        <div class="table_category">
+                          <p>Ram & Laptop</p>
+                        </div>
+                      </td>
+                      <td class="status">
+                        <div class="table_status">
+                          <span class="expired">Expired</span>
+                        </div>
+                      </td>
+                      <td class="price">
+                        <div class="table_price">
+                          <span>$299.00</span>
+                        </div>
+                      </td>
+                      <td class="action">
+                        <div class="table_action">
+                          <ul>
+                            <li>
+                              <a href="#"><i class="fal fa-eye"></i></a>
+                            </li>
+                            <li>
+                              <a href="#"><i class="fal fa-pencil"></i></a>
+                            </li>
+                            <li>
+                              <a href="#"><i class="fal fa-trash-alt"></i></a>
+                            </li>
+                          </ul>
+                        </div>
+                      </td>
+                    </tr>
+
+                    <tr>
+                      <td class="checkbox">
+                        <div class="table_checkbox">
+                          <input type="checkbox" id="checkbox6" />
+                          <label for="checkbox6"></label>
+                        </div>
+                      </td>
+                      <td class="photo">
+                        <div class="table_photo">
+                          <img
+                            src="/public/assets/images/ads-5.png"
+                            alt="ads"
+                          />
+                        </div>
+                      </td>
+                      <td class="title">
+                        <div class="table_title">
+                          <h6 class="titles">8 GB DDR4 Ram, 4th Gen</h6>
+                          <p>Ad ID: ng3D5hAMHPajQrM</p>
+                        </div>
+                      </td>
+                      <td class="category">
+                        <div class="table_category">
+                          <p>Ram & Laptop</p>
+                        </div>
+                      </td>
+                      <td class="status">
+                        <div class="table_status">
+                          <span class="inactive">Inactive</span>
+                        </div>
+                      </td>
+                      <td class="price">
+                        <div class="table_price">
+                          <span>$299.00</span>
+                        </div>
+                      </td>
+                      <td class="action">
+                        <div class="table_action">
+                          <ul>
+                            <li>
+                              <a href="#"><i class="fal fa-eye"></i></a>
+                            </li>
+                            <li>
+                              <a href="#"><i class="fal fa-pencil"></i></a>
+                            </li>
+                            <li>
+                              <a href="#"><i class="fal fa-trash-alt"></i></a>
+                            </li>
+                          </ul>
+                        </div>
+                      </td>
+                    </tr>
+
+                    <tr>
+                      <td class="checkbox">
+                        <div class="table_checkbox">
+                          <input type="checkbox" id="checkbox7" />
+                          <label for="checkbox7"></label>
+                        </div>
+                      </td>
+                      <td class="photo">
+                        <div class="table_photo">
+                          <img
+                            src="/public/assets/images/ads-6.png"
+                            alt="ads"
+                          />
+                        </div>
+                      </td>
+                      <td class="title">
+                        <div class="table_title">
+                          <h6 class="titles">8 GB DDR4 Ram, 4th Gen</h6>
+                          <p>Ad ID: ng3D5hAMHPajQrM</p>
+                        </div>
+                      </td>
+                      <td class="category">
+                        <div class="table_category">
+                          <p>Ram & Laptop</p>
+                        </div>
+                      </td>
+                      <td class="status">
+                        <div class="table_status">
+                          <span class="expired">Expired</span>
+                        </div>
+                      </td>
+                      <td class="price">
+                        <div class="table_price">
+                          <span>$299.00</span>
+                        </div>
+                      </td>
+                      <td class="action">
+                        <div class="table_action">
+                          <ul>
+                            <li>
+                              <a href="#"><i class="fal fa-eye"></i></a>
+                            </li>
+                            <li>
+                              <a href="#"><i class="fal fa-pencil"></i></a>
+                            </li>
+                            <li>
+                              <a href="#"><i class="fal fa-trash-alt"></i></a>
+                            </li>
+                          </ul>
+                        </div>
+                      </td>
+                    </tr>
+
+                    <tr>
+                      <td class="checkbox">
+                        <div class="table_checkbox">
+                          <input type="checkbox" id="checkbox7" />
+                          <label for="checkbox7"></label>
+                        </div>
+                      </td>
+                      <td class="photo">
+                        <div class="table_photo">
+                          <img
+                            src="/public/assets/images/ads-7.png"
+                            alt="ads"
+                          />
+                        </div>
+                      </td>
+                      <td class="title">
+                        <div class="table_title">
+                          <h6 class="titles">8 GB DDR4 Ram, 4th Gen</h6>
+                          <p>Ad ID: ng3D5hAMHPajQrM</p>
+                        </div>
+                      </td>
+                      <td class="category">
+                        <div class="table_category">
+                          <p>Ram & Laptop</p>
+                        </div>
+                      </td>
+                      <td class="status">
+                        <div class="table_status">
+                          <span class="deleted">Deleted</span>
+                        </div>
+                      </td>
+                      <td class="price">
+                        <div class="table_price">
+                          <span>$299.00</span>
+                        </div>
+                      </td>
+                      <td class="action">
+                        <div class="table_action">
+                          <ul>
+                            <li>
+                              <a href="#"><i class="fal fa-eye"></i></a>
+                            </li>
+                            <li>
+                              <a href="#"><i class="fal fa-pencil"></i></a>
+                            </li>
+                            <li>
+                              <a href="#"><i class="fal fa-trash-alt"></i></a>
+                            </li>
+                          </ul>
+                        </div>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!--====== DASHBOARD PART ENDS ======-->
+
+    <!--====== CALL TO ACTION PART START ======-->
+
+    <section class="call_to_action_area pt-20 pb-70">
+      <div class="container">
+        <div class="row align-items-center">
+          <div class="col-lg-5">
+            <div class="call_to_action_content mt-45">
+              <h4 class="title">Subscribe For Update</h4>
+            </div>
+          </div>
+          <div class="col-lg-7">
+            <div class="call_to_action_form mt-50">
+              <form action="#">
+                <i class="fal fa-envelope"></i>
+                <input
+                  type="text"
+                  placeholder="Enter your mail address . . ."
+                />
+                <button class="main-btn">Subscribe</button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!--====== CALL TO ACTION PART ENDS ======-->
+
+    <!--====== FOOTER PART START ======-->
+
+    <footer class="footer_area">
+      <div class="footer_widget pt-70 pb-120">
+        <div class="container">
+          <div class="row">
+            <div class="col-lg-3 col-sm-6">
+              <div class="footer_link mt-45">
+                <h5 class="footer_title">Company</h5>
+                <ul class="link">
+                  <li><a href="#">Home</a></li>
+                  <li><a href="#">About Us</a></li>
+                  <li><a href="#">Our Factories</a></li>
+                  <li><a href="#">Mission and Strategy</a></li>
+                  <li><a href="#">Profitable Actions</a></li>
+                </ul>
+              </div>
+            </div>
+            <div class="col-lg-3 col-sm-6">
+              <div class="footer_link mt-45">
+                <h5 class="footer_title">How to Sell Fast</h5>
+                <ul class="link">
+                  <li><a href="#">Selling TIps</a></li>
+                  <li><a href="#">Buy and Sell Quickly</a></li>
+                  <li><a href="#">Membership</a></li>
+                  <li><a href="#">Banner Advertising</a></li>
+                  <li><a href="#">Promote Your Ad</a></li>
+                </ul>
+              </div>
+            </div>
+            <div class="col-lg-3 col-sm-6">
+              <div class="footer_link mt-45">
+                <h5 class="footer_title">Information</h5>
+                <ul class="link">
+                  <li><a href="#">Company & Contact Info</a></li>
+                  <li><a href="#">Blog & Articles</a></li>
+                  <li><a href="#">Sitemap</a></li>
+                  <li><a href="#">Terms of Service</a></li>
+                  <li><a href="#">Privacy Policy</a></li>
+                </ul>
+              </div>
+            </div>
+            <div class="col-lg-3 col-sm-6">
+              <div class="footer_link mt-45">
+                <h5 class="footer_title">Help & Support</h5>
+                <ul class="link">
+                  <li><a href="#">Live Chat</a></li>
+                  <li><a href="#">FAQ</a></li>
+                  <li><a href="#">How to Stay Safe</a></li>
+                  <li><a href="#">Terms & Conditions</a></li>
+                  <li><a href="#">Contact Us</a></li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="footer_copyright pt-15 pb-30">
+        <div class="container">
+          <div
+            class="footer_copyright_wrapper text-center d-sm-flex justify-content-between align-items-center"
+          >
+            <div class="copyright mt-15">
+              <p>
+                Designed and Developed by
+                <a href="https://graygrids.com" rel="nofollow">GrayGrids</a>
+              </p>
+            </div>
+            <div class="payment mt-15">
+              <ul>
+                <li>
+                  <a href="#"
+                    ><img
+                      src="/public/assets/images/icon/payment-method1.jpg"
+                      alt="payment"
+                  /></a>
+                </li>
+                <li>
+                  <a href="#"
+                    ><img
+                      src="/public/assets/images/icon/payment-method2.jpg"
+                      alt="payment"
+                  /></a>
+                </li>
+                <li>
+                  <a href="#"
+                    ><img
+                      src="/public/assets/images/icon/payment-method3.jpg"
+                      alt="payment"
+                  /></a>
+                </li>
+                <li>
+                  <a href="#"
+                    ><img
+                      src="/public/assets/images/icon/payment-method4.jpg"
+                      alt="payment"
+                  /></a>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </footer>
+
+    <!--====== FOOTER PART ENDS ======-->
+
+    <!--====== BACK TOP TOP PART START ======-->
+
+    <a href="#" class="back-to-top"><i class="fa fa-angle-up"></i></a>
+
+    <!--====== BACK TOP TOP PART ENDS ======-->
+
+    <!--====== PART START ======-->
+
+    <!--
+    <section class="">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-">
+                    
+                </div>
+            </div>
+        </div>
+    </section>
+-->
+
+    <!--====== PART ENDS ======-->
+
+    <!--====== Jquery js ======-->
+    <script src="/public/assets/js/vendor/jquery-1.12.4.min.js"></script>
+    <script src="/public/assets/js/vendor/modernizr-3.7.1.min.js"></script>
+
+    <!--====== Bootstrap js ======-->
+    <script src="/public/assets/js/popper.min.js"></script>
+    <script src="/public/assets/js/bootstrap.min.js"></script>
+
+    <!--====== Slick js ======-->
+    <script src="/public/assets/js/slick.min.js"></script>
+
+    <!--====== Magnific Popup js ======-->
+    <script src="/public/assets/js/jquery.magnific-popup.min.js"></script>
+
+    <!--====== Nice Select js ======-->
+    <script src="/public/assets/js/jquery.nice-select.min.js"></script>
+
+    <!--====== Counter Up js ======-->
+    <script src="/public/assets/js/waypoints.min.js"></script>
+    <script src="/public/assets/js/jquery.counterup.min.js"></script>
+
+    <!--====== Price Range js ======-->
+    <script src="/public/assets/js/ion.rangeSlider.min.js"></script>
+
+    <!--====== Ajax Contact js ======-->
+    <script src="/public/assets/js/ajax-contact.js"></script>
+
+    <!--====== Main js ======-->
+    <script src="/public/assets/js/main.js"></script>
+  </body>
+</html>
