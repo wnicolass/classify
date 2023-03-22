@@ -1,0 +1,170 @@
+/*===========================
+      25.CONTACT PAGE css 
+===========================*/
+
+
+.contact_page{}
+
+
+.contact_map{
+    padding: 20px;
+    border-radius: 10px;
+    background-color: $white;
+    
+    & .gmap_canvas{
+        & iframe{
+            width: 100%;
+            height: 400px;
+        }
+    }
+}
+
+
+
+.contact_form{
+    padding: 20px;
+    padding-top: 0;
+    border-radius: 10px;
+    background-color: $white;
+}
+
+
+.contact_title {
+    padding-top: 10px;
+
+    & .title {
+        font-size: 18px;
+        font-weight: 700;
+        color: $heading-color;
+        border-bottom: 1px solid rgba($border-color, 0.4);
+        position: relative;
+        padding: 10px 0 ;
+
+        &::before {
+            position: absolute;
+            content: '';
+            width: 3px;
+            height: 15px;
+            background-color: $theme-color;
+            border-top-right-radius: 5px;
+            border-bottom-right-radius: 5px;
+            top: 50%;
+            left: -20px;
+            @include transform(translateY(-50%));
+
+            @media #{$lg} {
+                left: -15px;
+            }
+        }
+    }
+}
+
+.form-message{
+    margin-left: 15px;
+    
+    &.error,
+    &.success{
+        font-size: 16px;
+        color: $black;
+        background-color: #fff;
+        padding: 10px 15px;
+        margin-top: 15px;
+        background-color: $gray;
+    }
+    &.error{
+        color: #f00;
+    }
+} 
+
+
+
+.contact_form_wrapper {
+    & .single_form {
+        margin-top: 20px;
+        position: relative;
+
+        & textarea,
+        & input {
+            width: 100%;
+            height: 50px;
+            padding: 0 25px;
+            padding-left: 40px;
+            border-radius: 5px;
+            border: 1px solid #BCC1CE;
+            @include transition(0.3s);
+
+            &:focus {
+                border-color: $theme-color;
+            }
+        }
+
+        & i {
+            position: absolute;
+            top: 17px;
+            left: 15px;
+            font-size: 16px;
+            color: $body-color;
+        }
+
+        & textarea {
+            resize: none;
+            padding-top: 10px;
+            height: 175px;
+        }
+    }
+}
+
+
+
+.contact_info{
+    padding: 20px;
+    padding-top: 0;
+    border-radius: 10px;
+    background-color: $white;
+}
+
+.contact_info{
+    & p{
+        padding-top: 20px;
+    }
+}
+
+
+.single_info{
+    margin-top: 20px;
+    
+    & .info_icon{
+        & i{
+            font-size: 18px;
+            color: $theme-color;
+            padding-top: 4px;
+        }
+    }
+    & .info_content{
+        padding-left: 15px;
+        
+        & p{
+            padding-top: 0;
+        }
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

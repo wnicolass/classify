@@ -1,0 +1,78 @@
+
+
+
+/*===========================
+    22.FAQ PAGE css 
+===========================*/
+
+
+.faq_area{}
+
+.faq_accordion{
+    padding: 20px;
+    padding-top: 5px;
+    background-color: $white;
+    border-radius: 10px;
+    
+    & .accordion{
+        & .card{
+            padding: 0;
+            border-radius: 0;
+            border: 0;
+            background: none;
+            margin-top: 15px;
+
+            & .card-header{
+                padding: 0;
+                border: 0;
+                margin-bottom: 0;
+                background: none;
+
+                & a{
+                    display: block;
+                    font-size: 18px;
+                    font-weight: 500;
+                    color: $heading-color;
+                    border: 1px solid rgba($border-color, 0.7);
+                    padding: 15px 20px;
+                    padding-right: 40px;
+                    position: relative;
+
+                    @media #{$xs}{
+                        font-size: 16px;
+                    }
+
+                    &::before{
+                        position: absolute;
+                        content: "\f068";
+                        font-family: "Font Awesome 5 Pro";
+                        font-weight: 300;
+                        right: 20px;
+                        top: 50%;
+                        @include transform(translateY(-50%));
+                        @include transition(0.3s);
+                    }
+
+                    &.collapsed{
+                        &::before{
+                            content: "\f067";
+                        }
+                    }
+                }
+            }
+            & .card-body{
+                padding: 15px 0 0;
+
+                & p{}
+            }
+        }
+    }
+}
+
+
+
+
+
+
+
+

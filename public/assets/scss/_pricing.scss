@@ -1,0 +1,116 @@
+
+
+
+/*===========================
+      10.PRICIE css 
+===========================*/
+
+.single_pricing{
+    background-color: $white;
+    padding: 50px 70px;
+    border-radius: 10px;
+    margin-top: 30px;
+    
+    @media #{$lg}{
+        padding: 50px 40px;
+    }
+    @media #{$xs}{
+        padding: 50px 40px;
+    }
+    
+    & .pricing_icon{}
+    & .pricing_title{
+        margin-top: 25px;
+        
+        & .title{
+            font-size: 24px;
+            font-weight: 700;
+            color: $theme-color;
+        }
+        & p{
+            margin-top: 10px;
+        }
+    }
+    & .pricing_content{
+        margin-top: 20px;
+        
+        & p{
+            line-height: 34px;
+        }
+        & .price{
+            font-size: 24px;
+            font-weight: 500;
+            color: $heading-color;
+            margin-top: 15px;
+        }
+    }
+    & .pricing_btn{
+        margin-top: 30px;
+    }
+    
+    &.pricing_active{
+        background-color: $theme-color;
+        padding: 100px 70px;
+        @include box-shadow (0px 10px 30px 0px rgba($border-color, 0.80));
+        position: relative;
+        
+        @media #{$lg}{
+            padding: 80px 40px;
+        }
+        @media #{$xs}{
+            padding: 50px 40px;
+        }
+        
+        &::before{
+            position: absolute;
+            z-index: -1;
+            content: '';
+            bottom: -10px;
+            left: 0;
+            right: 0;
+            margin: 0 auto;
+            width: 80%;
+            height: 90%;
+            background-color: $theme-color;
+            opacity: 0.8;
+            filter: blur(10px);
+            @include transition(0.3s);
+        }
+        
+        & .pricing_icon{}
+        & .pricing_title{
+            margin-top: 25px;
+
+            & .title{
+                color: $white;
+            }
+            & p{
+                color: $white;
+            }
+        }
+        & .pricing_content{
+            margin-top: 20px;
+
+            & p{
+                color: $white;
+            }
+            & .price{
+                color: $white;
+            }
+        }
+        & .pricing_btn{
+            margin-top: 30px;
+        }
+    }
+}
+
+
+
+
+
+
+
+
+
+
+

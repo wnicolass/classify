@@ -1,0 +1,64 @@
+/*-----------------------------------------------------------------------------------
+
+    Template Name: ClassiFied
+    Author: GrayGrids
+
+-----------------------------------------------------------------------------------
+
+    CSS INDEX
+    ===================
+
+    01.COMMON
+    02.HEADER
+    03.CATeGORY
+    04.ADS CARD
+    05.CHOOSE
+    06.LOCATIONS
+    07.COUNTER
+    08.SERVICES
+    10.PRICIE
+    11.BLOG
+    12.CALL TO ACTION
+    13.FOOTER
+    14.ABOUT
+    15.TEAM
+    16.TESTIMONIAL
+    17.CATEGORIS PAGE
+    18.PRODUCT PAGE
+    19.PRODUCT DETAILS PAGE
+    20.BLOG DETAILS PAGE
+    21.POST ADS PAGE
+    22.FAQ PAGE
+    23.SIGN IN & SIGN UP PAGE
+    24.ERROR PAGE
+    25.CONTACT PAGE
+
+-----------------------------------------------------------------------------------*/
+
+@import 'variables';
+@import 'mixin';
+@import 'common';
+@import 'header';
+@import 'category';
+@import 'ads_card';
+@import 'choose';
+@import 'locations';
+@import 'counter';
+@import 'services';
+@import 'pricing';
+@import 'blog';
+@import 'call-to-action';
+@import 'footer';
+@import 'about';
+@import 'team';
+@import 'testimonial';
+@import 'categories_page';
+@import 'product_page';
+@import 'product_details_page';
+@import 'blog_details_page';
+@import 'profile';
+@import 'faq';
+@import 'sign-in_sign-up';
+@import 'error';
+@import 'contact';
+

@@ -1,0 +1,88 @@
+
+
+
+/*===========================
+      11.BLOG css 
+===========================*/
+
+.single_blog{
+    background-color: $white;
+    border-radius: 10px;
+    overflow: hidden;
+    @include transition(0.3s);
+    
+    & .blog_image{
+        overflow: hidden;
+        border-radius: 10px;
+        
+        & img{
+            @include transition(0.3s);
+            width: 100%;
+        }
+    }
+    & .blog_content{
+        padding: 25px;
+        
+        & .title{
+            & a{
+                font-size: 16px;
+                font-weight: 500;
+                color: $theme-color-2;
+                @include transition(0.3s);
+                
+                &:hover{
+                    color: $theme-color;
+                }
+            }
+        }
+        & .meta{
+            margin-top: 20px;
+            
+            & li{
+                display: inline-block;
+                font-size: 16px;
+                color: $body-color;
+                
+                & + li{
+                    margin-left: 20px;
+                    
+                    @media #{$lg}{
+                        margin-left: 15px;
+                    }
+                    @media #{$xs}{
+                        margin-left: 15px;
+                    }
+                }
+                
+                & i{}
+                & a{
+                    color: $body-color;
+                    margin-left: 5px;
+                    
+                    @media #{$lg}{
+                        font-size: 14px;
+                    }
+                    @media #{$xs}{
+                        font-size: 14px;
+                    }
+                }
+            }
+        }
+    }
+    
+    &:hover{
+        @include box-shadow (0px 10px 30px 0px rgba($border-color, 0.80));
+        
+        & .blog_image{
+            & img{
+                @include transform(scale(1.1));
+            }
+        }
+    }
+}
+
+
+
+
+
+

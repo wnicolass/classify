@@ -1,0 +1,130 @@
+
+
+
+/*===========================
+    13.FOOTER css 
+===========================*/
+
+.footer_area{}
+
+.footer_widget{}
+
+.footer_link{
+    & .link{
+        padding-top: 10px;
+        
+        & li{
+            margin-top: 10px;
+            
+            & a{
+                font-size: 16px;
+                font-weight: 400;
+                color: $body-color;
+                @include transition(0.3s);
+                
+                &:hover{
+                    color: $theme-color;
+                    padding-left: 10px;
+                }
+            }
+        }
+    }
+}
+
+.footer_title{
+    font-size: 30px;
+    font-weight: 700;
+    position: relative;
+    padding-bottom: 15px;
+    
+    @media #{$lg}{
+        font-size: 24px;
+    }
+    @media #{$xs}{
+        font-size: 24px;
+    }
+    
+    &::before{
+        position: absolute;
+        content: '';
+        width: 100px;
+        height: 1px;
+        background-color: $theme-color;
+        bottom: 0;
+        left: 0;
+    }
+}
+
+
+.footer_copyright{
+    background-color: $theme-color-2;
+}
+
+.copyright{
+    & p, & a{
+        color: $white;
+    }
+}
+.payment{
+    & ul{
+        & li{
+            display: inline-block;
+            
+            & +li {
+                margin-left: 10px;
+            }
+            
+            & a{}
+        }
+    }
+}
+
+
+
+/*===== BACK TO TOP =====*/
+
+.back-to-top{
+    font-size: 24px;
+    color: $white;
+    position: fixed;
+    right: 20px;
+    bottom: 20px;
+    width: 40px;
+    height: 40px;
+    line-height: 35px;
+    border-radius: 5px;
+    background-color: $theme-color;
+    text-align: center;
+    z-index: 99;
+    @include transition(0.3s);
+    display: none;
+    
+    &:hover{
+        color: $white;
+        background-color: $theme-color;
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

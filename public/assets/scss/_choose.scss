@@ -1,0 +1,121 @@
+
+
+
+/*===========================
+      05.CHOOSE css 
+===========================*/
+
+.choose_area{
+    background-color: $white;
+    position: relative;
+    padding-top: 80px;
+    padding-bottom: 130px;
+    
+    @media #{$md}{
+        padding-bottom: 0;
+    }
+    @media #{$xs}{
+        padding-bottom: 0;
+    }
+}
+
+.choose_image{
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 50%;
+    height: 100%;
+    display: table;
+    
+    @media #{$md}{
+        position: relative;
+        width: 720px;
+        margin: 0 auto;
+        padding-top: 50px;
+        padding-right: 15px;
+        padding-left: 15px;
+    }
+    @media #{$xs}{
+        position: relative;
+        width: 100%;
+        margin: 0 auto;
+        padding-top: 50px;
+        padding-right: 15px;
+        padding-left: 15px;
+    }
+    @media #{$sm}{
+        width: 540px;
+    }
+    
+    & .image{
+        display: table-cell;
+        vertical-align: bottom;
+        padding-left: 50px;
+    }
+}
+
+
+
+.choose_content{
+    & p{}
+    & .list{
+        padding-top: 30px;
+        
+        & li{
+            margin-top: 15px;
+            position: relative;
+            padding-left: 35px;
+            
+            & i{
+                width: 25px;
+                height: 25px;
+                line-height: 25px;
+                border-radius: 4px;
+                font-size: 14px;
+                color: $white;
+                text-align: center;
+                margin-right: 5px;
+                position: absolute;
+                top: 3px;
+                left: 0;
+                
+                @media #{$lg}{
+                    width: 20px;
+                    height: 20px;
+                    line-height: 20px;
+                }
+                @media #{$xs}{
+                    width: 20px;
+                    height: 20px;
+                    line-height: 20px;
+                }
+            }
+            
+            &:nth-child(3n+1){
+                & i{
+                    background-color: $theme-color-2;
+                }
+            }
+            &:nth-child(3n+2){
+                & i{
+                    background-color: $theme-color;
+                }
+            }
+            &:nth-child(3n+3){
+                & i{
+                    background-color: $theme-color-3;
+                }
+            }
+        }
+    }
+    
+    & .main-btn{
+        margin-top: 45px;
+    }
+}
+
+
+
+
+
+

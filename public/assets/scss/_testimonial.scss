@@ -1,0 +1,109 @@
+
+
+
+/*===========================
+     16.TESTIMONIAL css 
+===========================*/
+
+.testimonial_area{}
+
+.single_testimonial{
+    background-color: $white;
+    padding: 20px;
+    border-radius: 10px;
+    
+    & .testimonial_author{
+        position: relative;
+        display: inline-block;
+        
+        & i{
+            font-size: 42px;
+            color: $theme-color;
+            position: absolute;
+            top: 50%;
+            right: -24px;
+            @include transform(translateY(-50%));
+            background-color: $white;
+            padding: 3px 5px 0;
+            border-top-left-radius: 20px;
+            border-bottom-left-radius: 8px;
+        }
+        
+        & img{
+            width: 130px;
+            border-radius: 5px;
+        }
+    }
+    & .testimonial_content{
+        padding-left: 45px;
+        
+        @media #{$xs}{
+            padding-left: 0;
+            padding-top: 30px;
+        }
+        @media #{$sm}{
+            padding-left: 45px;
+            padding-top: 0;
+        }
+        
+        & p{
+            color: $black;
+            font-size: 16px;
+        }
+        & .author_name{
+            font-size: 16px;
+            font-weight: 700;
+            color: $black;
+            margin-top: 20px;
+        }
+        & .sub_title{
+            font-size: 14px;
+            color: $black;
+        }
+    }
+}
+
+
+.testimonial_active{
+    & .slick-arrow{
+        position: absolute;
+        top: 50%;
+        left: -30px;
+        @include transform(translateY(-50%));
+        cursor: pointer;
+        
+        @media #{$lg}{
+            left: -10px;
+        }
+        @media #{$xs}{
+            left: -10px;
+        }
+        
+        & i{
+            color: $body-color;
+            font-size: 28px;
+        }
+        
+        &.next {
+            left: auto;
+            right: -30px;
+            
+            @media #{$lg}{
+                left: auto;
+                right: -10px;
+            }
+            @media #{$xs}{
+                left: auto;
+                right: -10px;
+            }
+        }
+    }
+}
+
+
+
+
+
+
+
+
