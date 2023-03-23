@@ -15,4 +15,4 @@
 
 ## 🔖 Layout:
 
-## 📝 Licença:
+## 📝 License:
