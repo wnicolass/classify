@@ -1,9 +1,8 @@
 # Classify
 
-# Teste
+# Languages Used:
+Part A (Web server for the web app) - Python + FastAPI + SQLAlchemy
 
-# new test hahaha
+Part B (Main DB server) - Linux + SQL Server
 
-# another test
-
-# anoher test
+Part C (Web API for requests) - Node.js + Express + Sequelize
