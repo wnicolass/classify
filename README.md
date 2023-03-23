@@ -1,6 +1,6 @@
 # Classify
 
-## Languages/Technologies Used:
+## 🚀 Languages/Technologies Used:
 
 | Part Name  | Description | Lang/Tech |
 | :-------------: | :-------------: | :-------------: |
@@ -11,4 +11,8 @@
 | Part D  | Classifieds Server  | (Undecided) |
 | Part E  | Backoffice  | Python + FastAPI + SQLAlchemy |
 
+## 💻 Project:
 
+## 🔖 Layout:
+
+## 📝 Licença:
