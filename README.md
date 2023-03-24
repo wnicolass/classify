@@ -1,8 +1,8 @@
 # Classify
 
-## 🚀 Languages/Technologies Used:
-
 ## 💻 Project:
+
+## 🚀 Languages/Technologies Used:
 
 | Part Name  | Description | Language/Technology |
 | :-------------: | :-------------: | :-------------: |
