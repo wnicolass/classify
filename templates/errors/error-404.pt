@@ -1,0 +1,42 @@
+<div metal:use-macro="load: ../shared/_layout.pt">
+  <div metal:fill-slot="content" tal:omit-tag="True">
+
+      <div
+        class="page_banner bg_cover"
+        style="background-image: url(/public/assets/images/page-banner.jpg)">
+        <div class="container">
+          <div class="page_banner_content">
+            <h3 class="title">404</h3>
+            <ul class="breadcrumb">
+              <li><a href="/home/index">Home</a></li>
+              <li>404</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+    <!--====== HEADER PART ENDS ======-->
+
+    <!--====== ERROR 404 PART START ======-->
+
+    <section class="error_area pt-120 pb-120">
+      <div class="container">
+        <div class="row justify-content-center">
+          <div class="col-lg-6">
+            <div class="error_content text-center">
+              <span class="error">404</span>
+              <p>Ooooops! Something Went Wrong...</p>
+
+              <div class="error_search">
+                <input type="text" placeholder="search" />
+                <button><i class="fal fa-search"></i></button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!--====== ERROR 404 PART ENDS ======-->
+  </div>
+</div>

@@ -1,0 +1,142 @@
+<div metal:use-macro="load: ../shared/_layout.pt">
+  <div metal:fill-slot="content" tal:omit-tag="True">
+
+    <div
+      class="page_banner bg_cover"
+      style="background-image: url(/public/assets/images/page-banner.jpg)">
+      <div class="container">
+        <div class="page_banner_content">
+          <h3 class="title">Profile Settings</h3>
+          <ul class="breadcrumb">
+            <li><a href="/home/index">Home</a></li>
+            <li>Profile Settings</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!--====== HEADER PART ENDS ======-->
+
+    <!--====== PROFILE SETTINGS PART START ======-->
+
+    <section class="profile-settings_page pt-70 pb-120">
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-3">
+            <div class="sidebar_profile mt-50">
+              <div class="profile_user">
+                <div class="user_author d-flex align-items-center">
+                  <div class="author">
+                    <img src="/public/assets/images/author-1.jpg" alt="" />
+                  </div>
+                  <div class="user_content media-body">
+                    <h6 class="author_name">User</h6>
+                    <p>Administrator</p>
+                  </div>
+                </div>
+                <div class="user_list">
+                  <ul>
+                    <li>
+                      <a class="active" href="/user/dashboard"
+                        ><i class="fal fa-tachometer-alt-average"></i>
+                        Dashboard</a
+                      >
+                    </li>
+                    <li>
+                      <a href="/user/profile-settings"
+                        ><i class="fal fa-cog"></i> Profile Settings</a
+                      >
+                    </li>
+                    <li>
+                      <a href="/user/my-ads"
+                        ><i class="fal fa-layer-group"></i> My Ads</a
+                      >
+                    </li>
+                    <li>
+                      <a href="/user/offermessages"
+                        ><i class="fal fa-envelope"></i> Offers/Messages</a
+                      >
+                    </li>
+                    <li>
+                      <a href="/user/payments"
+                        ><i class="fal fa-wallet"></i> Payments</a
+                      >
+                    </li>
+                    <li>
+                      <a href="/user/favourite-ads"
+                        ><i class="fal fa-heart"></i> My Favourites</a
+                      >
+                    </li>
+                    <li>
+                      <a href="/user/privacy-setting"
+                        ><i class="fal fa-star"></i> Privacy Settings</a
+                      >
+                    </li>
+                    <li>
+                      <a href="#"><i class="fal fa-sign-out"></i> Sign Out</a>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-9">
+            <div class="post_form mt-50">
+              <div class="post_title">
+                <h5 class="title">Profile Settings</h5>
+              </div>
+              <form action="#">
+                <div class="row">
+                  <div class="col-md-6">
+                    <div class="single_form">
+                      <input type="text" placeholder="First Name" />
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="single_form">
+                      <input type="text" placeholder="Last Name" />
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="single_form">
+                      <input type="email" placeholder="E-mail Address" />
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="single_form">
+                      <input type="text" placeholder="Phone Number" />
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="single_form">
+                      <input type="password" placeholder="New Password" />
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="single_form">
+                      <input type="password" placeholder="Confirm Password" />
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="single_form">
+                      <input type="checkbox" name="checkbox" id="checkbox" />
+                      <label for="checkbox"></label>
+                      <span>Subscribe me to Newsletter</span>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="single_form">
+                      <button class="main-btn">Update</button>
+                    </div>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!--====== PROFILE SETTINGS PART ENDS ======-->
+  </div>
+</div>
