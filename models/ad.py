@@ -12,6 +12,7 @@ from sqlalchemy import (
 )
 from sqlalchemy.orm import relationship
 from config.database import Base
+from models.ad_approval import ad_approval
 
 field_value = Table(
     'FieldValue',
@@ -41,3 +42,4 @@ class Ad(Base):
     feature = relationship('Feature')
     subcategory = relationship('Subcategory', back_populates = 'ads')
     field_definitions = relationship('FieldDefinition', secondary = field_value, back_populates = 'ads')
+    admin = relationship('Admin', secondary = ad_approval, back_populates = 'ads')
