@@ -11,7 +11,7 @@ def start_uvicorn(
         create_ddl: bool = typer.Option(False, "--create-ddl", "-c", help = "Drop and Create all tables. [default: False]"), 
         auto_reload: bool = typer.Option(False, "--auto-relod", "-r", help = "Define if the app will reload after each saving. [default: False]"),
         host: str = typer.Argument("127.0.0.1", help = "IP Address in which the server will be executed."),
-        port: int = typer.Argument(8000, help = "Port in which the server will listen.")
+        port: int = typer.Option(8000, "--port", "-p", help = "Port in which the server will listen.")
     ):
     """
     Classify is a classifieds webapp built with FastAPI & SQLAlchemy.
