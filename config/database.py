@@ -1,28 +1,23 @@
 import os
 from dotenv import load_dotenv, find_dotenv
-from sqlalchemy.orm import sessionmaker
-from sqlalchemy.ext.asyncio import (
-    create_async_engine,
-    AsyncEngine,
-    AsyncSession
-)
+from sqlalchemy.orm import sessionmaker, Session
+from sqlalchemy import create_engine
+from sqlalchemy.future import Engine
 from sqlalchemy.ext.declarative import declarative_base
 
 load_dotenv(find_dotenv())
 
-engine: AsyncEngine = create_async_engine(url = os.getenv('CONNECTION_STRING'))
-Session: AsyncSession = sessionmaker(
+engine: Engine = create_engine(url = os.getenv('CONNECTION_STRING'), echo = False)
+DbSession: Session = sessionmaker(
     autocommit = False,
     autoflush = False,
-    bind = engine,
-    _class = AsyncSession
+    bind = engine
 )
 Base = declarative_base()
 
-async def create_metadata() -> None:
+def create_metadata() -> None:
     import models.__all_models
-    
-    async with engine.begin() as conn:
-        await conn.run_sync(Base.metadata.drop_all)
-        await conn.run_sync(Base.metadata.create_all)
+
+    Base.metadata.drop_all(bind = engine)
+    Base.metadata.create_all(bind = engine)
 
