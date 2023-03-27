@@ -1,0 +1,265 @@
+<div metal:use-macro="load: ../shared/_layout.pt">
+  <div metal:fill-slot="content" tal:omit-tag="True">
+
+    <div
+      class="page_banner bg_cover"
+      style="background-image: url(/public/assets/images/page-banner.jpg)">
+      <div class="container">
+        <div class="page_banner_content">
+          <h3 class="title">Frequently Asked Questions</h3>
+          <ul class="breadcrumb">
+            <li><a href="/home/index">Home</a></li>
+            <li>FAQ</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    
+    
+
+    <!--====== HEADER PART ENDS ======-->
+
+    <!--====== FAQ PART START ======-->
+
+    <section class="faq_area pt-120 pb-120">
+    <div class="container">
+      <div class="faq_accordion">
+        <div class="accordion" id="accordionExample">
+          <div class="card">
+            <div class="card-header" id="headingOne">
+              <a
+                href="#"
+                data-toggle="collapse"
+                data-target="#collapseOne"
+                aria-expanded="true"
+                aria-controls="collapseOne"
+                >How do I place an ad?</a
+              >
+            </div>
+
+            <div
+              id="collapseOne"
+              class="collapse show"
+              aria-labelledby="headingOne"
+              data-parent="#accordionExample"
+            >
+              <div class="card-body">
+                <p>
+                  Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                  Aliquam consectetur sit amet ante nec vulputate. Nulla
+                  aliquam, justo auctor consequat tincidunt, arcu erat mattis
+                  lorem, lacinia lacinia dui enim at eros. Pellentesque ut
+                  gravida augue. Duis ac dictum tellus <br />
+                  <br />
+                  Anim pariatur cliche reprehenderit, enim eiusmod high life
+                  accusamus terry richardson ad squid. 3 wolf moon officia
+                  aute. non cupidatat skateboard dolor brunch. Foosd truck
+                  quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor,
+                  sunt alqua put a bird on it squid single-origin coffee nulla
+                  assumenda shoreditch et. Nihil anim ke ffiyeh helvetica,
+                  craft beer labore wes anderson cred nesciunt sapiente ea
+                  proident.
+                </p>
+              </div>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-header" id="headingTwo">
+              <a
+                href="#"
+                class="collapsed"
+                data-toggle="collapse"
+                data-target="#collapseTwo"
+                aria-expanded="false"
+                aria-controls="collapseTwo"
+                >Who shouldi to contact if i Have any question?</a
+              >
+            </div>
+            <div
+              id="collapseTwo"
+              class="collapse"
+              aria-labelledby="headingTwo"
+              data-parent="#accordionExample"
+            >
+              <div class="card-body">
+                <p>
+                  Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                  Aliquam consectetur sit amet ante nec vulputate. Nulla
+                  aliquam, justo auctor consequat tincidunt, arcu erat mattis
+                  lorem, lacinia lacinia dui enim at eros. Pellentesque ut
+                  gravida augue. Duis ac dictum tellus <br />
+                  <br />
+                  Anim pariatur cliche reprehenderit, enim eiusmod high life
+                  accusamus terry richardson ad squid. 3 wolf moon officia
+                  aute. non cupidatat skateboard dolor brunch. Foosd truck
+                  quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor,
+                  sunt alqua put a bird on it squid single-origin coffee nulla
+                  assumenda shoreditch et. Nihil anim ke ffiyeh helvetica,
+                  craft beer labore wes anderson cred nesciunt sapiente ea
+                  proident.
+                </p>
+              </div>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-header" id="headingThree">
+              <a
+                href="#"
+                class="collapsed"
+                data-toggle="collapse"
+                data-target="#collapseThree"
+                aria-expanded="false"
+                aria-controls="collapseThree"
+                >How can i cancel or change my order?</a
+              >
+            </div>
+            <div
+              id="collapseThree"
+              class="collapse"
+              aria-labelledby="headingThree"
+              data-parent="#accordionExample"
+            >
+              <div class="card-body">
+                <p>
+                  Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                  Aliquam consectetur sit amet ante nec vulputate. Nulla
+                  aliquam, justo auctor consequat tincidunt, arcu erat mattis
+                  lorem, lacinia lacinia dui enim at eros. Pellentesque ut
+                  gravida augue. Duis ac dictum tellus <br />
+                  <br />
+                  Anim pariatur cliche reprehenderit, enim eiusmod high life
+                  accusamus terry richardson ad squid. 3 wolf moon officia
+                  aute. non cupidatat skateboard dolor brunch. Foosd truck
+                  quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor,
+                  sunt alqua put a bird on it squid single-origin coffee nulla
+                  assumenda shoreditch et. Nihil anim ke ffiyeh helvetica,
+                  craft beer labore wes anderson cred nesciunt sapiente ea
+                  proident.
+                </p>
+              </div>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-header" id="headingFour">
+              <a
+                href="#"
+                class="collapsed"
+                data-toggle="collapse"
+                data-target="#collapseFour"
+                aria-expanded="false"
+                aria-controls="collapseFour"
+                >How can i Return A Product?</a
+              >
+            </div>
+            <div
+              id="collapseFour"
+              class="collapse"
+              aria-labelledby="headingFour"
+              data-parent="#accordionExample"
+            >
+              <div class="card-body">
+                <p>
+                  Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                  Aliquam consectetur sit amet ante nec vulputate. Nulla
+                  aliquam, justo auctor consequat tincidunt, arcu erat mattis
+                  lorem, lacinia lacinia dui enim at eros. Pellentesque ut
+                  gravida augue. Duis ac dictum tellus <br />
+                  <br />
+                  Anim pariatur cliche reprehenderit, enim eiusmod high life
+                  accusamus terry richardson ad squid. 3 wolf moon officia
+                  aute. non cupidatat skateboard dolor brunch. Foosd truck
+                  quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor,
+                  sunt alqua put a bird on it squid single-origin coffee nulla
+                  assumenda shoreditch et. Nihil anim ke ffiyeh helvetica,
+                  craft beer labore wes anderson cred nesciunt sapiente ea
+                  proident.
+                </p>
+              </div>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-header" id="headingFive">
+              <a
+                href="#"
+                class="collapsed"
+                data-toggle="collapse"
+                data-target="#collapseFive"
+                aria-expanded="false"
+                aria-controls="collapseFive"
+                >How Long will it take to get my package?</a
+              >
+            </div>
+            <div
+              id="collapseFive"
+              class="collapse"
+              aria-labelledby="headingFive"
+              data-parent="#accordionExample"
+            >
+              <div class="card-body">
+                <p>
+                  Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                  Aliquam consectetur sit amet ante nec vulputate. Nulla
+                  aliquam, justo auctor consequat tincidunt, arcu erat mattis
+                  lorem, lacinia lacinia dui enim at eros. Pellentesque ut
+                  gravida augue. Duis ac dictum tellus <br />
+                  <br />
+                  Anim pariatur cliche reprehenderit, enim eiusmod high life
+                  accusamus terry richardson ad squid. 3 wolf moon officia
+                  aute. non cupidatat skateboard dolor brunch. Foosd truck
+                  quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor,
+                  sunt alqua put a bird on it squid single-origin coffee nulla
+                  assumenda shoreditch et. Nihil anim ke ffiyeh helvetica,
+                  craft beer labore wes anderson cred nesciunt sapiente ea
+                  proident.
+                </p>
+              </div>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-header" id="headingSix">
+              <a
+                href="#"
+                class="collapsed"
+                data-toggle="collapse"
+                data-target="#collapseSix"
+                aria-expanded="false"
+                aria-controls="collapseSix"
+              >
+                What shipping methods are available?</a
+              >
+            </div>
+            <div
+              id="collapseSix"
+              class="collapse"
+              aria-labelledby="headingSix"
+              data-parent="#accordionExample"
+            >
+              <div class="card-body">
+                <p>
+                  Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                  Aliquam consectetur sit amet ante nec vulputate. Nulla
+                  aliquam, justo auctor consequat tincidunt, arcu erat mattis
+                  lorem, lacinia lacinia dui enim at eros. Pellentesque ut
+                  gravida augue. Duis ac dictum tellus <br />
+                  <br />
+                  Anim pariatur cliche reprehenderit, enim eiusmod high life
+                  accusamus terry richardson ad squid. 3 wolf moon officia
+                  aute. non cupidatat skateboard dolor brunch. Foosd truck
+                  quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor,
+                  sunt alqua put a bird on it squid single-origin coffee nulla
+                  assumenda shoreditch et. Nihil anim ke ffiyeh helvetica,
+                  craft beer labore wes anderson cred nesciunt sapiente ea
+                  proident.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    </section>
+
+    <!--====== FAQ PART ENDS ======-->
+
+  </div>
+</div>
