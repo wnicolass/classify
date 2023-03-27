@@ -3,12 +3,10 @@ from sqlalchemy import (
     Column,
     Integer,
     String,
-    DateTime,
-    ForeignKey
+    DateTime
 )
 from sqlalchemy.orm import relationship
 from config.database import Base
-from models.ad_approval import ad_approval
 
 class Admin(Base):
     __tablename__ = 'Admin'
@@ -21,5 +19,5 @@ class Admin(Base):
     phone_number: str = Column(String(12), nullable = False)
     created_at: datetime = Column(DateTime, default = datetime.now())
 
-    ads = relationship('Ad', secondary = ad_approval, back_populates = 'admin')
+    ads = relationship('AdApproval', back_populates = 'admin')
     

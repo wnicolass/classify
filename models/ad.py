@@ -6,21 +6,21 @@ from sqlalchemy import (
     Integer,
     String,
     ForeignKey,
-    Table,
     DECIMAL,
     Enum
 )
 from sqlalchemy.orm import relationship
 from config.database import Base
-from models.ad_approval import ad_approval
 
-field_value = Table(
-    'FieldValue',
-    Base.metadata,
-    Column('field_definition_id', Integer, ForeignKey('FieldDefinition.field_definition_id'), primary_key = True),
-    Column('ad_id', Integer, ForeignKey('Ad.ad_id'), primary_key = True),
-    Column('value', Integer, nullable = False),
-)
+class FieldValue(Base):
+    __tablename__ = 'FieldValue'
+    field_definition_id: int = Column(Integer, ForeignKey('FieldDefinition.field_definition_id'), primary_key = True)
+    ad_id: int = Column(Integer, ForeignKey('Ad.ad_id'), primary_key = True)
+    value: str = Column(String(100), nullable = False)
+
+    ad = relationship('Ad', back_populates = 'field_definitions')
+    field_definition = relationship('FieldDefinition', back_populates = 'ads')
+
 
 class Ad(Base):
     __tablename__ = 'Ad'
@@ -41,5 +41,5 @@ class Ad(Base):
     user = relationship('User', back_populates = 'ads')
     feature = relationship('Feature')
     subcategory = relationship('Subcategory', back_populates = 'ads')
-    field_definitions = relationship('FieldDefinition', secondary = field_value, back_populates = 'ads')
-    admin = relationship('Admin', secondary = ad_approval, back_populates = 'ads')
+    field_definitions = relationship('FieldValue', back_populates = 'ad')
+    admins = relationship('AdApproval', back_populates = 'ad')
