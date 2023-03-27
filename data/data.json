@@ -1,0 +1,223 @@
+[
+  {
+    "target_class": "Category",
+    "data": [
+      {
+        "name": "Clothing"
+      },
+      {
+        "name": "Home"
+      },
+      {
+        "name": "Technologies"
+      },
+      {
+        "name": "Tools & Equipment"
+      },
+      {
+        "name": "Vehicles"
+      },
+      {
+        "name": "Other sales"
+      }
+    ]
+  },
+  {
+    "target_class": "User",
+    "data": [
+      {
+        "first_name": "John",
+        "last_name": "Doe",
+        "email": "johndoe@gmail.com",
+        "hashed_password": "n1i2io45213nfsh12",
+        "phone_number": "123456789"
+      }
+    ]
+  },
+  {
+    "target_class": "Address",
+    "data": [
+      {
+        "country": "Portugal",
+        "city": "Lisbon",
+        "street": "Test street",
+        "number": 3,
+        "!refs": {
+          "user_id": {
+            "target_class": "User",
+            "criteria": {
+              "user_id": 1
+            },
+            "field": "user_id"
+          }
+        }
+      }
+    ]
+  },
+  {
+    "target_class": "Feature",
+    "data": [
+      {
+        "brand": "Testing brand",
+        "condition": "used",
+        "authenticity": "original"
+      }
+    ]
+  },
+  {
+    "target_class": "Admin",
+    "data": [
+      {
+        "first_name": "Joseph",
+        "last_name": "Alejandro",
+        "email": "josea@gmail.com",
+        "hashed_password": "2134ib41fds",
+        "phone_number": "987654321"
+      }
+    ]
+  },
+  {
+    "target_class": "Subcategory",
+    "data": [
+      {
+        "name": "Woman",
+        "!refs": {
+          "category_id": {
+            "target_class": "Category",
+            "criteria": {
+              "category_id": 1
+            },
+            "field": "category_id"
+          }
+        }
+      },
+      {
+        "name": "Man",
+        "!refs": {
+          "category_id": {
+            "target_class": "Category",
+            "criteria": {
+              "category_id": 1
+            },
+            "field": "category_id"
+          }
+        }
+      }
+    ]
+  },
+  {
+    "target_class": "FieldDefinition",
+    "data": [
+      {
+        "name": "testing",
+        "type": "text"
+      }
+    ]
+  },
+  {
+    "target_class": "SubcategoryFieldDefinition",
+    "data": [
+      {
+        "!refs": {
+          "subcategory_id": {
+            "target_class": "Subcategory",
+            "criteria": {
+              "subcategory_id": 2
+            },
+            "field": "subcategory_id"
+          },
+          "field_definition_id": {
+            "target_class": "FieldDefinition",
+            "criteria": {
+              "field_definition_id": 1
+            },
+            "field": "field_definition_id"
+          }
+        }
+      }
+    ]
+  },
+  {
+    "target_class": "Ad",
+    "data": [
+      {
+        "title": "A beautiful t-shirt",
+        "description": "The color is blue",
+        "price": 3.33,
+        "product_name": "T-shirt",
+        "status": "active",
+        "negotiable": "No",
+        "!refs": {
+          "feature_id": {
+            "target_class": "Feature",
+            "criteria": {
+              "feature_id": 1
+            },
+            "field": "feature_id"
+          },
+          "user_id": {
+            "target_class": "User",
+            "criteria": {
+              "user_id": 1
+            },
+            "field": "user_id"
+          },
+          "subcategory_id": {
+            "target_class": "Subcategory",
+            "criteria": {
+              "subcategory_id": 2
+            },
+            "field": "subcategory_id"
+          }
+        }
+      }
+    ]
+  },
+  {
+    "target_class": "AdApproval",
+    "data": [
+      {
+        "!refs": {
+          "ad_id": {
+            "target_class": "Ad",
+            "criteria": {
+              "ad_id": 1
+            },
+            "field": "ad_id"
+          },
+          "admin_id": {
+            "target_class": "Admin",
+            "criteria": {
+              "admin_id": 1
+            },
+            "field": "admin_id"
+          }
+        }
+      }
+    ]
+  },
+  {
+    "target_class": "FieldValue",
+    "data": [
+      {
+        "value": "Some random value",
+        "!refs": {
+          "ad_id": {
+            "target_class": "Ad",
+            "criteria": {
+              "ad_id": 1
+            },
+            "field": "ad_id"
+          },
+          "field_definition_id": {
+            "target_class": "FieldDefinition",
+            "criteria": {
+              "field_definition_id": 1
+            },
+            "field": "field_definition_id"
+          }
+        }
+      }
+    ]
+  }
+]
