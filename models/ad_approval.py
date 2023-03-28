@@ -4,7 +4,8 @@ from sqlalchemy import (
     DateTime,
     Integer,
     ForeignKey,
-    Table
+    Table,
+    text
 )
 from config.database import Base
 
@@ -13,5 +14,5 @@ ad_approval = Table(
     Base.metadata,
     Column('ad_id', Integer, ForeignKey('Ad.ad_id'), primary_key = True, nullable = False),
     Column('admin_id', Integer, ForeignKey('Admin.admin_id'), primary_key = True, nullable = False),
-    Column('approved_at', DateTime, default = datetime.now())
+    Column('approved_at', DateTime, server_default = text('NOW()'))
 )

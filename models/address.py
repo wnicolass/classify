@@ -4,7 +4,8 @@ from sqlalchemy import (
     Integer,
     String,
     DateTime,
-    ForeignKey
+    ForeignKey,
+    text
 )
 from sqlalchemy.orm import relationship
 from config.database import Base
@@ -18,6 +19,6 @@ class Address(Base):
     street: str = Column(String(60), nullable = False)
     number: int = Column(Integer, nullable = False)
     user_id: int = Column(Integer, ForeignKey("User.user_id", ondelete = 'CASCADE'), nullable = False)
-    address_date: datetime = Column(DateTime, default = datetime.now())
+    address_date: datetime = Column(DateTime, server_default = text('NOW()'))
 
     user = relationship("User", back_populates = "address")

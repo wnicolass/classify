@@ -4,7 +4,8 @@ from sqlalchemy import (
     Integer,
     String,
     DateTime,
-    ForeignKey
+    ForeignKey,
+    text
 )
 from sqlalchemy.orm import relationship
 from config.database import Base
@@ -19,7 +20,7 @@ class Admin(Base):
     email: str = Column(String(50), nullable = False, unique = True)
     hashed_password: str = Column(String(100), nullable = False)
     phone_number: str = Column(String(12), nullable = False)
-    created_at: datetime = Column(DateTime, default = datetime.now())
+    created_at: datetime = Column(DateTime, server_default = text('NOW()'))
 
     ads = relationship('Ad', secondary = ad_approval, back_populates = 'admin')
     

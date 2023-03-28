@@ -20,10 +20,10 @@ class Subcategory(Base):
 
     subcategory_id: int = Column(Integer, primary_key = True, autoincrement = True)
     name: str = Column(String(40), nullable = False, unique = True)
-    category_id: int = Column(Integer, ForeignKey('Category.category_id'), nullable = False)
+    category_id: int = Column(Integer, ForeignKey('Category.category_id', ondelete = 'CASCADE'), nullable = False)
 
-    ads = relationship("Ad", back_populates = 'subcategory', cascade = 'delete')
+    ads = relationship("Ad", back_populates = 'subcategory')
     category = relationship("Category", back_populates = 'subcategories')
-    field_definitions = relationship('FieldDefinition', secondary = subcategory_field_definition)
+    field_definitions = relationship('FieldDefinition', secondary = subcategory_field_definition, back_populates = 'subcategories')
 
 
