@@ -8,7 +8,8 @@ from sqlalchemy import (
     ForeignKey,
     Table,
     DECIMAL,
-    Enum
+    Enum,
+    text
 )
 from sqlalchemy.orm import relationship
 from config.database import Base
@@ -19,7 +20,7 @@ field_value = Table(
     Base.metadata,
     Column('field_definition_id', Integer, ForeignKey('FieldDefinition.field_definition_id'), primary_key = True),
     Column('ad_id', Integer, ForeignKey('Ad.ad_id'), primary_key = True),
-    Column('value', Integer, nullable = False),
+    Column('value', String(100), nullable = False),
 )
 
 class Ad(Base):
@@ -35,8 +36,10 @@ class Ad(Base):
     negotiable: str = Column(Enum('Yes', 'No'), nullable = False)
     feature_id: int = Column(Integer, ForeignKey('Feature.feature_id'), nullable = False)
     user_id: int = Column(Integer, ForeignKey('User.user_id', ondelete = 'CASCADE'), nullable = False)
+    
     subcategory_id: int = Column(Integer, ForeignKey('Subcategory.subcategory_id'), nullable = False)
-    created_at: datetime = Column(DateTime, default = datetime.now())
+    created_at: datetime = Column(DateTime, server_default = text('NOW()'))
+    updated_at: datetime = Column(DateTime, onupdate = datetime.now())
 
     user = relationship('User', back_populates = 'ads')
     feature = relationship('Feature')
