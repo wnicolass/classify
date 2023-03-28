@@ -24,6 +24,6 @@ class Subcategory(Base):
 
     ads = relationship("Ad", back_populates = 'subcategory')
     category = relationship("Category", back_populates = 'subcategories')
-    field_definitions = relationship('FieldDefinition', secondary = subcategory_field_definition)
+    field_definitions = relationship('FieldDefinition', secondary = subcategory_field_definition, back_populates = 'subcategories')
 
 

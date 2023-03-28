@@ -15,5 +15,5 @@ class FieldDefinition(Base):
     name: str = Column(String(30), nullable = False, unique = True)
     type: str = Column(String(30), nullable = False)
 
-    subcategories = relationship('Subcategory', secondary = subcategory_field_definition)
+    subcategories = relationship('Subcategory', secondary = subcategory_field_definition, back_populates = 'field_definitions')
     ads = relationship('Ad', secondary = field_value, back_populates = 'field_definitions')
