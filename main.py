@@ -64,7 +64,11 @@ def start_uvicorn(
         'main:app',
         host = host,
         port = port,
-        reload = auto_reload
+        reload = auto_reload,
+        reload_includes=[
+            '*.pt',
+            '*.css',
+        ]
     )
 
 def config():
