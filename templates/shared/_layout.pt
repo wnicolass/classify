@@ -110,7 +110,7 @@
                     <ul class="sub-menu">
                         <li><a href="/home/about">About</a></li>
                         <li><a href="/products/product">Listing</a></li>
-                        <li><a href="/product/product-details">Product Details</a></li>
+                        <li><a href="/products/product-details">Product Details</a></li>
                         <li><a href="/errors/error-404">404</a></li>
                         <li><a href="/home/faq">FAQ</a></li>
                         <li><a href="/common/pricing">Pricing</a></li>
@@ -125,8 +125,8 @@
                         <span class="line"></span
                     ></a>
                     <ul class="sub-menu">
-                        <li><a href="/post/blog">Blog</a></li>
-                        <li><a href="/post/blog-details">Blog Details</a></li>
+                        <li><a href="/posts/blog">Blog</a></li>
+                        <li><a href="/posts/blog-details">Blog Details</a></li>
                     </ul>
                     </li>
                     <li>

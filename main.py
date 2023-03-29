@@ -1,11 +1,23 @@
 import typer
 from fastapi import FastAPI
+from fastapi_chameleon import global_init
+from fastapi.staticfiles import StaticFiles
 from config.database import create_metadata
 from data.seed import seed_data
+
+from views import(
+    home,
+    products,
+    user,
+    posts,
+    auth,
+    common
+) 
 
 app = FastAPI()
 
 def main():
+    config()
     typer.run(start_uvicorn)
 
 async def seeding(ddl, dml) -> None:
@@ -55,5 +67,19 @@ def start_uvicorn(
         reload = auto_reload
     )
 
+def config():
+    config_routes()
+    config_templates()
+
+def config_templates():
+    global_init('templates')
+
+def config_routes():
+    app.mount('/public', StaticFiles(directory='public'), name='static')
+    for view in [home, products, user, posts, auth, common]:
+        app.include_router(view.router)
+
 if __name__ == '__main__':
     main()
+else:
+    config()
