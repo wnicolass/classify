@@ -11,16 +11,16 @@ from config.database import Base
 subcategory_field_definition = Table(
     'Subcategory_FieldDefinition',
     Base.metadata,
-    Column("subcategory_id", Integer, ForeignKey('Subcategory.subcategory_id'), primary_key = True, nullable = False),
-    Column("field_definition_id", Integer, ForeignKey('FieldDefinition.field_definition_id'), primary_key = True, nullable = False)
+    Column("subcategory_id", Integer, ForeignKey('Subcategory.id'), primary_key = True, nullable = False),
+    Column("field_definition_id", Integer, ForeignKey('FieldDefinition.id'), primary_key = True, nullable = False)
 )
 
 class Subcategory(Base):
     __tablename__ = 'Subcategory'
 
-    subcategory_id: int = Column(Integer, primary_key = True, autoincrement = True)
+    id: int = Column(Integer, primary_key = True, autoincrement = True)
     name: str = Column(String(40), nullable = False, unique = True)
-    category_id: int = Column(Integer, ForeignKey('Category.category_id', ondelete = 'CASCADE'), nullable = False)
+    category_id: int = Column(Integer, ForeignKey('Category.id', ondelete = 'CASCADE'), nullable = False)
 
     ads = relationship("Ad", back_populates = 'subcategory')
     category = relationship("Category", back_populates = 'subcategories')
