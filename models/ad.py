@@ -49,5 +49,5 @@ class Ad(Base):
     feature = relationship('Feature', back_populates = 'ad', uselist = False)
     subcategory = relationship('Subcategory', back_populates = 'ads')
     field_definitions = relationship('FieldDefinition', secondary = field_value, back_populates = 'ads')
-    admin = relationship('AdminAccount', secondary = ad_approval, back_populates = 'ads')
+    admin = relationship('AdminAccount', secondary = ad_approval, back_populates = 'ads', uselist = False)
     ad_status = relationship('AdStatus', back_populates = 'ads', uselist = False)

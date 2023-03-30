@@ -57,7 +57,8 @@ class UserLoginData(Base):
     recovery_token_time: str = Column(String(50), nullable = False)
 
     hash_algo_id: int = Column(Integer, ForeignKey('HashAlgo.id'), nullable = False)
+    email_validation_status_id: int = Column(Integer, ForeignKey('EmailValidationStatus.id'), nullable = False)
 
     user = relationship('UserAccount', back_populates = 'user_login_data', uselist = False)
     hash = relationship('HashAlgo', back_populates = 'users', uselist = False)
-    email_status = relationship('EmailValidationStatus', back_populates = 'users')
+    email_status = relationship('EmailValidationStatus', back_populates = 'users', uselist = False)
