@@ -11,7 +11,7 @@ from models.ad import field_value
 class FieldDefinition(Base):
     __tablename__ = "FieldDefinition"
 
-    field_definition_id: int = Column(Integer, primary_key = True, autoincrement = True)
+    id: int = Column(Integer, primary_key = True, autoincrement = True)
     name: str = Column(String(30), nullable = False, unique = True)
     type: str = Column(String(30), nullable = False)
 
