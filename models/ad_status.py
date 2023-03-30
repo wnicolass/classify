@@ -11,7 +11,7 @@ class AdStatus(Base):
     __tablename__ = 'AdStatus'
 
     id: int = Column(Integer, primary_key = True, autoincrement = True)
-    name: str = Column(String(30), nullable = False)
-    description: str = Column(String(200), nullable = False)
+    status_name: str = Column(String(30), nullable = False)
+    status_description: str = Column(String(200), nullable = False)
 
     ads = relationship('Ad', back_populates = 'ad_status')

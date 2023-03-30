@@ -4,10 +4,12 @@ from sqlalchemy import (
     Integer,
     String,
     DateTime,
+    Date,
     ForeignKey,
     Table,
-    text
+    text,
 )
+from sqlalchemy.dialects.mysql import BIT
 from sqlalchemy.orm import relationship
 from config.database import Base
 
@@ -26,11 +28,12 @@ class UserAccount(Base):
     __tablename__ = 'UserAccount'
 
     user_id: int = Column(Integer, primary_key = True, autoincrement = True)
-    name: str = Column(String(100), nullable = False)
+    username: str = Column(String(100), nullable = False)
     phone_number: str = Column(String(12), nullable = False)
-    birth_date: datetime = Column(DateTime, nullable = False)
+    birth_date: datetime = Column(Date, nullable = False)
     last_login: datetime = Column(DateTime, server_default = text('NOW()'))
     profile_image_url: str = Column(String(100))
+    is_active: int = Column(BIT, nullable = False)
 
     created_at: datetime = Column(DateTime, server_default = text('NOW()'))
 

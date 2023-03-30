@@ -19,7 +19,7 @@ class Subcategory(Base):
     __tablename__ = 'Subcategory'
 
     id: int = Column(Integer, primary_key = True, autoincrement = True)
-    name: str = Column(String(40), nullable = False, unique = True)
+    subcategory_name: str = Column(String(40), nullable = False, unique = True)
     category_id: int = Column(Integer, ForeignKey('Category.id', ondelete = 'CASCADE'), nullable = False)
 
     ads = relationship("Ad", back_populates = 'subcategory')

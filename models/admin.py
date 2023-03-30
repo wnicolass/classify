@@ -14,7 +14,7 @@ class AdminAccount(Base):
     __tablename__ = 'AdminAccount'
 
     id: int = Column(Integer, primary_key = True, autoincrement = True)
-    name: str = Column(String(100), nullable = False)
+    admin_name: str = Column(String(100), nullable = False)
     phone_number: str = Column(String(12), nullable = False)
     email: str = Column(String(320), nullable = False)
     password_hash: str = Column(String(50), nullable = False)
