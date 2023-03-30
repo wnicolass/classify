@@ -4,22 +4,22 @@ from sqlalchemy import (
     Integer,
     String,
     DateTime,
-    ForeignKey,
     text
 )
 from sqlalchemy.orm import relationship
 from config.database import Base
 from models.ad_approval import ad_approval
 
-class Admin(Base):
-    __tablename__ = 'Admin'
+class AdminAccount(Base):
+    __tablename__ = 'AdminAccount'
 
-    admin_id: int = Column(Integer, autoincrement = True, primary_key = True)
-    first_name: str = Column(String(30), nullable = False)
-    last_name: str = Column(String(30), nullable = False)
-    email: str = Column(String(50), nullable = False, unique = True)
-    hashed_password: str = Column(String(100), nullable = False)
+    id: int = Column(Integer, primary_key = True, autoincrement = True)
+    name: str = Column(String(100), nullable = False)
     phone_number: str = Column(String(12), nullable = False)
+    email: str = Column(String(320), nullable = False)
+    password_hash: str = Column(String(50), nullable = False)
+    password_salt: str = Column(String(50), nullable = False)
+
     created_at: datetime = Column(DateTime, server_default = text('NOW()'))
 
     ads = relationship('Ad', secondary = ad_approval, back_populates = 'admin')
