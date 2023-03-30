@@ -38,43 +38,52 @@
                 <div class="user_list">
                   <ul>
                     <li>
-                      <a href="dashboard.html"
-                        ><i class="fal fa-tachometer-alt-average"></i>
-                        Dashboard</a
-                      >
+                      <a class="active" href="/user/dashboard">
+                        <i class="fal fa-tachometer-alt-average"></i>
+                        Dashboard
+                      </a>
                     </li>
                     <li>
-                      <a href="profile-settings.html"
-                        ><i class="fal fa-cog"></i> Profile Settings</a
-                      >
+                      <a href="/user/profile-settings">
+                        <i class="fal fa-cog"></i>
+                        Profile Settings
+                      </a>
                     </li>
                     <li>
-                      <a href="my-ads.html"
-                        ><i class="fal fa-layer-group"></i> My Ads</a
-                      >
+                      <a href="/user/my-ads">
+                        <i class="fal fa-layer-group"></i> 
+                        My Ads
+                      </a>
                     </li>
                     <li>
-                      <a href="offermessages.html"
-                        ><i class="fal fa-envelope"></i> Offers/Messages</a
-                      >
+                      <a href="/user/offermessages">
+                        <i class="fal fa-envelope"></i>
+                        Offers/Messages
+                      </a>
                     </li>
                     <li>
-                      <a href="payments.html"
-                        ><i class="fal fa-wallet"></i> Payments</a
-                      >
+                      <a href="/user/payments">
+                        <i class="fal fa-wallet"></i>
+                        Payments
+                      </a>
                     </li>
                     <li>
-                      <a href="favourite-ads.html"
-                        ><i class="fal fa-heart"></i> My Favourites</a
-                      >
+                      <a href="/user/favourite-ads">
+                        <i class="fal fa-heart"></i>
+                        My Favourites
+                      </a>
                     </li>
                     <li>
-                      <a href="privacy-setting.html"
-                        ><i class="fal fa-star"></i> Privacy Settings</a
-                      >
+                      <a href="/user/privacy-setting">
+                        <i class="fal fa-star"></i>
+                        Privacy Settings
+                      </a>
                     </li>
                     <li>
-                      <a href="#"><i class="fal fa-sign-out"></i> Sign Out</a>
+                      <a href="#">
+                        <i class="fal fa-sign-out"></i>
+                        Sign Out
+                      </a>
                     </li>
                   </ul>
                 </div>
