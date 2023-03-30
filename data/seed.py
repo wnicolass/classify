@@ -1,6 +1,5 @@
 from sqlalchemy import text
 from config.database import Session
-from models.user import User
 
 async def seed_data() -> None:
     async with Session() as db_session:
