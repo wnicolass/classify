@@ -9,6 +9,7 @@ from models.field_definition import FieldDefinition
 from models.ad import Ad
 from models.hash_algo import HashAlgo
 from models.email_validation_status import EmailValidationStatus
-from models.condition import Condition
+from models.ad_condition import AdCondition
 from models.external_provider import ExternalProvider
 from models.ad_status import AdStatus
+from models.ad_image import AdImage

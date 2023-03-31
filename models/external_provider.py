@@ -11,7 +11,7 @@ class ExternalProvider(Base):
     __tablename__ = 'ExternalProvider'
 
     id: int = Column(Integer, primary_key = True, autoincrement = True)
-    name: str = Column(String(50), nullable = False)
+    ext_provider_name: str = Column(String(50), nullable = False)
     end_point_url: str = Column(String(100), nullable = False)
 
     user = relationship('UserAccount', back_populates = 'ext_provider', secondary = user_login_data_ext)

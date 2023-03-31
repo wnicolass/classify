@@ -12,8 +12,8 @@ class FieldDefinition(Base):
     __tablename__ = "FieldDefinition"
 
     id: int = Column(Integer, primary_key = True, autoincrement = True)
-    name: str = Column(String(30), nullable = False, unique = True)
-    type: str = Column(String(30), nullable = False)
+    field_name: str = Column(String(30), nullable = False, unique = True)
+    field_type: str = Column(String(30), nullable = False)
 
     subcategories = relationship('Subcategory', secondary = subcategory_field_definition, back_populates = 'field_definitions')
     ads = relationship('Ad', secondary = field_value, back_populates = 'field_definitions')

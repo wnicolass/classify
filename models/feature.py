@@ -13,8 +13,8 @@ class Feature(Base):
     id: int = Column(Integer, primary_key = True, autoincrement = True)
     brand: str = Column(String(30), nullable = False, index = True)
     authenticity: str = Column(String(50), nullable = False)
-    condition_id: str = Column(Integer, ForeignKey('Condition.id'), nullable = False)
+    condition_id: str = Column(Integer, ForeignKey('AdCondition.id'), nullable = False)
 
-    condition = relationship('Condition', back_populates = 'features', uselist = False)
+    condition = relationship('AdCondition', back_populates = 'features', uselist = False)
     ad = relationship('Ad', back_populates = 'feature', uselist = False)
     

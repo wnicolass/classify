@@ -7,12 +7,12 @@ from sqlalchemy.orm import relationship
 from config.database import Base
 
 
-class Condition(Base):
-    __tablename__ = 'Condition'
+class AdCondition(Base):
+    __tablename__ = 'AdCondition'
 
     id: int = Column(Integer, primary_key = True, autoincrement = True)
-    name: str = Column(String(30), nullable = False)
-    description: str = Column(String(200), nullable = False)
+    condition_name: str = Column(String(30), nullable = False)
+    condition_description: str = Column(String(200), nullable = False)
 
     features = relationship('Feature', back_populates = 'condition')
     
