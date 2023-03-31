@@ -32,7 +32,7 @@ class Ad(Base):
     price: dec = Column(DECIMAL(8,2), nullable = False)
     product_name: str = Column(String(100), nullable = False)
     views: int = Column(Integer, default = 0, nullable = False)
-    negotiable: int = Column(BIT, nullable = False)
+    is_negotiable: int = Column(BIT, nullable = False)
     
     status_id: str = Column(Integer, ForeignKey('AdStatus.id'), nullable = False)
     feature_id: int = Column(Integer, ForeignKey('Feature.id'), nullable = False)
