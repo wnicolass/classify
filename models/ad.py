@@ -20,7 +20,7 @@ field_value = Table(
     Base.metadata,
     Column('field_definition_id', Integer, ForeignKey('FieldDefinition.id'), primary_key = True),
     Column('ad_id', Integer, ForeignKey('Ad.id'), primary_key = True),
-    Column('value', String(100), nullable = False),
+    Column('f_value', String(100), nullable = False),
 )
 
 class Ad(Base):
