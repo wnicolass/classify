@@ -92,7 +92,7 @@
                 >
                 <ul class="navbar-nav m-auto">
                     <li>
-                    <a class="active" href="/"
+                    <a href="/"
                         >Home <span class="line"></span
                     ></a>
                     </li>
