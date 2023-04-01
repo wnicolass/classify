@@ -1,3 +1,4 @@
+from datetime import datetime
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
 from models.user import UserAccount, UserLoginData
@@ -6,6 +7,25 @@ async def get_user_by_email(email: str, session: AsyncSession) -> UserLoginData 
     query = await session.execute(select(UserLoginData).where(UserLoginData.email_addr == email))
     user = query.scalar_one_or_none()
     
+    return user
+
+async def get_user_by_id(id: int, session: AsyncSession) -> UserLoginData:
+    query = await session.execute(select(UserLoginData).where(UserLoginData.user_id == id))
+    user = query.scalar_one_or_none()
+    
+    return user
+
+async def set_email_confirmation_token(user_id: int, token: str, expiration_time: datetime, session: AsyncSession):
+    user = await get_user_by_id(user_id, session)
+    user.confirm_token = token
+    user.confirm_token_time = expiration_time
+    await session.commit()
+    
+
+async def get_user_by_email_token(token: str, session: AsyncSession) -> UserLoginData:
+    result = await session.execute(select(UserLoginData).where(UserLoginData.confirm_token == token))
+    user = result.scalar_one_or_none()
+
     return user
 
 async def create_user(username: str, phone_number: str, birth_date: str, is_active: int, session: AsyncSession) -> UserAccount:
