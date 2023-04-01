@@ -7,6 +7,8 @@ from sqlalchemy import (
 )
 from sqlalchemy.orm import relationship
 from config.database import Base
+from models.category import Category
+from models.field_value import field_value
 
 subcategory_field_definition = Table(
     'Subcategory_FieldDefinition',
@@ -25,5 +27,15 @@ class Subcategory(Base):
     ads = relationship("Ad", back_populates = 'subcategory')
     category = relationship("Category", back_populates = 'subcategories')
     field_definitions = relationship('FieldDefinition', secondary = subcategory_field_definition, back_populates = 'subcategories')
+
+class FieldDefinition(Base):
+    __tablename__ = "FieldDefinition"
+
+    id: int = Column(Integer, primary_key = True, autoincrement = True)
+    field_name: str = Column(String(30), nullable = False, unique = True)
+    field_type: str = Column(String(30), nullable = False)
+
+    subcategories = relationship('Subcategory', secondary = subcategory_field_definition, back_populates = 'field_definitions')
+    ads = relationship('Ad', secondary = field_value, back_populates = 'field_definitions')
 
 
