@@ -30,6 +30,7 @@
 
         <!--====== Font Awesome CSS ======-->
         <link rel="stylesheet" href="/public/assets/css/fontawesome.min.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
         <!--====== Bootstrap CSS ======-->
         <link rel="stylesheet" href="/public/assets/css/bootstrap.min.css" />
@@ -207,7 +208,18 @@
         </div>
         </header>
 
-
+  <div tal:condition="error" class="toast" style="position: absolute; top: 0; right: 0;z-index: 2000; opacity: 1;">
+    <div class="toast-header" style="background-color: #d65a5a">
+      <i style="font-size: 1.5rem; color: #fff;" class="fa-solid fa-triangle-exclamation"></i>
+      <strong style="margin-left: .3rem; font-size: 1rem; color: #fff;" class="mr-auto">Erro</strong>
+      <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
+        <span style="font-size: 2rem; color: #fff;" aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="toast-body">
+      ${error_msg}
+    </div>
+  </div>
         <!--====== CONTENT ======-->
 
         <div metal:define-slot="content" tal:omit-tag="True">
