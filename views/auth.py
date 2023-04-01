@@ -15,15 +15,13 @@ from common.utils import (
     is_valid_phone_number,
     handle_phone
 )
-from common.auth import hash_password
+from common.auth import (
+    hash_password,
+    check_password
+)
 from services import user_service
 
 router = APIRouter()
-
-@router.get('/auth/sign-in')
-@template('auth/sign-in.pt')
-async def sign_in():
-    return {}
 
 @router.get('/auth/sign-up')
 @template('auth/sign-up.pt')
@@ -105,3 +103,51 @@ async def post_sign_up_viewmodel(
         )
     
     return vm
+
+@router.get('/auth/sign-in')
+@template('auth/sign-in.pt')
+async def sign_in():
+    return sign_in_viewmodel()
+
+def sign_in_viewmodel():
+    return ViewModel(
+        email = '',
+        password  = ''
+    )
+
+@router.post('/auth/sign-in')
+@template('auth/sign-in.pt')
+async def post_sign_in(
+    request: Request, 
+    session: Annotated[AsyncSession, Depends(get_db_session)]
+):
+    vm = await post_sign_in_viewmodel(request, session)
+
+    if vm.error:
+        return vm
+    
+    response = responses.RedirectResponse(url = '/', status_code = status.HTTP_302_FOUND)
+    return response
+
+async def post_sign_in_viewmodel(
+    request: Request, 
+    session: Annotated[AsyncSession, Depends(get_db_session)]
+):
+    form_data = await request.form()
+
+    vm = ViewModel(
+        email = form_field_as_str(form_data, 'email'),
+        password = form_field_as_str(form_data, 'password')
+    )
+
+    user = await user_service.get_user_by_email(vm.email, session)
+
+    if not user:
+        vm.error, vm.error_msg = True, f'Utilizador com email {vm.email} não encontrado.'
+    elif not check_password(vm.password + user.password_salt, user.password_hash):
+        vm.error, vm.error_msg = True, f'Credenciais inválidas, tente novamente.'
+    elif user.is_active != 1:
+        vm.error, vm.error_msg = True, f'Sua conta ainda não foi ativada, verifique seu endereço de e-mail.'
+
+    return vm
+
