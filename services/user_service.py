@@ -2,7 +2,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
 from models.user import UserAccount, UserLoginData
 
-async def get_user_by_email(email: str, session: AsyncSession) -> UserAccount | None:
+async def get_user_by_email(email: str, session: AsyncSession) -> UserLoginData | None:
     query = await session.execute(select(UserLoginData).where(UserLoginData.email_addr == email))
     user = query.scalar_one_or_none()
     
