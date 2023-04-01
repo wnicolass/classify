@@ -1,0 +1,44 @@
+<div metal:use-macro="load: ../shared/_layout.pt">
+  <div metal:fill-slot="content" tal:omit-tag="True">
+
+    <div
+      class="page_banner bg_cover"
+      style="background-image: url(/public/assets/images/page-banner.jpg)">
+      <div class="container">
+        <div class="page_banner_content">
+          <h3 class="title">Email Verified</h3>
+          <ul class="breadcrumb">
+            <li><a href="/home/index">Home</a></li>
+            <li>Email Verified</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!--====== HEADER PART ENDS ======-->
+
+    <!--====== SIGN IN PART START ======-->
+
+    <section class="sign_in_area pt-120 pb-120">
+      <div class="container">
+        <div class="row justify-content-center">
+          <div class="header_search" style="text-align: center; padding: 3rem;">
+          <div class="content_wrapper mb-10">
+            <h3 class="title">Email Verified</h3>
+            <p>
+              Thanks for choosing us. <br />
+              Now you can buy whatever you want, here, in <strong style="color: #fb4fae">Classify</strong>.
+            </p>
+          </div>
+          <a class="main-btn" href="/"
+            >Home</a
+          >
+        </div>
+        </div>
+      </div>
+    </section>
+
+    <!--====== SIGN IN PART ENDS ======-->
+
+  </div>
+</div>
