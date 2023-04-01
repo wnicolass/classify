@@ -1,8 +1,9 @@
 from typing import Annotated
-from datetime import date
-from fastapi import APIRouter, Depends, Request, responses, status
+from datetime import date, datetime
+from fastapi import (APIRouter, Depends, Request, responses, status, BackgroundTasks)
 from sqlalchemy.ext.asyncio import AsyncSession
 from fastapi_chameleon import template
+from chameleon import PageTemplateFile
 from uuid import uuid4
 from common.viewmodel import ViewModel
 from common.fastapi_utils import get_db_session, form_field_as_str
@@ -19,6 +20,7 @@ from common.auth import (
     hash_password,
     check_password
 )
+from common.email import send_email
 from services import user_service
 
 router = APIRouter()
@@ -38,9 +40,10 @@ def sign_up_viewmodel():
 @template('auth/sign-up.pt')
 async def sign_up(
     request: Request, 
-    session: Annotated[AsyncSession, Depends(get_db_session)]
+    session: Annotated[AsyncSession, Depends(get_db_session)],
+    bg_task: BackgroundTasks
 ):
-    vm = await post_sign_up_viewmodel(request, session)
+    vm = await post_sign_up_viewmodel(request, session, bg_task)
 
     if vm.error:
         return vm
@@ -50,7 +53,8 @@ async def sign_up(
 
 async def post_sign_up_viewmodel(
     request: Request, 
-    session: Annotated[AsyncSession, Depends(get_db_session)]
+    session: Annotated[AsyncSession, Depends(get_db_session)],
+    bg_task: BackgroundTasks
 ):
     form_data = await request.form()
     vm = ViewModel(
@@ -101,8 +105,32 @@ async def post_sign_up_viewmodel(
             2,
             session
         )
-    
+        bg_task.add_task(send_email, [vm.email], user, session)
+
     return vm
+
+@router.get('/verification')
+async def email_verification(
+    request: Request, 
+    token: str, 
+    session: Annotated[AsyncSession, Depends(get_db_session)]
+):
+    user = await user_service.get_user_by_email_token(token, session)
+
+    if user:
+        if not datetime.now() < datetime.strptime(user.confirm_token_time, '%Y-%m-%d %H:%M:%S.%f'):
+            template = PageTemplateFile('./templates/errors/invalid-token.pt')
+            content = template(**ViewModel())
+            return responses.HTMLResponse(content, status_code = status.HTTP_200_OK)
+        elif user.is_active != 1:
+            user.user.is_active = 1
+            await session.commit()
+
+            template = PageTemplateFile('./templates/auth/email-verified.pt')
+            content = template(**ViewModel())
+            return responses.HTMLResponse(content, status_code = status.HTTP_200_OK)
+    
+
 
 @router.get('/auth/sign-in')
 @template('auth/sign-in.pt')
