@@ -36,5 +36,5 @@ is_valid_username = make_test_regex_fn(
 )
 
 is_valid_phone_number = make_test_regex_fn(
-    r'(^\d{9}$)|(^\+\d{12}$)'
+    r'(^(\d\s?){9}$)|(^\+(\d\s?){12}$)'
 )
