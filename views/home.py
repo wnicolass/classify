@@ -1,12 +1,13 @@
 from fastapi import APIRouter
 from fastapi_chameleon import template
+from common.viewmodel import ViewModel
 
 router = APIRouter()
 
 @router.get('/')
 @template()
 async def index():
-    return {}
+    return ViewModel()
 
 @router.get('/home/about')
 @template()
