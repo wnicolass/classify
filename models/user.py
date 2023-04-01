@@ -62,9 +62,13 @@ class UserLoginData(Base):
     hash_algo_id: int = Column(Integer, ForeignKey('HashAlgo.id'), nullable = False)
     email_validation_status_id: int = Column(Integer, ForeignKey('EmailValidationStatus.id'), nullable = False)
 
-    user = relationship('UserAccount', back_populates = 'user_login_data', uselist = False)
+    user = relationship('UserAccount', back_populates = 'user_login_data', uselist = False, lazy = 'joined')
     hash = relationship('HashAlgo', back_populates = 'users', uselist = False)
     email_status = relationship('EmailValidationStatus', back_populates = 'users', uselist = False)
+
+    @property
+    def is_active(self) -> int:
+        return self.user.is_active
 
 class UserAddress(Base):
     __tablename__ = "UserAddress"
