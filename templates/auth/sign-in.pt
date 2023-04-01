@@ -27,14 +27,14 @@
               <div class="sign_title">
                 <h5 class="title">Sign In Now</h5>
               </div>
-              <form action="#">
+              <form action="/auth/sign-in" method="POST">
                 <div class="sign_form_wrapper">
                   <div class="single_form">
-                    <input type="email" placeholder="Username" />
-                    <i class="fal fa-user"></i>
+                    <input type="email" placeholder="Email" name="email" value="${email}"/>
+                    <i class="fal fa-at"></i>
                   </div>
                   <div class="single_form">
-                    <input type="password" placeholder="Password" />
+                    <input type="password" placeholder="Password" name="password" value="${password}"/>
                     <i class="fal fa-key"></i>
                   </div>
                   <div class="single_form d-sm-flex justify-content-between">
