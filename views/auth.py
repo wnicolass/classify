@@ -18,7 +18,9 @@ from common.utils import (
 )
 from common.auth import (
     hash_password,
-    check_password
+    check_password,
+    set_auth_cookie,
+    delete_auth_cookie
 )
 from common.email import send_email
 from services import user_service
@@ -155,6 +157,7 @@ async def post_sign_in(
         return vm
     
     response = responses.RedirectResponse(url = '/', status_code = status.HTTP_302_FOUND)
+    set_auth_cookie(response, vm.user)
     return response
 
 async def post_sign_in_viewmodel(
@@ -177,5 +180,12 @@ async def post_sign_in_viewmodel(
     elif user.is_active != 1:
         vm.error, vm.error_msg = True, f'Sua conta ainda não foi ativada, verifique seu endereço de e-mail.'
 
+    vm.user = user
     return vm
+
+@router.get('/auth/logout')
+async def logout():
+    response = responses.RedirectResponse(url = '/', status_code = status.HTTP_302_FOUND)
+    delete_auth_cookie(response)
+    return response
 
