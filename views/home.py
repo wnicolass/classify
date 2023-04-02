@@ -1,6 +1,10 @@
-from fastapi import APIRouter
+from fastapi import (
+    APIRouter, 
+    Depends
+)
 from fastapi_chameleon import template
 from common.viewmodel import ViewModel
+from common.auth import requires_authentication
 
 router = APIRouter()
 
@@ -24,7 +28,7 @@ async def contact():
 async def faq():
     return ViewModel()
 
-@router.get('/home/post-ads')
+@router.get('/home/post-ads', dependencies = [Depends(requires_authentication)])
 @template('home/post-ads.pt')
 async def post_ads():
     return ViewModel()

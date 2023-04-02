@@ -1,39 +1,44 @@
-from fastapi import APIRouter
+from fastapi import (
+    APIRouter, 
+    Depends
+)
 from fastapi_chameleon import template
+from common.viewmodel import ViewModel
+from common.auth import requires_authentication
 
 router = APIRouter()
 
-@router.get('/user/dashboard')
+@router.get('/user/dashboard', dependencies = [Depends(requires_authentication)])
 @template()
 async def dashboard():
-    return {}
+    return ViewModel()
 
-@router.get('/user/profile-settings')
+@router.get('/user/profile-settings', dependencies = [Depends(requires_authentication)])
 @template('user/profile-settings.pt')
 async def profile_settings():
-    return {}
+    return ViewModel()
 
-@router.get('/user/my-ads')
+@router.get('/user/my-ads', dependencies = [Depends(requires_authentication)])
 @template('user/my-ads.pt')
 async def my_ads():
-    return {}
+    return ViewModel()
 
-@router.get('/user/offermessages')
+@router.get('/user/offermessages', dependencies = [Depends(requires_authentication)])
 @template()
 async def offermessages():
-    return {}
+    return ViewModel()
 
-@router.get('/user/payments')
+@router.get('/user/payments', dependencies = [Depends(requires_authentication)])
 @template()
 async def payments():
-    return {}
+    return ViewModel()
 
-@router.get('/user/favourite-ads')
+@router.get('/user/favourite-ads', dependencies = [Depends(requires_authentication)])
 @template('user/favourite-ads.pt')
 async def favourite_ads():
-    return {}
+    return ViewModel()
 
-@router.get('/user/privacy-setting')
+@router.get('/user/privacy-setting', dependencies = [Depends(requires_authentication)])
 @template('user/privacy-setting.pt')
 async def privacy_setting():
-    return {}
+    return ViewModel()
