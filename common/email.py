@@ -1,3 +1,4 @@
+from enum import Enum
 import os
 from typing import List
 from dotenv import (
@@ -65,3 +66,7 @@ def create_email_token(payload: dict):
         algorithm = os.getenv('EMAIL_TOKEN_ALGO')
     )
 
+class EmailValidationStatus(Enum):
+    NOT_CONFIRMED = 1
+    EMAIL_SENT = 2
+    CONFIRMED = 3
