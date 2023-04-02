@@ -136,7 +136,7 @@
                 </ul>
                 </div>
 
-                <div class="navbar_btn">
+                <div tal:condition="is_logged_in" class="navbar_btn">
                 <ul>
                     <li>
                     <div class="dropdown">
@@ -192,7 +192,7 @@
                             >
                             </li>
                             <li>
-                            <a href="#"
+                            <a href="/auth/logout"
                                 ><i class="fal fa-sign-out"></i> Sign Out</a
                             >
                             </li>
