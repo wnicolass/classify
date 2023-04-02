@@ -30,8 +30,8 @@
               Now you can buy whatever you want, here, in <strong style="color: #fb4fae">Classify</strong>.
             </p>
           </div>
-          <a class="main-btn" href="/"
-            >Home</a
+          <a class="main-btn" href="/auth/sign-in"
+            >Sign In</a
           >
         </div>
         </div>
