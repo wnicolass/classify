@@ -1,6 +1,6 @@
 from typing import Annotated
 from datetime import date, datetime
-from fastapi import (APIRouter, Depends, Request, responses, status, BackgroundTasks)
+from fastapi import (APIRouter, Depends, HTTPException, Request, responses, status, BackgroundTasks)
 from sqlalchemy.ext.asyncio import AsyncSession
 from fastapi_chameleon import template
 from chameleon import PageTemplateFile
@@ -20,14 +20,16 @@ from common.auth import (
     hash_password,
     check_password,
     set_auth_cookie,
-    delete_auth_cookie
+    delete_auth_cookie,
+    requires_unauthentication,
+    HTTPInvalidToken
 )
-from common.email import send_email
+from common.email import (send_email, EmailValidationStatus)
 from services import user_service
 
 router = APIRouter()
 
-@router.get('/auth/sign-up')
+@router.get('/auth/sign-up', dependencies = [Depends(requires_unauthentication)])
 @template('auth/sign-up.pt')
 async def sign_up():
     return sign_up_viewmodel()
@@ -111,30 +113,29 @@ async def post_sign_up_viewmodel(
 
     return vm
 
-@router.get('/verification')
+@router.get('/verification', dependencies = [Depends(requires_unauthentication)])
 async def email_verification(
-    request: Request, 
     token: str, 
     session: Annotated[AsyncSession, Depends(get_db_session)]
 ):
     user = await user_service.get_user_by_email_token(token, session)
 
-    if user:
-        if not datetime.now() < datetime.strptime(user.confirm_token_time, '%Y-%m-%d %H:%M:%S.%f'):
-            template = PageTemplateFile('./templates/errors/invalid-token.pt')
-            content = template(**ViewModel())
-            return responses.HTMLResponse(content, status_code = status.HTTP_200_OK)
-        elif user.is_active != 1:
-            user.user.is_active = 1
-            await session.commit()
+    if not user:
+        raise HTTPException(status_code = status.HTTP_404_NOT_FOUND, detail = 'Not Found.')
 
-            template = PageTemplateFile('./templates/auth/email-verified.pt')
-            content = template(**ViewModel())
-            return responses.HTMLResponse(content, status_code = status.HTTP_200_OK)
+    is_token_expired = datetime.now() > datetime.strptime(user.confirm_token_time, '%Y-%m-%d %H:%M:%S.%f')
+    if user and is_token_expired:
+        raise HTTPInvalidToken(detail = 'Invalid or expired token.')
     
+    email_sent = user.email_validation_status_id == EmailValidationStatus.EMAIL_SENT.value
+    if not user.is_active and email_sent:
+        await user_service.update_user_email_validation_status(user, session)
 
+        template = PageTemplateFile('./templates/auth/email-verified.pt')
+        content = template(**ViewModel())
+        return responses.HTMLResponse(content, status_code = status.HTTP_200_OK)
 
-@router.get('/auth/sign-in')
+@router.get('/auth/sign-in', dependencies = [Depends(requires_unauthentication)])
 @template('auth/sign-in.pt')
 async def sign_in():
     return sign_in_viewmodel()
