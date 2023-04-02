@@ -12,19 +12,19 @@ async def index():
 @router.get('/home/about')
 @template()
 async def about():
-    return {}
+    return ViewModel()
 
 @router.get('/home/contact')
 @template()
 async def contact():
-    return {}
+    return ViewModel()
 
 @router.get('/home/faq')
 @template()
 async def faq():
-    return {}
+    return ViewModel()
 
 @router.get('/home/post-ads')
 @template('home/post-ads.pt')
 async def post_ads():
-    return {}
+    return ViewModel()
