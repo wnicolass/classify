@@ -4,6 +4,7 @@ from fastapi_chameleon import global_init
 from fastapi.staticfiles import StaticFiles
 from config.database import create_metadata
 from data.seed import seed_data
+from middlewares.global_request import add_global_request
 
 from views import(
     home,
@@ -72,6 +73,7 @@ def start_uvicorn(
     )
 
 def config():
+    config_middlewares()
     config_routes()
     config_templates()
 
@@ -82,6 +84,9 @@ def config_routes():
     app.mount('/public', StaticFiles(directory='public'), name='static')
     for view in [home, products, user, posts, auth, common]:
         app.include_router(view.router)
+
+def config_middlewares():
+    add_global_request(app)
 
 if __name__ == '__main__':
     main()
