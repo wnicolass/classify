@@ -28,6 +28,11 @@ async def get_user_by_email_token(token: str, session: AsyncSession) -> UserLogi
 
     return user
 
+async def update_user_email_validation_status(user: UserLoginData, session: AsyncSession):
+    user.email_validation_status_id = 3
+    user.user.is_active = 1
+    await session.commit()
+
 async def create_user(username: str, phone_number: str, birth_date: str, is_active: int, session: AsyncSession) -> UserAccount:
     user = UserAccount(
         username = username,
