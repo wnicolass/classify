@@ -5,7 +5,12 @@ from dotenv import (
     find_dotenv
 )
 from hashlib import sha512
-from fastapi import Request, Response
+from fastapi import (
+    HTTPException, 
+    Request, 
+    Response, 
+    status
+)
 from passlib.context import CryptContext
 from models.user import UserAccount, UserLoginData
 from middlewares.global_request import global_request
@@ -59,6 +64,25 @@ def get_auth_from_cookie(request: Request) -> int | None:
 
 def get_current_auth_user() -> UserAccount | None:
     if user_id := get_auth_from_cookie(global_request.get()):
-        return user_id if current_user.user_id == user_id else None
+        return user_id if current_user is not None and current_user.user_id == user_id else None
     return None
 #:
+
+class HTTPUnauthorizedAccess(HTTPException):
+    def __init__(self, *args, **kwargs):
+        super().__init__(status_code = status.HTTP_401_UNAUTHORIZED, *args, **kwargs)
+
+class HTTPUnauthenticatedOnly(HTTPUnauthorizedAccess):
+    pass
+
+class HTTPInvalidToken(HTTPException):
+    def __init__(self, *args, **kwargs):
+            super().__init__(status_code = status.HTTP_400_BAD_REQUEST, *args, **kwargs)
+
+def requires_unauthentication():
+    if get_current_auth_user():
+        raise HTTPUnauthenticatedOnly(detail = 'This area requires unauthenticatiion')
+    
+def requires_authentication():
+    if not get_current_auth_user():
+        raise HTTPUnauthorizedAccess(detail = 'This area requires authenticatiion')
