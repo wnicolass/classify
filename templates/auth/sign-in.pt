@@ -1,6 +1,28 @@
 <div metal:use-macro="load: ../shared/_layout.pt">
   <__additional_script__ metal:fill-slot="additional_script" tal:omit-tag="True">
-  <script src="https://accounts.google.com/gsi/client" async defer></script>
+  <script src="https://accounts.google.com/gsi/client" onload="initClient()" async defer></script>
+  <script>
+      var client;
+      var access_token;
+
+      function initClient() {
+        client = google.accounts.oauth2.initTokenClient({
+          client_id: 'YOUR_CLIENT_ID',
+          scope: 'https://www.googleapis.com/auth/calendar.readonly \
+                  https://www.googleapis.com/auth/contacts.readonly',
+          callback: (tokenResponse) => {
+            access_token = tokenResponse.access_token;
+          },
+        });
+      }
+      function getToken() {
+        client.requestAccessToken();
+      }
+      function revokeToken() {
+        google.accounts.oauth2.revoke(access_token, () => {console.log('access token revoked')});
+      }
+
+  </script>
     </__additional_script__>
   <div metal:fill-slot="content" tal:omit-tag="True">
     <div
