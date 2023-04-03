@@ -199,10 +199,12 @@ async def google_sign_in(
     credential = form_field_as_str(form_data, 'credential')
     user_info = google_sign_in_viewmodel(credential)
 
-    user = await user_service.create_user(user_info['name'], None, None, 1, session)
-    await user_service.create_user_ext(user_info['sub'], 1, user.user_id)
+    db_user = await user_service.create_user(user_info['name'], None, None, 1, session)
+    await user_service.create_user_ext(db_user, user_info['sub'], 1, session)
     
-    return user_info
+    response = responses.RedirectResponse(url = '/', status_code = status.HTTP_302_FOUND)
+    set_auth_cookie(response, db_user)
+    return response
 
 def google_sign_in_viewmodel(credentials: Credentials):
     id_info = verify_oauth2_token(credentials, requests.Request(), os.getenv('CLIENT_ID'))
