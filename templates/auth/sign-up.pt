@@ -25,24 +25,32 @@
           <div class="col-lg-5 col-md-7 col-sm-9">
             <div class="sign_in_form">
               <div class="sign_title">
-                <h5 class="title">Sign Up Now</h5>
+                <h5 class="title">Registe-se agora</h5>
               </div>
-              <form action="#">
+              <form action="/auth/sign-up" method="POST">
                 <div class="sign_form_wrapper">
                   <div class="single_form">
-                    <input type="text" placeholder="Username" />
+                    <input type="text" placeholder="Username" name="username"/>
                     <i class="fal fa-user"></i>
                   </div>
                   <div class="single_form">
-                    <input type="email" placeholder="Email" />
+                    <input type="email" placeholder="Email" name="email"/>
                     <i class="fal fa-envelope"></i>
                   </div>
                   <div class="single_form">
-                    <input type="password" placeholder="Password" />
+                    <input type="date" placeholder="dd/mm/yyyy" name="birth-date" min="${min_date}" max="${max_date}"/>
+                    <i class="fal fa-calendar"></i>
+                  </div>
+                  <div class="single_form">
+                    <input type="text" placeholder="+351 123 456 789" name="phone-number"/>
+                    <i class="fal fa-phone"></i>
+                  </div>
+                  <div class="single_form">
+                    <input type="password" placeholder="Senha" name="password"/>
                     <i class="fal fa-key"></i>
                   </div>
                   <div class="single_form">
-                    <input type="password" placeholder="Confirm Password" />
+                    <input type="password" placeholder="Confirmar senha" name="confirm-password"/>
                     <i class="fal fa-key"></i>
                   </div>
                   <div class="single_form">
@@ -50,12 +58,12 @@
                       <input type="checkbox" id="checkbox" />
                       <label for="checkbox"></label>
                       <span
-                        >By registering, you accept our Terms & Conditions</span
+                        >Concordo com os Termos e Condições de Serviço.</span
                       >
                     </div>
                   </div>
                   <div class="single_form">
-                    <button class="main-btn">Sign Up</button>
+                    <button class="main-btn">Registar</button>
                   </div>
                 </div>
               </form>

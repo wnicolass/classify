@@ -14,14 +14,9 @@ from sqlalchemy.dialects.mysql import BIT
 from sqlalchemy.orm import relationship
 from config.database import Base
 from models.ad_approval import ad_approval
-
-field_value = Table(
-    'FieldValue',
-    Base.metadata,
-    Column('field_definition_id', Integer, ForeignKey('FieldDefinition.id'), primary_key = True),
-    Column('ad_id', Integer, ForeignKey('Ad.id'), primary_key = True),
-    Column('value', String(100), nullable = False),
-)
+from models.subcategory import Subcategory
+from models.field_value import field_value
+from models.admin import AdminAccount
 
 class Ad(Base):
     __tablename__ = 'Ad'
@@ -32,7 +27,7 @@ class Ad(Base):
     price: dec = Column(DECIMAL(8,2), nullable = False)
     product_name: str = Column(String(100), nullable = False)
     views: int = Column(Integer, default = 0, nullable = False)
-    negotiable: int = Column(BIT, nullable = False)
+    is_negotiable: int = Column(BIT, nullable = False)
     
     status_id: str = Column(Integer, ForeignKey('AdStatus.id'), nullable = False)
     feature_id: int = Column(Integer, ForeignKey('Feature.id'), nullable = False)
@@ -43,7 +38,7 @@ class Ad(Base):
     created_at: datetime = Column(DateTime, server_default = text('NOW()'))
     updated_at: datetime = Column(DateTime, onupdate = datetime.now())
 
-    address = relationship('AdAddress', back_populates = 'address', uselist = False)
+    address = relationship('AdAddress', back_populates = 'ads', uselist = False)
     user = relationship('UserAccount', back_populates = 'ads')
     feature = relationship('Feature', back_populates = 'ad', uselist = False)
     subcategory = relationship('Subcategory', back_populates = 'ads')
@@ -51,3 +46,59 @@ class Ad(Base):
     admin = relationship('AdminAccount', secondary = ad_approval, back_populates = 'ads', uselist = False)
     ad_status = relationship('AdStatus', back_populates = 'ads', uselist = False)
     images = relationship('AdImage', back_populates = 'ad', cascade = 'delete')
+
+class Feature(Base):
+    __tablename__ = 'Feature'
+
+    id: int = Column(Integer, primary_key = True, autoincrement = True)
+    brand: str = Column(String(30), nullable = False, index = True)
+    authenticity: str = Column(String(50), nullable = False)
+    condition_id: str = Column(Integer, ForeignKey('AdCondition.id'), nullable = False)
+
+    condition = relationship('AdCondition', back_populates = 'features', uselist = False)
+    ad = relationship('Ad', back_populates = 'feature', uselist = False)
+
+class AdCondition(Base):
+    __tablename__ = 'AdCondition'
+
+    id: int = Column(Integer, primary_key = True, autoincrement = True)
+    condition_name: str = Column(String(30), nullable = False)
+    condition_description: str = Column(String(200), nullable = False)
+
+    features = relationship('Feature', back_populates = 'condition')
+
+class AdAddress(Base):
+    __tablename__ = "AdAddress"
+
+    id: int = Column(Integer, primary_key = True, autoincrement = True)
+    country: str = Column(String(40), nullable = False)
+    city: str = Column(String(40), nullable = False, index = True)
+    street: str = Column(String(60), nullable = False)
+    num: str = Column(String(20), nullable = False)
+    postal_code: str = Column(String(50), nullable = False)
+    address_date: datetime = Column(DateTime, server_default = text('NOW()'))
+    updated_at: datetime = Column(DateTime, onupdate = datetime.now())
+
+    ads = relationship("Ad", back_populates = "address")
+
+class AdStatus(Base):
+    __tablename__ = 'AdStatus'
+
+    id: int = Column(Integer, primary_key = True, autoincrement = True)
+    status_name: str = Column(String(30), nullable = False)
+    status_description: str = Column(String(200), nullable = False)
+
+    ads = relationship('Ad', back_populates = 'ad_status')
+
+class AdImage(Base):
+    __tablename__ = 'AdImage'
+
+    id: int = Column(Integer, primary_key = True, autoincrement = True)
+    image_name: str = Column(String(150), nullable = False)
+    image_path_url: str = Column(String(150), nullable = False)
+    ad_id: int = Column(Integer, ForeignKey('Ad.id', ondelete = 'CASCADE'))
+    created_at: datetime = Column(DateTime, server_default = text('NOW()'))
+    updated_at: datetime = Column(DateTime, onupdate = datetime.now())
+
+    ad = relationship('Ad', back_populates = 'images', uselist = False)
+    
