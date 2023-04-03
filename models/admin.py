@@ -15,10 +15,10 @@ class AdminAccount(Base):
 
     id: int = Column(Integer, primary_key = True, autoincrement = True)
     admin_name: str = Column(String(100), nullable = False)
-    phone_number: str = Column(String(12), nullable = False)
     email: str = Column(String(320), nullable = False)
     password_hash: str = Column(String(50), nullable = False)
     password_salt: str = Column(String(50), nullable = False)
+    phone_number: str = Column(String(12), nullable = False)
 
     created_at: datetime = Column(DateTime, server_default = text('NOW()'))
 

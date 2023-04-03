@@ -1,9 +1,21 @@
 import typer
-from fastapi import FastAPI
+from fastapi import (
+    FastAPI,
+    responses,
+    status
+)
 from fastapi_chameleon import global_init
+from chameleon import PageTemplateFile
 from fastapi.staticfiles import StaticFiles
+from common.auth import (
+    HTTPInvalidToken,
+    HTTPUnauthenticatedOnly, 
+    HTTPUnauthorizedAccess
+)
+from common.viewmodel import ViewModel
 from config.database import create_metadata
 from data.seed import seed_data
+from middlewares.global_request import add_global_request
 
 from views import(
     home,
@@ -72,7 +84,9 @@ def start_uvicorn(
     )
 
 def config():
+    config_middlewares()
     config_routes()
+    config_exception_handlers()
     config_templates()
 
 def config_templates():
@@ -82,6 +96,34 @@ def config_routes():
     app.mount('/public', StaticFiles(directory='public'), name='static')
     for view in [home, products, user, posts, auth, common]:
         app.include_router(view.router)
+
+def config_middlewares():
+    add_global_request(app)
+
+def config_exception_handlers():
+    async def unauthorized_access_handler(*_, **__):
+        template = PageTemplateFile('./templates/errors/error-404.pt')
+        content = template(**ViewModel())
+        return responses.HTMLResponse(content, status_code = status.HTTP_404_NOT_FOUND)
+    
+    async def internal_server_error_handler(*_, **__):
+        template = PageTemplateFile('./templates/errors/error-500.pt')
+        content = template(**ViewModel())
+        return responses.HTMLResponse(content, status_code = status.HTTP_500_INTERNAL_SERVER_ERROR)
+    
+    async def invalid_token_handler(*_, **__):
+        template = PageTemplateFile('./templates/errors/invalid-token.pt')
+        content = template(**ViewModel())
+        return responses.HTMLResponse(content, status_code = status.HTTP_400_BAD_REQUEST)
+    
+    async def unauthenticated_only_area_handler(*_, **__):
+        return responses.RedirectResponse(url = '/', status_code = status.HTTP_302_FOUND)
+    
+    app.add_exception_handler(HTTPUnauthorizedAccess, unauthorized_access_handler)
+    app.add_exception_handler(status.HTTP_404_NOT_FOUND, unauthorized_access_handler)
+    app.add_exception_handler(HTTPUnauthenticatedOnly, unauthenticated_only_area_handler)
+    app.add_exception_handler(HTTPInvalidToken, invalid_token_handler)
+    app.add_exception_handler(status.HTTP_500_INTERNAL_SERVER_ERROR, internal_server_error_handler)
 
 if __name__ == '__main__':
     main()

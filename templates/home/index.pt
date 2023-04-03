@@ -37,7 +37,7 @@
                       <option value="2">Another option</option>
                       <option value="4">Potato</option>
                     </select>
-                    <i class="far fa-map-marker-alt"></i>
+                    <i class="fa-solid fa-location-dot"></i>
                   </div>
                   <div class="search_select mt-15">
                     <select>
@@ -46,13 +46,13 @@
                       <option value="2">Another option</option>
                       <option value="4">Potato</option>
                     </select>
-                    <i class="far fa-tags"></i>
+                    <i class="fa-solid fa-tags"></i>
                   </div>
                 </div>
                 <div class="search_column d-flex flex-wrap">
                   <div class="search_form mt-15">
                     <input type="text" placeholder="Type Your Keyword" />
-                    <i class="far fa-i-cursor"></i>
+                    <i class="fa-solid fa-i-cursor"></i>
                   </div>
                   <div class="search_btn mt-15">
                     <button class="main-btn">Search</button>
