@@ -24,14 +24,13 @@
         <div
           class="categories_top_bar d-flex align-items-center justify-content-between pb-30"
         >
-          <!-- <div class="categories_story mt-50">
+          <div class="categories_story mt-50">
             <select>
-              <option value="0">Story by Acceding</option>
-              <option value="1">Some option</option>
-              <option value="2">Another option</option>
-              <option value="4">Potato</option>
+              <option value="0">Ordenar nº Anúncios</option>
+              <option value="1">Ordenar A-Z</option>
+              <option value="1">Ordenar Z-A</option>
             </select>
-          </div> -->
+          </div>
           <div class="categories_tab_menu mt-50">
             <ul class="nav" id="myTab" role="tablist">
               <li class="nav-item">
@@ -71,150 +70,20 @@
             aria-labelledby="grid-tab"
           >
             <div class="row">
-              <div class="col-lg-3 col-6">
-                <div class="single_categories text-center mt-30">
-                  <div class="categories_icon">
-                    <i class="fal fa-desktop"></i>
+              <__repeat tal:repeat="category all_categories" tal:omit-tag="True">
+                <div class="col-lg-3 col-6">
+                  <div class="single_categories text-center mt-30">
+                    <div class="categories_icon">
+                      <i class="fal fa-desktop"></i>
+                    </div>
+                    <div class="categories_content">
+                      <h5 class="title">${category.category_name}</h5>
+                      <p>3 Ads</p>
+                    </div>
+                    <a href="/products/product"></a>
                   </div>
-                  <div class="categories_content">
-                    <h5 class="title">Computadores & Escritório</h5>
-                    <p>3 Ads</p>
-                  </div>
-                  <a href="/products/product"></a>
                 </div>
-              </div>
-              <div class="col-lg-3 col-6">
-                <div class="single_categories text-center mt-30">
-                  <div class="categories_icon">
-                    <i class="fal fa-gem"></i>
-                  </div>
-                  <div class="categories_content">
-                    <h5 class="title">Joalheria</h5>
-                    <p>3 Ads</p>
-                  </div>
-                  <a href="/products/product"></a>
-                </div>
-              </div>
-              <div class="col-lg-3 col-6">
-                <div class="single_categories text-center mt-30">
-                  <div class="categories_icon">
-                    <i class="fal fa-home"></i>
-                  </div>
-                  <div class="categories_content">
-                    <h5 class="title">Casa & Jardim</h5>
-                    <p>3 Ads</p>
-                  </div>
-                  <a href="/products/product"></a>
-                </div>
-              </div>
-              <div class="col-lg-3 col-6">
-                <div class="single_categories text-center mt-30">
-                  <div class="categories_icon">
-                    <i class="fal fa-suitcase"></i>
-                  </div>
-                  <div class="categories_content">
-                    <h5 class="title">Malas & Bagagem</h5>
-                    <p>3 Ads</p>
-                  </div>
-                  <a href="/products/product"></a>
-                </div>
-              </div>
-              <div class="col-lg-3 col-6">
-                <div class="single_categories text-center mt-30">
-                  <div class="categories_icon">
-                    <i class="fal fa-child"></i>
-                  </div>
-                  <div class="categories_content">
-                    <h5 class="title">Bebé & Criança</h5>
-                    <p>3 Ads</p>
-                  </div>
-                  <a href="/products/product"></a>
-                </div>
-              </div>
-              <div class="col-lg-3 col-6">
-                <div class="single_categories text-center mt-30">
-                  <div class="categories_icon">
-                    <i class="fal fa-tshirt"></i>
-                  </div>
-                  <div class="categories_content">
-                    <h5 class="title">Vestuário</h5>
-                    <p>3 Ads</p>
-                  </div>
-                  <a href="/products/product"></a>
-                </div>
-              </div>
-              <div class="col-lg-3 col-6">
-                <div class="single_categories text-center mt-30">
-                  <div class="categories_icon">
-                    <i class="fal fa-mobile"></i>
-                  </div>
-                  <div class="categories_content">
-                    <h5 class="title">Telemóveis</h5>
-                    <p>3 Ads</p>
-                  </div>
-                  <a href="/products/product"></a>
-                </div>
-              </div>
-              <div class="col-lg-3 col-6">
-                <div class="single_categories text-center mt-30">
-                  <div class="categories_icon">
-                    <i class="fal fa-gamepad"></i>
-                  </div>
-                  <div class="categories_content">
-                    <h5 class="title">Gaming</h5>
-                    <p>3 Ads</p>
-                  </div>
-                  <a href="/products/product"></a>
-                </div>
-              </div>
-              <div class="col-lg-3 col-6">
-                <div class="single_categories text-center mt-30">
-                  <div class="categories_icon">
-                    <i class="fal fa-couch"></i>
-                  </div>
-                  <div class="categories_content">
-                    <h5 class="title">Eletrodomésticos</h5>
-                    <p>3 Ads</p>
-                  </div>
-                  <a href="/products/product"></a>
-                </div>
-              </div>
-              <div class="col-lg-3 col-6">
-                <div class="single_categories text-center mt-30">
-                  <div class="categories_icon">
-                    <i class="fal fa-car"></i>
-                  </div>
-                  <div class="categories_content">
-                    <h5 class="title">Veículos</h5>
-                    <p>3 Ads</p>
-                  </div>
-                  <a href="/products/product"></a>
-                </div>
-              </div>
-              <div class="col-lg-3 col-6">
-                <div class="single_categories text-center mt-30">
-                  <div class="categories_icon">
-                    <i class="fal fa-basketball-ball"></i>
-                  </div>
-                  <div class="categories_content">
-                    <h5 class="title">Desporto</h5>
-                    <p>3 Ads</p>
-                  </div>
-                  <a href="/products/product"></a>
-                </div>
-              </div>
-              <div class="col-lg-3 col-6">
-                <div class="single_categories text-center mt-30">
-                  <div class="categories_icon">
-                    <i class="fal fa-box-open"></i>
-                  </div>
-                  <div class="categories_content">
-                    <h5 class="title">Outras vendas</h5>
-                    <p>3 Ads</p>
-                  </div>
-                  <a href="/products/product"></a>
-                </div>
-              </div>
+              </__repeat>
             </div>
           </div>
           <div
