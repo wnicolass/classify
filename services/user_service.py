@@ -1,7 +1,7 @@
 from datetime import datetime
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
-from models.user import UserAccount, UserLoginData
+from models.user import UserAccount, UserLoginData, ExternalProvider
 
 async def get_user_by_email(email: str, session: AsyncSession) -> UserLoginData | None:
     query = await session.execute(select(UserLoginData).where(UserLoginData.email_addr == email))
@@ -45,6 +45,11 @@ async def create_user(username: str, phone_number: str, birth_date: str, is_acti
     await session.commit()
     await session.refresh(user)
     return user
+
+async def create_user_ext(user: UserAccount, token: str, external_provider_id: int, user_id: int, session: AsyncSession):
+    ext_provider = await session.execute(select(ExternalProvider).where(ExternalProvider.id == external_provider_id))
+    user.ext_provider.append(ext_provider)
+    await session.commit()
 
 async def create_user_login_data(user_id: int, hashed_password: str, password_salt: str, email: str, hash_algo_id: int, email_validation_status_id: int, session: AsyncSession) -> UserLoginData:
     user_login_data = UserLoginData(
