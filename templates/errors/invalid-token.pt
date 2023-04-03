@@ -25,7 +25,7 @@
           <div class="header_search" style="text-align: center; padding: 3rem;">
           <div class="content_wrapper mb-10">
             <h4 class="title">Invalid token</h4>
-            <p>Something went wrong with you verification token, probably it's expired</p>
+            <p>Something went wrong with your verification token, probably it's expired.</p>
           </div>
           <a class="main-btn" href="/"
             >Send me another token</a
