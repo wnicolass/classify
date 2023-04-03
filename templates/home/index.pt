@@ -100,8 +100,7 @@
           <div tal:repeat="category popular_categories" tal:omit-tag="True" class="category-column">
             <div class="single_category text-center mt-30">
               <div class="icon">
-                <!-- <i class="icon"></i> -->
-                <i class="fal fa-desktop"></i>
+                <i class="${category.category_icon}"></i>
               </div>
               <div class="content">
                 <h6 class="title">${category.category_name}</h6>
@@ -109,107 +108,6 @@
               <a href="/products/product"></a>
             </div>
           </div>
-
-          <!-- <div class="category-column">
-            <div class="single_category text-center mt-30">
-              <div class="icon">
-                <i class="fal fa-gem"></i>
-              </div>
-              <div class="content">
-                <h6 class="title">Joalheria</h6>
-              </div>
-              <a href="/products/product"></a>
-            </div>
-          </div> -->
-          <!-- <div class="category-column">
-            <div class="single_category text-center mt-30">
-              <div class="icon">
-                <i class="fal fa-home"></i>
-              </div>
-              <div class="content">
-                <h6 class="title">Casa & Jardim</h6>
-              </div>
-              <a href="/products/product"></a>
-            </div>
-          </div> -->
-          <!-- <div class="category-column">
-            <div class="single_category text-center mt-30">
-              <div class="icon">
-                <i class="fal fa-suitcase"></i>
-              </div>
-              <div class="content">
-                <h6 class="title">Malas & Bagagem</h6>
-              </div>
-              <a href="/products/product"></a>
-            </div>
-          </div> -->
-          <!-- <div class="category-column">
-            <div class="single_category text-center mt-30">
-              <div class="icon">
-                <i class="fal fa-child"></i>
-              </div>
-              <div class="content">
-                <h6 class="title">Bebé & Criança</h6>
-              </div>
-              <a href="/products/product"></a>
-            </div>
-          </div> -->
-          <!-- <div class="category-column">
-            <div class="single_category text-center mt-30">
-              <div class="icon">
-                <i class="fal fa-tshirt"></i>
-              </div>
-              <div class="content">
-                <h6 class="title">Vestuário</h6>
-              </div>
-              <a href="/products/product"></a>
-            </div>
-          </div> -->
-          <!-- <div class="category-column">
-            <div class="single_category text-center mt-30">
-              <div class="icon">
-                <i class="fal fa-mobile"></i>
-              </div>
-              <div class="content">
-                <h6 class="title">Telemóveis</h6>
-              </div>
-              <a href="/products/product"></a>
-            </div>
-          </div> -->
-          <!-- <div class="category-column">
-            <div class="single_category text-center mt-30">
-              <div class="icon">
-                <i class="fal fa-gamepad"></i>
-              </div>
-              <div class="content">
-                <h6 class="title">Gaming</h6>
-              </div>
-              <a href="/products/product"></a>
-            </div>
-          </div> -->
-          <!-- <div class="category-column">
-            <div class="single_category text-center mt-30">
-              <div class="icon">
-                <i class="fal fa-car"></i>
-              </div>
-              <div class="content">
-                <h6 class="title">Veículos</h6>
-              </div>
-              <a href="/products/product"></a>
-            </div>
-          </div> -->
-          <!-- <div class="category-column">
-            <div class="single_category text-center mt-30">
-              <div class="icon">
-                <i class="fal fa-basketball-ball"></i>
-              </div>
-              <div class="content">
-                <h6 class="title">Desporto</h6>
-              </div>
-              <a href="/products/product"></a>
-            </div>
-          </div> -->
-
           <div class="category_btn">
             <a class="main-btn" href="/common/categories">Ver todas as categorias</a>
           </div>
