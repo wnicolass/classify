@@ -1,3 +1,5 @@
+import os
+from dotenv import load_dotenv, find_dotenv
 from typing import Annotated
 from datetime import date, datetime
 from fastapi import (APIRouter, Depends, HTTPException, Request, responses, status, BackgroundTasks)
@@ -5,6 +7,9 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from fastapi_chameleon import template
 from chameleon import PageTemplateFile
 from uuid import uuid4
+from google.oauth2.credentials import Credentials
+from google.oauth2.id_token import verify_oauth2_token
+from google.auth.transport import requests
 from common.viewmodel import ViewModel
 from common.fastapi_utils import get_db_session, form_field_as_str
 from common.utils import (
@@ -28,6 +33,7 @@ from common.email import (send_email, EmailValidationStatus)
 from services import user_service
 
 router = APIRouter()
+load_dotenv(find_dotenv())
 
 @router.get('/auth/sign-up', dependencies = [Depends(requires_unauthentication)])
 @template('auth/sign-up.pt')
@@ -185,13 +191,29 @@ async def post_sign_in_viewmodel(
     return vm
 
 @router.post('/auth/google')
-async def google_sign_in(token: str):
-    # print(token)
-    return {'token': token}
+async def google_sign_in(
+    request: Request, 
+    session: Annotated[AsyncSession, Depends(get_db_session)]
+):
+    form_data = await request.form()
+    credential = form_field_as_str(form_data, 'credential')
+    user_info = google_sign_in_viewmodel(credential)
+
+    user = await user_service.create_user(user_info['name'], None, None, 1, session)
+    await user_service.create_user_ext(user_info['sub'], 1, user.user_id)
+    
+    return user_info
+
+def google_sign_in_viewmodel(credentials: Credentials):
+    id_info = verify_oauth2_token(credentials, requests.Request(), os.getenv('CLIENT_ID'))
+    
+    if id_info['iss'] not in ['accounts.google.com', 'https://accounts.google.com']:
+        raise ValueError('Invalid issuer')
+
+    return id_info
 
 @router.get('/auth/logout')
 async def logout():
     response = responses.RedirectResponse(url = '/', status_code = status.HTTP_302_FOUND)
     delete_auth_cookie(response)
     return response
-
