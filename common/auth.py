@@ -27,7 +27,7 @@ def check_password(password: str, hashed_password: str) -> bool:
 def hash_password(password: str) -> str:
     return hash_context.hash(password)
 
-def set_auth_cookie(response: Response, user: UserLoginData):
+def set_auth_cookie(response: Response, user: UserLoginData | UserAccount):
     global current_user
     cookie_value = f'{str(user.user_id)}:{hash_cookie_value(str(user.user_id))}'
 
