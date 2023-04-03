@@ -4470,7 +4470,7 @@ p {
   margin-top: 20px; }
   .outgoing_msg .outgoing_msg_content {
     display: inline-block;
-    float: right;
+    /* float: right; */
     width: 60%; }
     @media (max-width: 767px) {
       .outgoing_msg .outgoing_msg_content {

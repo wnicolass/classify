@@ -6,10 +6,10 @@
       style="background-image: url(/public/assets/images/page-banner.jpg)">
       <div class="container">
         <div class="page_banner_content">
-          <h3 class="title">About</h3>
+          <h3 class="title">Quem Somos</h3>
           <ul class="breadcrumb">
             <li><a href="/home/index">Home</a></li>
-            <li>About</li>
+            <li>Quem Somos</li>
           </ul>
         </div>
       </div>
@@ -61,7 +61,7 @@
     <!--====== ABOUT PART ENDS ======-->
 
     <!--====== SERVICES PART START ======-->
-
+<!-- 
     <section class="services_area pt-115 pb-120">
       <div class="container">
         <div class="row justify-content-center">
@@ -173,7 +173,7 @@
           </div>
         </div>
       </div>
-    </section>
+    </section> -->
 
     <!--====== SERVICES PART ENDS ======-->
 
@@ -220,10 +220,10 @@
                 />
               </div>
               <div class="image_2">
-                <div class="about_counter">
+                <!-- <div class="about_counter">
                   <span class="count"><span class="counter">5,700</span>+</span>
                   <p>Verified Seller</p>
-                </div>
+                </div> -->
                 <img
                   src="/public/assets/images/about-image-2.jpg"
                   alt="About"
@@ -263,7 +263,7 @@
                     >
                   </div>
                 </div>
-                <p>Published Ads Here</p>
+                <p>Anúncios Publicados</p>
               </div>
               <div class="single_counter">
                 <div class="counter_items d-flex">
@@ -277,7 +277,7 @@
                     <span class="count"><span class="counter">300</span>+</span>
                   </div>
                 </div>
-                <p>Register User Using</p>
+                <p>Usuários Verificados</p>
               </div>
               <div class="single_counter">
                 <div class="counter_items d-flex">
@@ -291,7 +291,7 @@
                     <span class="count"><span class="counter">200</span>+</span>
                   </div>
                 </div>
-                <p>Verified User Using</p>
+                <p>Vendas Realizadas</p>
               </div>
             </div>
           </div>
@@ -309,8 +309,8 @@
           <div class="col-lg-6">
             <div class="section_title text-center pb-15">
               <h3 class="title">
-                Our <br />
-                Passionate Team
+                A Nossa<br />
+                Equipa
               </h3>
             </div>
           </div>
@@ -426,7 +426,7 @@
 
     <section class="testimonial_area pt-115 pb-120">
       <div class="container">
-        <div class="row justify-content-center">
+        <!-- <div class="row justify-content-center">
           <div class="col-lg-6">
             <div class="section_title text-center pb-45">
               <h3 class="title">
@@ -435,7 +435,7 @@
               </h3>
             </div>
           </div>
-        </div>
+        </div> -->
         <div class="row justify-content-center">
           <div class="col-lg-12 col-md-10 col-sm-11 col-10">
             <div class="row testimonial_active">
