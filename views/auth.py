@@ -184,6 +184,11 @@ async def post_sign_in_viewmodel(
     vm.user = user
     return vm
 
+@router.post('/auth/google')
+async def google_sign_in(token: str):
+    # print(token)
+    return {'token': token}
+
 @router.get('/auth/logout')
 async def logout():
     response = responses.RedirectResponse(url = '/', status_code = status.HTTP_302_FOUND)
