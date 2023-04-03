@@ -1,17 +1,31 @@
+from typing import Annotated
 from fastapi import (
     APIRouter, 
     Depends
 )
+from sqlalchemy.ext.asyncio import AsyncSession
 from fastapi_chameleon import template
+from common.fastapi_utils import get_db_session
 from common.viewmodel import ViewModel
 from common.auth import requires_authentication
+from services import category_service
 
 router = APIRouter()
 
 @router.get('/')
 @template()
-async def index():
-    return ViewModel()
+async def index(
+    session: Annotated[AsyncSession, Depends(get_db_session)]
+):
+    vm = await index_viewmodel(session)
+    return vm
+
+async def index_viewmodel(
+        session: Annotated[AsyncSession, Depends(get_db_session)]
+):
+    vm = ViewModel()
+    vm.popular_categories = await category_service.popular_categories(session)
+    return vm
 
 @router.get('/home/about')
 @template()
