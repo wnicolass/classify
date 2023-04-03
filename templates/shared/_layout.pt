@@ -93,13 +93,13 @@
                 >
                 <ul class="navbar-nav m-auto">
                     <li>
-                    <a class="active" href="/"
+                    <a href="/"
                         >Home <span class="line"></span
                     ></a>
                     </li>
                     <li>
                     <a href="/common/categories"
-                        >Categories <span class="line"></span
+                        >Categorias <span class="line"></span
                     ></a>
                     </li>
                     <li>
@@ -109,12 +109,12 @@
                     ></a>
 
                     <ul class="sub-menu">
-                        <li><a href="/home/about">About</a></li>
-                        <li><a href="/products/product">Listing</a></li>
+                        <li><a href="/home/about">Quem somos</a></li>
+                        <li><a href="/products/product">Anúncios</a></li>
                         <li><a href="/products/product-details">Product Details</a></li>
                         <li><a href="/errors/error-404">404</a></li>
                         <li><a href="/home/faq">FAQ</a></li>
-                        <li><a href="/common/pricing">Pricing</a></li>
+                        <li><a href="/common/pricing">Pacotes</a></li>
                         <li><a href="/auth/sign-in">Sign In</a></li>
                         <li><a href="/auth/sign-up">Sign Up</a></li>
                     </ul>
@@ -131,7 +131,7 @@
                     </ul>
                     </li>
                     <li>
-                    <a href="/home/contact">Contact <span class="line"></span></a>
+                    <a href="/home/contact">Contactos<span class="line"></span></a>
                     </li>
                 </ul>
                 </div>
@@ -147,7 +147,7 @@
                         data-toggle="dropdown"
                         aria-haspopup="true"
                         aria-expanded="false"
-                        >My Account</a
+                        >Minha Conta</a
                         >
 
                         <div
@@ -157,38 +157,37 @@
                         <ul>
                             <li>
                             <a href="/user/dashboard"
-                                ><i class="fal fa-tachometer-alt-average"></i>
-                                Dashboard</a
+                                ><i class="fal fa-tachometer-alt-average"></i>Dashboard</a
                             >
                             </li>
                             <li>
                             <a href="/user/profile-settings"
-                                ><i class="fal fa-cog"></i> Profile Settings</a
+                                ><i class="fal fa-cog"></i>Detalhes da Conta</a
                             >
                             </li>
                             <li>
                             <a href="/user/my-ads"
-                                ><i class="fal fa-layer-group"></i> My Ads</a
+                                ><i class="fal fa-layer-group"></i>Os meus Anúncios</a
                             >
                             </li>
                             <li>
                             <a href="/user/offermessages"
-                                ><i class="fal fa-envelope"></i> Offers/Messages</a
+                                ><i class="fal fa-envelope"></i>Mensagens</a
                             >
                             </li>
                             <li>
                             <a href="/user/payments"
-                                ><i class="fal fa-wallet"></i> Payments</a
+                                ><i class="fal fa-wallet"></i>Pagamentos</a
                             >
                             </li>
                             <li>
                             <a href="/user/favourite-ads"
-                                ><i class="fal fa-heart"></i> My Favourites</a
+                                ><i class="fal fa-heart"></i>Favoritos</a
                             >
                             </li>
                             <li>
                             <a href="/user/privacy-setting"
-                                ><i class="fal fa-star"></i> Privacy Settings</a
+                                ><i class="fal fa-star"></i>Definições</a
                             >
                             </li>
                             <li>
@@ -200,7 +199,7 @@
                         </div>
                     </div>
                     </li>
-                    <li><a class="sign-up" href="/home/post-ads">Post Ads</a></li>
+                    <li><a class="sign-up" href="/home/post-ads">Criar Ad</a></li>
                 </ul>
                 </div>
             </nav>
@@ -236,7 +235,7 @@
             <div class="row align-items-center">
             <div class="col-lg-5">
                 <div class="call_to_action_content mt-45">
-                <h4 class="title">Subscribe For Update</h4>
+                <h4 class="title">Subscrever Newsletter</h4>
                 </div>
             </div>
             <div class="col-lg-7">
@@ -245,9 +244,9 @@
                     <i class="fal fa-envelope"></i>
                     <input
                     type="text"
-                    placeholder="Enter your mail address . . ."
+                    placeholder="Escreve aqui o teu email . . ."
                     />
-                    <button class="main-btn">Subscribe</button>
+                    <button class="main-btn">Subscrever</button>
                 </form>
                 </div>
             </div>
@@ -266,43 +265,50 @@
             <div class="row">
                 <div class="col-lg-3 col-sm-6">
                 <div class="footer_link mt-45">
-                    <h5 class="footer_title">Company</h5>
+                    <h5 class="footer_title">Classify</h5>
                     <ul class="link">
-                    <li><a href="#">Home</a></li>
-                    <li><a href="#">About Us</a></li>
-                    <li><a href="#">Our Factories</a></li>
-                    <li><a href="#">Mission and Strategy</a></li>
-                    <li><a href="#">Profitable Actions</a></li>
+                    <!-- <li><a href="#">Home</a></li> -->
+                    <li><a href="/home/about">Quem somos</a></li>
+                    <!-- <li><a href="#">Our Factories</a></li> -->
+                    <!-- <li><a href="#">Mission and Strategy</a></li> -->
+                    <!-- <li><a href="#">Profitable Actions</a></li> -->
+                    <li><a href="/home/faq">Perguntas Frequentes</a></li>
+                    <li><a href="/posts/blog">Blog</a></li>
                     </ul>
                 </div>
                 </div>
                 <div class="col-lg-3 col-sm-6">
                 <div class="footer_link mt-45">
-                    <h5 class="footer_title">How to Sell Fast</h5>
+                    <h5 class="footer_title">Links Úteis</h5>
                     <ul class="link">
-                    <li><a href="#">Selling TIps</a></li>
+                    <!-- <li><a href="#">Selling TIps</a></li>
                     <li><a href="#">Buy and Sell Quickly</a></li>
                     <li><a href="#">Membership</a></li>
                     <li><a href="#">Banner Advertising</a></li>
-                    <li><a href="#">Promote Your Ad</a></li>
+                    <li><a href="#">Promote Your Ad</a></li> -->
+                    <li><a href="/common/pricing">Pacotes de Anúncios</a></li>
+                    <li><a href="#">Pesquisas populares</a></li>
+                    <li><a href="/user/dashboard">Área do Cliente</a></li> <!--If not logged in -> sing in/up page-->
+                    <li><a href="#">App Classify</a></li>
                     </ul>
                 </div>
                 </div>
                 <div class="col-lg-3 col-sm-6">
                 <div class="footer_link mt-45">
-                    <h5 class="footer_title">Information</h5>
+                    <h5 class="footer_title">Informações Adicionais</h5>
                     <ul class="link">
-                    <li><a href="#">Company & Contact Info</a></li>
+                    <!-- <li><a href="#">Company & Contact Info</a></li>
                     <li><a href="#">Blog & Articles</a></li>
                     <li><a href="#">Sitemap</a></li>
                     <li><a href="#">Terms of Service</a></li>
-                    <li><a href="#">Privacy Policy</a></li>
+                    <li><a href="#">Privacy Policy</a></li> -->
+                    <li><a href="#">Política de Privacidade</a></li>
                     </ul>
                 </div>
                 </div>
-                <div class="col-lg-3 col-sm-6">
+                <!-- <div class="col-lg-3 col-sm-6">
                 <div class="footer_link mt-45">
-                    <h5 class="footer_title">Help & Support</h5>
+                    <h5 class="footer_title">Apoio ao Cliente</h5>
                     <ul class="link">
                     <li><a href="#">Live Chat</a></li>
                     <li><a href="#">FAQ</a></li>
@@ -311,7 +317,7 @@
                     <li><a href="#">Contact Us</a></li>
                     </ul>
                 </div>
-                </div>
+                </div> -->
             </div>
             </div>
         </div>

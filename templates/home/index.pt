@@ -7,19 +7,18 @@
           <div class="row">
             <div class="col-lg-10">
               <div class="content_wrapper">
-                <h3 class="title">Welcome to Classify</h3>
+                <h3 class="title">Bem-Vindo ao Classify</h3>
                 <p>
-                  Buy And Sell Everything From Used Cars To Mobile Phones And
-                  Computers, Or Search For Property, Jobs And More. Lorem Ipsum
-                  is simply dummy text of the printing and typesetting industry
+                  Descubra tudo o que precisa para comprar e vender, desde carros usados a telemóveis e computadores, ou pesquise pelo que realmente deseja.
+                  Encontre o que procura com Classify!
                 </p>
                 <ul class="header_btn">
                   <li>
-                    <a class="main-btn" href="/products/product">Browse Ads</a>
+                    <a class="main-btn" href="/products/product">Destaques Classify</a>
                   </li>
                   <li>
                     <a class="main-btn main-btn-2" href="/home/post-ads"
-                      >Post an Ad</a
+                      >Publicar Anúncio</a
                     >
                   </li>
                 </ul>
@@ -32,19 +31,19 @@
                 <div class="search_column d-flex flex-wrap">
                   <div class="search_select mt-15">
                     <select>
-                      <option value="0">Select a Location</option>
-                      <option value="1">Some option</option>
-                      <option value="2">Another option</option>
-                      <option value="4">Potato</option>
+                      <option value="0">Seleciona a Localização</option>
+                      <option value="1">Pluto</option>
+                      <option value="2">Mercúrio</option>
+                      <option value="4">Vénus</option>
                     </select>
                     <i class="fa-solid fa-location-dot"></i>
                   </div>
                   <div class="search_select mt-15">
                     <select>
-                      <option value="0">Select Category</option>
-                      <option value="1">Some option</option>
-                      <option value="2">Another option</option>
-                      <option value="4">Potato</option>
+                      <option value="0">Seleciona Categoria</option>
+                      <option value="1">CatA</option>
+                      <option value="2">CatB</option>
+                      <option value="4">CatC</option>
                     </select>
                     <i class="fa-solid fa-tags"></i>
                   </div>
@@ -55,23 +54,23 @@
                     <i class="fa-solid fa-i-cursor"></i>
                   </div>
                   <div class="search_btn mt-15">
-                    <button class="main-btn">Search</button>
+                    <button class="main-btn">Pesquisar</button>
                   </div>
                 </div>
               </div>
             </form>
             <div class="header_keyword d-sm-flex">
-              <span class="title">Trending Keywords:</span>
+              <span class="title">Palavras Populares:</span>
               <ul class="tags media-body">
-                <li><a href="#">Camera</a></li>
-                <li><a href="#">Mobile</a></li>
-                <li><a href="#">DSLR</a></li>
-                <li><a href="#">Packet</a></li>
-                <li><a href="#">Dress</a></li>
-                <li><a href="#">Shirt</a></li>
-                <li><a href="#">Pant</a></li>
-                <li><a href="#">Shoe</a></li>
-                <li><a href="#">Table</a></li>
+                <li><a href="#">Mercúrio</a></li>
+                <li><a href="#">Vénus</a></li>
+                <li><a href="#">Marte</a></li>
+                <li><a href="#">Júpiter</a></li>
+                <li><a href="#">Saturno</a></li>
+                <li><a href="#">Urano</a></li>
+                <li><a href="#">Neptuno</a></li>
+                <li><a href="#">Sol</a></li>
+                <li><a href="#">Lua</a></li>
               </ul>
             </div>
           </div>
@@ -89,8 +88,8 @@
           <div class="col-lg-6">
             <div class="section_title">
               <h3 class="title">
-                Popular <br />
-                Categories
+                Categorias <br />
+                Populares
               </h3>
             </div>
           </div>
@@ -102,10 +101,65 @@
           <div class="category-column">
             <div class="single_category text-center mt-30">
               <div class="icon">
-                <i class="fal fa-camera"></i>
+                <i class="fal fa-desktop"></i>
               </div>
               <div class="content">
-                <h6 class="title">DSLR Camera</h6>
+                <h6 class="title">Computadores & Escritório</h6>
+              </div>
+              <a href="/products/product"></a>
+            </div>
+          </div>
+          <div class="category-column">
+            <div class="single_category text-center mt-30">
+              <div class="icon">
+                <i class="fal fa-gem"></i>
+              </div>
+              <div class="content">
+                <h6 class="title">Joalheria</h6>
+              </div>
+              <a href="/products/product"></a>
+            </div>
+          </div>
+          <div class="category-column">
+            <div class="single_category text-center mt-30">
+              <div class="icon">
+                <i class="fal fa-home"></i>
+              </div>
+              <div class="content">
+                <h6 class="title">Casa & Jardim</h6>
+              </div>
+              <a href="/products/product"></a>
+            </div>
+          </div>
+          <div class="category-column">
+            <div class="single_category text-center mt-30">
+              <div class="icon">
+                <i class="fal fa-suitcase"></i>
+              </div>
+              <div class="content">
+                <h6 class="title">Malas & Bagagem</h6>
+              </div>
+              <a href="/products/product"></a>
+            </div>
+          </div>
+          <div class="category-column">
+            <div class="single_category text-center mt-30">
+              <div class="icon">
+                <i class="fal fa-child"></i>
+              </div>
+              <div class="content">
+                <h6 class="title">Bebé & Criança</h6>
+              </div>
+              <a href="/products/product"></a>
+            </div>
+          </div>
+          <div class="category-column">
+            <div class="single_category text-center mt-30">
+              <div class="icon">
+                <i class="fal fa-tshirt"></i>
+              </div>
+              <div class="content">
+                <h6 class="title">Vestuário</h6>
               </div>
               <a href="/products/product"></a>
             </div>
@@ -116,73 +170,7 @@
                 <i class="fal fa-mobile"></i>
               </div>
               <div class="content">
-                <h6 class="title">Cell Phone</h6>
-              </div>
-              <a href="/products/product"></a>
-            </div>
-          </div>
-          <div class="category-column">
-            <div class="single_category text-center mt-30">
-              <div class="icon">
-                <i class="fal fa-laptop"></i>
-              </div>
-              <div class="content">
-                <h6 class="title">Laptop</h6>
-              </div>
-              <a href="/products/product"></a>
-            </div>
-          </div>
-          <div class="category-column">
-            <div class="single_category text-center mt-30">
-              <div class="icon">
-                <i class="fal fa-headphones-alt"></i>
-              </div>
-              <div class="content">
-                <h6 class="title">Headphones</h6>
-              </div>
-              <a href="/products/product"></a>
-            </div>
-          </div>
-          <div class="category-column">
-            <div class="single_category text-center mt-30">
-              <div class="icon">
-                <i class="fal fa-ring"></i>
-              </div>
-              <div class="content">
-                <h6 class="title">Jewelry</h6>
-              </div>
-              <a href="/products/product"></a>
-            </div>
-          </div>
-          <div class="category-column">
-            <div class="single_category text-center mt-30">
-              <div class="icon">
-                <i class="fal fa-backpack"></i>
-              </div>
-              <div class="content">
-                <h6 class="title">Backpacks</h6>
-              </div>
-              <a href="/products/product"></a>
-            </div>
-          </div>
-          <div class="category-column">
-            <div class="single_category text-center mt-30">
-              <div class="icon">
-                <i class="fal fa-bicycle"></i>
-              </div>
-              <div class="content">
-                <h6 class="title">Vehicles</h6>
-              </div>
-              <a href="/products/product"></a>
-            </div>
-          </div>
-          <div class="category-column">
-            <div class="single_category text-center mt-30">
-              <div class="icon">
-                <i class="fal fa-door-open"></i>
-              </div>
-              <div class="content">
-                <h6 class="title">Furniture</h6>
+                <h6 class="title">Telemóveis</h6>
               </div>
               <a href="/products/product"></a>
             </div>
@@ -193,7 +181,7 @@
                 <i class="fal fa-gamepad"></i>
               </div>
               <div class="content">
-                <h6 class="title">Gadgets</h6>
+                <h6 class="title">Gaming</h6>
               </div>
               <a href="/products/product"></a>
             </div>
@@ -201,17 +189,28 @@
           <div class="category-column">
             <div class="single_category text-center mt-30">
               <div class="icon">
-                <i class="fal fa-watch"></i>
+                <i class="fal fa-car"></i>
               </div>
               <div class="content">
-                <h6 class="title">Watches</h6>
+                <h6 class="title">Veículos</h6>
+              </div>
+              <a href="/products/product"></a>
+            </div>
+          </div>
+          <div class="category-column">
+            <div class="single_category text-center mt-30">
+              <div class="icon">
+                <i class="fal fa-basketball-ball"></i>
+              </div>
+              <div class="content">
+                <h6 class="title">Desporto</h6>
               </div>
               <a href="/products/product"></a>
             </div>
           </div>
 
           <div class="category_btn">
-            <a class="main-btn" href="/common/categories">View all Catagories</a>
+            <a class="main-btn" href="/common/categories">Ver todas as categorias</a>
           </div>
         </div>
       </div>
@@ -732,23 +731,23 @@
           <div class="col-lg-6">
             <div class="choose_content pt-35">
               <div class="section_title pb-20">
-                <h3 class="title">Why Choose Us</h3>
+                <h3 class="title">Precisas de vender algo?</h3>
               </div>
               <p>
-                Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed
-                diam nonumy eirmod tempor invidunt ut labore et dolore magna
-                aliquyam erat, sed diam voluptua. At vero eos et accusam.
+                Compre e venda produtos com facilidade no nosso site!
+                A nossa plataforma é fácil de usar e permite que publique anúncios
+                e encontre o que procura. As transações são seguras e sem problemas.
+                Junte-se a nós e tenha uma experiência de alta qualidade!
               </p>
 
               <ul class="list">
-                <li><i class="fa fa-check"></i> Powerful feature one.</li>
+                <li><i class="fa fa-check"></i> Pesquisas personalizadas.</li>
                 <li>
-                  <i class="fa fa-check"></i> Much needed and important feature
-                  two.
+                  <i class="fa fa-check"></i> Comunica sem qualquer problema!
                 </li>
-                <li><i class="fa fa-check"></i> Essential features to rock.</li>
+                <li><i class="fa fa-check"></i> Guarda os teus anúncios favoritos.</li>
               </ul>
-              <a href="#" class="main-btn">Read More</a>
+              <a href="/common/pricing" class="main-btn">Saiba mais aqui</a>
             </div>
           </div>
         </div>
@@ -770,8 +769,8 @@
           <div class="col-lg-6">
             <div class="section_title pb-15">
               <h3 class="title">
-                Explore <br />
-                The Locations
+                Explora <br />
+                As Localizações
               </h3>
             </div>
           </div>
@@ -784,17 +783,38 @@
                   <img
                     src="/public/assets/images/locations-1.jpg"
                     alt="Locations"
-                  />
+                  /> <!--Change photos-->
                 </div>
                 <div class="locations_content">
                   <h5 class="title">
                     <a href="/products/product"
-                      ><i class="far fa-map-marker-alt"></i>Los Angeles</a
+                      ><i class="far fa-map-marker-alt"></i>Marte</a
                     >
                   </h5>
-                  <p>25 ads posted in this location</p>
+                  <p>35 anúncios publicados nesta localização</p> <!--Query: Quantos Anúncios Tem Este Local-->
                   <a class="view" href="/products/product"
-                    >View All Ads Here <i class="fa fa-angle-right"></i
+                    >Veja Todos Os Anúncios<i class="fa fa-angle-right"></i
+                  ></a>
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-4 col-md-7 col-sm-8">
+              <div class="single_locations mt-30">
+                <div class="locations_image">
+                  <img 
+                    src="/public/assets/images/locations-2.jpg" 
+                    alt="Locations"
+                  /> <!--Change photos-->
+                </div>
+                <div class="locations_content">
+                  <h5 class="title">
+                    <a href="/products/product"
+                      ><i class="far fa-map-marker-alt"></i>Terra</a
+                    >
+                  </h5>
+                  <p>36 anúncios publicados nesta localização</p> <!--Query: Quantos Anúncios Tem Este Local-->
+                  <a class="view" href="/products/product"
+                    >Veja Todos Os Anúncios<i class="fa fa-angle-right"></i
                   ></a>
                 </div>
               </div>
@@ -803,47 +823,26 @@
               <div class="single_locations mt-30">
                 <div class="locations_image">
                   <img
-                    src="/public/assets/images/locations-2.jpg"
+                    src="/public/assets/images/locations-3.jpg" 
                     alt="Locations"
-                  />
+                  /> <!--Change photos-->
                 </div>
                 <div class="locations_content">
                   <h5 class="title">
                     <a href="/products/product"
-                      ><i class="far fa-map-marker-alt"></i>California</a
+                      ><i class="far fa-map-marker-alt"></i>Vénus</a
                     >
                   </h5>
-                  <p>7 ads posted in this location</p>
+                  <p>37 anúncios publicados nesta localização</p> <!--Query: Quantos Anúncios Tem Este Local-->
                   <a class="view" href="/products/product"
-                    >View All Ads Here <i class="fa fa-angle-right"></i
-                  ></a>
-                </div>
-              </div>
-            </div>
-            <div class="col-lg-4 col-md-7 col-sm-8">
-              <div class="single_locations mt-30">
-                <div class="locations_image">
-                  <img
-                    src="/public/assets/images/locations-3.jpg"
-                    alt="Locations"
-                  />
-                </div>
-                <div class="locations_content">
-                  <h5 class="title">
-                    <a href="/products/product"
-                      ><i class="far fa-map-marker-alt"></i>New York</a
-                    >
-                  </h5>
-                  <p>3 ads posted in this location</p>
-                  <a class="view" href="/products/product"
-                    >View All Ads Here <i class="fa fa-angle-right"></i
+                    >Veja Todos Os Anúncios<i class="fa fa-angle-right"></i
                   ></a>
                 </div>
               </div>
             </div>
           </div>
           <div class="locations_btn text-center">
-            <a class="main-btn" href="#">View all Locations</a>
+            <a class="main-btn" href="#">Mais Localizações</a> <!--Remove this? Create another template?-->
           </div>
         </div>
       </div>
@@ -877,7 +876,7 @@
                     >
                   </div>
                 </div>
-                <p>Published Ads Here</p>
+                <p>Anúncios Publicados</p>
               </div>
               <div class="single_counter">
                 <div class="counter_items d-flex">
@@ -891,7 +890,7 @@
                     <span class="count"><span class="counter">300</span>+</span>
                   </div>
                 </div>
-                <p>Register User Using</p>
+                <p>Usuários Verificados</p>
               </div>
               <div class="single_counter">
                 <div class="counter_items d-flex">
@@ -905,7 +904,7 @@
                     <span class="count"><span class="counter">200</span>+</span>
                   </div>
                 </div>
-                <p>Verified User Using</p>
+                <p>Vendas Realizadas</p>
               </div>
             </div>
           </div>
@@ -923,8 +922,8 @@
           <div class="col-lg-6">
             <div class="section_title pb-15">
               <h3 class="title">
-                Recently <br />
-                Published Ads
+                Anúncios <br />
+                Recentes
               </h3>
             </div>
           </div>
@@ -1103,7 +1102,7 @@
             </div>
           </div>
           <div class="published_btn">
-            <a href="/products/product" class="main-btn">View all Ads</a>
+            <a href="/products/product" class="main-btn">Mais Anúncios</a>
           </div>
         </div>
       </div>
@@ -1112,7 +1111,7 @@
     <!--====== PUBLISHED PART ENDS ======-->
 
     <!--====== SERVICES PART START ======-->
-
+<!-- 
     <section class="services_area pt-115">
       <div class="container">
         <div class="row justify-content-center">
@@ -1224,7 +1223,7 @@
           </div>
         </div>
       </div>
-    </section>
+    </section> -->
 
     <!--====== SERVICES PART ENDS ======-->
 
@@ -1236,8 +1235,8 @@
           <div class="col-lg-6">
             <div class="section_title text-center pb-15">
               <h3 class="title">
-                Find a Plan <br />
-                That's Right For You
+                Descobre<br />
+                O Teu Plano
               </h3>
             </div>
           </div>
@@ -1252,19 +1251,20 @@
                 />
               </div>
               <div class="pricing_title">
-                <h4 class="title">Beginers</h4>
-                <p>Lorem ipsum dolor sit amet, consetetur.</p>
+                <h4 class="title">Básico</h4>
+                <p>Anúncio Gratuito</p>
               </div>
               <div class="pricing_content">
                 <p>
-                  Lorem ipsum dolor. Sit amet, consetetur dost. sadipscing
-                  elitr, sed. Diam nonumy eirmod. Tempor invidunt ut labore. Pet
-                  dolore magna. Aliquyam erat iamvoluptua.
+                  Com o nosso plano básico gratuito, pode criar e publicar um
+                  anúncio para vender os seus produtos ou serviços. 
+                  O anúncio será exibido nos resultados de pesquisa para os
+                  utilizadores relevantes. Comece hoje mesmo e alcance novos clientes.
                 </p>
-                <span class="price">$0.00</span>
+                <span class="price">FREE</span>
               </div>
               <div class="pricing_btn">
-                <a href="#" class="main-btn">View all Ads</a>
+                <a href="#" class="main-btn">Ver Mais</a>
               </div>
             </div>
           </div>
@@ -1277,19 +1277,19 @@
                 />
               </div>
               <div class="pricing_title">
-                <h4 class="title">Standard</h4>
-                <p>Lorem ipsum dolor sit amet, consetetur.</p>
+                <h4 class="title">Profissional</h4>
+                <p>Aumente a visibilidade do seu anúncio</p>
               </div>
               <div class="pricing_content">
                 <p>
-                  Lorem ipsum dolor. Sit amet, consetetur dost. sadipscing
-                  elitr, sed. Diam nonumy eirmod. Tempor invidunt ut labore. Pet
-                  dolore magna. Aliquyam erat iamvoluptua.
+                  Com o nosso plano profissional, pode publicar um anúncio no
+                  topo dos resultados de pesquisa. Isso aumentará
+                  as suas hipóteses de vendas.
                 </p>
-                <span class="price">$0.00</span>
+                <span class="price">$5.99</span>
               </div>
               <div class="pricing_btn">
-                <a href="#" class="main-btn main-btn-2">View all Ads</a>
+                <a href="#" class="main-btn main-btn-2">Ver Mais</a>
               </div>
             </div>
           </div>
@@ -1303,18 +1303,18 @@
               </div>
               <div class="pricing_title">
                 <h4 class="title">Premium</h4>
-                <p>Lorem ipsum dolor sit amet, consetetur.</p>
+                <p>Máxima visibilidade do seu Anúncio</p>
               </div>
               <div class="pricing_content">
                 <p>
-                  Lorem ipsum dolor. Sit amet, consetetur dost. sadipscing
-                  elitr, sed. Diam nonumy eirmod. Tempor invidunt ut labore. Pet
-                  dolore magna. Aliquyam erat iamvoluptua.
+                  Com o nosso plano premium, o seu anúncio terá
+                  máxima visibilidade no topo dos resultados de pesquisa
+                  e como anúncio recente. Aumente significativamente as suas hipóteses de vendas.
                 </p>
-                <span class="price">$0.00</span>
+                <span class="price">$10.99</span>
               </div>
               <div class="pricing_btn">
-                <a href="#" class="main-btn">View all Ads</a>
+                <a href="#" class="main-btn">Ver Mais</a>
               </div>
             </div>
           </div>
@@ -1332,8 +1332,8 @@
           <div class="col-lg-6">
             <div class="section_title text-center pb-15">
               <h3 class="title">
-                Latest<br />
-                From The Blog
+                Novidades<br />
+                No Nosso Blog
               </h3>
             </div>
           </div>
@@ -1346,7 +1346,7 @@
               </div>
               <div class="blog_content">
                 <h4 class="title">
-                  <a href="/posts/blog-details"
+                  <a href="/posts/blog-details" 
                     >Lorem ipsum dolor sit amet, consectetur adipiscing elit</a
                   >
                 </h4>
@@ -1410,7 +1410,7 @@
           </div>
         </div>
         <div class="blog_btn text-center mt-50">
-          <a href="/posts/blog" class="main-btn">View All Post</a>
+          <a href="/posts/blog" class="main-btn">Ver Mais</a>
         </div>
       </div>
     </section>

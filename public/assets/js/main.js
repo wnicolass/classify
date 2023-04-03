@@ -185,13 +185,18 @@ $(function () {
     });
 
 
-    //===== 
+    //MODIFCATIONS MADE BY US
 
-
-
-
-
-
+    $(document).ready(function () {
+        var current = location.pathname;
+        $('.navbar-nav li a, .navbar_btn li a').each(function () {
+            var $this = $(this);
+            if ($this.attr('href') === current) {
+                $this.addClass('active');
+                $this.parents('li').find('> a').addClass('active');
+            }
+        });
+    });
 
 
 
