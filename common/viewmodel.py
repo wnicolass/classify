@@ -1,14 +1,17 @@
+from asyncinit import asyncinit
 from typing import Any
 from common.auth import get_current_auth_user
 
+@asyncinit
 class ViewModel(dict):
-    def __init__(self, *args, **kargs):
-        user_id = get_current_auth_user()
+    async def __init__(self, *args, **kargs):
+        user = await get_current_auth_user()
         all = {
             'error': None,
             'error_msg': None,
-            'user_id': user_id,
-            'is_logged_in': user_id is not None
+            'user_id': user.user_id if user else None,
+            'is_logged_in': user is not None,
+            'username': user.username.split(' ')[0] if user else None
         }
         all.update(kargs)
         super().__init__(self, *args, **all)
