@@ -23,6 +23,7 @@ from common.utils import (
 )
 from common.auth import (
     hash_password,
+    hash_google_id,
     check_password,
     set_auth_cookie,
     delete_auth_cookie,
@@ -38,10 +39,10 @@ load_dotenv(find_dotenv())
 @router.get('/auth/sign-up', dependencies = [Depends(requires_unauthentication)])
 @template('auth/sign-up.pt')
 async def sign_up():
-    return sign_up_viewmodel()
+    return await sign_up_viewmodel()
 
-def sign_up_viewmodel():
-    return ViewModel(
+async def sign_up_viewmodel():
+    return await ViewModel(
         min_date = MIN_DATE,
         max_date = date.today()
     )
@@ -67,7 +68,7 @@ async def post_sign_up_viewmodel(
     bg_task: BackgroundTasks
 ):
     form_data = await request.form()
-    vm = ViewModel(
+    vm = await ViewModel(
         username = form_field_as_str(form_data, 'username'),
         email = form_field_as_str(form_data, 'email'),
         birth_date = form_field_as_str(form_data, 'birth-date'),
@@ -138,16 +139,17 @@ async def email_verification(
         await user_service.update_user_email_validation_status(user, session)
 
         template = PageTemplateFile('./templates/auth/email-verified.pt')
-        content = template(**ViewModel())
+        vm = await ViewModel()
+        content = template(vm)
         return responses.HTMLResponse(content, status_code = status.HTTP_200_OK)
 
 @router.get('/auth/sign-in', dependencies = [Depends(requires_unauthentication)])
 @template('auth/sign-in.pt')
 async def sign_in():
-    return sign_in_viewmodel()
+    return await sign_in_viewmodel()
 
-def sign_in_viewmodel():
-    return ViewModel(
+async def sign_in_viewmodel():
+    return await ViewModel(
         email = '',
         password  = ''
     )
@@ -173,7 +175,7 @@ async def post_sign_in_viewmodel(
 ):
     form_data = await request.form()
 
-    vm = ViewModel(
+    vm = await ViewModel(
         email = form_field_as_str(form_data, 'email'),
         password = form_field_as_str(form_data, 'password')
     )
@@ -199,8 +201,19 @@ async def google_sign_in(
     credential = form_field_as_str(form_data, 'credential')
     user_info = google_sign_in_viewmodel(credential)
 
-    db_user = await user_service.create_user(user_info['name'], None, None, 1, session)
-    await user_service.create_user_ext(db_user, user_info['sub'], 1, session)
+    hashed_id = hash_google_id(user_info['sub'])
+    db_user = await user_service.get_user_by_google_hash(hashed_id, session)
+
+    if not db_user:
+        db_user = await user_service.create_user(
+            username = user_info['name'], 
+            phone_number = None, 
+            birth_date = None, 
+            image_url = user_info['picture'], 
+            is_active = int(user_info['email_verified']), 
+            session = session
+        )
+        await user_service.create_user_ext(db_user, hashed_id, 1, session)
     
     response = responses.RedirectResponse(url = '/', status_code = status.HTTP_302_FOUND)
     set_auth_cookie(response, db_user)
