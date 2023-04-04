@@ -19,7 +19,7 @@ async def categories(
 async def categories_viewmodel(
         session: Annotated[AsyncSession, Depends(get_db_session)]
 ):
-    vm = ViewModel()
+    vm = await ViewModel()
     vm.all_categories = await category_service.get_all_categories(session)
     return vm
 

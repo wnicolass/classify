@@ -8,9 +8,9 @@ router = APIRouter()
 @router.get('/posts/blog')
 @template()
 async def blog():
-    return ViewModel()
+    return await ViewModel()
 
 @router.get('/posts/blog-details')
 @template('posts/blog-details.pt')
 async def blog_details():
-    return ViewModel()
+    return await ViewModel()

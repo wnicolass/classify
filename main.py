@@ -103,17 +103,20 @@ def config_middlewares():
 def config_exception_handlers():
     async def unauthorized_access_handler(*_, **__):
         template = PageTemplateFile('./templates/errors/error-404.pt')
-        content = template(**ViewModel())
+        vm = await ViewModel()
+        content = template(**vm)
         return responses.HTMLResponse(content, status_code = status.HTTP_404_NOT_FOUND)
     
     async def internal_server_error_handler(*_, **__):
         template = PageTemplateFile('./templates/errors/error-500.pt')
-        content = template(**ViewModel())
+        vm = await ViewModel()
+        content = template(**vm)
         return responses.HTMLResponse(content, status_code = status.HTTP_500_INTERNAL_SERVER_ERROR)
     
     async def invalid_token_handler(*_, **__):
         template = PageTemplateFile('./templates/errors/invalid-token.pt')
-        content = template(**ViewModel())
+        vm = await ViewModel()
+        content = template(**vm)
         return responses.HTMLResponse(content, status_code = status.HTTP_400_BAD_REQUEST)
     
     async def unauthenticated_only_area_handler(*_, **__):

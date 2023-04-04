@@ -87,7 +87,7 @@ class UserLoginDataExt(Base):
     __tablename__ = 'UserLoginDataExt'
     
     id: int = Column(Integer, primary_key = True, autoincrement = True)
-    external_provider_token: str = Column(String(200), nullable = False)
+    external_provider_token: str = Column(String(1200), nullable = False)
     external_provider_id: int = Column(Integer, ForeignKey('ExternalProvider.id'), nullable = False)
     user_id: int = Column(Integer, ForeignKey('UserAccount.user_id'), nullable = False)
 
