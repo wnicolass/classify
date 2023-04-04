@@ -12,14 +12,17 @@ from fastapi import (
     status
 )
 from passlib.context import CryptContext
+from common.fastapi_utils import get_db_session
 from models.user import UserAccount, UserLoginData
 from middlewares.global_request import global_request
+from services.user_service import get_user_account_by_id
+from config.database import Session
 
 load_dotenv(find_dotenv())
 
 hash_context = CryptContext(schemes = ['bcrypt'], deprecated = 'auto')
 SECRET = os.getenv('COOKIE_SECRET')
-current_user: Optional[UserLoginData] = None
+GOOGLE_SECRET = os.getenv('GOOGLE_TOKEN_SECRET')
 
 def check_password(password: str, hashed_password: str) -> bool:
     return hash_context.verify(password, hashed_password)
@@ -27,11 +30,9 @@ def check_password(password: str, hashed_password: str) -> bool:
 def hash_password(password: str) -> str:
     return hash_context.hash(password)
 
-def set_auth_cookie(response: Response, user: UserLoginData):
-    global current_user
+def set_auth_cookie(response: Response, user: UserLoginData | UserAccount):
     cookie_value = f'{str(user.user_id)}:{hash_cookie_value(str(user.user_id))}'
 
-    current_user = user
     response.set_cookie(
         os.getenv('COOKIE_NAME'),
         cookie_value,
@@ -46,6 +47,9 @@ def delete_auth_cookie(response: Response):
 
 def hash_cookie_value(cookie_value: str) -> str:
     return sha512(f'{cookie_value}{SECRET}'.encode('utf-8')).hexdigest()
+
+def hash_google_id(sub: str) -> str:
+    return sha512(f'{sub}{GOOGLE_SECRET}'.encode('utf-8')).hexdigest()
 
 def get_auth_from_cookie(request: Request) -> int | None:
     if not (cookie_value:= request.cookies.get(os.getenv('COOKIE_NAME'))):
@@ -62,9 +66,11 @@ def get_auth_from_cookie(request: Request) -> int | None:
     
     return int(user_id) if user_id.isdigit() else None
 
-def get_current_auth_user() -> UserAccount | None:
+async def get_current_auth_user() -> UserAccount | None:
     if user_id := get_auth_from_cookie(global_request.get()):
-        return user_id if current_user is not None and current_user.user_id == user_id else None
+        async with Session() as session:
+            user = await get_user_account_by_id(user_id, session)
+            return user
     return None
 #:
 
@@ -79,10 +85,10 @@ class HTTPInvalidToken(HTTPException):
     def __init__(self, *args, **kwargs):
             super().__init__(status_code = status.HTTP_400_BAD_REQUEST, *args, **kwargs)
 
-def requires_unauthentication():
-    if get_current_auth_user():
+async def requires_unauthentication():
+    if await get_current_auth_user():
         raise HTTPUnauthenticatedOnly(detail = 'This area requires unauthenticatiion')
     
-def requires_authentication():
-    if not get_current_auth_user():
+async def requires_authentication():
+    if not await get_current_auth_user():
         raise HTTPUnauthorizedAccess(detail = 'This area requires authenticatiion')

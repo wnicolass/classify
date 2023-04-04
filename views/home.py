@@ -23,26 +23,26 @@ async def index(
 async def index_viewmodel(
         session: Annotated[AsyncSession, Depends(get_db_session)]
 ):
-    vm = ViewModel()
+    vm = await ViewModel()
     vm.popular_categories = await category_service.popular_categories(session)
     return vm
 
 @router.get('/home/about')
 @template()
 async def about():
-    return ViewModel()
+    return await ViewModel()
 
 @router.get('/home/contact')
 @template()
 async def contact():
-    return ViewModel()
+    return await ViewModel()
 
 @router.get('/home/faq')
 @template()
 async def faq():
-    return ViewModel()
+    return await ViewModel()
 
 @router.get('/home/post-ads', dependencies = [Depends(requires_authentication)])
 @template('home/post-ads.pt')
 async def post_ads():
-    return ViewModel()
+    return await ViewModel()

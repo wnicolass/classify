@@ -7,9 +7,9 @@ router = APIRouter()
 @router.get('/products/product')
 @template()
 async def product():
-    return ViewModel()
+    return await ViewModel()
 
 @router.get('/products/product-details')
 @template('products/product-details.pt')
 async def products_details():
-    return ViewModel()
+    return await ViewModel()

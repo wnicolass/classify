@@ -1,3 +1,5 @@
+import os
+from dotenv import load_dotenv, find_dotenv
 from typing import Annotated
 from datetime import date, datetime
 from fastapi import (APIRouter, Depends, HTTPException, Request, responses, status, BackgroundTasks)
@@ -5,6 +7,9 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from fastapi_chameleon import template
 from chameleon import PageTemplateFile
 from uuid import uuid4
+from google.oauth2.credentials import Credentials
+from google.oauth2.id_token import verify_oauth2_token
+from google.auth.transport import requests
 from common.viewmodel import ViewModel
 from common.fastapi_utils import get_db_session, form_field_as_str
 from common.utils import (
@@ -18,6 +23,7 @@ from common.utils import (
 )
 from common.auth import (
     hash_password,
+    hash_google_id,
     check_password,
     set_auth_cookie,
     delete_auth_cookie,
@@ -28,14 +34,15 @@ from common.email import (send_email, EmailValidationStatus)
 from services import user_service
 
 router = APIRouter()
+load_dotenv(find_dotenv())
 
 @router.get('/auth/sign-up', dependencies = [Depends(requires_unauthentication)])
 @template('auth/sign-up.pt')
 async def sign_up():
-    return sign_up_viewmodel()
+    return await sign_up_viewmodel()
 
-def sign_up_viewmodel():
-    return ViewModel(
+async def sign_up_viewmodel():
+    return await ViewModel(
         min_date = MIN_DATE,
         max_date = date.today()
     )
@@ -61,7 +68,7 @@ async def post_sign_up_viewmodel(
     bg_task: BackgroundTasks
 ):
     form_data = await request.form()
-    vm = ViewModel(
+    vm = await ViewModel(
         username = form_field_as_str(form_data, 'username'),
         email = form_field_as_str(form_data, 'email'),
         birth_date = form_field_as_str(form_data, 'birth-date'),
@@ -132,16 +139,17 @@ async def email_verification(
         await user_service.update_user_email_validation_status(user, session)
 
         template = PageTemplateFile('./templates/auth/email-verified.pt')
-        content = template(**ViewModel())
+        vm = await ViewModel()
+        content = template(vm)
         return responses.HTMLResponse(content, status_code = status.HTTP_200_OK)
 
 @router.get('/auth/sign-in', dependencies = [Depends(requires_unauthentication)])
 @template('auth/sign-in.pt')
 async def sign_in():
-    return sign_in_viewmodel()
+    return await sign_in_viewmodel()
 
-def sign_in_viewmodel():
-    return ViewModel(
+async def sign_in_viewmodel():
+    return await ViewModel(
         email = '',
         password  = ''
     )
@@ -167,7 +175,7 @@ async def post_sign_in_viewmodel(
 ):
     form_data = await request.form()
 
-    vm = ViewModel(
+    vm = await ViewModel(
         email = form_field_as_str(form_data, 'email'),
         password = form_field_as_str(form_data, 'password')
     )
@@ -184,9 +192,43 @@ async def post_sign_in_viewmodel(
     vm.user = user
     return vm
 
+@router.post('/auth/google')
+async def google_sign_in(
+    request: Request, 
+    session: Annotated[AsyncSession, Depends(get_db_session)]
+):
+    form_data = await request.form()
+    credential = form_field_as_str(form_data, 'credential')
+    user_info = google_sign_in_viewmodel(credential)
+
+    hashed_id = hash_google_id(user_info['sub'])
+    db_user = await user_service.get_user_by_google_hash(hashed_id, session)
+
+    if not db_user:
+        db_user = await user_service.create_user(
+            username = user_info['name'], 
+            phone_number = None, 
+            birth_date = None, 
+            image_url = user_info['picture'], 
+            is_active = int(user_info['email_verified']), 
+            session = session
+        )
+        await user_service.create_user_ext(db_user, hashed_id, 1, session)
+    
+    response = responses.RedirectResponse(url = '/', status_code = status.HTTP_302_FOUND)
+    set_auth_cookie(response, db_user)
+    return response
+
+def google_sign_in_viewmodel(credentials: Credentials):
+    id_info = verify_oauth2_token(credentials, requests.Request(), os.getenv('CLIENT_ID'), 1)
+    
+    if id_info['iss'] not in ['accounts.google.com', 'https://accounts.google.com']:
+        raise ValueError('Invalid issuer')
+
+    return id_info
+
 @router.get('/auth/logout')
 async def logout():
     response = responses.RedirectResponse(url = '/', status_code = status.HTTP_302_FOUND)
     delete_auth_cookie(response)
     return response
-

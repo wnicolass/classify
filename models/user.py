@@ -14,24 +14,13 @@ from sqlalchemy.orm import relationship
 from config.database import Base
 from models.ad import Ad
 
-
-user_login_data_ext = Table(
-    'UserLoginDataExt',
-    Base.metadata,
-    Column('id', Integer, primary_key = True, autoincrement = True),
-    Column('external_provider_token', String(200), nullable = False),
-    Column('external_provider_id', Integer, ForeignKey('ExternalProvider.id'), nullable = False),
-    Column('user_id', Integer, ForeignKey('UserAccount.user_id'), nullable = False),
-)
-
-
 class UserAccount(Base):
     __tablename__ = 'UserAccount'
 
     user_id: int = Column(Integer, primary_key = True, autoincrement = True)
     username: str = Column(String(100), nullable = False)
-    phone_number: str = Column(String(12), nullable = False)
-    birth_date: datetime = Column(Date, nullable = False)
+    phone_number: str = Column(String(12), nullable = True)
+    birth_date: datetime = Column(Date, nullable = True)
     last_login: datetime = Column(DateTime, server_default = text('NOW()'))
     profile_image_url: str = Column(String(100))
     is_active: int = Column(BIT, nullable = False)
@@ -41,7 +30,7 @@ class UserAccount(Base):
     ads = relationship('Ad', back_populates = 'user', cascade = "delete")
     user_address = relationship('UserAddress', back_populates = 'user', cascade = "delete", uselist = False)
     user_login_data = relationship('UserLoginData', back_populates = 'user', uselist = False)
-    ext_provider = relationship('ExternalProvider', back_populates = 'user', secondary = user_login_data_ext)
+    user_login_data_ext = relationship('UserLoginDataExt', back_populates = 'user')
 
     @property
     def email_addrs(self) -> str:
@@ -92,8 +81,18 @@ class ExternalProvider(Base):
     ext_provider_name: str = Column(String(50), nullable = False)
     end_point_url: str = Column(String(100), nullable = False)
 
-    user = relationship('UserAccount', back_populates = 'ext_provider', secondary = user_login_data_ext)
+    user_login_data_ext = relationship('UserLoginDataExt', back_populates = 'ext_provider')
 
+class UserLoginDataExt(Base):
+    __tablename__ = 'UserLoginDataExt'
+    
+    id: int = Column(Integer, primary_key = True, autoincrement = True)
+    external_provider_token: str = Column(String(1200), nullable = False)
+    external_provider_id: int = Column(Integer, ForeignKey('ExternalProvider.id'), nullable = False)
+    user_id: int = Column(Integer, ForeignKey('UserAccount.user_id'), nullable = False)
+
+    ext_provider = relationship('ExternalProvider', back_populates = 'user_login_data_ext')
+    user = relationship('UserAccount', back_populates = 'user_login_data_ext')
 
 class HashAlgo(Base):
     __tablename__ = 'HashAlgo'

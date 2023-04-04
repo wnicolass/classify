@@ -1,6 +1,30 @@
 <div metal:use-macro="load: ../shared/_layout.pt">
-  <div metal:fill-slot="content" tal:omit-tag="True">
+  <__additional_script__ metal:fill-slot="additional_script" tal:omit-tag="True">
+  <script src="https://accounts.google.com/gsi/client" onload="initClient()" async defer></script>
+  <script>
+      var client;
+      var access_token;
 
+      function initClient() {
+        client = google.accounts.oauth2.initTokenClient({
+          client_id: 'YOUR_CLIENT_ID',
+          scope: 'https://www.googleapis.com/auth/calendar.readonly \
+                  https://www.googleapis.com/auth/contacts.readonly',
+          callback: (tokenResponse) => {
+            access_token = tokenResponse.access_token;
+          },
+        });
+      }
+      function getToken() {
+        client.requestAccessToken();
+      }
+      function revokeToken() {
+        google.accounts.oauth2.revoke(access_token, () => {console.log('access token revoked')});
+      }
+
+  </script>
+    </__additional_script__>
+  <div metal:fill-slot="content" tal:omit-tag="True">
     <div
       class="page_banner bg_cover"
       style="background-image: url(/public/assets/images/page-banner.jpg)">
@@ -27,6 +51,23 @@
               <div class="sign_title">
                 <h5 class="title">Sign In Now</h5>
               </div>
+              <div id="g_id_onload"
+                      data-client_id="512639004249-g85jscbj56quqhogv9jnnq57e62fuv9v.apps.googleusercontent.com"
+                      data-context="signup"
+                      data-ux_mode="redirect"
+                      data-login_uri="http://localhost:8000/auth/google"
+                      data-nonce=""
+                      data-itp_support="false">
+                    </div>
+
+                    <div class="g_id_signin"
+                      data-type="standard"
+                      data-shape="rectangular"
+                      data-theme="outline"
+                      data-text="signin_with"
+                      data-size="large"
+                      data-logo_alignment="left">
+                    </div>
               <form action="/auth/sign-in" method="POST">
                 <div class="sign_form_wrapper">
                   <div class="single_form">
@@ -59,6 +100,6 @@
     </section>
 
     <!--====== SIGN IN PART ENDS ======-->
-
+    
   </div>
 </div>

@@ -1,7 +1,7 @@
 from datetime import datetime
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
-from models.user import UserAccount, UserLoginData
+from models.user import UserAccount, UserLoginData, UserLoginDataExt
 
 async def get_user_by_email(email: str, session: AsyncSession) -> UserLoginData | None:
     query = await session.execute(select(UserLoginData).where(UserLoginData.email_addr == email))
@@ -11,6 +11,12 @@ async def get_user_by_email(email: str, session: AsyncSession) -> UserLoginData 
 
 async def get_user_by_id(id: int, session: AsyncSession) -> UserLoginData:
     query = await session.execute(select(UserLoginData).where(UserLoginData.user_id == id))
+    user = query.scalar_one_or_none()
+    
+    return user
+
+async def get_user_account_by_id(id: int, session: AsyncSession) -> UserAccount:
+    query = await session.execute(select(UserAccount).where(UserAccount.user_id == id))
     user = query.scalar_one_or_none()
     
     return user
@@ -28,16 +34,22 @@ async def get_user_by_email_token(token: str, session: AsyncSession) -> UserLogi
 
     return user
 
+async def get_user_by_google_hash(token: str, session: AsyncSession) -> UserLoginDataExt:
+    result = await session.execute(select(UserLoginDataExt).where(UserLoginDataExt.external_provider_token == token))
+    user_ext_data = result.scalar_one_or_none()
+    return user_ext_data
+
 async def update_user_email_validation_status(user: UserLoginData, session: AsyncSession):
     user.email_validation_status_id = 3
     user.user.is_active = 1
     await session.commit()
 
-async def create_user(username: str, phone_number: str, birth_date: str, is_active: int, session: AsyncSession) -> UserAccount:
+async def create_user(username: str, phone_number: str, birth_date: str, is_active: int, session: AsyncSession, image_url: str | None = None) -> UserAccount:
     user = UserAccount(
         username = username,
         phone_number = phone_number,
         birth_date = birth_date,
+        profile_image_url = image_url,
         is_active = is_active,
     )
     
@@ -45,6 +57,12 @@ async def create_user(username: str, phone_number: str, birth_date: str, is_acti
     await session.commit()
     await session.refresh(user)
     return user
+
+async def create_user_ext(user: UserAccount, token: str, external_provider_id: int, session: AsyncSession):
+    external_data = UserLoginDataExt(external_provider_token = token, external_provider_id = external_provider_id, user_id = user.user_id)
+    session.add(external_data)
+    await session.commit()
+    await session.refresh(user)
 
 async def create_user_login_data(user_id: int, hashed_password: str, password_salt: str, email: str, hash_algo_id: int, email_validation_status_id: int, session: AsyncSession) -> UserLoginData:
     user_login_data = UserLoginData(

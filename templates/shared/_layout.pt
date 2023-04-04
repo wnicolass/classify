@@ -147,7 +147,7 @@
                         data-toggle="dropdown"
                         aria-haspopup="true"
                         aria-expanded="false"
-                        >Minha Conta</a
+                        >Olá, ${username}</a
                         >
 
                         <div
@@ -421,5 +421,7 @@
 
         <!--====== Main js ======-->
         <script src="/public/assets/js/main.js"></script>
+
+        <__additional_script__ metal:define-slot="additional_script" tal:omit-tag="True"></__additional_script__>
     </body>
 </html>
