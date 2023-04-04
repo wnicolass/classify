@@ -220,7 +220,7 @@ async def google_sign_in(
     return response
 
 def google_sign_in_viewmodel(credentials: Credentials):
-    id_info = verify_oauth2_token(credentials, requests.Request(), os.getenv('CLIENT_ID'))
+    id_info = verify_oauth2_token(credentials, requests.Request(), os.getenv('CLIENT_ID'), 1)
     
     if id_info['iss'] not in ['accounts.google.com', 'https://accounts.google.com']:
         raise ValueError('Invalid issuer')
