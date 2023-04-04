@@ -34,10 +34,9 @@ async def get_all_categories(session: AsyncSession) -> List[Category]:
 async def popular_categories(session: AsyncSession) -> List[Category]:
     query = await session.execute(select(
             Category, func.count(Ad.id))
-            .join(Category.subcategories)
-            .join(Subcategory.ads)
+            .join(Subcategory, Subcategory.id == Ad.subcategory_id)
+            .join(Category, Subcategory.id == Category.id)
             .group_by(Category.id)
-            .order_by(func.count(Ad.id).desc())
             .limit(10)
     )
     popular_categories = query.scalars().all()

@@ -97,7 +97,8 @@
         <div
           class="category_wrapper d-flex flex-wrap justify-content-center pt-30"
         >
-          <div tal:repeat="category popular_categories" tal:omit-tag="True" class="category-column">
+        <__repeat tal:repeat="category popular_categories" tal:omit-tag="True">
+          <div class="category-column">
             <div class="single_category text-center mt-30">
               <div class="icon">
                 <i class="${category.category_icon}"></i>
@@ -108,6 +109,7 @@
               <a href="/products/product"></a>
             </div>
           </div>
+        </__repeat>
           <div class="category_btn">
             <a class="main-btn" href="/common/categories">Ver todas as categorias</a>
           </div>
