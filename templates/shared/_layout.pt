@@ -147,7 +147,7 @@
                         data-toggle="dropdown"
                         aria-haspopup="true"
                         aria-expanded="false"
-                        >Minha Conta</a
+                        >Olá, ${username}</a
                         >
 
                         <div
