@@ -15,6 +15,12 @@ async def get_user_by_id(id: int, session: AsyncSession) -> UserLoginData:
     
     return user
 
+async def get_user_account_by_id(id: int, session: AsyncSession) -> UserAccount:
+    query = await session.execute(select(UserAccount).where(UserAccount.user_id == id))
+    user = query.scalar_one_or_none()
+    
+    return user
+
 async def set_email_confirmation_token(user_id: int, token: str, expiration_time: datetime, session: AsyncSession):
     user = await get_user_by_id(user_id, session)
     user.confirm_token = token
@@ -28,16 +34,22 @@ async def get_user_by_email_token(token: str, session: AsyncSession) -> UserLogi
 
     return user
 
+async def get_user_by_google_hash(token: str, session: AsyncSession) -> UserLoginDataExt:
+    result = await session.execute(select(UserLoginDataExt).where(UserLoginDataExt.external_provider_token == token))
+    user_ext_data = result.scalar_one_or_none()
+    return user_ext_data
+
 async def update_user_email_validation_status(user: UserLoginData, session: AsyncSession):
     user.email_validation_status_id = 3
     user.user.is_active = 1
     await session.commit()
 
-async def create_user(username: str, phone_number: str, birth_date: str, is_active: int, session: AsyncSession) -> UserAccount:
+async def create_user(username: str, phone_number: str, birth_date: str, is_active: int, session: AsyncSession, image_url: str | None = None) -> UserAccount:
     user = UserAccount(
         username = username,
         phone_number = phone_number,
         birth_date = birth_date,
+        profile_image_url = image_url,
         is_active = is_active,
     )
     
