@@ -1,4 +1,7 @@
 <div metal:use-macro="load: ../shared/_layout.pt">
+  <div metal:fill-slot="title" tal:omit-tag="True">
+    <title> 500 | Classify</title>
+  </div>
   <div metal:fill-slot="content" tal:omit-tag="True">
 
       <div
