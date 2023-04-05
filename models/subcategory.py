@@ -24,7 +24,7 @@ class Subcategory(Base):
     subcategory_name: str = Column(String(40), nullable = False, unique = True)
     category_id: int = Column(Integer, ForeignKey('Category.id', ondelete = 'CASCADE'), nullable = False)
 
-    ads = relationship("Ad", back_populates = 'subcategory')
+    ads = relationship("Ad", back_populates = 'subcategory', lazy = 'joined')
     category = relationship("Category", back_populates = 'subcategories')
     field_definitions = relationship('FieldDefinition', secondary = subcategory_field_definition, back_populates = 'subcategories')
 
