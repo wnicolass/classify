@@ -88,56 +88,28 @@
                 </button>
 
                 <div
-                class="collapse navbar-collapse sub-menu-bar"
+                class="collapse navbar-collapse sub-menu-bar justify-content-end"
                 id="navbarSupportedContent"
                 >
-                <ul class="navbar-nav m-auto">
-                    <li>
-                    <a href="/"
-                        >Home <span class="line"></span
-                    ></a>
-                    </li>
+                <ul class="navbar-nav">
                     <li>
                     <a href="/common/categories"
-                        >Categorias <span class="line"></span
+                        ><i class="fa-solid fa-tag"></i>
+                        Categorias <span class="line"></span
                     ></a>
                     </li>
                     <li>
-                    <a href="#"
-                        >Pages <i class="fa fa-angle-down"></i>
-                        <span class="line"></span
+                    <a href="/user/favourite-ads"
+                        >Favoritos <span class="line"></span
                     ></a>
-
-                    <ul class="sub-menu">
-                        <li><a href="/home/about">Quem somos</a></li>
-                        <li><a href="/products/product">Anúncios</a></li>
-                        <li><a href="/products/product-details">Product Details</a></li>
-                        <li><a href="/errors/error-404">404</a></li>
-                        <li><a href="/home/faq">FAQ</a></li>
-                        <li><a href="/common/pricing">Pacotes</a></li>
-                        <li><a href="/auth/sign-in">Sign In</a></li>
-                        <li><a href="/auth/sign-up">Sign Up</a></li>
-                    </ul>
                     </li>
-
-                    <li>
-                    <a href="#"
-                        >Blog <i class="fa fa-angle-down"></i>
-                        <span class="line"></span
-                    ></a>
-                    <ul class="sub-menu">
-                        <li><a href="/posts/blog">Blog</a></li>
-                        <li><a href="/posts/blog-details">Blog Details</a></li>
-                    </ul>
-                    </li>
-                    <li>
-                    <a href="/home/contact">Contactos<span class="line"></span></a>
-                    </li>
+                    <li tal:condition="not is_logged_in"><a href="/auth/sign-in">Sign In <span class="line"></span
+                    ></a></li>
                 </ul>
                 </div>
 
                 <div tal:condition="is_logged_in" class="navbar_btn">
-                <ul>
+                <ul  style="margin-left: .8rem;">
                     <li>
                     <div class="dropdown">
                         <a

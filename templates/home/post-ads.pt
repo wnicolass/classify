@@ -23,72 +23,8 @@
     <section class="post_ads_page pt-70 pb-120">
       <div class="container">
         <div class="row">
-          <div class="col-lg-3">
-            <div class="sidebar_profile mt-50">
-              <div class="profile_user">
-                <div class="user_author d-flex align-items-center">
-                  <div class="author">
-                    <img src="/public/assets/images/author-1.jpg" alt="" />
-                  </div>
-                  <div class="user_content media-body">
-                    <h6 class="author_name">User</h6>
-                    <p>Administrator</p>
-                  </div>
-                </div>
-                <div class="user_list">
-                  <ul>
-                    <li>
-                      <a class="active" href="/user/dashboard">
-                        <i class="fal fa-tachometer-alt-average"></i>
-                        Dashboard
-                      </a>
-                    </li>
-                    <li>
-                      <a href="/user/profile-settings">
-                        <i class="fal fa-cog"></i>
-                        Profile Settings
-                      </a>
-                    </li>
-                    <li>
-                      <a href="/user/my-ads">
-                        <i class="fal fa-layer-group"></i> 
-                        My Ads
-                      </a>
-                    </li>
-                    <li>
-                      <a href="/user/offermessages">
-                        <i class="fal fa-envelope"></i>
-                        Offers/Messages
-                      </a>
-                    </li>
-                    <li>
-                      <a href="/user/payments">
-                        <i class="fal fa-wallet"></i>
-                        Payments
-                      </a>
-                    </li>
-                    <li>
-                      <a href="/user/favourite-ads">
-                        <i class="fal fa-heart"></i>
-                        My Favourites
-                      </a>
-                    </li>
-                    <li>
-                      <a href="/user/privacy-setting">
-                        <i class="fal fa-star"></i>
-                        Privacy Settings
-                      </a>
-                    </li>
-                    <li>
-                      <a href="#">
-                        <i class="fal fa-sign-out"></i>
-                        Sign Out
-                      </a>
-                    </li>
-                  </ul>
-                </div>
-              </div>
-            </div>
+          <div metal:use-macro="load: ../shared/_user_sidebar.pt">
+          
           </div>
           <div class="col-lg-5">
             <div class="post_form mt-50">
