@@ -27,4 +27,4 @@ async def categories_viewmodel(
 @router.get('/common/pricing')
 @template()
 async def pricing():
-    return ViewModel()
+    return await ViewModel()
