@@ -98,255 +98,29 @@
             aria-labelledby="list-tab"
           >
             <div class="categories_list">
-              <div class="single_list mt-30">
-                <div class="list_title_icon d-flex align-items-center">
-                  <div class="icon">
-                    <img
-                      src="/public/assets/images/categories_icon/categories-1.svg"
-                      alt="Icon"
-                    />
+              <__repeat tal:repeat="category all_categories" tal:omit-tag="True">
+                <div class="single_list mt-30">
+                  <div class="list_title_icon d-flex align-items-center">
+                    <div class="categories_icon">
+                      <i class="${category.category_icon}"></i>
+                    </div>
+                    <div class="list_title media-body">
+                      <h5 class="title">${category.category_name}</h5>
+                    </div>
                   </div>
-                  <div class="list_title media-body">
-                    <h5 class="title">Computadores & Escritório</h5>
-                  </div>
-                </div>
-                <div class="categories_list_wrapper">
-                  <div class="row">
-                    <div class="col-lg-3 col-sm-6">
-                      <ul class="list">
-                        <li><a href="/products/product">Office Electronics</a></li>
-                        <li><a href="/products/product">Computer Components</a></li>
-                        <li><a href="/products/product">Computer Peripherals</a></li>
-                        <li><a href="/products/product">Internal Storage</a></li>
-                      </ul>
-                    </div>
-                    <div class="col-lg-3 col-sm-6">
-                      <ul class="list">
-                        <li><a href="/products/product">External Storage</a></li>
-                        <li><a href="/products/product">Networking</a></li>
-                        <li><a href="/products/product">Laptops Gaming</a></li>
-                        <li><a href="/products/product">Laptops</a></li>
-                      </ul>
-                    </div>
-                    <div class="col-lg-3 col-sm-6">
-                      <ul class="list">
-                        <li><a href="/products/product">Laptop Parts</a></li>
-                        <li><a href="/products/product">Laptop Accessories</a></li>
-                        <li><a href="/products/product">Tablets</a></li>
-                        <li><a href="/products/product">Tablet Accessories</a></li>
-                      </ul>
-                    </div>
-                    <div class="col-lg-3 col-sm-6">
-                      <ul class="list">
-                        <li><a href="/products/product">Tablet Parts</a></li>
-                        <li><a href="/products/product">Mini PC</a></li>
-                        <li><a href="/products/product">Desktops Demo </a></li>
-                        <li><a href="/products/product">Board & Accessories</a></li>
-                      </ul>
+                  <div class="categories_list_wrapper">
+                    <div class="row">
+                      <div class="col-lg-3 col-sm-6">
+                        <ul class="list">
+                          <__repeat tal:repeat="subcategory category.subcategories" tal:omit-tag="True">
+                            <li><a href="/products/product">${subcategory.subcategory_name}</a></li>
+                          </__repeat>
+                        </ul>
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
-
-              <div class="single_list mt-30">
-                <div class="list_title_icon d-flex align-items-center">
-                  <div class="icon">
-                    <img
-                      src="/public/assets/images/categories_icon/categories-2.svg"
-                      alt="Icon"
-                    />
-                  </div>
-                  <div class="list_title media-body">
-                    <h5 class="title">Joalheria</h5>
-                  </div>
-                </div>
-                <div class="categories_list_wrapper">
-                  <div class="row">
-                    <div class="col-lg-3 col-sm-6">
-                      <ul class="list">
-                        <li><a href="/products/product">Office Electronics</a></li>
-                        <li><a href="/products/product">Computer Components</a></li>
-                        <li><a href="/products/product">Computer Peripherals</a></li>
-                        <li><a href="/products/product">Internal Storage</a></li>
-                      </ul>
-                    </div>
-                    <div class="col-lg-3 col-sm-6">
-                      <ul class="list">
-                        <li><a href="/products/product">External Storage</a></li>
-                        <li><a href="/products/product">Networking</a></li>
-                        <li><a href="/products/product">Laptops Gaming</a></li>
-                        <li><a href="/products/product">Laptops</a></li>
-                      </ul>
-                    </div>
-                    <div class="col-lg-3 col-sm-6">
-                      <ul class="list">
-                        <li><a href="/products/product">Laptop Parts</a></li>
-                        <li><a href="/products/product">Laptop Accessories</a></li>
-                        <li><a href="/products/product">Tablets</a></li>
-                        <li><a href="/products/product">Tablet Accessories</a></li>
-                      </ul>
-                    </div>
-                    <div class="col-lg-3 col-sm-6">
-                      <ul class="list">
-                        <li><a href="/products/product">Tablet Parts</a></li>
-                        <li><a href="/products/product">Mini PC</a></li>
-                        <li><a href="/products/product">Desktops Demo </a></li>
-                        <li><a href="/products/product">Board & Accessories</a></li>
-                      </ul>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <div class="single_list mt-30">
-                <div class="list_title_icon d-flex align-items-center">
-                  <div class="icon">
-                    <img
-                      src="/public/assets/images/categories_icon/categories-3.svg"
-                      alt="Icon"
-                    />
-                  </div>
-                  <div class="list_title media-body">
-                    <h5 class="title">Casa & Jardim</h5>
-                  </div>
-                </div>
-                <div class="categories_list_wrapper">
-                  <div class="row">
-                    <div class="col-lg-3 col-sm-6">
-                      <ul class="list">
-                        <li><a href="/products/product">Office Electronics</a></li>
-                        <li><a href="/products/product">Computer Components</a></li>
-                        <li><a href="/products/product">Computer Peripherals</a></li>
-                        <li><a href="/products/product">Internal Storage</a></li>
-                      </ul>
-                    </div>
-                    <div class="col-lg-3 col-sm-6">
-                      <ul class="list">
-                        <li><a href="/products/product">External Storage</a></li>
-                        <li><a href="/products/product">Networking</a></li>
-                        <li><a href="/products/product">Laptops Gaming</a></li>
-                        <li><a href="/products/product">Laptops</a></li>
-                      </ul>
-                    </div>
-                    <div class="col-lg-3 col-sm-6">
-                      <ul class="list">
-                        <li><a href="/products/product">Laptop Parts</a></li>
-                        <li><a href="/products/product">Laptop Accessories</a></li>
-                        <li><a href="/products/product">Tablets</a></li>
-                        <li><a href="/products/product">Tablet Accessories</a></li>
-                      </ul>
-                    </div>
-                    <div class="col-lg-3 col-sm-6">
-                      <ul class="list">
-                        <li><a href="/products/product">Tablet Parts</a></li>
-                        <li><a href="/products/product">Mini PC</a></li>
-                        <li><a href="/products/product">Desktops Demo </a></li>
-                        <li><a href="/products/product">Board & Accessories</a></li>
-                      </ul>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <div class="single_list mt-30">
-                <div class="list_title_icon d-flex align-items-center">
-                  <div class="icon">
-                    <img
-                      src="/public/assets/images/categories_icon/categories-4.svg"
-                      alt="Icon"
-                    />
-                  </div>
-                  <div class="list_title media-body">
-                    <h5 class="title">Malas & Bagagem</h5>
-                  </div>
-                </div>
-                <div class="categories_list_wrapper">
-                  <div class="row">
-                    <div class="col-lg-3 col-sm-6">
-                      <ul class="list">
-                        <li><a href="/products/product">Office Electronics</a></li>
-                        <li><a href="/products/product">Computer Components</a></li>
-                        <li><a href="/products/product">Computer Peripherals</a></li>
-                        <li><a href="/products/product">Internal Storage</a></li>
-                      </ul>
-                    </div>
-                    <div class="col-lg-3 col-sm-6">
-                      <ul class="list">
-                        <li><a href="/products/product">External Storage</a></li>
-                        <li><a href="/products/product">Networking</a></li>
-                        <li><a href="/products/product">Laptops Gaming</a></li>
-                        <li><a href="/products/product">Laptops</a></li>
-                      </ul>
-                    </div>
-                    <div class="col-lg-3 col-sm-6">
-                      <ul class="list">
-                        <li><a href="/products/product">Laptop Parts</a></li>
-                        <li><a href="/products/product">Laptop Accessories</a></li>
-                        <li><a href="/products/product">Tablets</a></li>
-                        <li><a href="/products/product">Tablet Accessories</a></li>
-                      </ul>
-                    </div>
-                    <div class="col-lg-3 col-sm-6">
-                      <ul class="list">
-                        <li><a href="/products/product">Tablet Parts</a></li>
-                        <li><a href="/products/product">Mini PC</a></li>
-                        <li><a href="/products/product">Desktops Demo </a></li>
-                        <li><a href="/products/product">Board & Accessories</a></li>
-                      </ul>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <div class="single_list mt-30">
-                <div class="list_title_icon d-flex align-items-center">
-                  <div class="icon">
-                    <img
-                      src="/public/assets/images/categories_icon/categories-5.svg"
-                      alt="Icon"
-                    />
-                  </div>
-                  <div class="list_title media-body">
-                    <h5 class="title">Bebé & Criança</h5>
-                  </div>
-                </div>
-                <div class="categories_list_wrapper">
-                  <div class="row">
-                    <div class="col-lg-3 col-sm-6">
-                      <ul class="list">
-                        <li><a href="/products/product">Office Electronics</a></li>
-                        <li><a href="/products/product">Computer Components</a></li>
-                        <li><a href="/products/product">Computer Peripherals</a></li>
-                        <li><a href="/products/product">Internal Storage</a></li>
-                      </ul>
-                    </div>
-                    <div class="col-lg-3 col-sm-6">
-                      <ul class="list">
-                        <li><a href="/products/product">External Storage</a></li>
-                        <li><a href="/products/product">Networking</a></li>
-                        <li><a href="/products/product">Laptops Gaming</a></li>
-                        <li><a href="/products/product">Laptops</a></li>
-                      </ul>
-                    </div>
-                    <div class="col-lg-3 col-sm-6">
-                      <ul class="list">
-                        <li><a href="/products/product">Laptop Parts</a></li>
-                        <li><a href="/products/product">Laptop Accessories</a></li>
-                        <li><a href="/products/product">Tablets</a></li>
-                        <li><a href="/products/product">Tablet Accessories</a></li>
-                      </ul>
-                    </div>
-                    <div class="col-lg-3 col-sm-6">
-                      <ul class="list">
-                        <li><a href="/products/product">Tablet Parts</a></li>
-                        <li><a href="/products/product">Mini PC</a></li>
-                        <li><a href="/products/product">Desktops Demo </a></li>
-                        <li><a href="/products/product">Board & Accessories</a></li>
-                      </ul>
-                    </div>
-                  </div>
-                </div>
-              </div>
+              </__repeat>
             </div>
           </div>
         </div>
