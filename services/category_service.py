@@ -39,7 +39,7 @@ async def popular_categories(session: AsyncSession) -> List[Category]:
             .group_by(Category.id)
             .limit(10)
     )
-    popular_categories = query.scalars().all()
+    popular_categories = query.unique().scalars().all()
     return popular_categories
 
 
