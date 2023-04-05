@@ -32,41 +32,45 @@
           <div class="col-lg-5">
             <div class="post_form mt-50">
               <div class="post_title">
-                <h5 class="title">Ad Detail</h5>
+                <h5 class="title">Detalhes do Anúncio</h5>
               </div>
               <form action="#">
                 <div class="single_form">
-                  <input type="text" placeholder="Project Title" />
+                  <input type="text" placeholder="Título do Anúncio" />
                 </div>
                 <div class="single_form">
                   <select>
-                    <option value="none">Select Categories</option>
-                    <option value="none">Mobiles</option>
-                    <option value="none">Electronics</option>
-                    <option value="none">Training</option>
-                    <option value="none">Real Estate</option>
-                    <option value="none">Services</option>
-                    <option value="none">Training</option>
-                    <option value="none">Vehicles</option>
+                    <option value="none">Seleciona a Categoria</option>
+                    <__repeat tal:repeat="category all_categories" tal:omit-tag="True">
+                    <option value="none">${category.category_name}</option>
+                    </__repeat>
                   </select>
                 </div>
+                <!--TODO-->
                 <div class="single_form">
-                  <input type="text" placeholder="Ad Your Price" />
+                  <select>
+                    <option value="none">Seleciona a SubCategoria</option>
+                    <option value="none"></option>
+                  </select>
+                </div>
+                <!--TODO-->
+                <div class="single_form">
+                  <input type="text" placeholder="Preço" />
                 </div>
                 <div class="single_form">
                   <input type="checkbox" name="checkbox" id="checkbox" />
                   <label for="checkbox"></label>
-                  <span>Price On Call</span>
+                  <span>Negociável</span>
                 </div>
                 <div class="single_form">
-                  <textarea placeholder="Ad Post"></textarea>
+                  <textarea placeholder="Descrição"></textarea>
                 </div>
                 <div class="post_upload_file">
                   <label for="upload">
-                    <span>Drop files anywhere to upload</span>
-                    <span>Or</span>
-                    <span class="main-btn">Select Files</span>
-                    <span>Maximum upload file size: 500 KB</span>
+                    <span>Arrasta imagens aqui</span>
+                    <span>Ou</span>
+                    <span class="main-btn">Seleciona Imagens</span>
+                    <span>Máximo tamanho de upload: 500 KB</span>
                     <input type="file" id="upload" />
                   </label>
                 </div>
@@ -76,61 +80,31 @@
           <div class="col-lg-4">
             <div class="sidebar_post_form mt-50">
               <div class="post_title">
-                <h5 class="title">Contact Detail</h5>
+                <h5 class="title">Detalhes de Contacto</h5>
               </div>
               <form action="#">
-                <div class="single_form">
-                  <ul>
-                    <li>
-                      <input type="radio" checked="" name="radio" id="radio1" />
-                      <label for="radio1"></label>
-                      <span>Same User</span>
-                    </li>
-                    <li>
-                      <input type="radio" name="radio" id="radio2" />
-                      <label for="radio2"></label>
-                      <span>Someone Else</span>
-                    </li>
-                  </ul>
-                </div>
-                <div class="single_form">
-                  <input type="text" placeholder="First Name*" />
-                </div>
-                <div class="single_form">
-                  <input type="text" placeholder="Last Name*" />
-                </div>
+                
                 <div class="single_form">
                   <input type="text" placeholder="Phone*" />
                 </div>
-                <div class="single_form">
-                  <input type="email" placeholder="Enter Address" />
-                </div>
-                <div class="single_form">
-                  <input type="text" placeholder="Enter Address" />
-                </div>
+               
                 <div class="single_form">
                   <select>
-                    <option value="none">Select Country</option>
-                    <option value="none">Country 1</option>
+                    <option value="none">Seleciona o País</option>
+                    <option value="none">Portugal?</option>
                     <option value="none">Country 2</option>
                     <option value="none">Country 3</option>
                     <option value="none">Country 4</option>
                     <option value="none">Country 5</option>
-                    <option value="none">Country 6</option>
+                    <option value="none">Potato</option>
                   </select>
                 </div>
-                <div class="single_form">
-                  <select>
-                    <option value="none">Select State</option>
-                    <option value="none">Select State</option>
-                    <option value="none">Select State</option>
-                  </select>
-                </div>
+                
                 <div class="single_form">
                   <select>
                     <option value="none">Select City</option>
                     <option value="none">Select City</option>
-                    <option value="none">Select City</option>
+                    <option value="none">Potato</option>
                   </select>
                 </div>
                 <div class="single_form">
@@ -139,7 +113,7 @@
                   <span>I agree to all Terms of Use & Posting Rules</span>
                 </div>
                 <div class="single_form">
-                  <button class="main-btn">Post Ad</button>
+                  <button class="main-btn">Publicar Anúncio</button>
                 </div>
               </form>
             </div>
