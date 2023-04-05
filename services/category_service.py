@@ -26,17 +26,25 @@ async def get_category_count(session: AsyncSession) -> int | None:
 
 
 async def get_all_categories(session: AsyncSession) -> List[Category]:
-    query = await session.execute(select(Category))
+    query = await session.execute(select(
+            Category)
+            .join(Category.subcategories)
+            .outerjoin(Subcategory.ads)
+            .group_by(Category.id)
+            .order_by(func.count(Ad.id).desc())
+    )
     all_categories = query.unique().scalars().all()
     return all_categories
 
 
 async def popular_categories(session: AsyncSession) -> List[Category]:
     query = await session.execute(select(
-            Category, func.count(Ad.id))
-            .join(Subcategory, Subcategory.id == Ad.subcategory_id)
-            .join(Category, Subcategory.id == Category.id)
+            Category)
+            .join(Category.subcategories)
+            .join(Subcategory.ads)
             .group_by(Category.id)
+            .order_by(func.count(Ad.id).desc())
+            .order_by(Category.category_name)
             .limit(10)
     )
     popular_categories = query.unique().scalars().all()
