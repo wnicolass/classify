@@ -1,6 +1,8 @@
 from fastapi import (
     APIRouter, 
-    Depends
+    Depends,
+    responses,
+    status
 )
 from fastapi_chameleon import template
 from common.viewmodel import ViewModel
@@ -33,10 +35,15 @@ async def offermessages():
 async def payments():
     return await ViewModel()
 
-@router.get('/user/favourite-ads', dependencies = [Depends(requires_authentication)])
+@router.get('/user/favourite-ads')
 @template('user/favourite-ads.pt')
 async def favourite_ads():
-    return await ViewModel()
+    vm = await ViewModel()
+
+    if not vm.is_logged_in:
+        response = responses.RedirectResponse(url = '/auth/sign-in', status_code = status.HTTP_302_FOUND)
+        return response
+    return vm
 
 @router.get('/user/privacy-setting', dependencies = [Depends(requires_authentication)])
 @template('user/privacy-setting.pt')
