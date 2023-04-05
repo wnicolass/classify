@@ -93,6 +93,11 @@
                 >
                 <ul class="navbar-nav">
                     <li>
+                    <a href="/"
+                        ><i class="fa-solid fa-house"></i><span class="line"></span
+                    ></a>
+                    </li>
+                    <li>
                     <a href="/common/categories"
                         ><i class="fa-solid fa-tag"></i>
                         Categorias <span class="line"></span
@@ -100,10 +105,11 @@
                     </li>
                     <li>
                     <a href="/user/favourite-ads"
-                        >Favoritos <span class="line"></span
+                        ><i class="fa-solid fa-heart"></i>
+                        Favoritos <span class="line"></span
                     ></a>
                     </li>
-                    <li tal:condition="not is_logged_in"><a href="/auth/sign-in">Sign In <span class="line"></span
+                    <li tal:condition="not is_logged_in"><a href="/auth/sign-in"><i class="fa-solid fa-user"></i> Sign In <span class="line"></span
                     ></a></li>
                 </ul>
                 </div>
@@ -119,7 +125,8 @@
                         data-toggle="dropdown"
                         aria-haspopup="true"
                         aria-expanded="false"
-                        >Olá, ${username}</a
+                        ><i class="fa-solid fa-user"></i>
+                        Olá, ${username}</a
                         >
 
                         <div
@@ -172,7 +179,8 @@
                     </div>
                     </li>
                 </ul>
-                    <li><a class="sign-up" href="/home/post-ads">Criar Ad</a></li>
+                    <a tal:condition="is_logged_in" class="sign-up" href="/home/post-ads">Novo Anúncio</a>
+                    <a tal:condition="not is_logged_in" class="sign-up" href="/auth/sign-in">Novo Anúncio</a>
                 </div>
             </nav>
             </div>
