@@ -66,8 +66,11 @@
                     </div>
                   </div>
                   <div class="single_form">
-                    <button class="main-btn">Registar</button>
+                    <button class="main-btn" style="width: 100%;">Registar</button>
                   </div>
+                  <div class="sign_forgot" style="text-align: center; margin-top: 1rem;">
+                      <a href="/auth/sign-in" style="color: #ff4367;">Já possui conta? Faça login.</a>
+                    </div>
                 </div>
               </form>
             </div>

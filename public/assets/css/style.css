@@ -820,7 +820,7 @@ p {
 }
 .navbar-nav li a .line {
   position: absolute;
-  width: 80%;
+  width: 100%;
   height: 2px;
   background-color: #ff4367;
   left: 0;
@@ -1066,7 +1066,7 @@ p {
     margin-left: 20px;
   }
 }
-.navbar_btn ul li .sign-up {
+.navbar_btn .sign-up {
   padding: 0 20px;
   height: 40px;
   line-height: 40px;
