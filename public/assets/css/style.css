@@ -1066,7 +1066,7 @@ p {
     margin-left: 20px;
   }
 }
-.navbar_btn ul li .sign-up {
+.navbar_btn .sign-up {
   padding: 0 20px;
   height: 40px;
   line-height: 40px;
