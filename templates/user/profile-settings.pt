@@ -1,6 +1,6 @@
 <div metal:use-macro="load: ../shared/_layout.pt">
   <div metal:fill-slot="title" tal:omit-tag="True">
-    <title> Definições do Perfil | Classify</title>
+    <title> Definições de Perfil | Classify</title>
   </div>
   <div metal:fill-slot="content" tal:omit-tag="True">
 
