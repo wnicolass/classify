@@ -17,7 +17,10 @@
                     <a class="main-btn" href="/products/product">Destaques Classify</a>
                   </li>
                   <li>
-                    <a class="main-btn main-btn-2" href="/home/post-ads"
+                    <a tal:condition='is_logged_in' class="main-btn main-btn-2" href="/home/post-ads"
+                      >Publicar Anúncio</a
+                    >
+                    <a tal:condition='not is_logged_in' class="main-btn main-btn-2" href="/auth/sign-in"
                       >Publicar Anúncio</a
                     >
                   </li>
