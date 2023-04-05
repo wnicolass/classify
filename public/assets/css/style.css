@@ -820,7 +820,7 @@ p {
 }
 .navbar-nav li a .line {
   position: absolute;
-  width: 80%;
+  width: 100%;
   height: 2px;
   background-color: #ff4367;
   left: 0;
