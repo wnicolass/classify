@@ -27,7 +27,7 @@ async def get_category_count(session: AsyncSession) -> int | None:
 
 async def get_all_categories(session: AsyncSession) -> List[Category]:
     query = await session.execute(select(Category))
-    all_categories = query.scalars().all()
+    all_categories = query.unique().scalars().all()
     return all_categories
 
 
