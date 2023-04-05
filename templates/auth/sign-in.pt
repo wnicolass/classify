@@ -24,6 +24,9 @@
 
   </script>
     </__additional_script__>
+  <div metal:fill-slot="title" tal:omit-tag="True">
+    <title> Entrar | Classify</title>
+  </div>
   <div metal:fill-slot="content" tal:omit-tag="True">
     <div
       class="page_banner bg_cover"
