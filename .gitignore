@@ -154,3 +154,5 @@ dmypy.json
 
 .DS_Store
 .vscode
+
+.prettierignore
