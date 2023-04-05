@@ -31,7 +31,7 @@ async def offermessages():
 @router.get('/user/payments', dependencies = [Depends(requires_authentication)])
 @template()
 async def payments():
-    return ViewModel()
+    return await ViewModel()
 
 @router.get('/user/favourite-ads', dependencies = [Depends(requires_authentication)])
 @template('user/favourite-ads.pt')
