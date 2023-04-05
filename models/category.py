@@ -14,3 +14,10 @@ class Category(Base):
     category_icon: str = Column(String(100), nullable = False)
 
     subcategories = relationship('Subcategory', back_populates = 'category', cascade = 'delete', lazy = 'joined')
+
+    @property
+    def count_total_ads(self) -> int:
+        total: int = 0
+        for subcategory in self.subcategories:
+            total += len(subcategory.ads)
+        return total
