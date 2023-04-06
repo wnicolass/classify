@@ -28,3 +28,9 @@ async def categories_viewmodel(
 @template()
 async def pricing():
     return await ViewModel()
+
+
+@router.get('/common/privacy-policy')
+@template('common/privacy-policy.pt')
+async def privacy_policy():
+    return await ViewModel()
