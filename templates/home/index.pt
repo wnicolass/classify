@@ -1171,7 +1171,7 @@
                 <span class="price">FREE</span>
               </div>
               <div class="pricing_btn">
-                <a href="#" class="main-btn">Ver Mais</a>
+                <a href="/common/pricing" class="main-btn">Ver Mais</a>
               </div>
             </div>
           </div>
@@ -1196,7 +1196,7 @@
                 <span class="price">$5.99</span>
               </div>
               <div class="pricing_btn">
-                <a href="#" class="main-btn main-btn-2">Ver Mais</a>
+                <a href="/common/pricing" class="main-btn main-btn-2">Ver Mais</a>
               </div>
             </div>
           </div>
@@ -1221,7 +1221,7 @@
                 <span class="price">$10.99</span>
               </div>
               <div class="pricing_btn">
-                <a href="#" class="main-btn">Ver Mais</a>
+                <a href="/common/pricing" class="main-btn">Ver Mais</a>
               </div>
             </div>
           </div>
