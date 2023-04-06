@@ -78,7 +78,7 @@ async def send_reset_password_email(
 ):
     pt_tz = timezone('Portugal')
     recovery_token = secrets.token_urlsafe(64)
-    recovery_token_time = datetime.now(tz = pt_tz) + timedelta(minutes = 1)
+    recovery_token_time = datetime.now(tz = pt_tz) + timedelta(minutes = 60)
 
     await set_user_recovery_token(user, hash_recovery_token(recovery_token), recovery_token_time, session)
 
