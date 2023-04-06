@@ -1,0 +1,55 @@
+<div metal:use-macro="load: ../shared/_layout.pt">
+  <div metal:fill-slot="title" tal:omit-tag="True">
+    <title> Email de Vericação | Classify</title>
+  </div>
+  <__additional_script__ metal:fill-slot="additional_script" tal:omit-tag="True">
+    <script src="/public/scripts/resend-email.js" defer></script>
+  </__additional_script__>
+  <div metal:fill-slot="content" tal:omit-tag="True">
+
+      <div
+        class="page_banner bg_cover"
+        style="background-image: url(/public/assets/images/page-banner.jpg)">
+        <div class="container">
+          <div class="page_banner_content">
+            <h3 class="title">Email de Verificação</h3>
+            <ul class="breadcrumb">
+                <li><a href="/">Home</a></li>
+              <li>Email de verificação</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+    <!--====== HEADER PART ENDS ======-->
+
+    <!--====== ERROR 404 PART START ======-->
+
+    <section class="error_area pt-120 pb-120">
+      <div class="container">
+        <div class="row justify-content-center">
+          <div class="col-lg-6">
+            <div class="error_content text-center">
+              <span class="error" style="font-size: 54px; line-height: 57px;">Verifique seu endereço de e-mail.</span>
+              <p>Enviamos um e-mail para que possa confirmar sua conta antes de efetuar o login.</p>
+
+              <div class="error_search">
+                <img style="width: 15rem;" src="/public/assets/images/undraw_mail_sent.svg" />
+              </div>
+                <p>Se não receber o e-mail dentro de 1 minuto, clique no botão abaixo.</p>
+              <div class="error_search" style="margin-top: 1rem;">
+                <br>
+                <form id="resend-email">
+                <input type="hidden" name="user_id" value="${user.user_id}">
+                <button style="width: 100%;">Reenviar email</button>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!--====== ERROR 404 PART ENDS ======-->
+  </div>
+</div>
