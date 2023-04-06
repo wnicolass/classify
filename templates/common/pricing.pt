@@ -11,10 +11,10 @@
       style="background-image: url(/public/assets/images/page-banner.jpg)">
       <div class="container">
         <div class="page_banner_content">
-          <h3 class="title">Pricing</h3>
+          <h3 class="title">Pacotes</h3>
           <ul class="breadcrumb">
             <li><a href="/">Home</a></li>
-            <li>Pricing</li>
+            <li>Pacotes</li>
           </ul>
         </div>
       </div>
