@@ -187,6 +187,7 @@ $(function () {
 
     //MODIFCATIONS MADE BY US
 
+    //HEADER
     $(document).ready(function () {
         var current = location.pathname;
         $('.navbar-nav li a, .navbar_btn li a').each(function () {
@@ -198,6 +199,15 @@ $(function () {
         });
     });
 
-
-
+    //USER LEFT INTERFACE
+    $(document).ready(function() {
+        var current = location.pathname;
+        $('.user_list a').each(function() {
+          var $this = $(this);
+          if ($this.attr('href') === current) {
+            $this.addClass('active');
+            $this.parents('li').find('> a').addClass('active');
+          }
+        });
+      });
 });

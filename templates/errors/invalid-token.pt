@@ -14,7 +14,7 @@
         <div class="page_banner_content">
           <h3 class="title">Token Inválido</h3>
           <ul class="breadcrumb">
-            <li><a href="/home/index">Home</a></li>
+            <li><a href="/">Home</a></li>
             <li>Token Inválido</li>
           </ul>
         </div>
