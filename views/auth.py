@@ -305,6 +305,7 @@ async def update_password(
     vm = await update_password_viewmodel(request, token, session)
     
     if vm.error:
+        vm.recovery_token = token
         return vm
     
     template = PageTemplateFile('./templates/auth/sign-in.pt')
