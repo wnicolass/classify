@@ -25,12 +25,13 @@ from common.auth import (
     hash_password,
     hash_google_id,
     check_password,
+    hash_recovery_token,
     set_auth_cookie,
     delete_auth_cookie,
     requires_unauthentication,
     HTTPInvalidToken
 )
-from common.email import (send_email, EmailValidationStatus)
+from common.email import (send_email, EmailValidationStatus, send_reset_password_email)
 from services import user_service
 
 router = APIRouter()
@@ -140,7 +141,7 @@ async def email_verification(
 
         template = PageTemplateFile('./templates/auth/email-verified.pt')
         vm = await ViewModel()
-        content = template(vm)
+        content = template(**vm)
         return responses.HTMLResponse(content, status_code = status.HTTP_200_OK)
 
 @router.get('/auth/sign-in', dependencies = [Depends(requires_unauthentication)])
@@ -232,3 +233,109 @@ async def logout():
     response = responses.RedirectResponse(url = '/', status_code = status.HTTP_302_FOUND)
     delete_auth_cookie(response)
     return response
+
+@router.get('/auth/reset-password', dependencies = [Depends(requires_unauthentication)])
+@template(template_file = 'auth/email-reset-password.pt')
+async def get_reset_password():
+    return await get_reset_password_viewmodel()
+
+async def get_reset_password_viewmodel():
+    return await ViewModel()
+
+@router.post('/auth/reset-password', dependencies = [Depends(requires_unauthentication)])
+@template(template_file = 'auth/email-reset-password.pt')
+async def reset_password(
+    request: Request, 
+    session: Annotated[AsyncSession, Depends(get_db_session)]
+):
+    vm = await reset_password_viewmodel(request, session)
+
+    if vm.error:
+        return vm
+
+    return vm
+
+async def reset_password_viewmodel(
+    request: Request, 
+    session: Annotated[AsyncSession, Depends(get_db_session)]
+):
+    form_data = await request.form()
+
+    vm = await ViewModel(
+        email = form_field_as_str(form_data, 'email')
+    )
+
+    if user:= await user_service.get_user_by_email(vm.email, session):
+        await send_reset_password_email([vm.email], user, session)
+        vm.success, vm.success_msg = True, 'E-mail enviado'
+    else:
+        vm.error, vm.error_msg = True, 'E-mail inválido.'
+
+    return vm
+
+@router.get('/auth/update-password', dependencies = [Depends(requires_unauthentication)])
+@template(template_file = 'auth/update-password.pt')
+async def get_update_password(token: str, session: Annotated[AsyncSession, Depends(get_db_session)]):
+    return await get_update_password_viewmodel(token, session)
+
+async def get_update_password_viewmodel(token: str, session: Annotated[AsyncSession, Depends(get_db_session)]):
+    hashed_token = hash_recovery_token(token)
+
+    if user:= await user_service.get_user_by_recovery_token(hashed_token, session):
+        if datetime.now() > datetime.strptime(user.recovery_token_time, '%Y-%m-%d %H:%M:%S.%f'):
+            template = PageTemplateFile('./templates/auth/email-reset-password.pt')
+            vm = await ViewModel(
+                error = True,
+                error_msg = 'Token expirado, reinicie o processo.'
+            )
+            content = template(**vm)
+            return responses.HTMLResponse(content, status_code = status.HTTP_200_OK)
+
+    return await ViewModel(
+        recovery_token = token
+    )
+
+@router.post('/auth/update-password', dependencies = [Depends(requires_unauthentication)])
+@template(template_file = 'auth/update-password.pt')
+async def update_password(
+    request: Request,
+    token: str,
+    session: Annotated[AsyncSession, Depends(get_db_session)]
+):
+    vm = await update_password_viewmodel(request, token, session)
+    
+    if vm.error:
+        return vm
+    
+    template = PageTemplateFile('./templates/auth/sign-in.pt')
+    vm.email = ''
+    vm.password = ''
+    content = template(**vm)
+    return responses.HTMLResponse(content, status_code = status.HTTP_200_OK)
+
+async def update_password_viewmodel(
+    request: Request,
+    token: str,
+    session: Annotated[AsyncSession, Depends(get_db_session)]
+):
+    form_data = await request.form()
+    vm = await ViewModel(
+        new_password = form_field_as_str(form_data, 'password'),
+        confirm_new_password = form_field_as_str(form_data, 'confirm-password'),
+    )
+
+    hashed_token = hash_recovery_token(token)
+    
+    if not is_valid_password(vm.new_password) or not is_valid_password(vm.confirm_new_password):
+        vm.error, vm.error_msg = True, 'Password inválida.'
+    elif vm.new_password != vm.confirm_new_password:
+        vm.error, vm.error_msg = True, 'Passwords não correspondem.'
+
+    if not vm.error:
+        if user:= await user_service.get_user_by_recovery_token(hashed_token, session):
+            new_salt = uuid4().hex
+            new_hashed_password = hash_password(vm.new_password + new_salt)
+            await user_service.update_user_password(user, new_hashed_password, new_salt, session)
+            vm.success, vm.success_msg = True, 'Senha alterada com sucesso. Faça login para comprar e vender.'
+        
+    return vm
