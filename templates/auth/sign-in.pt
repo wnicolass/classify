@@ -35,7 +35,7 @@
         <div class="page_banner_content">
           <h3 class="title">Sign In</h3>
           <ul class="breadcrumb">
-            <li><a href="/home/index">Home</a></li>
+            <li><a href="/">Home</a></li>
             <li>Sign In</li>
           </ul>
         </div>
