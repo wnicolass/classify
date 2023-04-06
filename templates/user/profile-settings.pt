@@ -9,10 +9,10 @@
       style="background-image: url(/public/assets/images/page-banner.jpg)">
       <div class="container">
         <div class="page_banner_content">
-          <h3 class="title">Profile Settings</h3>
+          <h3 class="title">Definições de Perfil</h3>
           <ul class="breadcrumb">
-            <li><a href="/home/index">Home</a></li>
-            <li>Profile Settings</li>
+            <li><a href="/">Home</a></li>
+            <li>Definições de Perfil</li>
           </ul>
         </div>
       </div>
@@ -31,50 +31,50 @@
           <div class="col-lg-9">
             <div class="post_form mt-50">
               <div class="post_title">
-                <h5 class="title">Profile Settings</h5>
+                <h5 class="title">Definições de Perfil</h5>
               </div>
               <form action="#">
                 <div class="row">
                   <div class="col-md-6">
                     <div class="single_form">
-                      <input type="text" placeholder="First Name" />
+                      <input type="text" placeholder="Primeiro Nome" />
                     </div>
                   </div>
                   <div class="col-md-6">
                     <div class="single_form">
-                      <input type="text" placeholder="Last Name" />
+                      <input type="text" placeholder="Último Nome" />
                     </div>
                   </div>
                   <div class="col-md-6">
                     <div class="single_form">
-                      <input type="email" placeholder="E-mail Address" />
+                      <input type="email" placeholder="Endereço de Email" />
                     </div>
                   </div>
                   <div class="col-md-6">
                     <div class="single_form">
-                      <input type="text" placeholder="Phone Number" />
+                      <input type="text" placeholder="Número Telemóvel" />
                     </div>
                   </div>
                   <div class="col-md-6">
                     <div class="single_form">
-                      <input type="password" placeholder="New Password" />
+                      <input type="password" placeholder="Nova Password" />
                     </div>
                   </div>
                   <div class="col-md-6">
                     <div class="single_form">
-                      <input type="password" placeholder="Confirm Password" />
+                      <input type="password" placeholder="Confirma Password" />
                     </div>
                   </div>
                   <div class="col-md-6">
                     <div class="single_form">
                       <input type="checkbox" name="checkbox" id="checkbox" />
                       <label for="checkbox"></label>
-                      <span>Subscribe me to Newsletter</span>
+                      <span>Subscrever Newsletter</span>
                     </div>
                   </div>
                   <div class="col-md-6">
                     <div class="single_form">
-                      <button class="main-btn">Update</button>
+                      <button class="main-btn">Confirmar Alterações</button>
                     </div>
                   </div>
                 </div>

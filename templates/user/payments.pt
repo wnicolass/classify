@@ -9,10 +9,10 @@
       style="background-image: url(/public/assets/images/page-banner.jpg)">
       <div class="container">
         <div class="page_banner_content">
-          <h3 class="title">Payments</h3>
+          <h3 class="title">Pagamentos</h3>
           <ul class="breadcrumb">
-            <li><a href="/home/index">Home</a></li>
-            <li>Payments</li>
+            <li><a href="/">Home</a></li>
+            <li>Pagamentos</li>
           </ul>
         </div>
       </div>
@@ -32,7 +32,7 @@
           <div class="col-lg-9">
             <div class="payments_content mt-50">
               <div class="post_title">
-                <h5 class="title">Payments</h5>
+                <h5 class="title">Pagamentos</h5>
               </div>
               <form action="#">
                 <div class="row">

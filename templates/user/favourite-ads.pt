@@ -9,10 +9,10 @@
       style="background-image: url(/public/assets/images/page-banner.jpg)">
       <div class="container">
         <div class="page_banner_content">
-          <h3 class="title">My Favorites</h3>
+          <h3 class="title">Favoritos</h3>
           <ul class="breadcrumb">
-            <li><a href="/home/index">Home</a></li>
-            <li>My Favorites</li>
+            <li><a href="/">Home</a></li>
+            <li>Favoritos</li>
           </ul>
         </div>
       </div>
@@ -32,7 +32,7 @@
           <div class="col-lg-9">
             <div class="my_ads mt-50">
               <div class="post_title">
-                <h5 class="title">My Favorites</h5>
+                <h5 class="title">Favoritos</h5>
               </div>
               <div class="my_ads_menu">
                 <ul class="ads_menu">
@@ -50,12 +50,12 @@
                           <label for="checkbox1"></label>
                         </div>
                       </th>
-                      <th class="photo">Photo</th>
-                      <th class="title">Title</th>
-                      <th class="category">Category</th>
-                      <th class="status">Ad Status</th>
-                      <th class="price">Price</th>
-                      <th class="action">Action</th>
+                      <th class="photo">Foto</th>
+                      <th class="title">Título</th>
+                      <th class="category">Categoria</th>
+                      <th class="status">Status</th>
+                      <th class="price">Preço</th>
+                      <th class="action">Ação</th>
                     </tr>
                   </thead>
                   <tbody>

@@ -9,10 +9,10 @@
       style="background-image: url(/public/assets/images/page-banner.jpg)">
       <div class="container">
         <div class="page_banner_content">
-          <h3 class="title">Offers/Messages</h3>
+          <h3 class="title">Ofertas/Mensagens</h3>
           <ul class="breadcrumb">
-            <li><a href="/home/index">Home</a></li>
-            <li>Offers/Messages</li>
+            <li><a href="/">Home</a></li>
+            <li>Ofertas/Mensagens</li>
           </ul>
         </div>
       </div>
@@ -31,7 +31,7 @@
           <div class="col-lg-9">
             <div class="offers_messages_content mt-50">
               <div class="post_title">
-                <h5 class="title">Offers/Messages</h5>
+                <h5 class="title">Ofertas</h5>
               </div>
 
               <div class="ads_table table-responsive mt-30">
@@ -44,11 +44,11 @@
                           <label for="checkbox1"></label>
                         </div>
                       </th>
-                      <th class="photo">Photo</th>
-                      <th class="title">Title</th>
-                      <th class="category">Category</th>
-                      <th class="price">Price</th>
-                      <th class="action">Action</th>
+                      <th class="photo">Foto</th>
+                      <th class="title">Título</th>
+                      <th class="category">Categoria</th>
+                      <th class="price">Preço</th>
+                      <th class="action">Ação</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -311,7 +311,7 @@
                   <div class="col-md-8">
                     <div class="inbox_massage">
                       <div class="post_title">
-                        <h5 class="title">Chat Messages</h5>
+                        <h5 class="title">Chat Classify</h5>
                       </div>
                       <div class="inbox_massage_wrapper">
                         <div class="incoming_msg d-flex">
