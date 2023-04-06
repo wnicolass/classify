@@ -13,7 +13,7 @@
         <div class="page_banner_content">
           <h3 class="title">Pricing</h3>
           <ul class="breadcrumb">
-            <li><a href="/home/index">Home</a></li>
+            <li><a href="/">Home</a></li>
             <li>Pricing</li>
           </ul>
         </div>
@@ -35,20 +35,21 @@
                   alt="Icon"
                 />
               </div>
-              <div class="pricing_title">
-                <h4 class="title">Beginers</h4>
-                <p>Lorem ipsum dolor sit amet, consetetur.</p>
+            <div class="pricing_title">
+                <h4 class="title">Básico</h4>
+                <p>Anúncio Gratuito</p>
               </div>
               <div class="pricing_content">
                 <p>
-                  Lorem ipsum dolor. Sit amet, consetetur dost. sadipscing
-                  elitr, sed. Diam nonumy eirmod. Tempor invidunt ut labore. Pet
-                  dolore magna. Aliquyam erat iamvoluptua.
+                  Com o nosso plano básico gratuito, pode criar e publicar um
+                  anúncio para vender os seus produtos ou serviços. 
+                  O anúncio será exibido nos resultados de pesquisa para os
+                  utilizadores relevantes. Comece hoje mesmo e alcance novos clientes.
                 </p>
-                <span class="price">$0.00</span>
+                <span class="price">FREE</span>
               </div>
               <div class="pricing_btn">
-                <a href="#" class="main-btn">View all Ads</a>
+                <a href="#" class="main-btn">Ver Mais</a>
               </div>
             </div>
           </div>
@@ -61,19 +62,19 @@
                 />
               </div>
               <div class="pricing_title">
-                <h4 class="title">Standard</h4>
-                <p>Lorem ipsum dolor sit amet, consetetur.</p>
+                <h4 class="title">Profissional</h4>
+                <p>Aumente a visibilidade do seu anúncio</p>
               </div>
               <div class="pricing_content">
                 <p>
-                  Lorem ipsum dolor. Sit amet, consetetur dost. sadipscing
-                  elitr, sed. Diam nonumy eirmod. Tempor invidunt ut labore. Pet
-                  dolore magna. Aliquyam erat iamvoluptua.
+                  Com o nosso plano profissional, pode publicar um anúncio no
+                  topo dos resultados de pesquisa. Isso aumentará
+                  as suas hipóteses de vendas.
                 </p>
-                <span class="price">$0.00</span>
+                <span class="price">$5.99</span>
               </div>
               <div class="pricing_btn">
-                <a href="#" class="main-btn main-btn-2">View all Ads</a>
+                <a href="#" class="main-btn main-btn-2">Ver Mais</a>
               </div>
             </div>
           </div>
@@ -87,18 +88,18 @@
               </div>
               <div class="pricing_title">
                 <h4 class="title">Premium</h4>
-                <p>Lorem ipsum dolor sit amet, consetetur.</p>
+                <p>Máxima visibilidade do seu Anúncio</p>
               </div>
               <div class="pricing_content">
                 <p>
-                  Lorem ipsum dolor. Sit amet, consetetur dost. sadipscing
-                  elitr, sed. Diam nonumy eirmod. Tempor invidunt ut labore. Pet
-                  dolore magna. Aliquyam erat iamvoluptua.
+                  Com o nosso plano premium, o seu anúncio terá
+                  máxima visibilidade no topo dos resultados de pesquisa
+                  e como anúncio featured. Aumente significativamente as suas hipóteses de vendas.
                 </p>
-                <span class="price">$0.00</span>
+                <span class="price">$10.99</span>
               </div>
               <div class="pricing_btn">
-                <a href="#" class="main-btn">View all Ads</a>
+                <a href="#" class="main-btn">Ver Mais</a>
               </div>
             </div>
           </div>

@@ -10,10 +10,10 @@
     >
       <div class="container">
         <div class="page_banner_content">
-          <h3 class="title">Privacy Setting</h3>
+          <h3 class="title">Definições de Privacidade</h3>
           <ul class="breadcrumb">
-            <li><a href="/home/index">Home</a></li>
-            <li>Privacy Setting</li>
+            <li><a href="/">Home</a></li>
+            <li>Definições de Privacidade</li>
           </ul>
         </div>
       </div>
@@ -33,13 +33,13 @@
           <div class="col-lg-9">
             <div class="privacy_setting_content mt-50">
               <div class="post_title">
-                <h5 class="title">Privacy Setting</h5>
+                <h5 class="title">Definições de Privacidade</h5>
               </div>
               <div class="row">
                 <div class="col-md-6">
                   <div class="privacy_list mt-30">
                     <div class="privacy_title">
-                      <h5 class="title">Payment Method</h5>
+                      <h5 class="title">Opções de Privacidade</h5>
                     </div>
                     <div class="privacy_list_wrapper">
                       <ul>
@@ -55,7 +55,7 @@
                               <label for="checkbox1"></label>
                             </div>
                             <div class="list_content">
-                              <p>Make my profile photo public</p>
+                              <p>Tornar a minha foto de perfil pública</p>
                             </div>
                           </div>
                         </li>
@@ -66,12 +66,12 @@
                                 type="checkbox"
                                 checked=""
                                 name="radio"
-                                id="checkbox1"
+                                id="checkbox2"
                               />
-                              <label for="checkbox1"></label>
+                              <label for="checkbox2"></label>
                             </div>
                             <div class="list_content">
-                              <p>I want to receive monthly newsletter</p>
+                              <p>Desejo receber Newsletter mensais</p>
                             </div>
                           </div>
                         </li>
@@ -82,19 +82,19 @@
                                 type="checkbox"
                                 checked=""
                                 name="radio"
-                                id="checkbox1"
+                                id="checkbox3"
                               />
-                              <label for="checkbox1"></label>
+                              <label for="checkbox3"></label>
                             </div>
                             <div class="list_content">
                               <p>
-                                I want to receive e-mail notifications of
-                                offers/messages
+                                Desejo receber notificações por e-mail 
+                                de ofertas/mensagens
                               </p>
                             </div>
                           </div>
                         </li>
-                        <li>
+                        <!-- <li>
                           <div class="single_privacy_list">
                             <div class="list_checkbox">
                               <input
@@ -112,7 +112,7 @@
                               </p>
                             </div>
                           </div>
-                        </li>
+                        </li> -->
                         <li>
                           <div class="single_privacy_list">
                             <div class="list_checkbox">
@@ -120,13 +120,13 @@
                                 type="checkbox"
                                 checked=""
                                 name="radio"
-                                id="checkbox1"
+                                id="checkbox4"
                               />
-                              <label for="checkbox1"></label>
+                              <label for="checkbox4"></label>
                             </div>
                             <div class="list_content">
                               <p>
-                                Enable offers/messages option in all my ads Post
+                                Habilitar a opção de mensagens em todos os meus anúncios
                               </p>
                             </div>
                           </div>
