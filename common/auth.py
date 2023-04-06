@@ -81,9 +81,9 @@ class HTTPUnauthorizedAccess(HTTPException):
 class HTTPUnauthenticatedOnly(HTTPUnauthorizedAccess):
     pass
 
-class HTTPInvalidToken(HTTPException):
-    def __init__(self, *args, **kwargs):
-            super().__init__(status_code = status.HTTP_400_BAD_REQUEST, *args, **kwargs)
+class InvalidToken(Exception):
+    def __init__(self, user_id):
+        self.user_id = user_id
 
 async def requires_unauthentication():
     if await get_current_auth_user():
