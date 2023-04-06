@@ -1,5 +1,6 @@
-from enum import Enum
 import os
+import secrets
+from enum import Enum
 from typing import List
 from dotenv import (
     load_dotenv, 
@@ -13,7 +14,11 @@ from fastapi_mail import FastMail, MessageSchema, ConnectionConfig
 from pydantic import EmailStr
 from chameleon import PageTemplateFile
 from models.user import UserLoginData
-from services.user_service import set_email_confirmation_token
+from services.user_service import (
+    set_email_confirmation_token,
+    set_user_recovery_token
+)
+from common.auth import hash_recovery_token
 
 load_dotenv(find_dotenv())
 
@@ -50,7 +55,7 @@ async def send_email(
     )
 
     message = MessageSchema(
-        subject = 'Classify Account Verification',
+        subject = 'Classify Verificação de Conta',
         recipients = email,
         body = content,
         subtype = 'html'
@@ -65,6 +70,32 @@ def create_email_token(payload: dict):
         os.getenv('EMAIL_TOKEN_SECRET'), 
         algorithm = os.getenv('EMAIL_TOKEN_ALGO')
     )
+
+async def send_reset_password_email(
+    email: List[EmailStr], 
+    user: UserLoginData, 
+    session: AsyncSession
+):
+    pt_tz = timezone('Portugal')
+    recovery_token = secrets.token_urlsafe(64)
+    recovery_token_time = datetime.now(tz = pt_tz) + timedelta(minutes = 1)
+
+    await set_user_recovery_token(user, hash_recovery_token(recovery_token), recovery_token_time, session)
+
+    template = PageTemplateFile('./templates/auth/email-password.pt')
+    content = template(
+        recovery_token = recovery_token
+    )
+
+    message = MessageSchema(
+        subject = 'Classify Redefinição de Senha',
+        recipients = email,
+        body = content,
+        subtype = 'html'
+    )
+
+    fm = FastMail(mail_config)
+    await fm.send_message(message = message)
 
 class EmailValidationStatus(Enum):
     NOT_CONFIRMED = 1
