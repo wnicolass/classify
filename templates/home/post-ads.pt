@@ -2,6 +2,9 @@
   <div metal:fill-slot="title" tal:omit-tag="True">
     <title> Publicar Anúncio | Classify</title>
   </div>
+  <__additional_script__ metal:fill-slot="additional_script" tal:omit-tag="True">
+    <script src="/public/scripts/get-subcategories.js" defer></script>
+  </__additional_script__>
   <div metal:fill-slot="content" tal:omit-tag="True">
 
     <div
@@ -39,18 +42,17 @@
                   <input type="text" placeholder="Título do Anúncio" />
                 </div>
                 <div class="single_form">
-                  <select>
+                  <select id="categories-select">
                     <option value="none">Seleciona a Categoria</option>
                     <__repeat tal:repeat="category all_categories" tal:omit-tag="True">
-                    <option value="none">${category.category_name}</option>
+                    <option value="${category.id}">${category.category_name}</option>
                     </__repeat>
                   </select>
                 </div>
                 <!--TODO-->
                 <div class="single_form">
-                  <select>
+                  <select id="subcategories-select">
                     <option value="none">Seleciona a SubCategoria</option>
-                    <option value="none"></option>
                   </select>
                 </div>
                 <!--TODO-->
