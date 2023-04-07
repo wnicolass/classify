@@ -41,10 +41,3 @@ async def contact():
 @template()
 async def faq():
     return await ViewModel()
-
-@router.get('/home/post-ads', dependencies = [Depends(requires_authentication)])
-@template('home/post-ads.pt')
-async def post_ads(session: Annotated[AsyncSession, Depends(get_db_session)]):
-    return await ViewModel(
-        all_categories = await category_service.get_all_categories(session)
-    )
