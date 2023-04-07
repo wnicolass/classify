@@ -29,7 +29,7 @@ from common.auth import (
     set_auth_cookie,
     delete_auth_cookie,
     requires_unauthentication,
-    HTTPInvalidToken
+    InvalidToken
 )
 from common.email import (send_email, EmailValidationStatus, send_reset_password_email)
 from services import user_service
@@ -60,8 +60,9 @@ async def sign_up(
     if vm.error:
         return vm
     
-    response = responses.RedirectResponse(url = '/', status_code = status.HTTP_302_FOUND)
-    return response
+    template = PageTemplateFile('./templates/auth/email-sent.pt')
+    content = template(**vm)
+    return responses.HTMLResponse(content, status_code = status.HTTP_200_OK)
 
 async def post_sign_up_viewmodel(
     request: Request, 
@@ -118,8 +119,22 @@ async def post_sign_up_viewmodel(
             session
         )
         bg_task.add_task(send_email, [vm.email], user, session)
+        vm.user = user
 
     return vm
+
+@router.patch('/auth/sign-up/resend-email/{user_id}', status_code = status.HTTP_200_OK)
+async def resend_verification_email(
+    user_id: int,
+    session: Annotated[AsyncSession, Depends(get_db_session)]
+):
+    user = await user_service.get_user_by_id(user_id, session)
+
+    if not user:
+        raise HTTPException(status_code = status.HTTP_404_NOT_FOUND, detail = 'User not found.')
+    
+    await send_email([user.email_addr], user, session)
+    return {'message': 'Email reenviado com sucesso.'}
 
 @router.get('/verification', dependencies = [Depends(requires_unauthentication)])
 async def email_verification(
@@ -133,14 +148,16 @@ async def email_verification(
 
     is_token_expired = datetime.now() > datetime.strptime(user.confirm_token_time, '%Y-%m-%d %H:%M:%S.%f')
     if user and is_token_expired:
-        raise HTTPInvalidToken(detail = 'Invalid or expired token.')
+        raise InvalidToken(user_id = user.user_id)
     
     email_sent = user.email_validation_status_id == EmailValidationStatus.EMAIL_SENT.value
     if not user.is_active and email_sent:
         await user_service.update_user_email_validation_status(user, session)
 
         template = PageTemplateFile('./templates/auth/email-verified.pt')
-        vm = await ViewModel()
+        vm = await ViewModel(
+            user = user
+        )
         content = template(**vm)
         return responses.HTMLResponse(content, status_code = status.HTTP_200_OK)
 

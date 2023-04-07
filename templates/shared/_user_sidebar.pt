@@ -3,7 +3,7 @@
               <div class="profile_user">
                 <div class="user_author d-flex align-items-center">
                   <div class="author">
-                    <img src="/public/assets/images/author-1.jpg" alt="" />
+                    <img src="${profile_image}" alt="User" />
                   </div>
                   <div class="user_content media-body">
                     <h6 class="author_name">${username}</h6>

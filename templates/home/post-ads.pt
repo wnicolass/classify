@@ -9,10 +9,10 @@
       style="background-image: url(/public/assets/images/page-banner.jpg)">
       <div class="container">
         <div class="page_banner_content">
-          <h3 class="title">Post you Ads</h3>
+          <h3 class="title">Publicar Anúncio</h3>
           <ul class="breadcrumb">
             <li><a href="/">Home</a></li>
-            <li>Post you Ads</li>
+            <li>Publicar Anúncio</li>
           </ul>
         </div>
       </div>

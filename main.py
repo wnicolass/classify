@@ -1,6 +1,7 @@
 import typer
 from fastapi import (
     FastAPI,
+    Request,
     responses,
     status
 )
@@ -8,9 +9,9 @@ from fastapi_chameleon import global_init
 from chameleon import PageTemplateFile
 from fastapi.staticfiles import StaticFiles
 from common.auth import (
-    HTTPInvalidToken,
     HTTPUnauthenticatedOnly, 
-    HTTPUnauthorizedAccess
+    HTTPUnauthorizedAccess,
+    InvalidToken
 )
 from common.viewmodel import ViewModel
 from config.database import create_metadata
@@ -113,9 +114,10 @@ def config_exception_handlers():
         content = template(**vm)
         return responses.HTMLResponse(content, status_code = status.HTTP_500_INTERNAL_SERVER_ERROR)
     
-    async def invalid_token_handler(*_, **__):
+    async def invalid_token_handler(request: Request, exception: InvalidToken):
         template = PageTemplateFile('./templates/errors/invalid-token.pt')
         vm = await ViewModel()
+        vm.user_id = exception.user_id
         content = template(**vm)
         return responses.HTMLResponse(content, status_code = status.HTTP_400_BAD_REQUEST)
     
@@ -125,7 +127,7 @@ def config_exception_handlers():
     app.add_exception_handler(HTTPUnauthorizedAccess, unauthorized_access_handler)
     app.add_exception_handler(status.HTTP_404_NOT_FOUND, unauthorized_access_handler)
     app.add_exception_handler(HTTPUnauthenticatedOnly, unauthenticated_only_area_handler)
-    app.add_exception_handler(HTTPInvalidToken, invalid_token_handler)
+    app.add_exception_handler(InvalidToken, invalid_token_handler)
     app.add_exception_handler(status.HTTP_500_INTERNAL_SERVER_ERROR, internal_server_error_handler)
 
 if __name__ == '__main__':
