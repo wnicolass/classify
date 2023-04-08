@@ -7,6 +7,8 @@ class ViewModel(dict):
     async def __init__(self, *args, **kargs):
         user = await get_current_auth_user()
         all = {
+            'success': None,
+            'success_msg': None,
             'error': None,
             'error_msg': None,
             'user_id': user.user_id if user else None,

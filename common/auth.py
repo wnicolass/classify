@@ -23,6 +23,7 @@ load_dotenv(find_dotenv())
 hash_context = CryptContext(schemes = ['bcrypt'], deprecated = 'auto')
 SECRET = os.getenv('COOKIE_SECRET')
 GOOGLE_SECRET = os.getenv('GOOGLE_TOKEN_SECRET')
+RECOVERY_TOKEN_SECRET = os.getenv('RECOVERY_TOKEN_SECRET')
 
 def check_password(password: str, hashed_password: str) -> bool:
     return hash_context.verify(password, hashed_password)
@@ -50,6 +51,9 @@ def hash_cookie_value(cookie_value: str) -> str:
 
 def hash_google_id(sub: str) -> str:
     return sha512(f'{sub}{GOOGLE_SECRET}'.encode('utf-8')).hexdigest()
+
+def hash_recovery_token(token: str) -> str:
+    return sha512(f'{token}{RECOVERY_TOKEN_SECRET}'.encode('utf-8')).hexdigest()
 
 def get_auth_from_cookie(request: Request) -> int | None:
     if not (cookie_value:= request.cookies.get(os.getenv('COOKIE_NAME'))):

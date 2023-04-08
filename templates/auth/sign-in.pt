@@ -88,7 +88,7 @@
                       <span>Keep me logged in</span>
                     </div>
                     <div class="sign_forgot">
-                      <a href="#">Forgot Password?</a>
+                      <a href="/auth/reset-password">Esqueceu sua senha?</a>
                     </div>
                   </div>
                   <div class="single_form">

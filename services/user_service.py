@@ -26,7 +26,18 @@ async def set_email_confirmation_token(user_id: int, token: str, expiration_time
     user.confirm_token = token
     user.confirm_token_time = expiration_time
     await session.commit()
-    
+
+async def set_user_recovery_token(user: UserLoginData, recovery_token_hash: str, recovery_token_time: datetime, session: AsyncSession):
+    user = await get_user_by_id(user.user_id, session)
+    user.recovery_token = recovery_token_hash
+    user.recovery_token_time = recovery_token_time
+    await session.commit()
+
+async def get_user_by_recovery_token(token: str, session: AsyncSession)-> UserLoginData:
+    result = await session.execute(select(UserLoginData).where(UserLoginData.recovery_token == token))
+    user = result.scalar_one_or_none()
+
+    return user
 
 async def get_user_by_email_token(token: str, session: AsyncSession) -> UserLoginData:
     result = await session.execute(select(UserLoginData).where(UserLoginData.confirm_token == token))
@@ -42,6 +53,11 @@ async def get_user_by_google_hash(token: str, session: AsyncSession) -> UserLogi
 async def update_user_email_validation_status(user: UserLoginData, session: AsyncSession):
     user.email_validation_status_id = 3
     user.user.is_active = 1
+    await session.commit()
+
+async def update_user_password(user: UserLoginData, new_hashed_password: str, new_password_salt: str, session: AsyncSession):
+    user.password_hash = new_hashed_password
+    user.password_salt = new_password_salt
     await session.commit()
 
 async def create_user(username: str, phone_number: str, birth_date: str, is_active: int, session: AsyncSession, image_url: str | None = None) -> UserAccount:
