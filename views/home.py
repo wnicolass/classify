@@ -7,7 +7,6 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from fastapi_chameleon import template
 from common.fastapi_utils import get_db_session
 from common.viewmodel import ViewModel
-from common.auth import requires_authentication
 from services import category_service
 
 router = APIRouter()
