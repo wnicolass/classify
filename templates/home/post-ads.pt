@@ -4,6 +4,7 @@
   </div>
   <__additional_script__ metal:fill-slot="additional_script" tal:omit-tag="True">
     <script src="/public/scripts/get-subcategories.js" defer></script>
+    <script src="/public/scripts/get-cities.js" defer></script>
   </__additional_script__>
   <div metal:fill-slot="content" tal:omit-tag="True">
 
@@ -91,28 +92,23 @@
                 </div>
                
                 <div class="single_form">
-                  <select>
+                  <select id='countries-select'>
                     <option value="none">Seleciona o País</option>
-                    <option value="none">Portugal?</option>
-                    <option value="none">Country 2</option>
-                    <option value="none">Country 3</option>
-                    <option value="none">Country 4</option>
-                    <option value="none">Country 5</option>
-                    <option value="none">Potato</option>
+                    <__repeat tal:repeat="country all_countries" tal:omit-tag="True">
+                    <option value="${country.country}">${country.country}</option>
+                    </__repeat>
                   </select>
                 </div>
                 
                 <div class="single_form">
-                  <select>
-                    <option value="none">Select City</option>
-                    <option value="none">Select City</option>
-                    <option value="none">Potato</option>
+                  <select id='cities-select'>
+                    <option value="none">Selecione a Cidade</option>
                   </select>
                 </div>
                 <div class="single_form">
                   <input type="checkbox" name="checkbox" id="checkbox2" />
                   <label for="checkbox2"></label>
-                  <span>I agree to all Terms of Use & Posting Rules</span>
+                  <span>Concodo com os termos de uso e Políticas de Privacidade.</span>
                 </div>
                 <div class="single_form">
                   <button class="main-btn">Publicar Anúncio</button>
