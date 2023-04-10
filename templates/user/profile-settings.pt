@@ -37,12 +37,7 @@
                 <div class="row">
                   <div class="col-md-6">
                     <div class="single_form">
-                      <input type="text" placeholder="Primeiro Nome" />
-                    </div>
-                  </div>
-                  <div class="col-md-6">
-                    <div class="single_form">
-                      <input type="text" placeholder="Último Nome" />
+                      <input type="text" placeholder="Nome" />
                     </div>
                   </div>
                   <div class="col-md-6">
@@ -57,19 +52,31 @@
                   </div>
                   <div class="col-md-6">
                     <div class="single_form">
+                      <input type="text" placeholder="Data de Nascimento" />
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="single_form">
+                      <button class="main-btn">Confirmar Alterações</button>
+                    </div>
+                  </div>
+                </div>
+              </form>
+            </div>
+            <div class="post_form mt-50">
+              <div class="post_title">
+                <h5 class="title">Definições de Password</h5>
+              </div>
+              <form action="#">
+                <div class="row">
+                  <div class="col-md-6">
+                    <div class="single_form">
                       <input type="password" placeholder="Nova Password" />
                     </div>
                   </div>
                   <div class="col-md-6">
                     <div class="single_form">
                       <input type="password" placeholder="Confirma Password" />
-                    </div>
-                  </div>
-                  <div class="col-md-6">
-                    <div class="single_form">
-                      <input type="checkbox" name="checkbox" id="checkbox" />
-                      <label for="checkbox"></label>
-                      <span>Subscrever Newsletter</span>
                     </div>
                   </div>
                   <div class="col-md-6">
