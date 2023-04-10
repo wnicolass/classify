@@ -35,6 +35,14 @@ is_valid_username = make_test_regex_fn(
     r'^(?!.*\d)(?!.*[~`!@#$%^&*()_\-+={[}\]|\\:;"\'<,>.?/]).*'
 )
 
+is_valid_txt_field = make_test_regex_fn(
+    r'^(?!.*[~`!@#$%^&*()_\-+={[}\]|\\:;"\'<,>.?/]{4,}).*$'
+)
+
+is_valid_price = make_test_regex_fn(
+    r'^(?!0,0\d)(\d{1,6},\d{2})$'
+)
+
 is_valid_phone_number = make_test_regex_fn(
     r'(^(\d\s?){9}$)|(^\+(\d\s?){12}$)'
 )
