@@ -1,3 +1,4 @@
+aiofiles==23.1.0
 aiosmtplib==2.0.1
 anyio==3.6.2
 asyncinit==0.2.4
@@ -36,6 +37,7 @@ jsonschema==4.17.3
 MarkupSafe==2.1.2
 oauthlib==3.2.2
 passlib==1.7.4
+Pillow==9.5.0
 protobuf==4.22.1
 pyasn1==0.4.8
 pyasn1-modules==0.2.8
