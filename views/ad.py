@@ -1,3 +1,4 @@
+import io
 import os
 import sys
 import uuid
@@ -31,6 +32,7 @@ from common.utils import (
     is_valid_phone_number
 )
 from services.user_service import get_user_account_by_id
+from PIL import Image
 
 router = APIRouter()
 
@@ -124,6 +126,7 @@ async def post_ad_viewmodel(request: Request, files: list[UploadFile], session: 
             elif file.content_type not in ('image/jpg', 'image/png', 'image/jpeg') or file_ext not in ['.jpg', '.jpeg', '.png']:
                 vm.error, vm.error_msg = True, 'Apenas imagens do tipo ".png", ".jpg" ou ".jpeg".'
                 break
+            await file.seek(0)
     elif user:= await get_user_account_by_id(vm.user_id, session):
         if not user.phone_number and len(vm.phone) == 0:
             vm.error, vm.error_msg = True, 'Insira um número de telemóvel com o seguinte formato: +351 123 456 789 ou 123 456 789'
@@ -136,28 +139,29 @@ async def post_ad_viewmodel(request: Request, files: list[UploadFile], session: 
             uploads_dir.mkdir()
         vm.files = []
         for file in files:
-            # file.filename = f'{uuid.uuid4()}{file.filename}'
-            async with aiofiles.open(f'{uploads_dir}/{file.filename}', 'wb') as out_file:
-                content = file.file.read()
-                print(len(content))
+            filename = f'{str(uuid.uuid4())}_{file.filename}'
+            file_path = os.path.join('uploads', filename)
+            async with aiofiles.open(file_path, 'wb') as out_file:
+                content = await file.read()
+                vm.files.append({'filename': filename, 'file_path': file_path})
                 await out_file.write(content)
         print(vm)
-        # await ad_service.insert_ad(
-        #     vm.title, 
-        #     int(vm.subcategory), 
-        #     vm.brand,
-        #     vm.authenticity,
-        #     int(vm.condition),
-        #     dec(vm.price.replace(',', '.')),
-        #     bool(vm.is_negotiable),
-        #     vm.description,
-        #     vm.files,
-        #     vm.user_id,
-        #     vm.country,
-        #     vm.city,
-        #     ad_status_id = 2,
-        #     session = session
-        # )
+        await ad_service.insert_ad(
+            vm.title, 
+            int(vm.subcategory), 
+            vm.brand,
+            int(vm.condition),
+            dec(vm.price.replace(',', '.')),
+            bool(vm.is_negotiable),
+            vm.description,
+            vm.files,
+            vm.user_id,
+            vm.country,
+            vm.city,
+            ad_status_id = 2,
+            authenticity = 'Não original' if vm.authenticity == '0' else 'Original',
+            session = session
+        )
 
     return vm
 
