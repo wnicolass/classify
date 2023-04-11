@@ -52,7 +52,7 @@ async def insert_ad_images(ad_id: int, images: List, session: AsyncSession) -> N
 
 
 
-async def insert_ad(title: str, subcategory_id: int, brand: str, authenticity: str, condition_id: int, price: dec, is_negotiable: bool, description: str, images: List, user_id: int, country: str, city: str, ad_status_id: int, session: AsyncSession) -> None:
+async def insert_ad(title: str, subcategory_id: int, brand: str, condition_id: int, price: dec, is_negotiable: bool, description: str, images: List, user_id: int, country: str, city: str, ad_status_id: int, authenticity: str, session: AsyncSession) -> None:
     db_feature_id = await insert_feature(brand, authenticity, condition_id, session)
     db_ad_address_id = await insert_ad_address(country, city, session)
     db_ad = ad.Ad(
