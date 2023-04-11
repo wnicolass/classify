@@ -10,72 +10,37 @@ from common.auth import requires_authentication
 
 router = APIRouter()
 
-@router.get('/user/dashboard')
+@router.get('/user/dashboard', dependencies = [Depends(requires_authentication)])
 @template()
 async def dashboard():
-    vm = await ViewModel()
+    return await ViewModel()
 
-    if not vm.is_logged_in:
-        response = responses.RedirectResponse(url = '/auth/sign-in', status_code = status.HTTP_302_FOUND)
-        return response
-    return vm
-
-@router.get('/user/profile-settings')
+@router.get('/user/profile-settings', dependencies = [Depends(requires_authentication)])
 @template('user/profile-settings.pt')
 async def profile_settings():
-    vm = await ViewModel()
+    return await ViewModel()
 
-    if not vm.is_logged_in:
-        response = responses.RedirectResponse(url = '/auth/sign-in', status_code = status.HTTP_302_FOUND)
-        return response
-    return vm
-
-@router.get('/user/my-ads')
+@router.get('/user/my-ads', dependencies = [Depends(requires_authentication)])
 @template('user/my-ads.pt')
 async def my_ads():
-    vm = await ViewModel()
+    return await ViewModel()
 
-    if not vm.is_logged_in:
-        response = responses.RedirectResponse(url = '/auth/sign-in', status_code = status.HTTP_302_FOUND)
-        return response
-    return vm
-
-@router.get('/user/offermessages')
+@router.get('/user/offermessages', dependencies = [Depends(requires_authentication)])
 @template()
 async def offermessages():
-    vm = await ViewModel()
+    return await ViewModel()
 
-    if not vm.is_logged_in:
-        response = responses.RedirectResponse(url = '/auth/sign-in', status_code = status.HTTP_302_FOUND)
-        return response
-    return vm
-
-@router.get('/user/payments')
+@router.get('/user/payments', dependencies = [Depends(requires_authentication)])
 @template()
 async def payments():
-    vm = await ViewModel()
+    return await ViewModel()
 
-    if not vm.is_logged_in:
-        response = responses.RedirectResponse(url = '/auth/sign-in', status_code = status.HTTP_302_FOUND)
-        return response
-    return vm
-
-@router.get('/user/favourite-ads')
+@router.get('/user/favourite-ads', dependencies = [Depends(requires_authentication)])
 @template('user/favourite-ads.pt')
 async def favourite_ads():
-    vm = await ViewModel()
+    return await ViewModel()
 
-    if not vm.is_logged_in:
-        response = responses.RedirectResponse(url = '/auth/sign-in', status_code = status.HTTP_302_FOUND)
-        return response
-    return vm
-
-@router.get('/user/privacy-setting')
+@router.get('/user/privacy-setting', dependencies = [Depends(requires_authentication)])
 @template('user/privacy-setting.pt')
 async def privacy_setting():
-    vm = await ViewModel()
-
-    if not vm.is_logged_in:
-        response = responses.RedirectResponse(url = '/auth/sign-in', status_code = status.HTTP_302_FOUND)
-        return response
-    return vm
+    return await ViewModel()
