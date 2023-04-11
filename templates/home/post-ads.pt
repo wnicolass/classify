@@ -61,9 +61,8 @@
                 <div class="single_form">
                   <select name="authenticity">
                     <option value="none">Seleciona Autenticidade</option>
-                    <__repeat tal:repeat="feature all_features" tal:omit-tag="True">
-                    <option value="${feature.authenticity}">${feature.authenticity}</option>
-                    </__repeat>
+                    <option value="0">Não original</option>
+                    <option value="1">Original</option>
                   </select>
                 </div>
                 <div class="single_form">
