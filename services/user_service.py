@@ -50,6 +50,11 @@ async def get_user_by_google_hash(token: str, session: AsyncSession) -> UserLogi
     user_ext_data = result.scalar_one_or_none()
     return user_ext_data
 
+async def update_user_details(user: UserAccount, new_username: str, new_phone_number: str, new_birth_date: str, session: AsyncSession):
+    user.username = new_username
+    user.phone_number = new_phone_number
+    await session.commit()
+
 async def update_user_email_validation_status(user: UserLoginData, session: AsyncSession):
     user.email_validation_status_id = 3
     user.user.is_active = 1
