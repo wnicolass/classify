@@ -97,7 +97,7 @@ async def requires_unauthentication():
 async def requires_authentication():
     if not await get_current_auth_user():
         raise HTTPException(
-            status_code=status.HTTP_307_TEMPORARY_REDIRECT,
+            status_code=status.HTTP_303_SEE_OTHER,
             headers={'Location': '/auth/sign-in'})
     
 async def requires_authentication_secure():
