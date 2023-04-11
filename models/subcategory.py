@@ -28,6 +28,10 @@ class Subcategory(Base):
     category = relationship("Category", back_populates = 'subcategories')
     field_definitions = relationship('FieldDefinition', secondary = subcategory_field_definition, back_populates = 'subcategories')
 
+    @property
+    def count_total_ads(self) -> int:
+        return len(self.ads)
+
 class FieldDefinition(Base):
     __tablename__ = "FieldDefinition"
 
