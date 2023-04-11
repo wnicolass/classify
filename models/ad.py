@@ -22,7 +22,7 @@ class Ad(Base):
     __tablename__ = 'Ad'
 
     id: int = Column(Integer, primary_key = True, autoincrement = True)
-    title: str = Column(String(200), nullable = False, unique = True)
+    title: str = Column(String(200), nullable = False)
     ad_description: str = Column(String(1000), nullable = False)
     price: dec = Column(DECIMAL(8,2), nullable = False)
     views: int = Column(Integer, default = 0, nullable = False)
