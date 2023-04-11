@@ -89,7 +89,7 @@ class UserLoginDataExt(Base):
     user_id: int = Column(Integer, ForeignKey('UserAccount.user_id'), nullable = False)
 
     ext_provider = relationship('ExternalProvider', back_populates = 'user_login_data_ext')
-    user = relationship('UserAccount', back_populates = 'user_login_data_ext')
+    user = relationship('UserAccount', back_populates = 'user_login_data_ext', lazy = 'joined')
 
 class HashAlgo(Base):
     __tablename__ = 'HashAlgo'
