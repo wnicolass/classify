@@ -1,8 +1,11 @@
 import os
 import sys
+import uuid
 import aiofiles
 import httpx
 import pathlib
+from datetime import datetime
+from decimal import Decimal as dec
 from typing import Annotated, List
 from fastapi import (
     APIRouter, 
@@ -131,10 +134,30 @@ async def post_ad_viewmodel(request: Request, files: list[UploadFile], session: 
         uploads_dir = path / 'uploads'
         if not uploads_dir.exists():
             uploads_dir.mkdir()
+        vm.files = []
         for file in files:
+            # file.filename = f'{uuid.uuid4()}{file.filename}'
             async with aiofiles.open(f'{uploads_dir}/{file.filename}', 'wb') as out_file:
                 content = file.file.read()
+                print(len(content))
                 await out_file.write(content)
+        print(vm)
+        # await ad_service.insert_ad(
+        #     vm.title, 
+        #     int(vm.subcategory), 
+        #     vm.brand,
+        #     vm.authenticity,
+        #     int(vm.condition),
+        #     dec(vm.price.replace(',', '.')),
+        #     bool(vm.is_negotiable),
+        #     vm.description,
+        #     vm.files,
+        #     vm.user_id,
+        #     vm.country,
+        #     vm.city,
+        #     ad_status_id = 2,
+        #     session = session
+        # )
 
     return vm
 
