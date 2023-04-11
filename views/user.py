@@ -14,6 +14,7 @@ from common.auth import get_current_auth_user
 from common.fastapi_utils import get_db_session, form_field_as_str
 from sqlalchemy.ext.asyncio import AsyncSession
 from services import user_service
+from models.user import UserAccount
 
 router = APIRouter()
 
@@ -39,21 +40,25 @@ async def profile_settings(
     request: Request,
     session: Annotated[AsyncSession, Depends(get_db_session)]
 ):
-    vm = await profile_settings_viewmodel(request, session)
+    user = await get_current_auth_user()
+    vm = await profile_settings_viewmodel(request, session, user)
     
     if vm.error:
         return vm
     
-    template = PageTemplateFile('./templates/auth/sign-in.pt')
+    template = PageTemplateFile('./templates/user/profile-settings.pt')
+    vm.name = user.username
+    vm.email = ''
+    vm.phone_number = user.phone_number
+    vm.birth_date = user.birth_date
     content = template(**vm)
     return responses.HTMLResponse(content, status_code = status.HTTP_200_OK)
 
 async def profile_settings_viewmodel(
     request: Request, 
-    session: Annotated[AsyncSession, Depends(get_db_session)]
+    session: Annotated[AsyncSession, Depends(get_db_session)],
+    user: UserAccount
 ):
-    user = await get_current_auth_user()
-    
     form_data = await request.form()
     
     vm = await ViewModel(
@@ -63,7 +68,6 @@ async def profile_settings_viewmodel(
     )
     if not vm.error:
         if user:
-            print(form_data)
             await user_service.update_user_details(user, vm.new_username, vm.new_phone_number, vm.new_birth_date, session)
             vm.success, vm.success_msg = True, 'Senha alterada com sucesso. Faça login para comprar e vender.'
     
