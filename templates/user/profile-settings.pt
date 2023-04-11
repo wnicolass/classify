@@ -33,28 +33,42 @@
               <div class="post_title">
                 <h5 class="title">Definições de Perfil</h5>
               </div>
-              <form action="#">
+              <form action="/user/profile-settings" method="POST">
                 <div class="row">
                   <div class="col-md-6">
                     <div class="single_form">
-                      <input type="text" placeholder="Primeiro Nome" />
+                      <input type="text" placeholder="Nome" name="username" value="${name}"/>
                     </div>
                   </div>
                   <div class="col-md-6">
                     <div class="single_form">
-                      <input type="text" placeholder="Último Nome" />
+                      <input type="email" placeholder="Endereço de Email" name="email" value="${email}"/>
                     </div>
                   </div>
                   <div class="col-md-6">
                     <div class="single_form">
-                      <input type="email" placeholder="Endereço de Email" />
+                      <input type="text" placeholder="Número Telemóvel" name="phone_number" value="${phone_number}"/>
                     </div>
                   </div>
                   <div class="col-md-6">
                     <div class="single_form">
-                      <input type="text" placeholder="Número Telemóvel" />
+                      <input type="text" placeholder="Data de Nascimento" name="birth_date" value="${birth_date}"/>
                     </div>
                   </div>
+                  <div class="col-md-6">
+                    <div class="single_form">
+                      <button class="main-btn">Confirmar Alterações</button>
+                    </div>
+                  </div>
+                </div>
+              </form>
+            </div>
+            <div class="post_form mt-50">
+              <div class="post_title">
+                <h5 class="title">Definições de Password</h5>
+              </div>
+              <form action="#">
+                <div class="row">
                   <div class="col-md-6">
                     <div class="single_form">
                       <input type="password" placeholder="Nova Password" />
@@ -63,13 +77,6 @@
                   <div class="col-md-6">
                     <div class="single_form">
                       <input type="password" placeholder="Confirma Password" />
-                    </div>
-                  </div>
-                  <div class="col-md-6">
-                    <div class="single_form">
-                      <input type="checkbox" name="checkbox" id="checkbox" />
-                      <label for="checkbox"></label>
-                      <span>Subscrever Newsletter</span>
                     </div>
                   </div>
                   <div class="col-md-6">

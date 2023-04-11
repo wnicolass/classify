@@ -9,6 +9,7 @@ from fastapi import (
     HTTPException, 
     Request, 
     Response, 
+    responses,
     status
 )
 from passlib.context import CryptContext
@@ -91,8 +92,14 @@ class InvalidToken(Exception):
 
 async def requires_unauthentication():
     if await get_current_auth_user():
-        raise HTTPUnauthenticatedOnly(detail = 'This area requires unauthenticatiion')
+        raise HTTPUnauthenticatedOnly(detail = 'This area requires unauthentication')
     
 async def requires_authentication():
     if not await get_current_auth_user():
-        raise HTTPUnauthorizedAccess(detail = 'This area requires authenticatiion')
+        raise HTTPException(
+            status_code=status.HTTP_303_SEE_OTHER,
+            headers={'Location': '/auth/sign-in'})
+    
+async def requires_authentication_secure():
+    if not await get_current_auth_user():
+        raise HTTPUnauthorizedAccess(detail = 'This area requires authentication')
