@@ -4,9 +4,9 @@ from common.viewmodel import ViewModel
 
 router = APIRouter()
 
-@router.get('/products/product')
+@router.get('/products/products')
 @template()
-async def product():
+async def products():
     return await ViewModel()
 
 @router.get('/products/product-details')

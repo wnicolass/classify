@@ -1,5 +1,5 @@
 from decimal import Decimal as dec
-from typing import List
+from typing import List, Tuple
 from sqlalchemy import func
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
@@ -99,7 +99,7 @@ async def get_ads_by_subcategory(session: AsyncSession, subcategory) -> List[ad.
 
     return ads_by_subcategory
 
-async def get_ads_count_category(session: AsyncSession, category) -> List[str, int]:
+async def get_ads_count_category(session: AsyncSession, category) -> List[List]:
     query = await session.execute(select(Category.category_name, func.count(ad.Ad.id))
             .join(ad.Ad.subcategory)
             .join(Subcategory.category)
