@@ -73,7 +73,6 @@ async def post_ad_viewmodel(request: Request, files: list[UploadFile], session: 
     form_dict = form_data._dict
     vm = await ViewModel(
         title = form_field_as_str(form_dict, 'title'),
-        product_name = 'arroz',
         category = form_field_as_str(form_dict, 'category'),
         subcategory = form_field_as_str(form_dict, 'subcategory'),
         brand = form_field_as_str(form_dict, 'brand'),

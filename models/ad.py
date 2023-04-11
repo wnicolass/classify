@@ -25,7 +25,6 @@ class Ad(Base):
     title: str = Column(String(200), nullable = False, unique = True)
     ad_description: str = Column(String(1000), nullable = False)
     price: dec = Column(DECIMAL(8,2), nullable = False)
-    product_name: str = Column(String(100), nullable = False)
     views: int = Column(Integer, default = 0, nullable = False)
     is_negotiable: int = Column(BIT, nullable = False)
     
