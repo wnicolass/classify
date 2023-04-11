@@ -96,6 +96,7 @@ def config_templates():
 
 def config_routes():
     app.mount('/public', StaticFiles(directory='public'), name='static')
+    app.mount('/uploads', StaticFiles(directory='uploads'), name='static')
     for view in [home, products, user, posts, auth, common, ad]:
         app.include_router(view.router)
 

@@ -1,4 +1,7 @@
 <div metal:use-macro="load: ../shared/_layout.pt">
+<__additional_script__ metal:fill-slot="additional_script" tal:omit-tag="True">
+  <script src="/public/scripts/show-subcategories.js" defer></script>
+</__additional_script__>
   <div metal:fill-slot="title" tal:omit-tag="True">
     <title> Anúncios | Classify</title>
   </div>
@@ -33,347 +36,31 @@
                 </div>
                 <div class="sidebar_categories_content">
                   <div class="accordion" id="accordionExample">
+                  <__repeat tal:repeat="category all_categories" tal:omit-tag="True">
                     <div class="card">
                       <div class="card-header" id="headingOne">
                         <a
-                          href="#"
-                          data-toggle="collapse"
-                          data-target="#collapseOne"
-                          aria-expanded="true"
-                          aria-controls="collapseOne"
-                          ><img
-                            src="/public/assets/images/sidebar_icon/categories-1.svg"
-                            alt="Icon"
-                          />
-                          Women's Clothing (10)</a
+                          style="cursor: pointer"
+                          >
+                          <i class="${category.category_icon}" style="color: #ff4367"></i>
+                          ${category.category_name} (${category.count_total_ads})</a
                         >
                       </div>
 
                       <div
-                        id="collapseOne"
-                        class="collapse show"
-                        aria-labelledby="headingOne"
-                        data-parent="#accordionExample"
-                      >
-                        <div class="card-body">
-                          <ul class="sidebar_categories_list">
-                            <li><a href="#">iPhones</a></li>
-                            <li><a href="#">Feature Phones</a></li>
-                            <li><a href="#">Refurbished Phones</a></li>
-                            <li><a href="#">Mobile Phone Accessories</a></li>
-                            <li><a href="#">Mobile Phone Parts</a></li>
-                            <li><a href="#">Phone Bags & Cases</a></li>
-                            <li><a href="#">Communication Equipment's</a></li>
-                            <li><a href="#">Walkie Talkie</a></li>
-                            <li><a href="#">Walkie Talkie Parts</a></li>
-                          </ul>
-                        </div>
-                      </div>
-                    </div>
-
-                    <div class="card">
-                      <div class="card-header" id="headingTwo">
-                        <a
-                          href="#"
-                          class="collapsed"
-                          data-toggle="collapse"
-                          data-target="#collapseTwo"
-                          aria-expanded="false"
-                          aria-controls="collapseTwo"
-                          ><img
-                            src="/public/assets/images/sidebar_icon/categories-2.svg"
-                            alt="Icon"
-                          />
-                          Men's Clothing (87)</a
-                        >
-                      </div>
-                      <div
-                        id="collapseTwo"
                         class="collapse"
-                        aria-labelledby="headingTwo"
-                        data-parent="#accordionExample"
                       >
                         <div class="card-body">
                           <ul class="sidebar_categories_list">
-                            <li><a href="#">iPhones</a></li>
-                            <li><a href="#">Feature Phones</a></li>
-                            <li><a href="#">Refurbished Phones</a></li>
-                            <li><a href="#">Mobile Phone Accessories</a></li>
-                            <li><a href="#">Mobile Phone Parts</a></li>
-                            <li><a href="#">Phone Bags & Cases</a></li>
-                            <li><a href="#">Communication Equipment's</a></li>
-                            <li><a href="#">Walkie Talkie</a></li>
-                            <li><a href="#">Walkie Talkie Parts</a></li>
+                          <__repeat tal:repeat="subcategory category.subcategories" tal:omit-tag="True">
+                            <li><a href="#">${subcategory.subcategory_name} (${subcategory.count_total_ads})</a></li>
+                          </__repeat>
                           </ul>
                         </div>
                       </div>
                     </div>
-
-                    <div class="card">
-                      <div class="card-header" id="headingThree">
-                        <a
-                          href="#"
-                          class="collapsed"
-                          data-toggle="collapse"
-                          data-target="#collapseThree"
-                          aria-expanded="false"
-                          aria-controls="collapseThree"
-                          ><img
-                            src="/public/assets/images/sidebar_icon/categories-3.svg"
-                            alt="Icon"
-                          />
-                          Telecommunications (25)</a
-                        >
-                      </div>
-                      <div
-                        id="collapseThree"
-                        class="collapse"
-                        aria-labelledby="headingThree"
-                        data-parent="#accordionExample"
-                      >
-                        <div class="card-body">
-                          <ul class="sidebar_categories_list">
-                            <li><a href="#">iPhones</a></li>
-                            <li><a href="#">Feature Phones</a></li>
-                            <li><a href="#">Refurbished Phones</a></li>
-                            <li><a href="#">Mobile Phone Accessories</a></li>
-                            <li><a href="#">Mobile Phone Parts</a></li>
-                            <li><a href="#">Phone Bags & Cases</a></li>
-                            <li><a href="#">Communication Equipment's</a></li>
-                            <li><a href="#">Walkie Talkie</a></li>
-                            <li><a href="#">Walkie Talkie Parts</a></li>
-                          </ul>
-                        </div>
-                      </div>
-                    </div>
-
-                    <div class="card">
-                      <div class="card-header" id="headingFour">
-                        <a
-                          href="#"
-                          class="collapsed"
-                          data-toggle="collapse"
-                          data-target="#collapseFour"
-                          aria-expanded="false"
-                          aria-controls="collapseFour"
-                          ><img
-                            src="/public/assets/images/sidebar_icon/categories-4.svg"
-                            alt="Icon"
-                          />
-                          Cellphones (10078)</a
-                        >
-                      </div>
-                      <div
-                        id="collapseFour"
-                        class="collapse"
-                        aria-labelledby="headingFour"
-                        data-parent="#accordionExample"
-                      >
-                        <div class="card-body">
-                          <ul class="sidebar_categories_list">
-                            <li><a href="#">iPhones</a></li>
-                            <li><a href="#">Feature Phones</a></li>
-                            <li><a href="#">Refurbished Phones</a></li>
-                            <li><a href="#">Mobile Phone Accessories</a></li>
-                            <li><a href="#">Mobile Phone Parts</a></li>
-                            <li><a href="#">Phone Bags & Cases</a></li>
-                            <li><a href="#">Communication Equipment's</a></li>
-                            <li><a href="#">Walkie Talkie</a></li>
-                            <li><a href="#">Walkie Talkie Parts</a></li>
-                          </ul>
-                        </div>
-                      </div>
-                    </div>
-
-                    <div class="card">
-                      <div class="card-header" id="headingFive">
-                        <a
-                          href="#"
-                          class="collapsed"
-                          data-toggle="collapse"
-                          data-target="#collapseFive"
-                          aria-expanded="false"
-                          aria-controls="collapseFive"
-                          ><img
-                            src="/public/assets/images/sidebar_icon/categories-5.svg"
-                            alt="Icon"
-                          />
-                          Computer & Office (597)</a
-                        >
-                      </div>
-                      <div
-                        id="collapseFive"
-                        class="collapse"
-                        aria-labelledby="headingFive"
-                        data-parent="#accordionExample"
-                      >
-                        <div class="card-body">
-                          <ul class="sidebar_categories_list">
-                            <li><a href="#">iPhones</a></li>
-                            <li><a href="#">Feature Phones</a></li>
-                            <li><a href="#">Refurbished Phones</a></li>
-                            <li><a href="#">Mobile Phone Accessories</a></li>
-                            <li><a href="#">Mobile Phone Parts</a></li>
-                            <li><a href="#">Phone Bags & Cases</a></li>
-                            <li><a href="#">Communication Equipment's</a></li>
-                            <li><a href="#">Walkie Talkie</a></li>
-                            <li><a href="#">Walkie Talkie Parts</a></li>
-                          </ul>
-                        </div>
-                      </div>
-                    </div>
-
-                    <div class="card">
-                      <div class="card-header" id="headingSix">
-                        <a
-                          href="#"
-                          class="collapsed"
-                          data-toggle="collapse"
-                          data-target="#collapseSix"
-                          aria-expanded="false"
-                          aria-controls="collapseSix"
-                          ><img
-                            src="/public/assets/images/sidebar_icon/categories-6.svg"
-                            alt="Icon"
-                          />
-                          Consumer Electronics (27)
-                        </a>
-                      </div>
-                      <div
-                        id="collapseSix"
-                        class="collapse"
-                        aria-labelledby="headingSix"
-                        data-parent="#accordionExample"
-                      >
-                        <div class="card-body">
-                          <ul class="sidebar_categories_list">
-                            <li><a href="#">iPhones</a></li>
-                            <li><a href="#">Feature Phones</a></li>
-                            <li><a href="#">Refurbished Phones</a></li>
-                            <li><a href="#">Mobile Phone Accessories</a></li>
-                            <li><a href="#">Mobile Phone Parts</a></li>
-                            <li><a href="#">Phone Bags & Cases</a></li>
-                            <li><a href="#">Communication Equipment's</a></li>
-                            <li><a href="#">Walkie Talkie</a></li>
-                            <li><a href="#">Walkie Talkie Parts</a></li>
-                          </ul>
-                        </div>
-                      </div>
-                    </div>
-
-                    <div class="card">
-                      <div class="card-header" id="headingSeven">
-                        <a
-                          href="#"
-                          class="collapsed"
-                          data-toggle="collapse"
-                          data-target="#collapseSeven"
-                          aria-expanded="false"
-                          aria-controls="collapseSeven"
-                          ><img
-                            src="/public/assets/images/sidebar_icon/categories-7.svg"
-                            alt="Icon"
-                          />
-                          Jewelry & Accessories (92)
-                        </a>
-                      </div>
-                      <div
-                        id="collapseSeven"
-                        class="collapse"
-                        aria-labelledby="headingSeven"
-                        data-parent="#accordionExample"
-                      >
-                        <div class="card-body">
-                          <ul class="sidebar_categories_list">
-                            <li><a href="#">iPhones</a></li>
-                            <li><a href="#">Feature Phones</a></li>
-                            <li><a href="#">Refurbished Phones</a></li>
-                            <li><a href="#">Mobile Phone Accessories</a></li>
-                            <li><a href="#">Mobile Phone Parts</a></li>
-                            <li><a href="#">Phone Bags & Cases</a></li>
-                            <li><a href="#">Communication Equipment's</a></li>
-                            <li><a href="#">Walkie Talkie</a></li>
-                            <li><a href="#">Walkie Talkie Parts</a></li>
-                          </ul>
-                        </div>
-                      </div>
-                    </div>
-
-                    <div class="card">
-                      <div class="card-header" id="headingEight">
-                        <a
-                          href="#"
-                          class="collapsed"
-                          data-toggle="collapse"
-                          data-target="#collapseEight"
-                          aria-expanded="false"
-                          aria-controls="collapseEight"
-                          ><img
-                            src="/public/assets/images/sidebar_icon/categories-8.svg"
-                            alt="Icon"
-                          />
-                          Home & Garden (07)
-                        </a>
-                      </div>
-                      <div
-                        id="collapseEight"
-                        class="collapse"
-                        aria-labelledby="headingEight"
-                        data-parent="#accordionExample"
-                      >
-                        <div class="card-body">
-                          <ul class="sidebar_categories_list">
-                            <li><a href="#">iPhones</a></li>
-                            <li><a href="#">Feature Phones</a></li>
-                            <li><a href="#">Refurbished Phones</a></li>
-                            <li><a href="#">Mobile Phone Accessories</a></li>
-                            <li><a href="#">Mobile Phone Parts</a></li>
-                            <li><a href="#">Phone Bags & Cases</a></li>
-                            <li><a href="#">Communication Equipment's</a></li>
-                            <li><a href="#">Walkie Talkie</a></li>
-                            <li><a href="#">Walkie Talkie Parts</a></li>
-                          </ul>
-                        </div>
-                      </div>
-                    </div>
-
-                    <div class="card">
-                      <div class="card-header" id="headingNine">
-                        <a
-                          href="#"
-                          class="collapsed"
-                          data-toggle="collapse"
-                          data-target="#collapseNine"
-                          aria-expanded="false"
-                          aria-controls="collapseNine"
-                          ><img
-                            src="/public/assets/images/sidebar_icon/categories-9.svg"
-                            alt="Icon"
-                          />
-                          Luggage & Bags (346)
-                        </a>
-                      </div>
-                      <div
-                        id="collapseNine"
-                        class="collapse"
-                        aria-labelledby="headingNine"
-                        data-parent="#accordionExample"
-                      >
-                        <div class="card-body">
-                          <ul class="sidebar_categories_list">
-                            <li><a href="#">iPhones</a></li>
-                            <li><a href="#">Feature Phones</a></li>
-                            <li><a href="#">Refurbished Phones</a></li>
-                            <li><a href="#">Mobile Phone Accessories</a></li>
-                            <li><a href="#">Mobile Phone Parts</a></li>
-                            <li><a href="#">Phone Bags & Cases</a></li>
-                            <li><a href="#">Communication Equipment's</a></li>
-                            <li><a href="#">Walkie Talkie</a></li>
-                            <li><a href="#">Walkie Talkie Parts</a></li>
-                          </ul>
-                        </div>
-                      </div>
-                    </div>
+                  </__repeat>
+                    
                   </div>
                 </div>
               </div>
@@ -493,6 +180,7 @@
               </div>
             </div>
           </div>
+
           <div class="col-lg-9">
             <div
               class="product_topbar d-md-flex align-items-center justify-content-between pb-30"
@@ -506,15 +194,9 @@
                 </select>
                 <select>
                   <option value="0">Location</option>
-                  <option value="1">Some option</option>
-                  <option value="2">Another option</option>
-                  <option value="4">Potato</option>
                 </select>
                 <select>
                   <option value="0">12 Items</option>
-                  <option value="1">Some option</option>
-                  <option value="2">Another option</option>
-                  <option value="4">Potato</option>
                 </select>
               </div>
               <div class="product_tab_menu mt-50">
@@ -551,6 +233,7 @@
                 </ul>
               </div>
             </div>
+            
             <div class="tab-content" id="myTabContent">
               <div
                 class="tab-pane fade show active"
@@ -558,392 +241,45 @@
                 role="tabpanel"
                 aria-labelledby="grid-tab"
               >
+
                 <div class="product_grid">
                   <div class="row">
+                  <__repeat tal:repeat="ad all_ads" tal:omit-tag="True">
                     <div class="col-xl-4 col-sm-6">
                       <div class="single_ads_card mt-30">
                         <div class="ads_card_image">
                           <img
-                            src="/public/assets/images/ads-1.png"
+                            src="${ad.main_image}"
                             alt="ads"
                           />
                         </div>
                         <div class="ads_card_content">
                           <div class="meta d-flex justify-content-between">
-                            <p>Ram & Laptop</p>
+                            <p>${ad.subcategory.subcategory_name}</p>
                             <a class="like" href="#"
                               ><i class="fal fa-heart"></i
                             ></a>
                           </div>
                           <h4 class="title">
                             <a href="/products/product-details"
-                              >8 GB DDR4 Ram, 4th Gen</a
+                              >${ad.title}</a
                             >
                           </h4>
                           <p>
-                            <i class="far fa-map-marker-alt"></i>New York, USA
+                            <i class="fal fa-map-marker-alt"></i>${ad.address.country}, 
+                            ${ad.address.city}
                           </p>
                           <div
                             class="ads_price_date d-flex justify-content-between"
                           >
-                            <span class="price">$299.00</span>
-                            <span class="date">25 Jan, 2023</span>
+                            <span class="price">${ad.price}€</span>
+                            <span class="date">${ad.created_at]</span>
                           </div>
                         </div>
                       </div>
                     </div>
-                    <div class="col-xl-4 col-sm-6">
-                      <div class="single_ads_card mt-30">
-                        <div class="ads_card_image">
-                          <img
-                            src="/public/assets/images/ads-2.png"
-                            alt="ads"
-                          />
-                        </div>
-                        <div class="ads_card_content">
-                          <div class="meta d-flex justify-content-between">
-                            <p>Ram & Laptop</p>
-                            <a class="like" href="#"
-                              ><i class="fal fa-heart"></i
-                            ></a>
-                          </div>
-                          <h4 class="title">
-                            <a href="/products/product-details"
-                              >8 GB DDR4 Ram, 4th Gen</a
-                            >
-                          </h4>
-                          <p>
-                            <i class="far fa-map-marker-alt"></i>New York, USA
-                          </p>
-                          <div
-                            class="ads_price_date d-flex justify-content-between"
-                          >
-                            <span class="price">$299.00</span>
-                            <span class="date">25 Jan, 2023</span>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="col-xl-4 col-sm-6">
-                      <div class="single_ads_card mt-30">
-                        <div class="ads_card_image">
-                          <img
-                            src="/public/assets/images/ads-3.png"
-                            alt="ads"
-                          />
-                        </div>
-                        <div class="ads_card_content">
-                          <div class="meta d-flex justify-content-between">
-                            <p>Ram & Laptop</p>
-                            <a class="like" href="#"
-                              ><i class="fal fa-heart"></i
-                            ></a>
-                          </div>
-                          <h4 class="title">
-                            <a href="/products/product-details"
-                              >8 GB DDR4 Ram, 4th Gen</a
-                            >
-                          </h4>
-                          <p>
-                            <i class="far fa-map-marker-alt"></i>New York, USA
-                          </p>
-                          <div
-                            class="ads_price_date d-flex justify-content-between"
-                          >
-                            <span class="price">$299.00</span>
-                            <span class="date">25 Jan, 2023</span>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="col-xl-4 col-sm-6">
-                      <div class="single_ads_card mt-30">
-                        <div class="ads_card_image">
-                          <img
-                            src="/public/assets/images/ads-4.png"
-                            alt="ads"
-                          />
-                        </div>
-                        <div class="ads_card_content">
-                          <div class="meta d-flex justify-content-between">
-                            <p>Ram & Laptop</p>
-                            <a class="like" href="#"
-                              ><i class="fal fa-heart"></i
-                            ></a>
-                          </div>
-                          <h4 class="title">
-                            <a href="/products/product-details"
-                              >8 GB DDR4 Ram, 4th Gen</a
-                            >
-                          </h4>
-                          <p>
-                            <i class="far fa-map-marker-alt"></i>New York, USA
-                          </p>
-                          <div
-                            class="ads_price_date d-flex justify-content-between"
-                          >
-                            <span class="price">$299.00</span>
-                            <span class="date">25 Jan, 2023</span>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="col-xl-4 col-sm-6">
-                      <div class="single_ads_card mt-30">
-                        <div class="ads_card_image">
-                          <img
-                            src="/public/assets/images/ads-5.png"
-                            alt="ads"
-                          />
-                        </div>
-                        <div class="ads_card_content">
-                          <div class="meta d-flex justify-content-between">
-                            <p>Ram & Laptop</p>
-                            <a class="like" href="#"
-                              ><i class="fal fa-heart"></i
-                            ></a>
-                          </div>
-                          <h4 class="title">
-                            <a href="/products/product-details"
-                              >8 GB DDR4 Ram, 4th Gen</a
-                            >
-                          </h4>
-                          <p>
-                            <i class="far fa-map-marker-alt"></i>New York, USA
-                          </p>
-                          <div
-                            class="ads_price_date d-flex justify-content-between"
-                          >
-                            <span class="price">$299.00</span>
-                            <span class="date">25 Jan, 2023</span>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="col-xl-4 col-sm-6">
-                      <div class="single_ads_card mt-30">
-                        <div class="ads_card_image">
-                          <img
-                            src="/public/assets/images/ads-6.png"
-                            alt="ads"
-                          />
-                        </div>
-                        <div class="ads_card_content">
-                          <div class="meta d-flex justify-content-between">
-                            <p>Ram & Laptop</p>
-                            <a class="like" href="#"
-                              ><i class="fal fa-heart"></i
-                            ></a>
-                          </div>
-                          <h4 class="title">
-                            <a href="/products/product-details"
-                              >8 GB DDR4 Ram, 4th Gen</a
-                            >
-                          </h4>
-                          <p>
-                            <i class="far fa-map-marker-alt"></i>New York, USA
-                          </p>
-                          <div
-                            class="ads_price_date d-flex justify-content-between"
-                          >
-                            <span class="price">$299.00</span>
-                            <span class="date">25 Jan, 2023</span>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="col-xl-4 col-sm-6">
-                      <div class="single_ads_card mt-30">
-                        <div class="ads_card_image">
-                          <img
-                            src="/public/assets/images/ads-7.png"
-                            alt="ads"
-                          />
-                        </div>
-                        <div class="ads_card_content">
-                          <div class="meta d-flex justify-content-between">
-                            <p>Ram & Laptop</p>
-                            <a class="like" href="#"
-                              ><i class="fal fa-heart"></i
-                            ></a>
-                          </div>
-                          <h4 class="title">
-                            <a href="/products/product-details"
-                              >8 GB DDR4 Ram, 4th Gen</a
-                            >
-                          </h4>
-                          <p>
-                            <i class="far fa-map-marker-alt"></i>New York, USA
-                          </p>
-                          <div
-                            class="ads_price_date d-flex justify-content-between"
-                          >
-                            <span class="price">$299.00</span>
-                            <span class="date">25 Jan, 2023</span>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="col-xl-4 col-sm-6">
-                      <div class="single_ads_card mt-30">
-                        <div class="ads_card_image">
-                          <img
-                            src="/public/assets/images/ads-8.png"
-                            alt="ads"
-                          />
-                        </div>
-                        <div class="ads_card_content">
-                          <div class="meta d-flex justify-content-between">
-                            <p>Ram & Laptop</p>
-                            <a class="like" href="#"
-                              ><i class="fal fa-heart"></i
-                            ></a>
-                          </div>
-                          <h4 class="title">
-                            <a href="/products/product-details"
-                              >8 GB DDR4 Ram, 4th Gen</a
-                            >
-                          </h4>
-                          <p>
-                            <i class="far fa-map-marker-alt"></i>New York, USA
-                          </p>
-                          <div
-                            class="ads_price_date d-flex justify-content-between"
-                          >
-                            <span class="price">$299.00</span>
-                            <span class="date">25 Jan, 2023</span>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="col-xl-4 col-sm-6">
-                      <div class="single_ads_card mt-30">
-                        <div class="ads_card_image">
-                          <img
-                            src="/public/assets/images/ads-9.png"
-                            alt="ads"
-                          />
-                        </div>
-                        <div class="ads_card_content">
-                          <div class="meta d-flex justify-content-between">
-                            <p>Ram & Laptop</p>
-                            <a class="like" href="#"
-                              ><i class="fal fa-heart"></i
-                            ></a>
-                          </div>
-                          <h4 class="title">
-                            <a href="/products/product-details"
-                              >8 GB DDR4 Ram, 4th Gen</a
-                            >
-                          </h4>
-                          <p>
-                            <i class="far fa-map-marker-alt"></i>New York, USA
-                          </p>
-                          <div
-                            class="ads_price_date d-flex justify-content-between"
-                          >
-                            <span class="price">$299.00</span>
-                            <span class="date">25 Jan, 2023</span>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="col-xl-4 col-sm-6">
-                      <div class="single_ads_card mt-30">
-                        <div class="ads_card_image">
-                          <img
-                            src="/public/assets/images/ads-10.png"
-                            alt="ads"
-                          />
-                        </div>
-                        <div class="ads_card_content">
-                          <div class="meta d-flex justify-content-between">
-                            <p>Ram & Laptop</p>
-                            <a class="like" href="#"
-                              ><i class="fal fa-heart"></i
-                            ></a>
-                          </div>
-                          <h4 class="title">
-                            <a href="/products/product-details"
-                              >8 GB DDR4 Ram, 4th Gen</a
-                            >
-                          </h4>
-                          <p>
-                            <i class="far fa-map-marker-alt"></i>New York, USA
-                          </p>
-                          <div
-                            class="ads_price_date d-flex justify-content-between"
-                          >
-                            <span class="price">$299.00</span>
-                            <span class="date">25 Jan, 2023</span>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="col-xl-4 col-sm-6">
-                      <div class="single_ads_card mt-30">
-                        <div class="ads_card_image">
-                          <img
-                            src="/public/assets/images/ads-11.png"
-                            alt="ads"
-                          />
-                        </div>
-                        <div class="ads_card_content">
-                          <div class="meta d-flex justify-content-between">
-                            <p>Ram & Laptop</p>
-                            <a class="like" href="#"
-                              ><i class="fal fa-heart"></i
-                            ></a>
-                          </div>
-                          <h4 class="title">
-                            <a href="/products/product-details"
-                              >8 GB DDR4 Ram, 4th Gen</a
-                            >
-                          </h4>
-                          <p>
-                            <i class="far fa-map-marker-alt"></i>New York, USA
-                          </p>
-                          <div
-                            class="ads_price_date d-flex justify-content-between"
-                          >
-                            <span class="price">$299.00</span>
-                            <span class="date">25 Jan, 2023</span>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="col-xl-4 col-sm-6">
-                      <div class="single_ads_card mt-30">
-                        <div class="ads_card_image">
-                          <img
-                            src="/public/assets/images/ads-12.png"
-                            alt="ads"
-                          />
-                        </div>
-                        <div class="ads_card_content">
-                          <div class="meta d-flex justify-content-between">
-                            <p>Ram & Laptop</p>
-                            <a class="like" href="#"
-                              ><i class="fal fa-heart"></i
-                            ></a>
-                          </div>
-                          <h4 class="title">
-                            <a href="/products/product-details"
-                              >8 GB DDR4 Ram, 4th Gen</a
-                            >
-                          </h4>
-                          <p>
-                            <i class="far fa-map-marker-alt"></i>New York, USA
-                          </p>
-                          <div
-                            class="ads_price_date d-flex justify-content-between"
-                          >
-                            <span class="price">$299.00</span>
-                            <span class="date">25 Jan, 2023</span>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
+                  </__repeat>
+                    
                   </div>
                 </div>
               </div>
@@ -954,185 +290,37 @@
                 aria-labelledby="list-tab"
               >
                 <div class="product_list">
+                <__repeat tal:repeat="ad all_ads" tal:omit-tag="True">
                   <div class="single_ads_card ads_list d-sm-flex mt-30">
                     <div class="ads_card_image">
-                      <img src="/public/assets/images/ads-1.png" alt="ads" />
+                      <img src="${ad.main_image}" alt="ads" />
                     </div>
                     <div class="ads_card_content media-body">
                       <div class="meta d-flex justify-content-between">
-                        <p>Ram & Laptop</p>
+                        <p>${ad.subcategory.subcategory_name}</p>
                         <a class="like" href="#"
                           ><i class="fal fa-heart"></i
                         ></a>
                       </div>
                       <h4 class="title">
                         <a href="#"
-                          >Front+Back Full Body Protect Screen Protector</a
+                          >${ad.title}</a
                         >
                       </h4>
-                      <p><i class="far fa-map-marker-alt"></i>New York, USA</p>
+                      <p><i class="fal fa-map-marker-alt"></i>${ad.address.country}, 
+                            ${ad.address.city}</p>
                       <p>
-                        Lorem ipsum dolor sit amet, consetetur sadipscing elitr,
-                        sed diam nonumy eirmod tempor invidunt.
+                        ${ad.ad_description}
                       </p>
                       <div
                         class="ads_price_date d-flex justify-content-between"
                       >
-                        <span class="price">$299.00</span>
-                        <span class="date">25 Jan, 2023</span>
+                        <span class="price">${ad.price}€</span>
+                        <span class="date">${ad.created_at]</span>
                       </div>
                     </div>
                   </div>
-
-                  <div class="single_ads_card ads_list d-sm-flex mt-30">
-                    <div class="ads_card_image">
-                      <img src="/public/assets/images/ads-2.png" alt="ads" />
-                    </div>
-                    <div class="ads_card_content media-body">
-                      <div class="meta d-flex justify-content-between">
-                        <p>Ram & Laptop</p>
-                        <a class="like" href="#"
-                          ><i class="fal fa-heart"></i
-                        ></a>
-                      </div>
-                      <h4 class="title">
-                        <a href="#"
-                          >Front+Back Full Body Protect Screen Protector</a
-                        >
-                      </h4>
-                      <p><i class="far fa-map-marker-alt"></i>New York, USA</p>
-                      <p>
-                        Lorem ipsum dolor sit amet, consetetur sadipscing elitr,
-                        sed diam nonumy eirmod tempor invidunt.
-                      </p>
-                      <div
-                        class="ads_price_date d-flex justify-content-between"
-                      >
-                        <span class="price">$299.00</span>
-                        <span class="date">25 Jan, 2023</span>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div class="single_ads_card ads_list d-sm-flex mt-30">
-                    <div class="ads_card_image">
-                      <img src="/public/assets/images/ads-3.png" alt="ads" />
-                    </div>
-                    <div class="ads_card_content media-body">
-                      <div class="meta d-flex justify-content-between">
-                        <p>Ram & Laptop</p>
-                        <a class="like" href="#"
-                          ><i class="fal fa-heart"></i
-                        ></a>
-                      </div>
-                      <h4 class="title">
-                        <a href="#"
-                          >Front+Back Full Body Protect Screen Protector</a
-                        >
-                      </h4>
-                      <p><i class="far fa-map-marker-alt"></i>New York, USA</p>
-                      <p>
-                        Lorem ipsum dolor sit amet, consetetur sadipscing elitr,
-                        sed diam nonumy eirmod tempor invidunt.
-                      </p>
-                      <div
-                        class="ads_price_date d-flex justify-content-between"
-                      >
-                        <span class="price">$299.00</span>
-                        <span class="date">25 Jan, 2023</span>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div class="single_ads_card ads_list d-sm-flex mt-30">
-                    <div class="ads_card_image">
-                      <img src="/public/assets/images/ads-4.png" alt="ads" />
-                    </div>
-                    <div class="ads_card_content media-body">
-                      <div class="meta d-flex justify-content-between">
-                        <p>Ram & Laptop</p>
-                        <a class="like" href="#"
-                          ><i class="fal fa-heart"></i
-                        ></a>
-                      </div>
-                      <h4 class="title">
-                        <a href="#"
-                          >Front+Back Full Body Protect Screen Protector</a
-                        >
-                      </h4>
-                      <p><i class="far fa-map-marker-alt"></i>New York, USA</p>
-                      <p>
-                        Lorem ipsum dolor sit amet, consetetur sadipscing elitr,
-                        sed diam nonumy eirmod tempor invidunt.
-                      </p>
-                      <div
-                        class="ads_price_date d-flex justify-content-between"
-                      >
-                        <span class="price">$299.00</span>
-                        <span class="date">25 Jan, 2023</span>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div class="single_ads_card ads_list d-sm-flex mt-30">
-                    <div class="ads_card_image">
-                      <img src="/public/assets/images/ads-5.png" alt="ads" />
-                    </div>
-                    <div class="ads_card_content media-body">
-                      <div class="meta d-flex justify-content-between">
-                        <p>Ram & Laptop</p>
-                        <a class="like" href="#"
-                          ><i class="fal fa-heart"></i
-                        ></a>
-                      </div>
-                      <h4 class="title">
-                        <a href="#"
-                          >Front+Back Full Body Protect Screen Protector</a
-                        >
-                      </h4>
-                      <p><i class="far fa-map-marker-alt"></i>New York, USA</p>
-                      <p>
-                        Lorem ipsum dolor sit amet, consetetur sadipscing elitr,
-                        sed diam nonumy eirmod tempor invidunt.
-                      </p>
-                      <div
-                        class="ads_price_date d-flex justify-content-between"
-                      >
-                        <span class="price">$299.00</span>
-                        <span class="date">25 Jan, 2023</span>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div class="single_ads_card ads_list d-sm-flex mt-30">
-                    <div class="ads_card_image">
-                      <img src="/public/assets/images/ads-6.png" alt="ads" />
-                    </div>
-                    <div class="ads_card_content media-body">
-                      <div class="meta d-flex justify-content-between">
-                        <p>Ram & Laptop</p>
-                        <a class="like" href="#"
-                          ><i class="fal fa-heart"></i
-                        ></a>
-                      </div>
-                      <h4 class="title">
-                        <a href="#"
-                          >Front+Back Full Body Protect Screen Protector</a
-                        >
-                      </h4>
-                      <p><i class="far fa-map-marker-alt"></i>New York, USA</p>
-                      <p>
-                        Lorem ipsum dolor sit amet, consetetur sadipscing elitr,
-                        sed diam nonumy eirmod tempor invidunt.
-                      </p>
-                      <div
-                        class="ads_price_date d-flex justify-content-between"
-                      >
-                        <span class="price">$299.00</span>
-                        <span class="date">25 Jan, 2023</span>
-                      </div>
-                    </div>
-                  </div>
+                </__repeat>
                 </div>
               </div>
             </div>
