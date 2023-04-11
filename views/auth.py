@@ -207,6 +207,9 @@ async def post_sign_in_viewmodel(
     elif user.is_active != 1:
         vm.error, vm.error_msg = True, f'Sua conta ainda não foi ativada, verifique seu endereço de e-mail.'
 
+    user.user.last_login = datetime.now()
+    await session.commit()
+    await session.refresh(user)
     vm.user = user
     return vm
 
@@ -235,6 +238,8 @@ async def google_sign_in(
     
     response = responses.RedirectResponse(url = '/', status_code = status.HTTP_302_FOUND)
     set_auth_cookie(response, db_user)
+    db_user.user.last_login = datetime.now()
+    await session.commit()
     return response
 
 def google_sign_in_viewmodel(credentials: Credentials):
