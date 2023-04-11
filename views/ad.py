@@ -1,3 +1,4 @@
+import os
 import sys
 import aiofiles
 import httpx
@@ -110,12 +111,13 @@ async def post_ad_viewmodel(request: Request, files: list[UploadFile], session: 
         vm.error, vm.error_msg = True, 'O anúncio deve ter pelo menos duas 2 imagens.'
     elif len(files) >= 2:
         for file in files:
-            content = file.file.read()
-            file_size_in_kb = int(sys.getsizeof(content)) / 1024
+            file_size_in_bytes = len(await file.read())
+            file_size_in_kb = file_size_in_bytes / 1024
+            file_ext = os.path.splitext(file.filename)[-1]
             if file_size_in_kb > 500:
                 vm.error, vm.error_msg = True, 'O tamanho limite das imagens é de 500kb.'
                 break
-            elif file.content_type not in ('image/jpg', 'image/png', 'image/jpeg'):
+            elif file.content_type not in ('image/jpg', 'image/png', 'image/jpeg') or file_ext not in ['.jpg', '.jpeg', '.png']:
                 vm.error, vm.error_msg = True, 'Apenas imagens do tipo ".png", ".jpg" ou ".jpeg".'
                 break
     elif user:= await get_user_account_by_id(vm.user_id, session):
