@@ -17,7 +17,7 @@
                 </p>
                 <ul class="header_btn">
                   <li>
-                    <a class="main-btn" href="/products/product">Destaques Classify</a>
+                    <a class="main-btn" href="/products/products">Destaques Classify</a>
                   </li>
                   <li>
                     <a tal:condition='is_logged_in' class="main-btn main-btn-2" href="/home/post-ads"
@@ -112,7 +112,7 @@
               <div class="content">
                 <h6 class="title">${category.category_name}</h6>
               </div>
-              <a href="/products/product"></a>
+              <a href="/products/products"></a>
             </div>
           </div>
         </__repeat>
@@ -694,12 +694,12 @@
                 </div>
                 <div class="locations_content">
                   <h5 class="title">
-                    <a href="/products/product"
+                    <a href="/products/products"
                       ><i class="far fa-map-marker-alt"></i>Marte</a
                     >
                   </h5>
                   <p>35 anúncios publicados nesta localização</p> <!--Query: Quantos Anúncios Tem Este Local-->
-                  <a class="view" href="/products/product"
+                  <a class="view" href="/products/products"
                     >Veja Todos Os Anúncios<i class="fa fa-angle-right"></i
                   ></a>
                 </div>
@@ -715,12 +715,12 @@
                 </div>
                 <div class="locations_content">
                   <h5 class="title">
-                    <a href="/products/product"
+                    <a href="/products/products"
                       ><i class="far fa-map-marker-alt"></i>Terra</a
                     >
                   </h5>
                   <p>36 anúncios publicados nesta localização</p> <!--Query: Quantos Anúncios Tem Este Local-->
-                  <a class="view" href="/products/product"
+                  <a class="view" href="/products/products"
                     >Veja Todos Os Anúncios<i class="fa fa-angle-right"></i
                   ></a>
                 </div>
@@ -736,12 +736,12 @@
                 </div>
                 <div class="locations_content">
                   <h5 class="title">
-                    <a href="/products/product"
+                    <a href="/products/products"
                       ><i class="far fa-map-marker-alt"></i>Vénus</a
                     >
                   </h5>
                   <p>37 anúncios publicados nesta localização</p> <!--Query: Quantos Anúncios Tem Este Local-->
-                  <a class="view" href="/products/product"
+                  <a class="view" href="/products/products"
                     >Veja Todos Os Anúncios<i class="fa fa-angle-right"></i
                   ></a>
                 </div>
@@ -1009,7 +1009,7 @@
             </div>
           </div>
           <div class="published_btn">
-            <a href="/products/product" class="main-btn">Mais Anúncios</a>
+            <a href="/products/products" class="main-btn">Mais Anúncios</a>
           </div>
         </div>
       </div>
