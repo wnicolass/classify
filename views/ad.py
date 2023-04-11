@@ -107,6 +107,8 @@ async def post_ad_viewmodel(request: Request, files: list[UploadFile], session: 
         vm.error, vm.error_msg = True, 'O preço deve estar no formato: 123456,50'
     elif len(vm.phone) > 0 and not is_valid_phone_number(vm.phone):
         vm.error, vm.error_msg = True, 'Insira um número de telemóvel com o seguinte formato: +351 123 456 789 ou 123 456 789'
+    elif len(vm.description) > 1000 or not is_valid_txt_field(vm.description):
+        vm.error, vm.error_msg = True, 'Descrição inválida. Por favor, evite utilizar símbolos mais de três vezes seguidas.'
     elif not len(files) >= 2:
         vm.error, vm.error_msg = True, 'O anúncio deve ter pelo menos duas 2 imagens.'
     elif len(files) >= 2:
