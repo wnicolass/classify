@@ -8,10 +8,10 @@ from sqlalchemy import (
     ForeignKey,
     Table,
     DECIMAL,
-    text
+    text,
 )
 from sqlalchemy.dialects.mysql import BIT
-from sqlalchemy.orm import relationship
+from sqlalchemy.orm import relationship, joinedload
 from config.database import Base
 from models.ad_approval import ad_approval
 from models.subcategory import Subcategory
@@ -37,14 +37,19 @@ class Ad(Base):
     created_at: datetime = Column(DateTime, server_default = text('NOW()'))
     updated_at: datetime = Column(DateTime, onupdate = datetime.now())
 
-    address = relationship('AdAddress', back_populates = 'ads', uselist = False)
+    address = relationship('AdAddress', back_populates = 'ads', uselist = False, lazy = 'joined')
     user = relationship('UserAccount', back_populates = 'ads')
     feature = relationship('Feature', back_populates = 'ad', uselist = False)
-    subcategory = relationship('Subcategory', back_populates = 'ads')
+    subcategory = relationship('Subcategory', back_populates = 'ads', lazy = 'joined')
     field_definitions = relationship('FieldDefinition', secondary = field_value, back_populates = 'ads')
     admin = relationship('AdminAccount', secondary = ad_approval, back_populates = 'ads', uselist = False)
     ad_status = relationship('AdStatus', back_populates = 'ads', uselist = False)
-    images = relationship('AdImage', back_populates = 'ad', cascade = 'delete')
+    images = relationship('AdImage', back_populates = 'ad', cascade = 'delete', lazy = 'joined')
+
+
+    @property
+    def main_image(self):
+        return self.images[0].image_path_url
 
 class Feature(Base):
     __tablename__ = 'Feature'
