@@ -25,7 +25,6 @@ class Ad(Base):
     title: str = Column(String(200), nullable = False, unique = True)
     ad_description: str = Column(String(1000), nullable = False)
     price: dec = Column(DECIMAL(8,2), nullable = False)
-    product_name: str = Column(String(100), nullable = False)
     views: int = Column(Integer, default = 0, nullable = False)
     is_negotiable: int = Column(BIT, nullable = False)
     
@@ -73,9 +72,6 @@ class AdAddress(Base):
     id: int = Column(Integer, primary_key = True, autoincrement = True)
     country: str = Column(String(40), nullable = False)
     city: str = Column(String(40), nullable = False, index = True)
-    street: str = Column(String(60), nullable = False)
-    num: str = Column(String(20), nullable = False)
-    postal_code: str = Column(String(50), nullable = False)
     address_date: datetime = Column(DateTime, server_default = text('NOW()'))
     updated_at: datetime = Column(DateTime, onupdate = datetime.now())
 

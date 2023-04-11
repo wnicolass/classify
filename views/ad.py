@@ -1,8 +1,12 @@
+import io
 import os
 import sys
+import uuid
 import aiofiles
 import httpx
 import pathlib
+from datetime import datetime
+from decimal import Decimal as dec
 from typing import Annotated, List
 from fastapi import (
     APIRouter, 
@@ -28,6 +32,7 @@ from common.utils import (
     is_valid_phone_number
 )
 from services.user_service import get_user_account_by_id
+from PIL import Image
 
 router = APIRouter()
 
@@ -73,7 +78,6 @@ async def post_ad_viewmodel(request: Request, files: list[UploadFile], session: 
     form_dict = form_data._dict
     vm = await ViewModel(
         title = form_field_as_str(form_dict, 'title'),
-        product_name = 'arroz',
         category = form_field_as_str(form_dict, 'category'),
         subcategory = form_field_as_str(form_dict, 'subcategory'),
         brand = form_field_as_str(form_dict, 'brand'),
@@ -122,6 +126,7 @@ async def post_ad_viewmodel(request: Request, files: list[UploadFile], session: 
             elif file.content_type not in ('image/jpg', 'image/png', 'image/jpeg') or file_ext not in ['.jpg', '.jpeg', '.png']:
                 vm.error, vm.error_msg = True, 'Apenas imagens do tipo ".png", ".jpg" ou ".jpeg".'
                 break
+            await file.seek(0)
     elif user:= await get_user_account_by_id(vm.user_id, session):
         if not user.phone_number and len(vm.phone) == 0:
             vm.error, vm.error_msg = True, 'Insira um número de telemóvel com o seguinte formato: +351 123 456 789 ou 123 456 789'
@@ -132,10 +137,31 @@ async def post_ad_viewmodel(request: Request, files: list[UploadFile], session: 
         uploads_dir = path / 'uploads'
         if not uploads_dir.exists():
             uploads_dir.mkdir()
+        vm.files = []
         for file in files:
-            async with aiofiles.open(f'{uploads_dir}/{file.filename}', 'wb') as out_file:
-                content = file.file.read()
+            filename = f'{str(uuid.uuid4())}_{file.filename}'
+            file_path = os.path.join('uploads', filename)
+            async with aiofiles.open(file_path, 'wb') as out_file:
+                content = await file.read()
+                vm.files.append({'filename': filename, 'file_path': file_path})
                 await out_file.write(content)
+        print(vm)
+        await ad_service.insert_ad(
+            vm.title, 
+            int(vm.subcategory), 
+            vm.brand,
+            int(vm.condition),
+            dec(vm.price.replace(',', '.')),
+            bool(vm.is_negotiable),
+            vm.description,
+            vm.files,
+            vm.user_id,
+            vm.country,
+            vm.city,
+            ad_status_id = 2,
+            authenticity = 'Não original' if vm.authenticity == '0' else 'Original',
+            session = session
+        )
 
     return vm
 

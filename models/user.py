@@ -65,9 +65,6 @@ class UserAddress(Base):
     id: int = Column(Integer, primary_key = True, autoincrement = True)
     country: str = Column(String(50), nullable = False)
     city: str = Column(String(50), nullable = False, index = True)
-    street: str = Column(String(200), nullable = False)
-    num: str = Column(String(20), nullable = False)
-    postal_code: str = Column(String(50), nullable = False)
     user_id: int = Column(Integer, ForeignKey("UserAccount.user_id", ondelete = 'CASCADE'), nullable = False)
     address_date: datetime = Column(DateTime, server_default = text('NOW()'))
     updated_at: datetime = Column(DateTime, onupdate = datetime.now())
@@ -92,7 +89,7 @@ class UserLoginDataExt(Base):
     user_id: int = Column(Integer, ForeignKey('UserAccount.user_id'), nullable = False)
 
     ext_provider = relationship('ExternalProvider', back_populates = 'user_login_data_ext')
-    user = relationship('UserAccount', back_populates = 'user_login_data_ext')
+    user = relationship('UserAccount', back_populates = 'user_login_data_ext', lazy = 'joined')
 
 class HashAlgo(Base):
     __tablename__ = 'HashAlgo'
