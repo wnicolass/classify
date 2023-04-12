@@ -50,6 +50,10 @@ class Ad(Base):
     @property
     def main_image(self):
         return self.images[0].image_path_url
+    
+    @property
+    def pretty_date(self):
+        return datetime.strftime(self.created_at, '%d %b, %Y')
 
 class Feature(Base):
     __tablename__ = 'Feature'
