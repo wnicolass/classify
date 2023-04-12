@@ -2,6 +2,9 @@
   <div metal:fill-slot="title" tal:omit-tag="True">
     <title> Home | Classify</title>
   </div>
+    <__additional_script__ metal:fill-slot="additional_script" tal:omit-tag="True">
+    <script src="/public/scripts/limit-select-size.js" defer></script>
+  </__additional_script__>
   <div metal:fill-slot="content" tal:omit-tag="True">
 
     
@@ -20,7 +23,7 @@
                     <a class="main-btn" href="/products">Destaques Classify</a>
                   </li>
                   <li>
-                    <a tal:condition='is_logged_in' class="main-btn main-btn-2" href="/home/post-ads"
+                    <a tal:condition='is_logged_in' class="main-btn main-btn-2" href="/ad"
                       >Publicar Anúncio</a
                     >
                     <a tal:condition='not is_logged_in' class="main-btn main-btn-2" href="/auth/sign-in"
@@ -32,12 +35,12 @@
             </div>
           </div>
           <div class="header_search">
-            <form action="#">
+            <form action="/ad/search" method="GET">
               <div class="search_wrapper d-flex flex-wrap">
                 <div class="search_column d-flex flex-wrap">
                   <div class="search_select mt-15">
-                    <select>
-                      <option value="0">Seleciona a Localização</option>
+                    <select class="limit" name="city">
+                      <option value="none">Seleciona a Localização</option>
                       <__repeat tal:repeat="city all_cities" tal:omit-tag="True">
                       <option value="${city.city}">${city.city}</option>
                       </__repeat>
@@ -45,22 +48,22 @@
                     <i class="fa-solid fa-location-dot"></i>
                   </div>
                   <div class="search_select mt-15">
-                    <select>
-                      <option value="0">Seleciona Categoria</option>
-                      <option value="1">CatA</option>
-                      <option value="2">CatB</option>
-                      <option value="4">CatC</option>
+                    <select class="limit" name="category_id">
+                      <option value="none">Seleciona Categoria</option>
+                      <__repeat tal:repeat="category all_categories" tal:omit-tag="True">
+                      <option value="${category.id}">${category.category_name}</option>
+                      </__repeat>
                     </select>
                     <i class="fa-solid fa-tags"></i>
                   </div>
                 </div>
                 <div class="search_column d-flex flex-wrap">
                   <div class="search_form mt-15">
-                    <input type="text" placeholder="Type Your Keyword" />
+                    <input type="text" placeholder="Type Your Keyword" name="title"/>
                     <i class="fa-solid fa-i-cursor"></i>
                   </div>
                   <div class="search_btn mt-15">
-                    <button class="main-btn">Pesquisar</button>
+                    <button type="submit" class="main-btn">Pesquisar</button>
                   </div>
                 </div>
               </div>
