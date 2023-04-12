@@ -38,9 +38,9 @@
                   <div class="search_select mt-15">
                     <select>
                       <option value="0">Seleciona a Localização</option>
-                      <option value="1">Pluto</option>
-                      <option value="2">Mercúrio</option>
-                      <option value="4">Vénus</option>
+                      <__repeat tal:repeat="city all_cities" tal:omit-tag="True">
+                      <option value="${city.city}">${city.city}</option>
+                      </__repeat>
                     </select>
                     <i class="fa-solid fa-location-dot"></i>
                   </div>
