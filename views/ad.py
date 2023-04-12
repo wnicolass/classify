@@ -29,7 +29,7 @@ from config.cloudinary import upload_image
 
 router = APIRouter()
 
-@router.get('/home/post-ads', dependencies = [Depends(requires_authentication)])
+@router.get('/ad', dependencies = [Depends(requires_authentication)])
 @template('home/post-ads.pt')
 async def post_ads(session: Annotated[AsyncSession, Depends(get_db_session)]):
     return await post_ads_viewmodel(session)
@@ -52,7 +52,7 @@ async def fetch_countries():
         all_countries = [country for country in json_res['data']]
         return all_countries
 
-@router.post('/home/post-ads', dependencies = [Depends(requires_authentication)])
+@router.post('/ad', dependencies = [Depends(requires_authentication)])
 @template(template_file = 'home/post-ads.pt')
 async def post_ad(request: Request, files: List[UploadFile], session: Annotated[AsyncSession, Depends(get_db_session)]):
     vm = await post_ad_viewmodel(request, files, session)
@@ -152,7 +152,7 @@ async def post_ad_viewmodel(request: Request, files: list[UploadFile], session: 
 
     return vm
 
-@router.get('/home/ad/{category_id}')
+@router.get('/ad/{category_id}')
 async def get_subcategories(
     category_id: int,
     session: Annotated[AsyncSession, Depends(get_db_session)]
