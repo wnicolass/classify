@@ -1,11 +1,5 @@
-import io
 import os
-import sys
-import uuid
-import aiofiles
 import httpx
-import pathlib
-from datetime import datetime
 from decimal import Decimal as dec
 from typing import Annotated, List
 from fastapi import (
@@ -20,7 +14,6 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from fastapi_chameleon import template
 from common.fastapi_utils import (
     form_field_as_str,
-    form_field_as_file, 
     get_db_session
 )
 from common.viewmodel import ViewModel
@@ -32,7 +25,7 @@ from common.utils import (
     is_valid_phone_number
 )
 from services.user_service import get_user_account_by_id
-from PIL import Image
+from config.cloudinary import upload_image
 
 router = APIRouter()
 
@@ -133,19 +126,13 @@ async def post_ad_viewmodel(request: Request, files: list[UploadFile], session: 
 
 
     if not vm.error:
-        path = pathlib.Path().cwd()
-        uploads_dir = path / 'uploads'
-        if not uploads_dir.exists():
-            uploads_dir.mkdir()
         vm.files = []
         for file in files:
-            filename = f'{str(uuid.uuid4())}_{file.filename}'
-            file_path = os.path.join('uploads', filename)
-            async with aiofiles.open(file_path, 'wb') as out_file:
-                content = await file.read()
-                vm.files.append({'filename': filename, 'file_path': file_path})
-                await out_file.write(content)
-        print(vm)
+            url = upload_image(file)
+            vm.files.append({
+                'filename': url['public_id'],
+                'file_path': url['secure_url']
+            })
         await ad_service.insert_ad(
             vm.title, 
             int(vm.subcategory), 
