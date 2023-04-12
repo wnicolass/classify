@@ -273,7 +273,7 @@
                             class="ads_price_date d-flex justify-content-between"
                           >
                             <span class="price">${ad.price}€</span>
-                            <span class="date">${ad.created_at]</span>
+                            <span class="date">${ad.pretty_date}</span>
                           </div>
                         </div>
                       </div>
@@ -316,7 +316,7 @@
                         class="ads_price_date d-flex justify-content-between"
                       >
                         <span class="price">${ad.price}€</span>
-                        <span class="date">${ad.created_at]</span>
+                        <span class="date">${ad.pretty_date}</span>
                       </div>
                     </div>
                   </div>
