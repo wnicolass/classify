@@ -182,3 +182,15 @@ async def get_ads_by_recency(session: AsyncSession) -> List[ad.Ad]:
     recent_ads = query.unique().scalars().all()
 
     return recent_ads
+
+# RELATED WITH ADS
+async def get_cities_with_ads(session: AsyncSession) -> List[ad.AdAddress]:
+    query = await session.execute(
+        select(ad.AdAddress)
+        .join(ad.AdAddress.ads)
+        .group_by(ad.AdAddress.city)
+        .order_by(func.count(ad.Ad.ad_address_id).desc())
+    )
+    cities_with_ads = query.unique().scalars().all()
+    
+    return cities_with_ads
