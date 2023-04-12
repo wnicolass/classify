@@ -5,6 +5,9 @@ import uuid
 import aiofiles
 import httpx
 import pathlib
+import cloudinary
+from cloudinary.uploader import upload
+from dotenv import load_dotenv, find_dotenv
 from datetime import datetime
 from decimal import Decimal as dec
 from typing import Annotated, List
@@ -34,7 +37,15 @@ from common.utils import (
 from services.user_service import get_user_account_by_id
 from PIL import Image
 
+load_dotenv(find_dotenv())
 router = APIRouter()
+
+cloudinary.config(
+  cloud_name = os.getenv('CLOUDINARY_NAME'),
+  api_key = os.getenv('CLOUDINARY_API_KEY'),
+  api_secret = os.getenv('CLOUDINARY_SECRET'),
+  secure = True
+)
 
 @router.get('/home/post-ads', dependencies = [Depends(requires_authentication)])
 @template('home/post-ads.pt')
@@ -139,13 +150,11 @@ async def post_ad_viewmodel(request: Request, files: list[UploadFile], session: 
             uploads_dir.mkdir()
         vm.files = []
         for file in files:
-            filename = f'{str(uuid.uuid4())}_{file.filename}'
-            file_path = os.path.join('uploads', filename)
-            async with aiofiles.open(file_path, 'wb') as out_file:
-                content = await file.read()
-                vm.files.append({'filename': filename, 'file_path': file_path})
-                await out_file.write(content)
-        print(vm)
+            url = upload(file.file, )
+            vm.files.append({
+                'filename': url['public_id'],
+                'file_path': url['secure_url']
+            })
         await ad_service.insert_ad(
             vm.title, 
             int(vm.subcategory), 
