@@ -22,10 +22,11 @@ async def index(
 async def index_viewmodel(
         session: Annotated[AsyncSession, Depends(get_db_session)]
 ):
-    vm = await ViewModel()
-    vm.popular_categories = await category_service.popular_categories(session)
-    vm.all_cities = await ad_service.get_cities_with_ads(session)
-    return vm
+    return await ViewModel(
+        popular_categories = await category_service.popular_categories(session),
+        all_cities = await ad_service.get_cities_with_ads(session),
+        all_categories = await category_service.get_all_categories(session)
+    )
 
 @router.get('/home/about')
 @template()
