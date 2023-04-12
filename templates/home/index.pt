@@ -359,159 +359,6 @@
 
     <!--====== CHOOSE PART ENDS ======-->
 
-    <!--====== LOCATIONS PART START ======-->
-
-    <section class="locations_area pt-115 pb-120">
-      <div class="container">
-        <div class="row">
-          <div class="col-lg-6">
-            <div class="section_title pb-15">
-              <h3 class="title">
-                Explora <br />
-                As Localizações
-              </h3>
-            </div>
-          </div>
-        </div>
-        <div class="locations_wrapper">
-          <div class="row justify-content-center">
-            <div class="col-lg-4 col-md-7 col-sm-8">
-              <div class="single_locations mt-30">
-                <div class="locations_image">
-                  <img
-                    src="/public/assets/images/locations-1.jpg"
-                    alt="Locations"
-                  /> <!--Change photos-->
-                </div>
-                <div class="locations_content">
-                  <h5 class="title">
-                    <a href="/products"
-                      ><i class="far fa-map-marker-alt"></i>Marte</a
-                    >
-                  </h5>
-                  <p>35 anúncios publicados nesta localização</p> <!--Query: Quantos Anúncios Tem Este Local-->
-                  <a class="view" href="/products"
-                    >Veja Todos Os Anúncios<i class="fa fa-angle-right"></i
-                  ></a>
-                </div>
-              </div>
-            </div>
-            <div class="col-lg-4 col-md-7 col-sm-8">
-              <div class="single_locations mt-30">
-                <div class="locations_image">
-                  <img 
-                    src="/public/assets/images/locations-2.jpg" 
-                    alt="Locations"
-                  /> <!--Change photos-->
-                </div>
-                <div class="locations_content">
-                  <h5 class="title">
-                    <a href="/products"
-                      ><i class="far fa-map-marker-alt"></i>Terra</a
-                    >
-                  </h5>
-                  <p>36 anúncios publicados nesta localização</p> <!--Query: Quantos Anúncios Tem Este Local-->
-                  <a class="view" href="/products"
-                    >Veja Todos Os Anúncios<i class="fa fa-angle-right"></i
-                  ></a>
-                </div>
-              </div>
-            </div>
-            <div class="col-lg-4 col-md-7 col-sm-8">
-              <div class="single_locations mt-30">
-                <div class="locations_image">
-                  <img
-                    src="/public/assets/images/locations-3.jpg" 
-                    alt="Locations"
-                  /> <!--Change photos-->
-                </div>
-                <div class="locations_content">
-                  <h5 class="title">
-                    <a href="/products"
-                      ><i class="far fa-map-marker-alt"></i>Vénus</a
-                    >
-                  </h5>
-                  <p>37 anúncios publicados nesta localização</p> <!--Query: Quantos Anúncios Tem Este Local-->
-                  <a class="view" href="/products"
-                    >Veja Todos Os Anúncios<i class="fa fa-angle-right"></i
-                  ></a>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="locations_btn text-center">
-            <a class="main-btn" href="#">Mais Localizações</a> <!--Remove this? Create another template?-->
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!--====== LOCATIONS PART ENDS ======-->
-
-    <!--====== COUNTER PART START ======-->
-
-    <section
-    class="counter_area bg_cover"
-    style="background-image: url(/public/assets/images/counter-bg.jpg)"
-    >
-      <div class="container">
-        <div class="row justify-content-end">
-          <div class="col-lg-9">
-            <div
-              class="counter_wrapper d-flex flex-wrap justify-content-between"
-            >
-              <div class="single_counter">
-                <div class="counter_items d-flex">
-                  <div class="counter_icon">
-                    <img
-                      src="/public/assets/images/icon/counter-1.svg"
-                      alt="counter"
-                    />
-                  </div>
-                  <div class="counter_count media-body">
-                    <span class="count"
-                      ><span class="counter">5000</span>+</span
-                    >
-                  </div>
-                </div>
-                <p>Anúncios Publicados</p>
-              </div>
-              <div class="single_counter">
-                <div class="counter_items d-flex">
-                  <div class="counter_icon">
-                    <img
-                      src="/public/assets/images/icon/counter-2.svg"
-                      alt="counter"
-                    />
-                  </div>
-                  <div class="counter_count media-body">
-                    <span class="count"><span class="counter">300</span>+</span>
-                  </div>
-                </div>
-                <p>Usuários Verificados</p>
-              </div>
-              <div class="single_counter">
-                <div class="counter_items d-flex">
-                  <div class="counter_icon">
-                    <img
-                      src="/public/assets/images/icon/counter-3.svg"
-                      alt="counter"
-                    />
-                  </div>
-                  <div class="counter_count media-body">
-                    <span class="count"><span class="counter">200</span>+</span>
-                  </div>
-                </div>
-                <p>Vendas Realizadas</p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!--====== COUNETR PART ENDS ======-->
-
     <!--====== PUBLISHED PART START ======-->
 
     <section class="ads_area pt-70 pb-120">
@@ -1016,6 +863,159 @@
     </section>
 
     <!--====== PUBLISHED PART ENDS ======-->
+
+    <!--====== COUNTER PART START ======-->
+
+    <section
+    class="counter_area bg_cover"
+    style="background-image: url(/public/assets/images/counter-bg.jpg)"
+    >
+      <div class="container">
+        <div class="row justify-content-end">
+          <div class="col-lg-9">
+            <div
+              class="counter_wrapper d-flex flex-wrap justify-content-between"
+            >
+              <div class="single_counter">
+                <div class="counter_items d-flex">
+                  <div class="counter_icon">
+                    <img
+                      src="/public/assets/images/icon/counter-1.svg"
+                      alt="counter"
+                    />
+                  </div>
+                  <div class="counter_count media-body">
+                    <span class="count"
+                      ><span class="counter">5000</span>+</span
+                    >
+                  </div>
+                </div>
+                <p>Anúncios Publicados</p>
+              </div>
+              <div class="single_counter">
+                <div class="counter_items d-flex">
+                  <div class="counter_icon">
+                    <img
+                      src="/public/assets/images/icon/counter-2.svg"
+                      alt="counter"
+                    />
+                  </div>
+                  <div class="counter_count media-body">
+                    <span class="count"><span class="counter">300</span>+</span>
+                  </div>
+                </div>
+                <p>Usuários Verificados</p>
+              </div>
+              <div class="single_counter">
+                <div class="counter_items d-flex">
+                  <div class="counter_icon">
+                    <img
+                      src="/public/assets/images/icon/counter-3.svg"
+                      alt="counter"
+                    />
+                  </div>
+                  <div class="counter_count media-body">
+                    <span class="count"><span class="counter">200</span>+</span>
+                  </div>
+                </div>
+                <p>Vendas Realizadas</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!--====== COUNETR PART ENDS ======-->
+
+    <!--====== LOCATIONS PART START ======-->
+
+    <section class="locations_area pt-115 pb-120">
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-6">
+            <div class="section_title pb-15">
+              <h3 class="title">
+                Explora <br />
+                As Localizações
+              </h3>
+            </div>
+          </div>
+        </div>
+        <div class="locations_wrapper">
+          <div class="row justify-content-center">
+            <div class="col-lg-4 col-md-7 col-sm-8">
+              <div class="single_locations mt-30">
+                <div class="locations_image">
+                  <img
+                    src="/public/assets/images/locations-1.jpg"
+                    alt="Locations"
+                  /> <!--Change photos-->
+                </div>
+                <div class="locations_content">
+                  <h5 class="title">
+                    <a href="/products"
+                      ><i class="far fa-map-marker-alt"></i>Marte</a
+                    >
+                  </h5>
+                  <p>35 anúncios publicados nesta localização</p> <!--Query: Quantos Anúncios Tem Este Local-->
+                  <a class="view" href="/products"
+                    >Veja Todos Os Anúncios<i class="fa fa-angle-right"></i
+                  ></a>
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-4 col-md-7 col-sm-8">
+              <div class="single_locations mt-30">
+                <div class="locations_image">
+                  <img 
+                    src="/public/assets/images/locations-2.jpg" 
+                    alt="Locations"
+                  /> <!--Change photos-->
+                </div>
+                <div class="locations_content">
+                  <h5 class="title">
+                    <a href="/products"
+                      ><i class="far fa-map-marker-alt"></i>Terra</a
+                    >
+                  </h5>
+                  <p>36 anúncios publicados nesta localização</p> <!--Query: Quantos Anúncios Tem Este Local-->
+                  <a class="view" href="/products"
+                    >Veja Todos Os Anúncios<i class="fa fa-angle-right"></i
+                  ></a>
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-4 col-md-7 col-sm-8">
+              <div class="single_locations mt-30">
+                <div class="locations_image">
+                  <img
+                    src="/public/assets/images/locations-3.jpg" 
+                    alt="Locations"
+                  /> <!--Change photos-->
+                </div>
+                <div class="locations_content">
+                  <h5 class="title">
+                    <a href="/products"
+                      ><i class="far fa-map-marker-alt"></i>Vénus</a
+                    >
+                  </h5>
+                  <p>37 anúncios publicados nesta localização</p> <!--Query: Quantos Anúncios Tem Este Local-->
+                  <a class="view" href="/products"
+                    >Veja Todos Os Anúncios<i class="fa fa-angle-right"></i
+                  ></a>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="locations_btn text-center">
+            <a class="main-btn" href="#">Mais Localizações</a> <!--Remove this? Create another template?-->
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!--====== LOCATIONS PART ENDS ======-->
 
     <!--====== SERVICES PART START ======-->
 <!-- 
