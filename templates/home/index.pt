@@ -134,7 +134,7 @@
             <div class="section_title pb-15">
               <h3 class="title">
                 Anúncios <br />
-                Recentes
+                Destacados
               </h3>
             </div>
           </div>
@@ -370,8 +370,8 @@
             >
               <div class="section_title mt-45">
                 <h3 class="title">
-                  Popular <br />
-                  and Featured Ads
+                  Anúncios Populares <br />
+                  e Recentes
                 </h3>
               </div>
               <div class="tabs_menu mt-50">
@@ -385,7 +385,7 @@
                       role="tab"
                       aria-controls="popular"
                       aria-selected="true"
-                      >Popular Ads</a
+                      >Populares</a
                     >
                   </li>
                   <li>
@@ -396,7 +396,7 @@
                       role="tab"
                       aria-controls="featured"
                       aria-selected="false"
-                      >Featured Ads</a
+                      >Recentes</a
                     >
                   </li>
                 </ul>
