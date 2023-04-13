@@ -159,7 +159,10 @@ async def get_ads_by_price(session: AsyncSession, min: int, max: int) -> List[ad
     return most_expensive_ads
 
 async def get_ads_by_location(session: AsyncSession, location: str) -> List[ad.Ad]:
-    query = await session.execute(select(ad.Ad).filter(ad.AdAddress.city.like(f'%{location}%')))
+    query = await session.execute(
+        select(ad.Ad)
+        .join(ad.AdAddress)
+        .where(ad.AdAddress.city.like(f'%{location}%')))
     ads_by_location = query.unique().scalars().all()
 
     return ads_by_location
