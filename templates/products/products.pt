@@ -53,7 +53,8 @@
                         <div class="card-body">
                           <ul class="sidebar_categories_list">
                           <__repeat tal:repeat="subcategory category.subcategories" tal:omit-tag="True">
-                            <li><a href="#">${subcategory.subcategory_name} (${subcategory.count_total_ads})</a></li>
+                            <li><a href="/products/subcategory/${subcategory.id}">
+                            ${subcategory.subcategory_name} (${subcategory.count_total_ads})</a></li>
                           </__repeat>
                           </ul>
                         </div>
