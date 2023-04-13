@@ -155,12 +155,23 @@ async def post_ad_viewmodel(request: Request, files: list[UploadFile], session: 
 @router.get('/ad/search')
 @template(template_file = 'products/products.pt')
 async def search_by_title(
-    city: str, 
-    category_id: str, 
     title: str,
-    session: Annotated[AsyncSession, Depends(get_db_session)]
+    session: Annotated[AsyncSession, Depends(get_db_session)],
+    city: str | None = 'none', 
+    category_id: str | None = 'none'
 ):
-    ads_found = await ad_service.get_ads_by_location_and_category(city, category_id, title, session)
+    if len(title) == 0 and city == 'none' and category_id == 'none':
+        response = responses.RedirectResponse(url = '/products', status_code = status.HTTP_302_FOUND)
+        return response
+
+    if city != 'none' and category_id != 'none':
+        ads_found = await ad_service.get_ads_by_location_and_category(city, category_id, title, session)
+    elif city != 'none' and category_id == 'none':
+        ads_found = await ad_service.get_ads_by_location(session, city, title)
+    elif city == 'none' and category_id != 'none':
+        ads_found = await ad_service.get_ads_by_category(session, category_id, title)
+    else:
+        ads_found = await ad_service.get_ads_by_title(session, title)
     
     return await ViewModel(
         all_categories = await category_service.get_all_categories(session),
