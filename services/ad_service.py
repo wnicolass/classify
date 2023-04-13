@@ -80,8 +80,18 @@ async def get_all_ads(session: AsyncSession) -> List[ad.Ad]:
     return ads
 
 # ADS BY CATEGORIES & SUBCATEGORIES
+async def get_ads_by_category_id(session: AsyncSession, category_id) -> List[ad.Ad]:
+    query = await session.execute(select(ad.Ad)
+            .join(ad.Ad.subcategory)
+            .join(Subcategory.category)
+            .filter(Category.id == category_id)
+    )   
+    ads_by_category_id = query.unique().scalars().all()
+    
+    return ads_by_category_id
+
 async def get_ads_by_category(session: AsyncSession, category) -> List[ad.Ad]:
-    query = await session.execute(select(Category.category_name)
+    query = await session.execute(select(ad.Ad)
             .join(ad.Ad.subcategory)
             .join(Subcategory.category)
             .filter(Category.category_name.like(f'%{category}%'))
@@ -90,10 +100,10 @@ async def get_ads_by_category(session: AsyncSession, category) -> List[ad.Ad]:
 
     return ads_by_category
 
-async def get_ads_by_subcategory(session: AsyncSession, subcategory) -> List[ad.Ad]:
+async def get_ads_by_subcategory_id(session: AsyncSession, subcategory_id) -> List[ad.Ad]:
     query = await session.execute(select(ad.Ad)
             .join(ad.Ad.subcategory)
-            .filter(Subcategory.subcategory_name.like(f'%{subcategory}%'))
+            .where(Subcategory.id == subcategory_id)
     )
     ads_by_subcategory = query.unique().scalars().all()
 
