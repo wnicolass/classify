@@ -181,7 +181,7 @@
                     </div>
                     </li>
                 </ul>
-                    <a tal:condition="is_logged_in" class="sign-up" href="/home/post-ads">Novo Anúncio</a>
+                    <a tal:condition="is_logged_in" class="sign-up" href="/ad">Novo Anúncio</a>
                     <a tal:condition="not is_logged_in" class="sign-up" href="/auth/sign-in">Novo Anúncio</a>
                 </div>
             </nav>

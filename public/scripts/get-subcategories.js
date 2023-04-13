@@ -38,7 +38,7 @@ function buildList(subcategories) {
 
 async function fetchSubcategories(categoryId) {
     try {
-        const response = await fetch(`/home/ad/${+categoryId}`);
+        const response = await fetch(`/ad/${+categoryId}`);
         const subcategories = await response.json();
         
         buildList(subcategories);

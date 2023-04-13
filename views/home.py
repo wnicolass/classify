@@ -7,7 +7,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from fastapi_chameleon import template
 from common.fastapi_utils import get_db_session
 from common.viewmodel import ViewModel
-from services import category_service
+from services import category_service, ad_service
 
 router = APIRouter()
 
@@ -22,9 +22,11 @@ async def index(
 async def index_viewmodel(
         session: Annotated[AsyncSession, Depends(get_db_session)]
 ):
-    vm = await ViewModel()
-    vm.popular_categories = await category_service.popular_categories(session)
-    return vm
+    return await ViewModel(
+        popular_categories = await category_service.popular_categories(session),
+        all_cities = await ad_service.get_cities_with_ads(session),
+        all_categories = await category_service.get_all_categories(session)
+    )
 
 @router.get('/home/about')
 @template()

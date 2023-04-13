@@ -244,43 +244,46 @@
               >
 
                 <div class="product_grid">
-                  <div class="row">
-                  <__repeat tal:repeat="ad all_ads" tal:omit-tag="True">
-                    <div class="col-xl-4 col-sm-6">
-                      <div class="single_ads_card mt-30">
-                        <div class="ads_card_image">
-                          <img
-                            src="${ad.main_image}"
-                            alt="ads"
-                          />
-                        </div>
-                        <div class="ads_card_content">
-                          <div class="meta d-flex justify-content-between">
-                            <p>${ad.subcategory.subcategory_name}</p>
-                            <a class="like" href="#"
-                              ><i class="fal fa-heart"></i
-                            ></a>
+                  <div class="row" tal:condition='len(all_ads) > 0'>
+                    <__repeat tal:repeat="ad all_ads" tal:omit-tag="True">
+                      <div class="col-xl-4 col-sm-6">
+                        <div class="single_ads_card mt-30">
+                          <div class="ads_card_image">
+                            <img
+                              src="${ad.main_image}"
+                              alt="ads"
+                            />
                           </div>
-                          <h4 class="title">
-                            <a href="/products/product-details"
-                              >${ad.title}</a
+                          <div class="ads_card_content">
+                            <div class="meta d-flex justify-content-between">
+                              <p>${ad.subcategory.subcategory_name}</p>
+                              <a class="like" href="#"
+                                ><i class="fal fa-heart"></i
+                              ></a>
+                            </div>
+                            <h4 class="title">
+                              <a href="/products/product-details"
+                                >${ad.title}</a
+                              >
+                            </h4>
+                            <p>
+                              <i class="fal fa-map-marker-alt"></i>${ad.address.country}, 
+                              ${ad.address.city}
+                            </p>
+                            <div
+                              class="ads_price_date d-flex justify-content-between"
                             >
-                          </h4>
-                          <p>
-                            <i class="fal fa-map-marker-alt"></i>${ad.address.country}, 
-                            ${ad.address.city}
-                          </p>
-                          <div
-                            class="ads_price_date d-flex justify-content-between"
-                          >
-                            <span class="price">${ad.price}€</span>
-                            <span class="date">${ad.pretty_date}</span>
+                              <span class="price">${ad.price}€</span>
+                              <span class="date">${ad.pretty_date}</span>
+                            </div>
                           </div>
                         </div>
                       </div>
-                    </div>
-                  </__repeat>
-                    
+                    </__repeat>
+                  </div>
+                  <div tal:condition='len(all_ads) == 0' class="row" style="margin-inline: 10rem;">
+                    <p>Ooops! Parece que nossos anúncios foram abduzidos! Que tal desapegar e começar a anunciar agora mesmo? 👽</p>
+                    <img style="width: 30rem;" src="/public/assets/images/empty-result.svg" alt="Resultado vazio">
                   </div>
                 </div>
               </div>
