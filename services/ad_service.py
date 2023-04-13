@@ -155,11 +155,12 @@ async def get_all_expired_ads(session: AsyncSession) -> List[ad.Ad]:
 
     return expired_ads
 
-async def get_popular_ads(session: AsyncSession, limit: int = 10) -> List[ad.Ad]:
-    query = await session.execute(select(ad.Ad).filter(ad.AdStatus == 'active')
-            .having(func.count(ad.Ad.views) >= 100)
-            .order_by(func.count(ad.Ad.views).desc())
-            .limit(limit)
+async def get_popular_ads(session: AsyncSession, limit: int = 8) -> List[ad.Ad]:
+    query = await session.execute(select(ad.Ad)
+        .join(ad.Ad.ad_status)
+        .where(ad.AdStatus.status_name == 'ativo')
+        .order_by(ad.Ad.views.desc())
+        .limit(limit)
     )
     popular_ads = query.unique().scalars().all()
     
