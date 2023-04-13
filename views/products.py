@@ -37,6 +37,14 @@ async def products_viewmodel(session: Annotated[AsyncSession, Depends(get_db_ses
        all_ads = await ad_service.get_all_ads(session)
     )
 
+@router.get('/products/ad/{ad_id}')
+@template(template_file='products/product-details.pt')
+async def show_ad(ad_id, session: Annotated[AsyncSession, Depends(get_db_session)]):
+    return await ViewModel(
+        get_3_ads = await ad_service.get_3_ads(session),
+        adv = await ad_service.get_ad_by_id(session, ad_id)
+    )
+
 @router.get('/products/product-details')
 @template('products/product-details.pt')
 async def products_details():
