@@ -79,6 +79,18 @@ async def get_all_ads(session: AsyncSession) -> List[ad.Ad]:
 
     return ads
 
+async def get_3_ads(session: AsyncSession) -> List[ad.Ad]:
+    query = await session.execute(select(ad.Ad).limit(3))
+    ads = query.unique().scalars().all()
+
+    return ads
+
+async def get_ad_by_id(session: AsyncSession, ad_id: int) -> ad.Ad | None:
+    query = await session.execute(select(ad.Ad).where(ad.Ad.id == ad_id))
+    adv = query.unique().scalars().all()
+    
+    return adv
+
 # ADS BY CATEGORIES & SUBCATEGORIES
 async def get_ads_by_category_id(session: AsyncSession, category_id) -> List[ad.Ad]:
     query = await session.execute(select(ad.Ad)
