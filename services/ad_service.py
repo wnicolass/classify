@@ -3,6 +3,7 @@ from typing import List, Tuple
 from sqlalchemy import and_, func
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
+from sqlalchemy.orm import selectinload
 from models import ad
 from models.category import Category
 from models.subcategory import Subcategory
@@ -155,6 +156,15 @@ async def get_all_expired_ads(session: AsyncSession) -> List[ad.Ad]:
 
     return expired_ads
 
+async def get_ads_by_status(session: AsyncSession, status: str) -> List[ad.Ad]:
+    query = await session.execute(select(ad.Ad)
+        .join(ad.Ad.ad_status)
+        .where(ad.AdStatus.status_name == status)
+    )
+    ads_by_status = query.unique().scalars().all()
+    
+    return ads_by_status
+
 async def get_popular_ads(session: AsyncSession, limit: int = 8) -> List[ad.Ad]:
     query = await session.execute(select(ad.Ad)
         .join(ad.Ad.ad_status)
@@ -180,7 +190,7 @@ async def get_ads_by_location(session: AsyncSession, location: str, title: str) 
         .join(ad.AdAddress)
         .where(
             and_(
-                ad.AdAddress.city.like(f'%{location}%'),
+                ad.AdAddress.city == f'{location}',
                 ad.Ad.title.like(f'%{title}%')
             )
         )
@@ -188,6 +198,15 @@ async def get_ads_by_location(session: AsyncSession, location: str, title: str) 
     ads_by_location = query.unique().scalars().all()
 
     return ads_by_location
+
+async def get_ads_by_creation_date(session: AsyncSession, limit: int = 8) -> List[ad.Ad]:
+    query = await session.execute(select(ad.Ad)
+        .order_by(ad.Ad.created_at.desc())
+        .limit(limit)
+    )
+    recent_ads = query.unique().scalars().all()
+
+    return recent_ads
 
 async def get_ads_by_title(session: AsyncSession, title: str) -> List[ad.Ad]:
     query = await session.execute(
@@ -197,6 +216,34 @@ async def get_ads_by_title(session: AsyncSession, title: str) -> List[ad.Ad]:
     ads_by_title = query.unique().scalars().all()
 
     return ads_by_title
+
+# async def get_locations_by_total_ads(session: AsyncSession) -> List[ad.AdAddress]:
+#     query = await session.execute(select(ad.AdAddress)
+#         .join(ad.AdAddress.ads)
+#         .group_by(ad.AdAddress.city)
+#         .order_by(func.count(ad.Ad.ad_address_id).desc())
+#         .limit(3)
+#         .options(selectinload(ad.AdAddress.ads))
+#     )
+#     addresses = query.unique().scalars().all()
+
+#     return addresses
+
+async def get_locations_by_total_ads(session: AsyncSession) -> List[ad.AdAddress]:
+    query = await session.execute(select(ad.AdAddress, func.count(ad.Ad.ad_address_id))
+        .join(ad.Ad.address)
+        .group_by(ad.AdAddress.city)
+        .order_by(func.count(ad.Ad.ad_address_id).desc())
+        .limit(3)
+        .options(selectinload(ad.AdAddress.ads))
+    )
+    addresses_with_counts = query.unique().all()
+    handled_models = []
+    for address, count in addresses_with_counts:
+        setattr(address, 'count_total_ads', count)
+        handled_models.append(address)
+
+    return handled_models
 
 async def get_ads_by_location_and_category(
     city: str, 

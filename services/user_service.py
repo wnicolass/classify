@@ -1,4 +1,5 @@
 from datetime import datetime
+from typing import List
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
 from models.user import UserAccount, UserLoginData, UserLoginDataExt
@@ -20,6 +21,12 @@ async def get_user_account_by_id(id: int, session: AsyncSession) -> UserAccount:
     user = query.scalar_one_or_none()
     
     return user
+
+async def get_all_verified_users(session: AsyncSession) -> List[UserAccount]:
+    query = await session.execute(select(UserAccount).where(UserAccount.is_active == 1))
+    verified_users = query.unique().scalars().all()
+
+    return verified_users
 
 async def set_email_confirmation_token(user_id: int, token: str, expiration_time: datetime, session: AsyncSession):
     user = await get_user_by_id(user_id, session)
