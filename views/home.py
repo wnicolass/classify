@@ -25,7 +25,8 @@ async def index_viewmodel(
     return await ViewModel(
         popular_categories = await category_service.popular_categories(session),
         all_cities = await ad_service.get_cities_with_ads(session),
-        all_categories = await category_service.get_all_categories(session)
+        all_categories = await category_service.get_all_categories(session),
+        popular_ads = await ad_service.get_popular_ads(session)
     )
 
 @router.get('/home/about')
