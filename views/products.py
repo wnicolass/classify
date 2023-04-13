@@ -16,12 +16,12 @@ async def show_ads_category(category_id: int, session: Annotated[AsyncSession, D
         all_ads = await ad_service.get_ads_by_category_id(session, category_id)
     )
 
-@router.get('/products/subcategory/{category_id}')
+@router.get('/products/subcategory/{subcategory_id}')
 @template(template_file='products/products.pt')
-async def show_ads_category(category_id: int, session: Annotated[AsyncSession, Depends(get_db_session)]):
+async def show_ads_category(subcategory_id: int, session: Annotated[AsyncSession, Depends(get_db_session)]):
     return await ViewModel(
         all_categories = await category_service.get_all_categories(session),
-        all_ads = await ad_service.get_ads_by_subcategory_id(session, category_id)
+        all_ads = await ad_service.get_ads_by_subcategory_id(session, subcategory_id)
     )
 
 @router.get('/products')
