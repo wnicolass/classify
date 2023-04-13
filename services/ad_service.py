@@ -1,6 +1,6 @@
 from decimal import Decimal as dec
 from typing import List, Tuple
-from sqlalchemy import func
+from sqlalchemy import and_, func
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
 from models import ad
@@ -169,6 +169,28 @@ async def get_ads_by_title(session: AsyncSession, title: str) -> List[ad.Ad]:
     ads_by_title = query.unique().scalars().all()
 
     return ads_by_title
+
+async def get_ads_by_location_and_category(
+    city: str, 
+    category_id: int, 
+    title: str, 
+    session: AsyncSession
+) -> List[ad.Ad]:
+    query = await session.execute(
+        select(ad.Ad)
+        .join(ad.Ad.subcategory)
+        .join(Subcategory.category)
+        .join(ad.Ad.address)
+        .where(
+            and_(
+                ad.Ad.title.like(f'%{title}%'),
+                Category.id == category_id,
+                ad.AdAddress.city == city
+            )
+        )
+    )
+    ads_found = query.unique().scalars().all()
+    return ads_found
 
 async def get_ads_by_description(session: AsyncSession, description: str) -> List[ad.Ad]:
     query = await session.execute(select(ad.Ad).filter(ad.Ad.ad_description.like(f'%{description}%')))
