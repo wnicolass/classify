@@ -43,7 +43,7 @@ class Ad(Base):
     subcategory = relationship('Subcategory', back_populates = 'ads', lazy = 'joined')
     field_definitions = relationship('FieldDefinition', secondary = field_value, back_populates = 'ads')
     admin = relationship('AdminAccount', secondary = ad_approval, back_populates = 'ads', uselist = False)
-    ad_status = relationship('AdStatus', back_populates = 'ads', uselist = False)
+    ad_status = relationship('AdStatus', back_populates = 'ads', uselist = False, lazy = 'joined')
     images = relationship('AdImage', back_populates = 'ad', cascade = 'delete', lazy = 'joined')
 
 
@@ -91,6 +91,7 @@ class AdStatus(Base):
 
     id: int = Column(Integer, primary_key = True, autoincrement = True)
     status_name: str = Column(String(30), nullable = False)
+    status_name_internal: str = Column(String(30), nullable = False)
     status_description: str = Column(String(200), nullable = False)
 
     ads = relationship('Ad', back_populates = 'ad_status')
