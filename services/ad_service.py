@@ -80,12 +80,17 @@ async def get_all_ads(session: AsyncSession) -> List[ad.Ad]:
     return ads
 
 # ADS BY CATEGORIES & SUBCATEGORIES
-async def get_ads_by_category(session: AsyncSession, category) -> List[ad.Ad]:
-    query = await session.execute(select(Category.category_name)
+async def get_ads_by_category(session: AsyncSession, category_id: str, title: str) -> List[ad.Ad]:
+    query = await session.execute(select(ad.Ad)
             .join(ad.Ad.subcategory)
             .join(Subcategory.category)
-            .filter(Category.category_name.like(f'%{category}%'))
-    )
+            .where(
+                and_(
+                    Category.id == category_id,
+                    ad.Ad.title.like(f'%{title}%')
+                )
+            )
+        )
     ads_by_category = query.unique().scalars().all()
 
     return ads_by_category
@@ -158,14 +163,26 @@ async def get_ads_by_price(session: AsyncSession, min: int, max: int) -> List[ad
 
     return most_expensive_ads
 
-async def get_ads_by_location(session: AsyncSession, location: str) -> List[ad.Ad]:
-    query = await session.execute(select(ad.Ad).filter(ad.AdAddress.city.like(f'%{location}%')))
+async def get_ads_by_location(session: AsyncSession, location: str, title: str) -> List[ad.Ad]:
+    query = await session.execute(
+        select(ad.Ad)
+        .join(ad.AdAddress)
+        .where(
+            and_(
+                ad.AdAddress.city.like(f'%{location}%'),
+                ad.Ad.title.like(f'%{title}%')
+            )
+        )
+    )
     ads_by_location = query.unique().scalars().all()
 
     return ads_by_location
 
 async def get_ads_by_title(session: AsyncSession, title: str) -> List[ad.Ad]:
-    query = await session.execute(select(ad.Ad).filter(ad.Ad.title.like(f'%{title}%')))
+    query = await session.execute(
+        select(ad.Ad)
+        .where(ad.Ad.title.like(f'%{title}%'))
+    )
     ads_by_title = query.unique().scalars().all()
 
     return ads_by_title
