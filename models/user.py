@@ -27,10 +27,14 @@ class UserAccount(Base):
 
     created_at: datetime = Column(DateTime, server_default = text('NOW()'))
 
-    ads = relationship('Ad', back_populates = 'user', cascade = "delete")
+    ads = relationship('Ad', back_populates = 'user', cascade = "delete", lazy = 'joined')
     user_address = relationship('UserAddress', back_populates = 'user', cascade = "delete", uselist = False)
     user_login_data = relationship('UserLoginData', back_populates = 'user', uselist = False)
     user_login_data_ext = relationship('UserLoginDataExt', back_populates = 'user')
+
+    @property
+    def pretty_created_at(self):
+        return datetime.strftime(self.created_at, '%Y')
 
     @property
     def email_addrs(self) -> str:
