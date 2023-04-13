@@ -155,8 +155,8 @@ async def post_ad_viewmodel(request: Request, files: list[UploadFile], session: 
 @router.get('/ad/search')
 @template(template_file = 'products/products.pt')
 async def search_by_title(
-    title: str,
     session: Annotated[AsyncSession, Depends(get_db_session)],
+    title: str | None = '',
     city: str | None = 'none', 
     category_id: str | None = 'none'
 ):
