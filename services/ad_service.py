@@ -217,18 +217,6 @@ async def get_ads_by_title(session: AsyncSession, title: str) -> List[ad.Ad]:
 
     return ads_by_title
 
-# async def get_locations_by_total_ads(session: AsyncSession) -> List[ad.AdAddress]:
-#     query = await session.execute(select(ad.AdAddress)
-#         .join(ad.AdAddress.ads)
-#         .group_by(ad.AdAddress.city)
-#         .order_by(func.count(ad.Ad.ad_address_id).desc())
-#         .limit(3)
-#         .options(selectinload(ad.AdAddress.ads))
-#     )
-#     addresses = query.unique().scalars().all()
-
-#     return addresses
-
 async def get_locations_by_total_ads(session: AsyncSession) -> List[ad.AdAddress]:
     query = await session.execute(select(ad.AdAddress, func.count(ad.Ad.ad_address_id))
         .join(ad.Ad.address)
