@@ -152,6 +152,21 @@ async def post_ad_viewmodel(request: Request, files: list[UploadFile], session: 
 
     return vm
 
+@router.get('/ad/search')
+@template(template_file = 'products/products.pt')
+async def search_by_title(
+    city: str, 
+    category_id: str, 
+    title: str,
+    session: Annotated[AsyncSession, Depends(get_db_session)]
+):
+    ads_found = await ad_service.get_ads_by_location_and_category(city, category_id, title, session)
+    
+    return await ViewModel(
+        all_categories = await category_service.get_all_categories(session),
+        all_ads = ads_found
+    )
+
 @router.get('/ad/{category_id}')
 async def get_subcategories(
     category_id: int,
