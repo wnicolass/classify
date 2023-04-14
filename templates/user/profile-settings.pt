@@ -40,6 +40,15 @@
                       <input type="text" placeholder="Nome" name="username" value="${name}"/>
                     </div>
                   </div>
+                  <div class="post_upload_file">
+                    <label for="upload">
+                      <span>Arrasta imagens aqui</span>
+                      <span>Ou</span>
+                      <span class="main-btn">Seleciona Imagens</span>
+                      <span>Máximo tamanho de upload: 500 KB</span>
+                      <input type="file" name="files" id="upload" accept="image/jpg,/image/png" multiple="multiple"/>
+                    </label>
+                  </div>
                   <div class="col-md-6">
                     <div class="single_form">
                       <input type="email" placeholder="Endereço de Email" name="email" value="${email}"/>
@@ -53,30 +62,6 @@
                   <div class="col-md-6">
                     <div class="single_form">
                       <input type="text" placeholder="Data de Nascimento" name="birth_date" value="${birth_date}"/>
-                    </div>
-                  </div>
-                  <div class="col-md-6">
-                    <div class="single_form">
-                      <button class="main-btn">Confirmar Alterações</button>
-                    </div>
-                  </div>
-                </div>
-              </form>
-            </div>
-            <div class="post_form mt-50">
-              <div class="post_title">
-                <h5 class="title">Definições de Password</h5>
-              </div>
-              <form action="#">
-                <div class="row">
-                  <div class="col-md-6">
-                    <div class="single_form">
-                      <input type="password" placeholder="Nova Password" />
-                    </div>
-                  </div>
-                  <div class="col-md-6">
-                    <div class="single_form">
-                      <input type="password" placeholder="Confirma Password" />
                     </div>
                   </div>
                   <div class="col-md-6">
