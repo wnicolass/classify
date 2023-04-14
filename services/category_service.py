@@ -18,6 +18,17 @@ async def get_category_by_name(name: str, session: AsyncSession) -> Category | N
     category = query.scalar_one_or_none()
     return category
 
+async def get_categories_by_asc(session: AsyncSession) -> List[Category]:
+    query = await session.execute(select(Category).order_by(Category.category_name.asc()))
+    asc_categories = query.scalars().all()
+
+    return asc_categories
+
+async def get_categories_by_desc(session: AsyncSession) -> List[Category]:
+    query = await session.execute(select(Category).order_by(Category.category_name.desc()))
+    desc_categories = query.scalars().all()
+
+    return desc_categories
 
 async def get_category_count(session: AsyncSession) -> int | None:
     query = await session.execute(select(func.count(Category.id)))
