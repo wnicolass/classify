@@ -32,7 +32,7 @@ is_valid_password = make_test_regex_fn(
 )
 
 is_valid_username = make_test_regex_fn(
-    r'^(?!.*\d)(?!.*[~`!@#$%^&*()_\-+={[}\]|\\:;"\'<,>.?/]).*'
+    r'^(?!.*\d)(?!.*[~`!@#$%^&*()_\-+={[}\]|\\:;"\'<,>.?/]).{2,}$'
 )
 
 is_valid_txt_field = make_test_regex_fn(
