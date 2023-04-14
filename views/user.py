@@ -123,6 +123,18 @@ async def payments():
 async def favourite_ads():
     return await ViewModel()
 
+@router.post('/user/favourite/{ad_id}', dependencies = [Depends(requires_authentication)])
+async def add_ad_to_favourites(
+    ad_id: int, 
+    session: Annotated[AsyncSession, Depends(get_db_session)]
+):
+    vm = await ViewModel()
+    new_fav = await user_service.add_new_favourite(vm.user_id, ad_id, session)
+
+    if new_fav:
+        return {'msg': 'ok'}
+
+
 @router.get('/user/privacy-setting', dependencies = [Depends(requires_authentication)])
 @template('user/privacy-setting.pt')
 async def privacy_setting():
