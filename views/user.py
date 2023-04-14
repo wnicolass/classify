@@ -96,14 +96,14 @@ async def my_ads(session: Annotated[AsyncSession, Depends(get_db_session)]):
     vm.ad_count_total = await ad_service.get_ad_count_by_user_id(session, vm.user_id)
     vm.ad_count_active = await ad_service.get_ad_count_by_user_id_and_status(session, vm.user_id, 1)
     vm.ad_count_inactive = await ad_service.get_ad_count_by_user_id_and_status(session, vm.user_id, 2)
-    vm.ad_count_sold = await ad_service.get_ad_count_by_user_id_and_status(session, vm.user_id, 3)
-    vm.ad_count_expired = await ad_service.get_ad_count_by_user_id_and_status(session, vm.user_id, 4)
+    vm.ad_count_expired = await ad_service.get_ad_count_by_user_id_and_status(session, vm.user_id, 3)
+    vm.ad_count_sold = await ad_service.get_ad_count_by_user_id_and_status(session, vm.user_id, 4)
     vm.ad_count_deleted = await ad_service.get_ad_count_by_user_id_and_status(session, vm.user_id, 5)
     vm.all_ads = await ad_service.get_ads_by_user_id(session, vm.user_id)
     vm.all_active_ads = await ad_service.get_ads_by_user_id_and_status(session, vm.user_id, 1)
     vm.all_inactive_ads = await ad_service.get_ads_by_user_id_and_status(session, vm.user_id, 2)
-    vm.all_sold_ads = await ad_service.get_ads_by_user_id_and_status(session, vm.user_id, 3)
-    vm.all_expired_ads = await ad_service.get_ads_by_user_id_and_status(session, vm.user_id, 4)
+    vm.all_expired_ads = await ad_service.get_ads_by_user_id_and_status(session, vm.user_id, 3)
+    vm.all_sold_ads = await ad_service.get_ads_by_user_id_and_status(session, vm.user_id, 4)
     vm.all_deleted_ads = await ad_service.get_ads_by_user_id_and_status(session, vm.user_id, 5)
     
     return vm
