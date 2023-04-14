@@ -31,9 +31,9 @@
         >
           <div class="categories_story mt-50">
             <select>
-              <option value="0">Ordenar nº Anúncios</option>
-              <option value="1">Ordenar A-Z</option>
-              <option value="1">Ordenar Z-A</option>
+              <option value="none">Ordenar Anúncios</option>
+              <option value="asc">A-Z</option>
+              <option value="desc">Z-A</option>
             </select>
           </div>
           <div class="categories_tab_menu mt-50">

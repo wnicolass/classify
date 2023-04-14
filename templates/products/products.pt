@@ -1,6 +1,7 @@
 <div metal:use-macro="load: ../shared/_layout.pt">
 <__additional_script__ metal:fill-slot="additional_script" tal:omit-tag="True">
   <script src="/public/scripts/show-subcategories.js" defer></script>
+  <script src="/public/scripts/limit-select-size.js" defer></script>
 </__additional_script__>
   <div metal:fill-slot="title" tal:omit-tag="True">
     <title> Anúncios | Classify</title>
@@ -187,17 +188,21 @@
               class="product_topbar d-md-flex align-items-center justify-content-between pb-30"
             >
               <div class="product_select pt-40 d-flex flex-wrap">
-                <select>
-                  <option value="0">Story by Acceding</option>
-                  <option value="1">Some option</option>
-                  <option value="2">Another option</option>
-                  <option value="4">Potato</option>
+                <select id="alphabetic-select">
+                  <option value="none">Ordenar Por</option>
+                  <option value="asc">A-Z</option>
+                  <option value="desc">Z-A</option>
+                 
                 </select>
-                <select>
-                  <option value="0">Location</option>
+                <select id="city-select" class="limit" name="city">
+                    <option value="none">Localização</option>
+                    <__repeat tal:repeat="city all_cities" tal:omit-tag="True">
+                      <option value="${city.city}">${city.city}</option>
+                    </__repeat>
                 </select>
-                <select>
-                  <option value="0">12 Items</option>
+                <select id="recency-select">
+                  <option value="recent">Mais Recentes</option>
+                  <option value="old">Mais Antigos</option>
                 </select>
               </div>
               <div class="product_tab_menu mt-50">
