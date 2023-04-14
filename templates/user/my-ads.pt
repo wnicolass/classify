@@ -108,21 +108,6 @@
                   </li>
                 </ul>
               </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
               <div class="ads_table table-responsive mt-30" id="ads-table-all">
                 <div
                   class="tab-pane fade show active"
@@ -196,20 +181,6 @@
                   </table>
                 </div>
               </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
               <div class="ads_table table-responsive" id="ads-table-active" style="max-height:0px;">
                 <div
                   class="tab-pane fade"
@@ -283,7 +254,6 @@
                   </table>
                 </div>
               </div>
-
               <div class="ads_table table-responsive" id="ads-table-inactive" style="max-height:0px;">
                 <div
                   class="tab-pane fade"
@@ -357,7 +327,6 @@
                   </table>
                 </div>
               </div>
-
               <div class="ads_table table-responsive" id="ads-table-expired" style="max-height:0px;">
                 <div
                   class="tab-pane fade"
@@ -431,7 +400,6 @@
                   </table>
                 </div>
               </div>
-
               <div class="ads_table table-responsive" id="ads-table-sold" style="max-height:0px;">
                 <div
                   class="tab-pane fade"
@@ -505,7 +473,6 @@
                   </table>
                 </div>
               </div>
-
               <div class="ads_table table-responsive" id="ads-table-deleted" style="max-height:0px;">
                 <div
                   class="tab-pane fade"
@@ -579,28 +546,6 @@
                   </table>
                 </div>
               </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
             </div>
           </div>
         </div>
