@@ -45,9 +45,10 @@ async def products_viewmodel(session: Annotated[AsyncSession, Depends(get_db_ses
 @router.get('/ad/{ad_id}')
 @template(template_file='products/product-details.pt')
 async def show_ad(ad_id, session: Annotated[AsyncSession, Depends(get_db_session)]):
+    current_ad = await ad_service.get_ad_by_id(session, ad_id)
     return await ViewModel(
-        get_3_ads = await ad_service.get_3_ads(session),
-        adv = await ad_service.get_ad_by_id(session, ad_id)
+        adv = current_ad,
+        get_3_ads = await ad_service.get_3_ads(current_ad, session)
     )
 
 @router.get('/ads/category/{category_id}')
@@ -70,7 +71,7 @@ async def show_ads_category(subcategory_id: int, session: Annotated[AsyncSession
 @template(template_file = 'products/products.pt')
 async def search_by_title(
     session: Annotated[AsyncSession, Depends(get_db_session)],
-    category_id: str,
+    category_id: str | None = 'none',
     title: str | None = '',
     city: str | None = 'none', 
 ):
