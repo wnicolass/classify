@@ -29,7 +29,70 @@ from config.cloudinary import upload_image
 
 router = APIRouter()
 
-@router.get('/ad', dependencies = [Depends(requires_authentication)])
+@router.get('/ads')
+@template(template_file='products/products.pt')
+async def products(session: Annotated[AsyncSession, Depends(get_db_session)]):
+    vm = await products_viewmodel(session)
+
+    return vm
+
+async def products_viewmodel(session: Annotated[AsyncSession, Depends(get_db_session)]):
+    return await ViewModel(
+       all_categories = await category_service.get_all_categories(session),
+       all_ads = await ad_service.get_all_ads(session)
+    )
+
+@router.get('/ad/{ad_id}')
+@template(template_file='products/product-details.pt')
+async def show_ad(ad_id, session: Annotated[AsyncSession, Depends(get_db_session)]):
+    return await ViewModel(
+        get_3_ads = await ad_service.get_3_ads(session),
+        adv = await ad_service.get_ad_by_id(session, ad_id)
+    )
+
+@router.get('/ads/category/{category_id}')
+@template(template_file='products/products.pt')
+async def show_ads_category(category_id: int, session: Annotated[AsyncSession, Depends(get_db_session)]):
+    return await ViewModel(
+        all_categories = await category_service.get_all_categories(session),
+        all_ads = await ad_service.get_ads_by_category_id(session, category_id)
+    )
+
+@router.get('/ads/subcategory/{subcategory_id}')
+@template(template_file='products/products.pt')
+async def show_ads_category(subcategory_id: int, session: Annotated[AsyncSession, Depends(get_db_session)]):
+    return await ViewModel(
+        all_categories = await category_service.get_all_categories(session),
+        all_ads = await ad_service.get_ads_by_subcategory_id(session, subcategory_id)
+    )
+
+@router.get('/ads/search')
+@template(template_file = 'products/products.pt')
+async def search_by_title(
+    session: Annotated[AsyncSession, Depends(get_db_session)],
+    category_id: str,
+    title: str | None = '',
+    city: str | None = 'none', 
+):
+    if len(title) == 0 and city == 'none' and category_id == 'none':
+        response = responses.RedirectResponse(url = '/ads', status_code = status.HTTP_302_FOUND)
+        return response
+
+    if city != 'none' and category_id != 'none':
+        ads_found = await ad_service.get_ads_by_location_and_category(city, category_id, title, session)
+    elif city != 'none' and category_id == 'none':
+        ads_found = await ad_service.get_ads_by_location(session, city, title)
+    elif city == 'none' and category_id != 'none':
+        ads_found = await ad_service.get_ads_by_category(session, category_id, title)
+    else:
+        ads_found = await ad_service.get_ads_by_title(session, title)
+    
+    return await ViewModel(
+        all_categories = await category_service.get_all_categories(session),
+        all_ads = ads_found
+    )
+
+@router.get('/new/ad', dependencies = [Depends(requires_authentication)])
 @template('home/post-ads.pt')
 async def post_ads(session: Annotated[AsyncSession, Depends(get_db_session)]):
     return await post_ads_viewmodel(session)
@@ -52,7 +115,7 @@ async def fetch_countries():
         all_countries = [country for country in json_res['data']]
         return all_countries
 
-@router.post('/ad', dependencies = [Depends(requires_authentication)])
+@router.post('/new/ad', dependencies = [Depends(requires_authentication)])
 @template(template_file = 'home/post-ads.pt')
 async def post_ad(request: Request, files: List[UploadFile], session: Annotated[AsyncSession, Depends(get_db_session)]):
     vm = await post_ad_viewmodel(request, files, session)
@@ -151,38 +214,3 @@ async def post_ad_viewmodel(request: Request, files: list[UploadFile], session: 
         )
 
     return vm
-
-@router.get('/ad/search')
-@template(template_file = 'products/products.pt')
-async def search_by_title(
-    session: Annotated[AsyncSession, Depends(get_db_session)],
-    title: str | None = '',
-    city: str | None = 'none', 
-    category_id: str | None = 'none'
-):
-    if len(title) == 0 and city == 'none' and category_id == 'none':
-        response = responses.RedirectResponse(url = '/products', status_code = status.HTTP_302_FOUND)
-        return response
-
-    if city != 'none' and category_id != 'none':
-        ads_found = await ad_service.get_ads_by_location_and_category(city, category_id, title, session)
-    elif city != 'none' and category_id == 'none':
-        ads_found = await ad_service.get_ads_by_location(session, city, title)
-    elif city == 'none' and category_id != 'none':
-        ads_found = await ad_service.get_ads_by_category(session, category_id, title)
-    else:
-        ads_found = await ad_service.get_ads_by_title(session, title)
-    
-    return await ViewModel(
-        all_categories = await category_service.get_all_categories(session),
-        all_ads = ads_found
-    )
-
-@router.get('/ad/{category_id}')
-async def get_subcategories(
-    category_id: int,
-    session: Annotated[AsyncSession, Depends(get_db_session)]
-):
-    subcategories = await category_service.get_subcategory_by_category_id(category_id, session)
-
-    return subcategories

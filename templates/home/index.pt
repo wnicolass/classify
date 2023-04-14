@@ -35,7 +35,7 @@
             </div>
           </div>
           <div class="header_search">
-            <form action="/ad/search" method="GET">
+            <form action="/ads/search" method="GET">
               <div class="search_wrapper d-flex flex-wrap">
                 <div class="search_column d-flex flex-wrap">
                   <div class="search_select mt-15">
@@ -115,12 +115,12 @@
               <div class="content">
                 <h6 class="title">${category.category_name}</h6>
               </div>
-              <a href="/products"></a>
+              <a href="/ads/category/${category.id}"></a>
             </div>
           </div>
         </__repeat>
           <div class="category_btn">
-            <a class="main-btn" href="/common/categories">Ver todas as categorias</a>
+            <a class="main-btn" href="/categories">Ver todas as categorias</a>
           </div>
         </div>
       </div>
@@ -155,7 +155,7 @@
                     <a class="like" href="#"><i class="fal fa-heart"></i></a>
                   </div>
                   <h4 class="title">
-                    <a href="/products/product-details">8 GB DDR4 Ram, 4th Gen</a>
+                    <a href="/ad/${ad.id]">8 GB DDR4 Ram, 4th Gen</a>
                   </h4>
                   <p><i class="far fa-map-marker-alt"></i>New York, USA</p>
                   <div class="ads_price_date d-flex justify-content-between">
@@ -348,7 +348,7 @@
                 </li>
                 <li><i class="fa fa-check"></i> Guarda os teus anúncios favoritos.</li>
               </ul>
-              <a href="/common/pricing" class="main-btn">Saiba mais aqui</a>
+              <a href="/pricing" class="main-btn">Saiba mais aqui</a>
             </div>
           </div>
         </div>
@@ -431,7 +431,7 @@
                           ></a>
                         </div>
                         <h4 class="title">
-                          <a href="/products/product-details">${ad.title}</a>
+                          <a href="/ad/${ad.id}">${ad.title}</a>
                         </h4>
                         <p><i class="fal fa-map-marker-alt"></i>${ad.address.country}, 
                             ${ad.address.city}</p>
@@ -469,7 +469,7 @@
                           ></a>
                         </div>
                         <h4 class="title">
-                          <a href="/products/product-details"
+                          <a href="/ad/${ad.id}"
                             >${ad.title}</a
                           >
                         </h4>

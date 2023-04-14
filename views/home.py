@@ -34,17 +34,17 @@ async def index_viewmodel(
         top_locations = await ad_service.get_locations_by_total_ads(session)
     )
 
-@router.get('/home/about')
+@router.get('/about')
 @template()
 async def about():
     return await ViewModel()
 
-@router.get('/home/contact')
+@router.get('/contact')
 @template()
 async def contact():
     return await ViewModel()
 
-@router.get('/home/faq')
+@router.get('/faq')
 @template()
 async def faq():
     return await ViewModel()

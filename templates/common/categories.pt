@@ -86,7 +86,7 @@
                       <h5 class="title">${category.category_name}</h5>
                       <p>${category.count_total_ads} Anúncios</p>
                     </div>
-                    <a href="/products/category/${category.id}"></a>
+                    <a href="/ads/category/${category.id}"></a>
                   </div>
                 </div>
                 
@@ -107,7 +107,7 @@
                       <i class="${category.category_icon}"></i>
                     </div>
                     <div class="list_title media-body">
-                      <h5 class="title"><a href="/products/category/${category.id}" 
+                      <h5 class="title"><a href="/ads/category/${category.id}" 
                       style="color:#ff4367">${category.category_name}</a></h5>
                     </div>  
                   </div>
@@ -116,7 +116,7 @@
                       <div class="col-lg-3 col-sm-6">
                         <ul class="list">
                           <__repeat tal:repeat="subcategory category.subcategories" tal:omit-tag="True">
-                            <li><a href="/products/subcategory/${subcategory.id}">${subcategory.subcategory_name}</a></li>
+                            <li><a href="/ads/subcategory/${subcategory.id}">${subcategory.subcategory_name}</a></li>
                           </__repeat>
                         </ul>
                       </div>

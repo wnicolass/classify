@@ -20,7 +20,6 @@ from middlewares.global_request import add_global_request
 
 from views import(
     home,
-    products,
     user,
     posts,
     auth,
@@ -96,7 +95,7 @@ def config_templates():
 
 def config_routes():
     app.mount('/public', StaticFiles(directory='public'), name='static')
-    for view in [home, products, user, posts, auth, common, ad]:
+    for view in [home, user, auth, ad, posts, common]:
         app.include_router(view.router)
 
 def config_middlewares():

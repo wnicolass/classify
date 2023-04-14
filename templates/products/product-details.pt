@@ -2,6 +2,9 @@
   <div metal:fill-slot="title" tal:omit-tag="True">
     <title> Detalhes Produto | Classify</title>
   </div>
+  <__additional_script__ metal:fill-slot="additional_script" tal:omit-tag="True">
+    <script src="/public/scripts/change-image.js" defer></script>
+  </__additional_script__>
   <div metal:fill-slot="content" tal:omit-tag="True">
 
     <div
@@ -12,7 +15,7 @@
           <h3 class="title">${adv.title}</h3>
           <ul class="breadcrumb">
             <li><a href="/">Home</a></li>
-            <li><a href="/products">Todos os anúncios</a></li>
+            <li><a href="/ads">Todos os anúncios</a></li>
             <li>${adv.title}</li>
           </ul>
         </div>
@@ -32,63 +35,53 @@
                 <div class="tab-content" id="myTabContent">
                   <div
                     class="tab-pane fade show active"
-                    id="details-1"
+                    id="rejected"
                     role="tabpanel"
-                    aria-labelledby="details-1-tab"
+                    aria-labelledby="details-0-tab"
                   >
                     <img
                       src="${adv.main_image}"
-                      alt="product details"
+                      alt="Ad Image"
                     />
-                    <ul class="sticker">
+                    <!-- <ul class="sticker">
                       <li>Featured</li>
                       <li>New</li>
-                    </ul>
+                    </ul> -->
                   </div>
+                  <__repeat tal:repeat="image adv.images"  tal:omit-tag="True">
                   <div
                     class="tab-pane fade"
-                    id="details-2"
+                    id="details-${repeat.image.index}"
                     role="tabpanel"
-                    aria-labelledby="details-2-tab"
+                    aria-labelledby="details-${repeat.image.index}-tab"
                   >
                     <img
-                      src="${adv.main_image}"
-                      alt="product details"
+                      src="${image.image_path_url}"
+                      alt="Ad Image"
                     />
                   </div>
+                  </__repeat>
+                   
                 </div>
                 <ul class="nav" id="myTab" role="tablist">
+                <__repeat tal:repeat="image adv.images" tal:omit-tag="True">
                   <li class="nav-item">
                     <a
                       class="active"
-                      id="details-1-tab"
+                      id="details-${repeat.image.index}-tab"
                       data-toggle="tab"
-                      href="#details-1"
+                      href="#details-${repeat.image.index}"
                       role="tab"
-                      aria-controls="details-1"
+                      aria-controls="details-${repeat.image.index}"
                       aria-selected="true"
                     >
                       <img
-                        src="${adv.main_image}"
-                        alt="product details"
+                        src="${image.image_path_url}"
+                        alt="Ad Image"
                       />
                     </a>
                   </li>
-                  <li class="nav-item">
-                    <a
-                      id="details-2-tab"
-                      data-toggle="tab"
-                      href="#details-2"
-                      role="tab"
-                      aria-controls="details-2"
-                      aria-selected="false"
-                    >
-                      <img
-                        src="${adv.main_image}"
-                        alt="product details"
-                      />
-                    </a>
-                  </li>
+                </__repeat> 
                   
                 </ul>
               </div>
@@ -195,117 +188,6 @@
               </div>
             </div>
 
-            <div class="product_rating_form mt-30">
-              <div class="product_details_title">
-                <h5 class="title">Leave Your Review :</h5>
-              </div>
-
-              <div class="product_rating_form_wrapper d-flex flex-wrap">
-                <div class="product_details_rating_wrapper">
-                  <div class="product_details_rating mt-20">
-                    <p><i class="fa fa-star-o"></i> Your Rating</p>
-                    <ul class="rating_radio">
-                      <li>
-                        <input
-                          type="radio"
-                          checked=""
-                          name="radio"
-                          id="radio1"
-                        />
-                        <label for="radio1"></label>
-                        <span>
-                          <i class="fa fa-star"></i>
-                          <i class="fa fa-star"></i>
-                          <i class="fa fa-star"></i>
-                          <i class="fa fa-star"></i>
-                          <i class="fa fa-star"></i>
-                        </span>
-                      </li>
-                      <li>
-                        <input type="radio" name="radio" id="radio2" />
-                        <label for="radio2"></label>
-                        <span>
-                          <i class="fa fa-star"></i>
-                          <i class="fa fa-star"></i>
-                          <i class="fa fa-star"></i>
-                          <i class="fa fa-star"></i>
-                          <i class="fal fa-star"></i>
-                        </span>
-                      </li>
-                      <li>
-                        <input type="radio" name="radio" id="radio3" />
-                        <label for="radio3"></label>
-                        <span>
-                          <i class="fa fa-star"></i>
-                          <i class="fa fa-star"></i>
-                          <i class="fa fa-star"></i>
-                          <i class="fal fa-star"></i>
-                          <i class="fal fa-star"></i>
-                        </span>
-                      </li>
-                      <li>
-                        <input type="radio" name="radio" id="radio4" />
-                        <label for="radio4"></label>
-                        <span>
-                          <i class="fa fa-star"></i>
-                          <i class="fa fa-star"></i>
-                          <i class="fal fa-star"></i>
-                          <i class="fal fa-star"></i>
-                          <i class="fal fa-star"></i>
-                        </span>
-                      </li>
-                      <li>
-                        <input type="radio" name="radio" id="radio5" />
-                        <label for="radio5"></label>
-                        <span>
-                          <i class="fa fa-star"></i>
-                          <i class="fal fa-star"></i>
-                          <i class="fal fa-star"></i>
-                          <i class="fal fa-star"></i>
-                          <i class="fal fa-star"></i>
-                        </span>
-                      </li>
-                    </ul>
-                  </div>
-                </div>
-                <div class="product_details_form">
-                  <form action="#">
-                    <div class="row">
-                      <div class="col-md-6">
-                        <div class="single_form">
-                          <input
-                            type="text"
-                            placeholder="Enter your name . . ."
-                          />
-                          <i class="fal fa-user"></i>
-                        </div>
-                      </div>
-                      <div class="col-md-6">
-                        <div class="single_form">
-                          <input
-                            type="text"
-                            placeholder="Enter your mail address . . ."
-                          />
-                          <i class="fal fa-envelope"></i>
-                        </div>
-                      </div>
-                      <div class="col-md-12">
-                        <div class="single_form">
-                          <textarea
-                            placeholder="Type your review . . ."
-                          ></textarea>
-                        </div>
-                      </div>
-                      <div class="col-md-12">
-                        <div class="single_form">
-                          <button class="main-btn">Submit</button>
-                        </div>
-                      </div>
-                    </div>
-                  </form>
-                </div>
-              </div>
-            </div>
 <!-- ADS RELATED -->
             <div class="related_product mt-45">
               <div class="section_title">
@@ -440,44 +322,6 @@
                       <span>Share</span>
                     </a>
                   </div>
-                </div>
-              </div>
-
-
-
-              <div class="product_sidebar_tips mt-30">
-                <div class="product_details_title">
-                  <h5 class="title">Location Map :</h5>
-                </div>
-                <div class="sidebar_tips">
-                  <ul class="tips_list">
-                    <li>
-                      <span></span> Began because on to lay about manage been.
-                    </li>
-                    <li>
-                      <span></span> Is all increasing up in it he as would was
-                      epic and perception.
-                    </li>
-                    <li><span></span> Console great gradually pattern.</li>
-                  </ul>
-                </div>
-              </div>
-              
-              <div class="product_sidebar_tips mt-30">
-                <div class="product_details_title">
-                  <h5 class="title">Location Map :</h5>
-                </div>
-                <div class="sidebar_tips">
-                  <ul class="tips_list">
-                    <li>
-                      <span></span> Began because on to lay about manage been.
-                    </li>
-                    <li>
-                      <span></span> Is all increasing up in it he as would was
-                      epic and perception.
-                    </li>
-                    <li><span></span> Console great gradually pattern.</li>
-                  </ul>
                 </div>
               </div>
             </div>
