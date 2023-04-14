@@ -45,6 +45,7 @@ class Ad(Base):
     admin = relationship('AdminAccount', secondary = ad_approval, back_populates = 'ads', uselist = False)
     ad_status = relationship('AdStatus', back_populates = 'ads', uselist = False, lazy = 'joined')
     images = relationship('AdImage', back_populates = 'ad', cascade = 'delete', lazy = 'joined')
+    users_favourited = relationship('Favourites', back_populates = 'ad')
 
 
     @property

@@ -31,6 +31,7 @@ class UserAccount(Base):
     user_address = relationship('UserAddress', back_populates = 'user', cascade = "delete", uselist = False)
     user_login_data = relationship('UserLoginData', back_populates = 'user', uselist = False)
     user_login_data_ext = relationship('UserLoginDataExt', back_populates = 'user')
+    favourites = relationship('Favourites', back_populates = 'user')
 
     @property
     def pretty_created_at(self):
@@ -94,6 +95,17 @@ class UserLoginDataExt(Base):
 
     ext_provider = relationship('ExternalProvider', back_populates = 'user_login_data_ext')
     user = relationship('UserAccount', back_populates = 'user_login_data_ext', lazy = 'joined')
+
+class Favourites(Base):
+    __tablename__ = 'Favourites'
+
+    id: int = Column(Integer, primary_key = True, autoincrement = True)
+    user_id: int = Column(Integer, ForeignKey('UserAccount.id'), nullable = False)
+    ad_id: int = Column(Integer, ForeignKey('Ad.id'), nullable = False)
+    fav_date: datetime = Column(DateTime, default = datetime.now())
+
+    user = relationship('UserAccount', back_populates = 'favourites', uselist = False)
+    ad = relationship('Ad', back_populates = 'users_favourited', uselist = False)
 
 class HashAlgo(Base):
     __tablename__ = 'HashAlgo'
