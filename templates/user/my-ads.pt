@@ -41,51 +41,73 @@
                 <ul class="ads_menu nav" id="myTab" role="tablist">
                   <li>
                     <a
-                      class="active test1"
+                      class="active"
                       id="ads_all-tab"
                       data-toggle="tab"
                       href="#ads_all"
                       role="tab"
                       aria-controls="ads_all"
                       aria-selected="true"
-                      onclick="showAll()"
                       >Todos (${ad_count_total})</a
                     >
                   </li>
                   <li>
                     <a
-                      class="test2"
                       id="ads_active-tab"
                       data-toggle="tab"
                       href="#ads_active"
                       role="tab"
                       aria-controls="ads_active"
                       aria-selected="false"
-                      onclick="showActive()"
                       >Ativos (${ad_count_active})</a
                     >
                   </li>
-                  <li><a href="#inactive">Inativos (${ad_count_inactive})</a></li>
-                  <li><a href="#sold">Vendidos (${ad_count_sold})</a></li>
-                  <li><a href="#expired">Expirados (${ad_count_expired})</a></li>
-                  <li><a href="#deleted">Apagados (${ad_count_deleted})</a></li>
+                  <li>
+                    <a
+                      id="ads_inactive-tab"
+                      data-toggle="tab"
+                      href="#ads_inactive"
+                      role="tab"
+                      aria-controls="ads_inactive"
+                      aria-selected="false"
+                      >Inativos (${ad_count_inactive})</a
+                    >
+                  </li>
+                  <li>
+                    <a
+                      id="ads_expired-tab"
+                      data-toggle="tab"
+                      href="#ads_expired"
+                      role="tab"
+                      aria-controls="ads_expired"
+                      aria-selected="false"
+                      >Expirados (${ad_count_expired})</a
+                    >
+                  </li>
+                  <li>
+                    <a
+                      id="ads_sold-tab"
+                      data-toggle="tab"
+                      href="#ads_sold"
+                      role="tab"
+                      aria-controls="ads_sold"
+                      aria-selected="false"
+                      >Vendidos (${ad_count_sold})</a
+                    >
+                  </li>
+                  <li>
+                    <a
+                      id="ads_deleted-tab"
+                      data-toggle="tab"
+                      href="#ads_deleted"
+                      role="tab"
+                      aria-controls="ads_deleted"
+                      aria-selected="false"
+                      >Apagados (${ad_count_deleted})</a
+                    >
+                  </li>
                 </ul>
               </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
               <div class="ads_table table-responsive mt-30" id="ads-table-all">
                 <div
                   class="tab-pane fade show active"
@@ -109,16 +131,18 @@
                         <tr>
                           <td class="photo">
                             <div class="table_photo">
-                              <img
-                                src="${ad.main_image}"
-                                alt="Imagem"
-                              />
+                              <a href="/ad/${ad.id}">
+                                <img
+                                  src="${ad.main_image}"
+                                  alt="Imagem"
+                                />
+                              </a>
                             </div>
                           </td>
                           <td class="title">
                             <div class="table_title">
-                              <h6 class="titles">${ad.title}</h6>
-                              <p>Ad ID: ${ad.id}</p>
+                                <h6 class="titles"><a href="/ad/${ad.id}">${ad.title}</a></h6>
+                                <p>Ad ID: ${ad.id}</p>
                             </div>
                           </td>
                           <td class="category">
@@ -157,21 +181,7 @@
                   </table>
                 </div>
               </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-              <div class="ads_table table-responsive" id="ads-table-active">
+              <div class="ads_table table-responsive" id="ads-table-active" style="max-height:0px;">
                 <div
                   class="tab-pane fade"
                   id="ads_active"
@@ -194,16 +204,18 @@
                         <tr>
                           <td class="photo">
                             <div class="table_photo">
-                              <img
-                                src="${ad.main_image}"
-                                alt="Imagem"
-                              />
+                              <a href="/ad/${ad.id}">
+                                <img
+                                  src="${ad.main_image}"
+                                  alt="Imagem"
+                                />
+                              </a>
                             </div>
                           </td>
                           <td class="title">
                             <div class="table_title">
-                              <h6 class="titles">${ad.title}</h6>
-                              <p>Ad ID: ${ad.id}</p>
+                                <h6 class="titles"><a href="/ad/${ad.id}">${ad.title}</a></h6>
+                                <p>Ad ID: ${ad.id}</p>
                             </div>
                           </td>
                           <td class="category">
@@ -242,28 +254,298 @@
                   </table>
                 </div>
               </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+              <div class="ads_table table-responsive" id="ads-table-inactive" style="max-height:0px;">
+                <div
+                  class="tab-pane fade"
+                  id="ads_inactive"
+                  role="tabpanel"
+                  aria-labelledby="ads_inactive-tab"
+                >
+                  <table class="table">
+                    <thead>
+                      <tr>
+                        <th class="photo">Foto</th>
+                        <th class="title">Título</th>
+                        <th class="category">Subcategoria</th>
+                        <th class="status">Status</th>
+                        <th class="price">Preço</th>
+                        <th class="action">Ação</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <__repeat tal:repeat="ad all_inactive_ads" tal:omit-tag="True">
+                        <tr>
+                          <td class="photo">
+                            <div class="table_photo">
+                              <a href="/ad/${ad.id}">
+                                <img
+                                  src="${ad.main_image}"
+                                  alt="Imagem"
+                                />
+                              </a>
+                            </div>
+                          </td>
+                          <td class="title">
+                            <div class="table_title">
+                                <h6 class="titles"><a href="/ad/${ad.id}">${ad.title}</a></h6>
+                                <p>Ad ID: ${ad.id}</p>
+                            </div>
+                          </td>
+                          <td class="category">
+                            <div class="table_category">
+                              <p>${ad.subcategory.subcategory_name}</p>
+                            </div>
+                          </td>
+                          <td class="status">
+                            <div class="table_status">
+                              <span class="${ad.ad_status.status_name_internal}" title="${ad.ad_status.status_description}">${ad.ad_status.status_name}</span>
+                            </div>
+                          </td>
+                          <td class="price">
+                            <div class="table_price">
+                              <span>${ad.price}€</span>
+                            </div>
+                          </td>
+                          <td class="action">
+                            <div class="table_action">
+                              <ul>
+                                <li>
+                                  <a href="#"><i class="fal fa-eye"></i></a>
+                                </li>
+                                <li>
+                                  <a href="#"><i class="fal fa-pencil"></i></a>
+                                </li>
+                                <li>
+                                  <a href="#"><i class="fal fa-trash-alt"></i></a>
+                                </li>
+                              </ul>
+                            </div>
+                          </td>
+                        </tr>
+                      </__repeat>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+              <div class="ads_table table-responsive" id="ads-table-expired" style="max-height:0px;">
+                <div
+                  class="tab-pane fade"
+                  id="ads_expired"
+                  role="tabpanel"
+                  aria-labelledby="ads_expired-tab"
+                >
+                  <table class="table">
+                    <thead>
+                      <tr>
+                        <th class="photo">Foto</th>
+                        <th class="title">Título</th>
+                        <th class="category">Subcategoria</th>
+                        <th class="status">Status</th>
+                        <th class="price">Preço</th>
+                        <th class="action">Ação</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <__repeat tal:repeat="ad all_expired_ads" tal:omit-tag="True">
+                        <tr>
+                          <td class="photo">
+                            <div class="table_photo">
+                              <a href="/ad/${ad.id}">
+                                <img
+                                  src="${ad.main_image}"
+                                  alt="Imagem"
+                                />
+                              </a>
+                            </div>
+                          </td>
+                          <td class="title">
+                            <div class="table_title">
+                                <h6 class="titles"><a href="/ad/${ad.id}">${ad.title}</a></h6>
+                                <p>Ad ID: ${ad.id}</p>
+                            </div>
+                          </td>
+                          <td class="category">
+                            <div class="table_category">
+                              <p>${ad.subcategory.subcategory_name}</p>
+                            </div>
+                          </td>
+                          <td class="status">
+                            <div class="table_status">
+                              <span class="${ad.ad_status.status_name_internal}" title="${ad.ad_status.status_description}">${ad.ad_status.status_name}</span>
+                            </div>
+                          </td>
+                          <td class="price">
+                            <div class="table_price">
+                              <span>${ad.price}€</span>
+                            </div>
+                          </td>
+                          <td class="action">
+                            <div class="table_action">
+                              <ul>
+                                <li>
+                                  <a href="#"><i class="fal fa-eye"></i></a>
+                                </li>
+                                <li>
+                                  <a href="#"><i class="fal fa-pencil"></i></a>
+                                </li>
+                                <li>
+                                  <a href="#"><i class="fal fa-trash-alt"></i></a>
+                                </li>
+                              </ul>
+                            </div>
+                          </td>
+                        </tr>
+                      </__repeat>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+              <div class="ads_table table-responsive" id="ads-table-sold" style="max-height:0px;">
+                <div
+                  class="tab-pane fade"
+                  id="ads_sold"
+                  role="tabpanel"
+                  aria-labelledby="ads_sold-tab"
+                >
+                  <table class="table">
+                    <thead>
+                      <tr>
+                        <th class="photo">Foto</th>
+                        <th class="title">Título</th>
+                        <th class="category">Subcategoria</th>
+                        <th class="status">Status</th>
+                        <th class="price">Preço</th>
+                        <th class="action">Ação</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <__repeat tal:repeat="ad all_sold_ads" tal:omit-tag="True">
+                        <tr>
+                          <td class="photo">
+                            <div class="table_photo">
+                              <a href="/ad/${ad.id}">
+                                <img
+                                  src="${ad.main_image}"
+                                  alt="Imagem"
+                                />
+                              </a>
+                            </div>
+                          </td>
+                          <td class="title">
+                            <div class="table_title">
+                                <h6 class="titles"><a href="/ad/${ad.id}">${ad.title}</a></h6>
+                                <p>Ad ID: ${ad.id}</p>
+                            </div>
+                          </td>
+                          <td class="category">
+                            <div class="table_category">
+                              <p>${ad.subcategory.subcategory_name}</p>
+                            </div>
+                          </td>
+                          <td class="status">
+                            <div class="table_status">
+                              <span class="${ad.ad_status.status_name_internal}" title="${ad.ad_status.status_description}">${ad.ad_status.status_name}</span>
+                            </div>
+                          </td>
+                          <td class="price">
+                            <div class="table_price">
+                              <span>${ad.price}€</span>
+                            </div>
+                          </td>
+                          <td class="action">
+                            <div class="table_action">
+                              <ul>
+                                <li>
+                                  <a href="#"><i class="fal fa-eye"></i></a>
+                                </li>
+                                <li>
+                                  <a href="#"><i class="fal fa-pencil"></i></a>
+                                </li>
+                                <li>
+                                  <a href="#"><i class="fal fa-trash-alt"></i></a>
+                                </li>
+                              </ul>
+                            </div>
+                          </td>
+                        </tr>
+                      </__repeat>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+              <div class="ads_table table-responsive" id="ads-table-deleted" style="max-height:0px;">
+                <div
+                  class="tab-pane fade"
+                  id="ads_deleted"
+                  role="tabpanel"
+                  aria-labelledby="ads_deleted-tab"
+                >
+                  <table class="table">
+                    <thead>
+                      <tr>
+                        <th class="photo">Foto</th>
+                        <th class="title">Título</th>
+                        <th class="category">Subcategoria</th>
+                        <th class="status">Status</th>
+                        <th class="price">Preço</th>
+                        <th class="action">Ação</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <__repeat tal:repeat="ad all_deleted_ads" tal:omit-tag="True">
+                        <tr>
+                          <td class="photo">
+                            <div class="table_photo">
+                              <a href="/ad/${ad.id}">
+                                <img
+                                  src="${ad.main_image}"
+                                  alt="Imagem"
+                                />
+                              </a>
+                            </div>
+                          </td>
+                          <td class="title">
+                            <div class="table_title">
+                                <h6 class="titles"><a href="/ad/${ad.id}">${ad.title}</a></h6>
+                                <p>Ad ID: ${ad.id}</p>
+                            </div>
+                          </td>
+                          <td class="category">
+                            <div class="table_category">
+                              <p>${ad.subcategory.subcategory_name}</p>
+                            </div>
+                          </td>
+                          <td class="status">
+                            <div class="table_status">
+                              <span class="${ad.ad_status.status_name_internal}" title="${ad.ad_status.status_description}">${ad.ad_status.status_name}</span>
+                            </div>
+                          </td>
+                          <td class="price">
+                            <div class="table_price">
+                              <span>${ad.price}€</span>
+                            </div>
+                          </td>
+                          <td class="action">
+                            <div class="table_action">
+                              <ul>
+                                <li>
+                                  <a href="#"><i class="fal fa-eye"></i></a>
+                                </li>
+                                <li>
+                                  <a href="#"><i class="fal fa-pencil"></i></a>
+                                </li>
+                                <li>
+                                  <a href="#"><i class="fal fa-trash-alt"></i></a>
+                                </li>
+                              </ul>
+                            </div>
+                          </td>
+                        </tr>
+                      </__repeat>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
             </div>
           </div>
         </div>
