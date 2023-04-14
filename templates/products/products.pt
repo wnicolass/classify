@@ -2,6 +2,7 @@
 <__additional_script__ metal:fill-slot="additional_script" tal:omit-tag="True">
   <script src="/public/scripts/show-subcategories.js" defer></script>
   <script src="/public/scripts/limit-select-size.js" defer></script>
+  <script src="/public/scripts/filters.js" defer></script>
 </__additional_script__>
   <div metal:fill-slot="title" tal:omit-tag="True">
     <title> Anúncios | Classify</title>
@@ -185,25 +186,25 @@
 
           <div class="col-lg-9">
             <div
-              class="product_topbar d-md-flex align-items-center justify-content-between pb-30"
+              class="product_topbar d-md-flex align-items-center justify-content-between"
             >
               <div class="product_select pt-40 d-flex flex-wrap">
+              <form style="width: 100%; display: flex;">
                 <select id="alphabetic-select">
-                  <option value="none">Ordenar Por</option>
                   <option value="asc">A-Z</option>
                   <option value="desc">Z-A</option>
-                 
                 </select>
                 <select id="city-select" class="limit" name="city">
                     <option value="none">Localização</option>
                     <__repeat tal:repeat="city all_cities" tal:omit-tag="True">
-                      <option value="${city.city}">${city.city}</option>
+                      <option data-id="city" value="${city.city}">${city.city}</option>
                     </__repeat>
                 </select>
                 <select id="recency-select">
                   <option value="recent">Mais Recentes</option>
                   <option value="old">Mais Antigos</option>
                 </select>
+              </form>
               </div>
               <div class="product_tab_menu mt-50">
                 <ul
