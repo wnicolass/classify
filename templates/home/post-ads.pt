@@ -33,7 +33,7 @@
           <div metal:use-macro="load: ../shared/_user_sidebar.pt">
           
           </div>
-          <form method="POST" action="" enctype="multipart/form-data" style="display: flex; align-items: start; gap: 2rem; margin-left: 1rem; flex-wrap: wrap; width: 52rem;">
+          <form method="POST" action="/new/ad" enctype="multipart/form-data" style="display: flex; align-items: start; gap: 2rem; margin-left: 1rem; flex-wrap: wrap; width: 52rem;">
           <div style="width: 50%;">
             <div class="post_form mt-50">
               <div class="post_title">

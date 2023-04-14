@@ -100,7 +100,7 @@
                     ></a>
                     </li>
                     <li>
-                    <a href="/common/categories"
+                    <a href="/categories"
                         ><i class="fa-solid fa-tag"></i>
                         Categorias <span class="line"></span
                     ></a>
@@ -181,7 +181,7 @@
                     </div>
                     </li>
                 </ul>
-                    <a tal:condition="is_logged_in" class="sign-up" href="/ad">Novo Anúncio</a>
+                    <a tal:condition="is_logged_in" class="sign-up" href="/new/ad">Novo Anúncio</a>
                     <a tal:condition="not is_logged_in" class="sign-up" href="/auth/sign-in">Novo Anúncio</a>
                 </div>
             </nav>
@@ -262,11 +262,11 @@
                     <h5 class="footer_title">Classify</h5>
                     <ul class="link">
                     <!-- <li><a href="#">Home</a></li> -->
-                    <li><a href="/home/about">Quem somos</a></li>
+                    <li><a href="/about">Quem somos</a></li>
                     <!-- <li><a href="#">Our Factories</a></li> -->
                     <!-- <li><a href="#">Mission and Strategy</a></li> -->
-                    <li><a href="/home/contact">Contacto</a></li>
-                    <li><a href="/home/faq">Perguntas Frequentes</a></li>
+                    <li><a href="/contact">Contacto</a></li>
+                    <li><a href="/faq">Perguntas Frequentes</a></li>
                     <li><a href="/posts/blog">Blog</a></li>
                     </ul>
                 </div>
@@ -280,7 +280,7 @@
                     <li><a href="#">Membership</a></li>
                     <li><a href="#">Banner Advertising</a></li>
                     <li><a href="#">Promote Your Ad</a></li> -->
-                    <li><a href="/common/pricing">Pacotes de Anúncios</a></li>
+                    <li><a href="/pricing">Pacotes de Anúncios</a></li>
                     <li><a href="#">Pesquisas populares</a></li>
                     <li><a href="/user/dashboard">Área do Cliente</a></li> <!--If not logged in -> sing in/up page-->
                     <li><a href="#">App Classify</a></li>
@@ -296,7 +296,7 @@
                     <li><a href="#">Sitemap</a></li>
                     <li><a href="#">Terms of Service</a></li>
                     <li><a href="#">Privacy Policy</a></li> -->
-                    <li><a href="/common/privacy-policy">Política de Privacidade</a></li>
+                    <li><a href="/privacy-policy">Política de Privacidade</a></li>
                     </ul>
                 </div>
                 </div>
