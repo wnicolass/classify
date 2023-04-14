@@ -70,7 +70,7 @@ async def show_ads_category(subcategory_id: int, session: Annotated[AsyncSession
 @template(template_file = 'products/products.pt')
 async def search_by_title(
     session: Annotated[AsyncSession, Depends(get_db_session)],
-    category_id: str,
+    category_id: str | None = 'none',
     title: str | None = '',
     city: str | None = 'none', 
 ):
