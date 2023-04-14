@@ -33,6 +33,7 @@ class Ad(Base):
     user_id: int = Column(Integer, ForeignKey('UserAccount.user_id', ondelete = 'CASCADE'), nullable = False)
     ad_address_id: int = Column(Integer, ForeignKey('AdAddress.id'), nullable = False)
     subcategory_id: int = Column(Integer, ForeignKey('Subcategory.id'), nullable = False)
+    promo_id: int = Column(Integer, ForeignKey('Promo.id'), default = 1)
     
     created_at: datetime = Column(DateTime, server_default = text('NOW()'))
     updated_at: datetime = Column(DateTime, onupdate = datetime.now())
@@ -45,8 +46,8 @@ class Ad(Base):
     admin = relationship('AdminAccount', secondary = ad_approval, back_populates = 'ads', uselist = False)
     ad_status = relationship('AdStatus', back_populates = 'ads', uselist = False, lazy = 'joined')
     images = relationship('AdImage', back_populates = 'ad', cascade = 'delete', lazy = 'joined')
-    users_favourited = relationship('Favourites', back_populates = 'ad')
-
+    users_favourited = relationship('Favourite', back_populates = 'ad')
+    promo = relationship('Promo', back_populates = 'ads', uselist = False)
 
     @property
     def main_image(self):
@@ -70,6 +71,16 @@ class Feature(Base):
 
     condition = relationship('AdCondition', back_populates = 'features', uselist = False, lazy = 'joined')
     ad = relationship('Ad', back_populates = 'feature', uselist = False)
+
+class Promo(Base):
+    __tablename__ = 'Promo'
+
+    id: int = Column(Integer, primary_key = True, autoincrement = True)
+    promo_name: str = Column(String(50), nullable = False)
+    promo_internal_name: str = Column(String(50), nullable = False)
+    promo_description: str = Column(String(200), nullable = True)
+
+    ads = relationship('Ad', back_populates = 'promo')
 
 class AdCondition(Base):
     __tablename__ = 'AdCondition'
