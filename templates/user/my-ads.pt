@@ -1,4 +1,7 @@
 <div metal:use-macro="load: ../shared/_layout.pt">
+<__additional_script__ metal:fill-slot="additional_script" tal:omit-tag="True">
+  <script src="/public/scripts/switch-tables.js" defer></script>
+</__additional_script__>
   <div metal:fill-slot="title" tal:omit-tag="True">
     <title> Os Meus Anúncios | Classify</title>
   </div>
@@ -35,408 +38,232 @@
                 <h5 class="title">Os Meus Anúncios</h5>
               </div>
               <div class="my_ads_menu">
-                <ul class="ads_menu">
-                  <li><a class="active" href="#">Todos (42)</a></li>
-                  <li><a href="#">Públicados (88)</a></li>
-                  <li><a href="#">Featured (12)</a></li>
-                  <li><a href="#">Vendidos (02)</a></li>
-                  <li><a href="#">Ativos (42)</a></li>
-                  <li><a href="#">Expirados (01)</a></li>
+                <ul class="ads_menu nav" id="myTab" role="tablist">
+                  <li>
+                    <a
+                      class="active test1"
+                      id="ads_all-tab"
+                      data-toggle="tab"
+                      href="#ads_all"
+                      role="tab"
+                      aria-controls="ads_all"
+                      aria-selected="true"
+                      onclick="showAll()"
+                      >Todos (${ad_count_total})</a
+                    >
+                  </li>
+                  <li>
+                    <a
+                      class="test2"
+                      id="ads_active-tab"
+                      data-toggle="tab"
+                      href="#ads_active"
+                      role="tab"
+                      aria-controls="ads_active"
+                      aria-selected="false"
+                      onclick="showActive()"
+                      >Ativos (${ad_count_active})</a
+                    >
+                  </li>
+                  <li><a href="#inactive">Inativos (${ad_count_inactive})</a></li>
+                  <li><a href="#sold">Vendidos (${ad_count_sold})</a></li>
+                  <li><a href="#expired">Expirados (${ad_count_expired})</a></li>
+                  <li><a href="#deleted">Apagados (${ad_count_deleted})</a></li>
                 </ul>
               </div>
 
-              <div class="ads_table table-responsive mt-30">
-                <table class="table">
-                  <thead>
-                    <tr>
-                      <th class="checkbox">
-                        <div class="table_checkbox">
-                          <input type="checkbox" id="checkbox1" />
-                          <label for="checkbox1"></label>
-                        </div>
-                      </th>
-                      <th class="photo">Foto</th>
-                      <th class="title">Título</th>
-                      <th class="category">Categoria</th>
-                      <th class="status">Status</th>
-                      <th class="price">Preço</th>
-                      <th class="action">Ação</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr>
-                      <td class="checkbox">
-                        <div class="table_checkbox">
-                          <input type="checkbox" id="checkbox2" />
-                          <label for="checkbox2"></label>
-                        </div>
-                      </td>
-                      <td class="photo">
-                        <div class="table_photo">
-                          <img
-                            src="/public/assets/images/ads-1.png"
-                            alt="ads"
-                          />
-                        </div>
-                      </td>
-                      <td class="title">
-                        <div class="table_title">
-                          <h6 class="titles">8 GB DDR4 Ram, 4th Gen</h6>
-                          <p>Ad ID: ng3D5hAMHPajQrM</p>
-                        </div>
-                      </td>
-                      <td class="category">
-                        <div class="table_category">
-                          <p>Ram & Laptop</p>
-                        </div>
-                      </td>
-                      <td class="status">
-                        <div class="table_status">
-                          <span class="active">active</span>
-                        </div>
-                      </td>
-                      <td class="price">
-                        <div class="table_price">
-                          <span>$299.00</span>
-                        </div>
-                      </td>
-                      <td class="action">
-                        <div class="table_action">
-                          <ul>
-                            <li>
-                              <a href="#"><i class="fal fa-eye"></i></a>
-                            </li>
-                            <li>
-                              <a href="#"><i class="fal fa-pencil"></i></a>
-                            </li>
-                            <li>
-                              <a href="#"><i class="fal fa-trash-alt"></i></a>
-                            </li>
-                          </ul>
-                        </div>
-                      </td>
-                    </tr>
 
-                    <tr>
-                      <td class="checkbox">
-                        <div class="table_checkbox">
-                          <input type="checkbox" id="checkbox3" />
-                          <label for="checkbox3"></label>
-                        </div>
-                      </td>
-                      <td class="photo">
-                        <div class="table_photo">
-                          <img
-                            src="/public/assets/images/ads-2.png"
-                            alt="ads"
-                          />
-                        </div>
-                      </td>
-                      <td class="title">
-                        <div class="table_title">
-                          <h6 class="titles">8 GB DDR4 Ram, 4th Gen</h6>
-                          <p>Ad ID: ng3D5hAMHPajQrM</p>
-                        </div>
-                      </td>
-                      <td class="category">
-                        <div class="table_category">
-                          <p>Ram & Laptop</p>
-                        </div>
-                      </td>
-                      <td class="status">
-                        <div class="table_status">
-                          <span class="active">active</span>
-                        </div>
-                      </td>
-                      <td class="price">
-                        <div class="table_price">
-                          <span>$299.00</span>
-                        </div>
-                      </td>
-                      <td class="action">
-                        <div class="table_action">
-                          <ul>
-                            <li>
-                              <a href="#"><i class="fal fa-eye"></i></a>
-                            </li>
-                            <li>
-                              <a href="#"><i class="fal fa-pencil"></i></a>
-                            </li>
-                            <li>
-                              <a href="#"><i class="fal fa-trash-alt"></i></a>
-                            </li>
-                          </ul>
-                        </div>
-                      </td>
-                    </tr>
 
-                    <tr>
-                      <td class="checkbox">
-                        <div class="table_checkbox">
-                          <input type="checkbox" id="checkbox4" />
-                          <label for="checkbox4"></label>
-                        </div>
-                      </td>
-                      <td class="photo">
-                        <div class="table_photo">
-                          <img
-                            src="/public/assets/images/ads-3.png"
-                            alt="ads"
-                          />
-                        </div>
-                      </td>
-                      <td class="title">
-                        <div class="table_title">
-                          <h6 class="titles">8 GB DDR4 Ram, 4th Gen</h6>
-                          <p>Ad ID: ng3D5hAMHPajQrM</p>
-                        </div>
-                      </td>
-                      <td class="category">
-                        <div class="table_category">
-                          <p>Ram & Laptop</p>
-                        </div>
-                      </td>
-                      <td class="status">
-                        <div class="table_status">
-                          <span class="sold">Sold</span>
-                        </div>
-                      </td>
-                      <td class="price">
-                        <div class="table_price">
-                          <span>$299.00</span>
-                        </div>
-                      </td>
-                      <td class="action">
-                        <div class="table_action">
-                          <ul>
-                            <li>
-                              <a href="#"><i class="fal fa-eye"></i></a>
-                            </li>
-                            <li>
-                              <a href="#"><i class="fal fa-pencil"></i></a>
-                            </li>
-                            <li>
-                              <a href="#"><i class="fal fa-trash-alt"></i></a>
-                            </li>
-                          </ul>
-                        </div>
-                      </td>
-                    </tr>
 
-                    <tr>
-                      <td class="checkbox">
-                        <div class="table_checkbox">
-                          <input type="checkbox" id="checkbox5" />
-                          <label for="checkbox5"></label>
-                        </div>
-                      </td>
-                      <td class="photo">
-                        <div class="table_photo">
-                          <img
-                            src="/public/assets/images/ads-4.png"
-                            alt="ads"
-                          />
-                        </div>
-                      </td>
-                      <td class="title">
-                        <div class="table_title">
-                          <h6 class="titles">8 GB DDR4 Ram, 4th Gen</h6>
-                          <p>Ad ID: ng3D5hAMHPajQrM</p>
-                        </div>
-                      </td>
-                      <td class="category">
-                        <div class="table_category">
-                          <p>Ram & Laptop</p>
-                        </div>
-                      </td>
-                      <td class="status">
-                        <div class="table_status">
-                          <span class="expired">Expired</span>
-                        </div>
-                      </td>
-                      <td class="price">
-                        <div class="table_price">
-                          <span>$299.00</span>
-                        </div>
-                      </td>
-                      <td class="action">
-                        <div class="table_action">
-                          <ul>
-                            <li>
-                              <a href="#"><i class="fal fa-eye"></i></a>
-                            </li>
-                            <li>
-                              <a href="#"><i class="fal fa-pencil"></i></a>
-                            </li>
-                            <li>
-                              <a href="#"><i class="fal fa-trash-alt"></i></a>
-                            </li>
-                          </ul>
-                        </div>
-                      </td>
-                    </tr>
 
-                    <tr>
-                      <td class="checkbox">
-                        <div class="table_checkbox">
-                          <input type="checkbox" id="checkbox6" />
-                          <label for="checkbox6"></label>
-                        </div>
-                      </td>
-                      <td class="photo">
-                        <div class="table_photo">
-                          <img
-                            src="/public/assets/images/ads-5.png"
-                            alt="ads"
-                          />
-                        </div>
-                      </td>
-                      <td class="title">
-                        <div class="table_title">
-                          <h6 class="titles">8 GB DDR4 Ram, 4th Gen</h6>
-                          <p>Ad ID: ng3D5hAMHPajQrM</p>
-                        </div>
-                      </td>
-                      <td class="category">
-                        <div class="table_category">
-                          <p>Ram & Laptop</p>
-                        </div>
-                      </td>
-                      <td class="status">
-                        <div class="table_status">
-                          <span class="inactive">Inactive</span>
-                        </div>
-                      </td>
-                      <td class="price">
-                        <div class="table_price">
-                          <span>$299.00</span>
-                        </div>
-                      </td>
-                      <td class="action">
-                        <div class="table_action">
-                          <ul>
-                            <li>
-                              <a href="#"><i class="fal fa-eye"></i></a>
-                            </li>
-                            <li>
-                              <a href="#"><i class="fal fa-pencil"></i></a>
-                            </li>
-                            <li>
-                              <a href="#"><i class="fal fa-trash-alt"></i></a>
-                            </li>
-                          </ul>
-                        </div>
-                      </td>
-                    </tr>
 
-                    <tr>
-                      <td class="checkbox">
-                        <div class="table_checkbox">
-                          <input type="checkbox" id="checkbox7" />
-                          <label for="checkbox7"></label>
-                        </div>
-                      </td>
-                      <td class="photo">
-                        <div class="table_photo">
-                          <img
-                            src="/public/assets/images/ads-6.png"
-                            alt="ads"
-                          />
-                        </div>
-                      </td>
-                      <td class="title">
-                        <div class="table_title">
-                          <h6 class="titles">8 GB DDR4 Ram, 4th Gen</h6>
-                          <p>Ad ID: ng3D5hAMHPajQrM</p>
-                        </div>
-                      </td>
-                      <td class="category">
-                        <div class="table_category">
-                          <p>Ram & Laptop</p>
-                        </div>
-                      </td>
-                      <td class="status">
-                        <div class="table_status">
-                          <span class="expired">Expired</span>
-                        </div>
-                      </td>
-                      <td class="price">
-                        <div class="table_price">
-                          <span>$299.00</span>
-                        </div>
-                      </td>
-                      <td class="action">
-                        <div class="table_action">
-                          <ul>
-                            <li>
-                              <a href="#"><i class="fal fa-eye"></i></a>
-                            </li>
-                            <li>
-                              <a href="#"><i class="fal fa-pencil"></i></a>
-                            </li>
-                            <li>
-                              <a href="#"><i class="fal fa-trash-alt"></i></a>
-                            </li>
-                          </ul>
-                        </div>
-                      </td>
-                    </tr>
 
-                    <tr>
-                      <td class="checkbox">
-                        <div class="table_checkbox">
-                          <input type="checkbox" id="checkbox7" />
-                          <label for="checkbox7"></label>
-                        </div>
-                      </td>
-                      <td class="photo">
-                        <div class="table_photo">
-                          <img
-                            src="/public/assets/images/ads-7.png"
-                            alt="ads"
-                          />
-                        </div>
-                      </td>
-                      <td class="title">
-                        <div class="table_title">
-                          <h6 class="titles">8 GB DDR4 Ram, 4th Gen</h6>
-                          <p>Ad ID: ng3D5hAMHPajQrM</p>
-                        </div>
-                      </td>
-                      <td class="category">
-                        <div class="table_category">
-                          <p>Ram & Laptop</p>
-                        </div>
-                      </td>
-                      <td class="status">
-                        <div class="table_status">
-                          <span class="deleted">Deleted</span>
-                        </div>
-                      </td>
-                      <td class="price">
-                        <div class="table_price">
-                          <span>$299.00</span>
-                        </div>
-                      </td>
-                      <td class="action">
-                        <div class="table_action">
-                          <ul>
-                            <li>
-                              <a href="#"><i class="fal fa-eye"></i></a>
-                            </li>
-                            <li>
-                              <a href="#"><i class="fal fa-pencil"></i></a>
-                            </li>
-                            <li>
-                              <a href="#"><i class="fal fa-trash-alt"></i></a>
-                            </li>
-                          </ul>
-                        </div>
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
+
+
+
+
+
+
+
+
+              <div class="ads_table table-responsive mt-30" id="ads-table-all">
+                <div
+                  class="tab-pane fade show active"
+                  id="ads_all"
+                  role="tabpanel"
+                  aria-labelledby="ads_all-tab"
+                >
+                  <table class="table">
+                    <thead>
+                      <tr>
+                        <th class="photo">Foto</th>
+                        <th class="title">Título</th>
+                        <th class="category">Subcategoria</th>
+                        <th class="status">Status</th>
+                        <th class="price">Preço</th>
+                        <th class="action">Ação</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <__repeat tal:repeat="ad all_ads" tal:omit-tag="True">
+                        <tr>
+                          <td class="photo">
+                            <div class="table_photo">
+                              <img
+                                src="${ad.main_image}"
+                                alt="Imagem"
+                              />
+                            </div>
+                          </td>
+                          <td class="title">
+                            <div class="table_title">
+                              <h6 class="titles">${ad.title}</h6>
+                              <p>Ad ID: ${ad.id}</p>
+                            </div>
+                          </td>
+                          <td class="category">
+                            <div class="table_category">
+                              <p>${ad.subcategory.subcategory_name}</p>
+                            </div>
+                          </td>
+                          <td class="status">
+                            <div class="table_status">
+                              <span class="${ad.ad_status.status_name_internal}" title="${ad.ad_status.status_description}">${ad.ad_status.status_name}</span>
+                            </div>
+                          </td>
+                          <td class="price">
+                            <div class="table_price">
+                              <span>${ad.price}€</span>
+                            </div>
+                          </td>
+                          <td class="action">
+                            <div class="table_action">
+                              <ul>
+                                <li>
+                                  <a href="#"><i class="fal fa-eye"></i></a>
+                                </li>
+                                <li>
+                                  <a href="#"><i class="fal fa-pencil"></i></a>
+                                </li>
+                                <li>
+                                  <a href="#"><i class="fal fa-trash-alt"></i></a>
+                                </li>
+                              </ul>
+                            </div>
+                          </td>
+                        </tr>
+                      </__repeat>
+                    </tbody>
+                  </table>
+                </div>
               </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+              <div class="ads_table table-responsive" id="ads-table-active">
+                <div
+                  class="tab-pane fade"
+                  id="ads_active"
+                  role="tabpanel"
+                  aria-labelledby="ads_active-tab"
+                >
+                  <table class="table">
+                    <thead>
+                      <tr>
+                        <th class="photo">Foto</th>
+                        <th class="title">Título</th>
+                        <th class="category">Subcategoria</th>
+                        <th class="status">Status</th>
+                        <th class="price">Preço</th>
+                        <th class="action">Ação</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <__repeat tal:repeat="ad all_active_ads" tal:omit-tag="True">
+                        <tr>
+                          <td class="photo">
+                            <div class="table_photo">
+                              <img
+                                src="${ad.main_image}"
+                                alt="Imagem"
+                              />
+                            </div>
+                          </td>
+                          <td class="title">
+                            <div class="table_title">
+                              <h6 class="titles">${ad.title}</h6>
+                              <p>Ad ID: ${ad.id}</p>
+                            </div>
+                          </td>
+                          <td class="category">
+                            <div class="table_category">
+                              <p>${ad.subcategory.subcategory_name}</p>
+                            </div>
+                          </td>
+                          <td class="status">
+                            <div class="table_status">
+                              <span class="${ad.ad_status.status_name_internal}" title="${ad.ad_status.status_description}">${ad.ad_status.status_name}</span>
+                            </div>
+                          </td>
+                          <td class="price">
+                            <div class="table_price">
+                              <span>${ad.price}€</span>
+                            </div>
+                          </td>
+                          <td class="action">
+                            <div class="table_action">
+                              <ul>
+                                <li>
+                                  <a href="#"><i class="fal fa-eye"></i></a>
+                                </li>
+                                <li>
+                                  <a href="#"><i class="fal fa-pencil"></i></a>
+                                </li>
+                                <li>
+                                  <a href="#"><i class="fal fa-trash-alt"></i></a>
+                                </li>
+                              </ul>
+                            </div>
+                          </td>
+                        </tr>
+                      </__repeat>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
             </div>
           </div>
         </div>
