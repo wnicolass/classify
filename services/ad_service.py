@@ -87,7 +87,7 @@ async def get_3_ads(session: AsyncSession) -> List[ad.Ad]:
 
 async def get_ad_by_id(session: AsyncSession, ad_id: int) -> ad.Ad | None:
     query = await session.execute(select(ad.Ad).where(ad.Ad.id == ad_id))
-    adv = query.unique().scalars().all()
+    adv = query.unique().scalar_one_or_none()
     
     return adv
 

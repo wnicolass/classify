@@ -9,14 +9,12 @@
       style="background-image: url(/public/assets/images/page-banner.jpg)">
       <div class="container">
         <div class="page_banner_content">
-        <__repeat tal:repeat="ad adv" tal:omit-tag="True">
-          <h3 class="title">${ad.title}</h3>
+          <h3 class="title">${adv.title}</h3>
           <ul class="breadcrumb">
             <li><a href="/">Home</a></li>
             <li><a href="/products">Todos os anúncios</a></li>
-            <li>${ad.title}</li>
+            <li>${adv.title}</li>
           </ul>
-        </__repeat>
         </div>
       </div>
     </div>
@@ -29,7 +27,6 @@
       <div class="container">
         <div class="row">
           <div class="col-lg-9">
-          <__repeat tal:repeat="ad adv" tal:omit-tag="True">
             <div class="product_details mt-50">
               <div class="product_image">
                 <div class="tab-content" id="myTabContent">
@@ -40,7 +37,7 @@
                     aria-labelledby="details-1-tab"
                   >
                     <img
-                      src="${ad.main_image}"
+                      src="${adv.main_image}"
                       alt="product details"
                     />
                     <ul class="sticker">
@@ -55,7 +52,7 @@
                     aria-labelledby="details-2-tab"
                   >
                     <img
-                      src="${ad.main_image}"
+                      src="${adv.main_image}"
                       alt="product details"
                     />
                   </div>
@@ -72,7 +69,7 @@
                       aria-selected="true"
                     >
                       <img
-                        src="${ad.main_image}"
+                        src="${adv.main_image}"
                         alt="product details"
                       />
                     </a>
@@ -87,7 +84,7 @@
                       aria-selected="false"
                     >
                       <img
-                        src="${ad.main_image}"
+                        src="${adv.main_image}"
                         alt="product details"
                       />
                     </a>
@@ -100,20 +97,19 @@
                 class="product_details_meta d-sm-flex justify-content-between align-items-end"
               >
                 <div class="product_price">
-                  <span class="price">${ad.price}€</span>
+                  <span class="price">${adv.price}€</span>
                   <p>Negotiable</p>
                 </div>
                 <div class="product_date">
                   <ul class="meta">
                     <li>
                       <i class="fa fa-clock-o"></i
-                      ><a href="#">${ad.pretty_date}</a>
+                      ><a href="#">${adv.pretty_date}</a>
                     </li>
-                    <li><i class="fa fa-eye"></i><a href="#">${ad.views}</a></li>
+                    <li><i class="fa fa-eye"></i><a href="#">${adv.views}</a></li>
                   </ul>
                 </div>  
               </div>
-
               <div class="product_details_features">
                 <div class="product_details_title">
                   <h5 class="title">Features :</h5>
@@ -121,15 +117,15 @@
                 <div class="details_features_wrapper d-flex flex-wrap">
                   <div class="single_features d-flex">
                     <h6 class="features_title">Brand :</h6>
-                    <p>${ad.feature.brand}</p>
+                    <p>${adv.feature.brand}</p>
                   </div>
                   <div class="single_features d-flex">
                     <h6 class="features_title">Condition :</h6>
-                    <p>${ad.condition}</p>
+                    <p>${adv.condition}</p>
                   </div>
                   <div class="single_features d-flex">
                     <h6 class="features_title">Authenticity :</h6>
-                    <p>${ad.feature.authenticity}</p>
+                    <p>${adv.feature.authenticity}</p>
                   </div>
                   <div class="single_features d-flex">
                     <h6 class="features_title">Features :</h6>
@@ -146,12 +142,11 @@
                   <h5 class="title">Description :</h5>
                 </div>
                 <p>
-                  ${ad.ad_description}
+                  ${adv.ad_description}
                 </p>
               </div>
             </div>
-            </__repeat>
-
+           
             <div class="product_rating mt-30">
               <div class="product_rating_top_bar">
                 <div class="product_details_title">
@@ -361,19 +356,17 @@
                   <h5 class="title">Ad Owner :</h5>
                 </div>
                 <div class="product_owner_wrapper mt-20">
-                  <div class="owner_author d-flex align-items-center">
-                  <__repeat tal:repeat="ad adv" tal:omit-tag="True">
+                  <div class="owner_author d-flex align-items-center"> 
                     <div class="">
                       <img
-                        src="${ad.user.profile_image_url}"
+                        src="${adv.user.profile_image_url}"
                         alt="author"
                       />
                     </div>
                     <div class="author_content media-body">
-                      <h5 class="author_name">${ad.user.username}</h5>
-                      <p>Member Since ${ad.user.pretty_created_at}</p>
+                      <h5 class="author_name">${adv.user.username}</h5>
+                      <p>Member Since ${adv.user.pretty_created_at}</p>
                     </div>
-                  </__repeat>
                   </div>
                   <div class="owner_address d-flex">
                     <div class="address_icon">
