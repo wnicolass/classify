@@ -8,8 +8,17 @@ from services import category_service
 
 router = APIRouter()
 
-@router.get('/common/categories')
-@template()
+@router.get('/ad/categories/{category_id}')
+async def get_subcategories(
+    category_id: int,
+    session: Annotated[AsyncSession, Depends(get_db_session)]
+):
+    subcategories = await category_service.get_subcategory_by_category_id(category_id, session)
+
+    return subcategories
+
+@router.get('/categories')
+@template(template_file= 'common/categories.pt')
 async def categories(
     session: Annotated[AsyncSession, Depends(get_db_session)]
 ):
@@ -24,13 +33,13 @@ async def categories_viewmodel(
     return vm
 
 
-@router.get('/common/pricing')
-@template()
+@router.get('/pricing')
+@template(template_file= 'common/pricing.pt')
 async def pricing():
     return await ViewModel()
 
 
-@router.get('/common/privacy-policy')
+@router.get('/privacy-policy')
 @template('common/privacy-policy.pt')
 async def privacy_policy():
     return await ViewModel()
