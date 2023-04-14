@@ -4,7 +4,18 @@
   </div>
   <__additional_script__ metal:fill-slot="additional_script" tal:omit-tag="True">
     <script src="/public/scripts/change-image.js" defer></script>
+    <script src="/public/scripts/show-seller-number.js" defer></script>
   </__additional_script__>
+  <__additional_stylesheet__ metal:fill-slot="additional_stylesheet" tal:omit-tag="True">
+    <style>
+      #see-number-btn {
+        transition: transform 0.3s ease;
+      }
+      #see-number-btn:active {
+        transform: scale(0.95);
+      }
+    </style>
+  </__additional_stylesheet__>
   <div metal:fill-slot="content" tal:omit-tag="True">
 
     <div
@@ -91,37 +102,37 @@
               >
                 <div class="product_price">
                   <span class="price">${adv.price}€</span>
-                  <p>Negotiable</p>
+                  <p>Negociável</p>
                 </div>
                 <div class="product_date">
                   <ul class="meta">
                     <li>
                       <i class="fa fa-clock-o"></i
-                      ><a href="#">${adv.pretty_date}</a>
+                      ><p>${adv.pretty_date}</p>
                     </li>
-                    <li><i class="fa fa-eye"></i><a href="#">${adv.views}</a></li>
+                    <li><i class="fa fa-eye"></i> ${adv.views}</li>
                   </ul>
                 </div>  
               </div>
               <div class="product_details_features">
                 <div class="product_details_title">
-                  <h5 class="title">Features :</h5>
+                  <h5 class="title">Características:</h5>
                 </div>
                 <div class="details_features_wrapper d-flex flex-wrap">
                   <div class="single_features d-flex">
-                    <h6 class="features_title">Brand :</h6>
+                    <h6 class="features_title">Marca:</h6>
                     <p>${adv.feature.brand}</p>
                   </div>
                   <div class="single_features d-flex">
-                    <h6 class="features_title">Condition :</h6>
+                    <h6 class="features_title">Condição:</h6>
                     <p>${adv.condition}</p>
                   </div>
                   <div class="single_features d-flex">
-                    <h6 class="features_title">Authenticity :</h6>
+                    <h6 class="features_title">Autenticidade:</h6>
                     <p>${adv.feature.authenticity}</p>
                   </div>
                   <div class="single_features d-flex">
-                    <h6 class="features_title">Features :</h6>
+                    <h6 class="features_title">Outros:</h6>
                     <p class="media-body">
                       Camera, Touch Screen, 3G, 4G, Bluetooth, Dual Sim, Dual
                       Lens Camera, Expandable Memory, Fingerprint Sensor
@@ -132,66 +143,18 @@
 
               <div class="product_details_description">
                 <div class="product_details_title">
-                  <h5 class="title">Description :</h5>
+                  <h5 class="title">Descrição:</h5>
                 </div>
                 <p>
                   ${adv.ad_description}
                 </p>
               </div>
             </div>
-           
-            <div class="product_rating mt-30">
-              <div class="product_rating_top_bar">
-                <div class="product_details_title">
-                  <h5 class="title">1 Review :</h5>
-                </div>
-                <div class="product_rating_star">
-                  <ul>
-                    <li><i class="fa fa-star"></i></li>
-                    <li><i class="fa fa-star"></i></li>
-                    <li><i class="fa fa-star"></i></li>
-                    <li><i class="fa fa-star"></i></li>
-                    <li><i class="fa fa-star"></i></li>
-                  </ul>
-                </div>
-              </div>
-
-              <div class="single_rating_author mt-30">
-                <div class="rating_author d-flex align-items-center">
-                  <div class="author_image">
-                    <img
-                      src="/public/assets/images/author-1.jpg"
-                      alt="author"
-                    />
-                  </div>
-                  <div class="author_content media-body">
-                    <h5 class="author_name">Angel Grantham</h5>
-                    <span class="date">25 January, 2023</span>
-                    <ul class="rating_star">
-                      <li><i class="fa fa-star"></i></li>
-                      <li><i class="fa fa-star"></i></li>
-                      <li><i class="fa fa-star"></i></li>
-                      <li><i class="fa fa-star"></i></li>
-                      <li><i class="fa fa-star"></i></li>
-                    </ul>
-                  </div>
-                </div>
-                <div class="rating_description">
-                  <p>
-                    That, sleep. Reposed that considerable, found a failing. In
-                    a means, turned would according of semantics, far were
-                    remember support from waved. had to of fully then can name
-                    blocks being her not in afforded. devotion logged to and
-                    remember and the of in the language would
-                  </p>
-                </div>
-              </div>
-            </div>
 
 <!-- ADS RELATED -->
             <div class="related_product mt-45">
               <div class="section_title">
-                <h3 class="title">Related Ads</h3>
+                <h3 class="title">Anúncios relacionados</h3>
               </div>
               <div class="row">
               <__repeat tal:repeat="ad get_3_ads" tal:omit-tag="True">
@@ -202,13 +165,13 @@
                     </div>
                     <div class="ads_card_content">
                       <div class="meta d-flex justify-content-between">
-                        <p></p>
+                        <p>${ad.subcategory.subcategory_name}</p>
                         <a class="like" href="#"
                           ><i class="fal fa-heart"></i
                         ></a>
                       </div>
                       <h4 class="title">
-                        <a href="/product/product-details"
+                        <a href="/ad/${ad.id}"
                           >${ad.title}</a
                         >
                       </h4>
@@ -226,7 +189,7 @@
                 
               </div>
               <div class="related_product_btn">
-                <a class="main-btn" href="#">View all Ads</a>
+                <a class="main-btn" href="/ads/subcategory/${adv.subcategory_id}">Ver Mais</a>
               </div>
             </div>
           </div>
@@ -235,7 +198,7 @@
             <div class="product_details_sidebar pt-20">
               <div class="product_sidebar_owner mt-30">
                 <div class="product_details_title">
-                  <h5 class="title">Ad Owner :</h5>
+                  <h5 class="title">Vendedor:</h5>
                 </div>
                 <div class="product_owner_wrapper mt-20">
                   <div class="owner_author d-flex align-items-center"> 
@@ -247,22 +210,23 @@
                     </div>
                     <div class="author_content media-body">
                       <h5 class="author_name">${adv.user.username}</h5>
-                      <p>Member Since ${adv.user.pretty_created_at}</p>
+                      <p>Membro desde ${adv.user.pretty_created_at}</p>
                     </div>
                   </div>
                   <div class="owner_address d-flex">
                     <div class="address_icon">
-                      <i class="far fa-map-marker-alt"></i>
+                      <i class="fal fa-map-marker-alt"></i>
                     </div>
                     <div class="address_content media-body">
-                      <p>2202 Pooh Bear Lane, Maine 3818 Oxford Court, BOISE</p>
-                      <a href="#">View Store</a>
+                      <p>${adv.address.country}, ${adv.address.city}</p>
                     </div>
                   </div>
                   <div class="owner_call">
-                    <a class="main-btn" href="#"
-                      ><i class="fal fa-phone"></i> Click to See Number</a
-                    >
+                    <button id="see-number-btn" class="main-btn" href="#">
+                      <i class="fal fa-phone"></i>
+                      Ver número
+                    </button>
+                    <p style="display: none;">${adv.user.phone_number}</p>
                   </div>
                 </div>
               </div>
@@ -271,14 +235,8 @@
                 <div class="product_details_title">
                   <h5 class="title">Contactar :</h5>
                 </div>
-                <div class="sidebar_contact_form">
+                <div tal:condition="is_logged_in" class="sidebar_contact_form">
                   <form action="#">
-                    <div class="single_form">
-                      <input type="text" placeholder="Nome" />
-                    </div>
-                    <div class="single_form">
-                      <input type="email" placeholder="Email" />
-                    </div>
                     <div class="single_form">
                       <textarea placeholder="Escreva aqui"></textarea>
                     </div>
@@ -289,6 +247,9 @@
                     </div>
                   </form>
                 </div>
+                <a href="/auth/sign-in" tal:condition="not is_logged_in" class="main-btn" style='width: 100%; margin-top: 1rem;'>
+                  <i class="fal fa-user"></i> Faça Login
+                </a>
               </div>
 
               <div class="product_sidebar_action mt-30">
@@ -296,7 +257,7 @@
                   <h5 class="title">Ações :</h5>
                 </div>
                 <div
-                  class="sidebar_action_items d-flex justify-content-between align-items-center"
+                  class="sidebar_action_items d-flex justify-content-around align-items-center"
                 >
                   <div class="single_action">
                     <a href="#">
@@ -304,24 +265,21 @@
                       <span>Share</span>
                     </a>
                   </div>
-                  <div class="single_action">
-                    <a href="#">
-                      <i class="fal fa-bookmark"></i>
-                      <span>Save</span>
-                    </a>
-                  </div>
+                  
                   <div class="single_action">
                     <a href="#">
                       <i class="fal fa-heart"></i>
-                      <span>Share</span>
+                      <span>Fav</span>
                     </a>
                   </div>
+
                   <div class="single_action">
                     <a href="#">
                       <i class="fal fa-flag"></i>
-                      <span>Share</span>
+                      <span>Report</span>
                     </a>
                   </div>
+
                 </div>
               </div>
             </div>

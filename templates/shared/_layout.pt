@@ -42,6 +42,8 @@
 
         <!--====== Style CSS ======-->
         <link rel="stylesheet" href="/public/assets/css/style.css" />
+
+        <__additional_stylesheet__ metal:define-slot="additional_stylesheet" tal:omit-tag="True"></__additional_stylesheet__>
     </head>
 
     <body class="gray-bg">
@@ -71,8 +73,8 @@
         <div class="header_navbar">
             <div class="container">
             <nav class="navbar navbar-expand-lg">
-                <a class="navbar-brand" href="/">
-                <img src="/public/assets/images/logo-4.png" alt="logo" />
+                <a class="navbar-brand" href="/" style="width: 26rem; padding-bottom: .5rem;">
+                <img src="/public/assets/images/classify-logo-definitive.png" alt="logo" />
                 </a>
 
                 <button

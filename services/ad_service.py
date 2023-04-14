@@ -80,8 +80,14 @@ async def get_all_ads(session: AsyncSession) -> List[ad.Ad]:
 
     return ads
 
-async def get_3_ads(session: AsyncSession) -> List[ad.Ad]:
-    query = await session.execute(select(ad.Ad).limit(3))
+async def get_3_ads(current_ad: ad.Ad, session: AsyncSession) -> List[ad.Ad]:
+    query = await session.execute(select(ad.Ad).
+    where(
+        and_(
+            ad.Ad.subcategory_id == current_ad.subcategory_id,
+            ad.Ad.id != current_ad.id
+        )
+    ).limit(3))
     ads = query.unique().scalars().all()
 
     return ads

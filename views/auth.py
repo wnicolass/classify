@@ -238,7 +238,7 @@ async def google_sign_in(
     
     response = responses.RedirectResponse(url = '/', status_code = status.HTTP_302_FOUND)
     set_auth_cookie(response, db_user)
-    db_user.user.last_login = datetime.now()
+    db_user.last_login = datetime.now()
     await session.commit()
     return response
 
