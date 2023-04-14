@@ -10,7 +10,7 @@ from fastapi import (
 from fastapi_chameleon import template
 from chameleon import PageTemplateFile
 from common.viewmodel import ViewModel
-from common.auth import requires_authentication
+from common.auth import requires_authentication, requires_authentication_secure
 from common.auth import get_current_auth_user
 from common.fastapi_utils import get_db_session, form_field_as_str
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -76,11 +76,11 @@ async def profile_settings_viewmodel(
         new_birth_date = form_field_as_str(form_data, 'birth_date')
     )
     
-    if not is_valid_username(vm.new_username):
+    if vm.new_username != '' and not is_valid_username(vm.new_username):
         vm.error, vm.error_msg = True, 'Username inválido!'
-    elif not is_valid_phone_number(vm.new_phone_number):
+    elif vm.new_phone_number != '' and not is_valid_phone_number(vm.new_phone_number):
         vm.error, vm.error_msg = True, 'Número de telemóvel inválido!'    
-    elif not is_valid_birth_date(vm.new_birth_date):
+    elif vm.new_birth_date != '' and not is_valid_birth_date(vm.new_birth_date):
         vm.error, vm.error_msg = True, 'Data de nascimento inválida!'
     if not vm.error:
         if user:
@@ -88,6 +88,12 @@ async def profile_settings_viewmodel(
             vm.success, vm.success_msg = True, 'Dados da conta alterados com sucesso!.'
     
     return vm
+
+@router.get('/user/change-password', dependencies = [Depends(requires_authentication_secure)])
+@template('user/change-password.pt')
+async def dashboard():
+    return await ViewModel()
+
 
 @router.get('/user/my-ads', dependencies = [Depends(requires_authentication)])
 @template('user/my-ads.pt')
