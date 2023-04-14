@@ -559,7 +559,7 @@
 
     <!--====== LOCATIONS PART START ======-->
 
-    <section class="locations_area pt-115">
+    <section class="locations_area pt-115" tal:condition="len(top_locations) > 0" >
       <div class="container">
         <div class="row">
           <div class="col-lg-6">
