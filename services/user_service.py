@@ -70,9 +70,12 @@ async def get_user_by_google_hash(token: str, session: AsyncSession) -> UserLogi
 
 async def update_user_details(user: UserAccount, new_username: str, new_phone_number: str, new_birth_date: str, session: AsyncSession):
     db_user = await get_user_account_by_id(user.user_id, session)
-    db_user.username = new_username
-    db_user.phone_number = new_phone_number
-    db_user.birth_date = new_birth_date
+    if new_username != '':
+        db_user.username = new_username
+    if new_phone_number != '':
+        db_user.phone_number = new_phone_number
+    if new_birth_date != '':
+        db_user.birth_date = new_birth_date
     await session.commit()
 
 async def update_user_email_validation_status(user: UserLoginData, session: AsyncSession):
