@@ -262,7 +262,7 @@
                               ></a>
                             </div>
                             <h4 class="title">
-                              <a href="/products/product-details"
+                              <a href="/products/ad/${ad.id}"
                                 >${ad.title}</a
                               >
                             </h4>

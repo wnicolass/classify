@@ -38,8 +38,8 @@ class Ad(Base):
     updated_at: datetime = Column(DateTime, onupdate = datetime.now())
 
     address = relationship('AdAddress', back_populates = 'ads', uselist = False, lazy = 'joined')
-    user = relationship('UserAccount', back_populates = 'ads')
-    feature = relationship('Feature', back_populates = 'ad', uselist = False)
+    user = relationship('UserAccount', back_populates = 'ads', lazy = 'joined')
+    feature = relationship('Feature', back_populates = 'ad', uselist = False, lazy = 'joined')
     subcategory = relationship('Subcategory', back_populates = 'ads', lazy = 'joined')
     field_definitions = relationship('FieldDefinition', secondary = field_value, back_populates = 'ads')
     admin = relationship('AdminAccount', secondary = ad_approval, back_populates = 'ads', uselist = False)
@@ -50,11 +50,15 @@ class Ad(Base):
     @property
     def main_image(self):
         return self.images[0].image_path_url
-    
+
     @property
     def pretty_date(self):
         return datetime.strftime(self.created_at, '%d %b, %Y')
 
+    @property
+    def condition(self):
+        return self.feature.condition.condition_name
+    
 class Feature(Base):
     __tablename__ = 'Feature'
 
@@ -63,7 +67,7 @@ class Feature(Base):
     authenticity: str = Column(String(50), nullable = False)
     condition_id: str = Column(Integer, ForeignKey('AdCondition.id'), nullable = False)
 
-    condition = relationship('AdCondition', back_populates = 'features', uselist = False)
+    condition = relationship('AdCondition', back_populates = 'features', uselist = False, lazy = 'joined')
     ad = relationship('Ad', back_populates = 'feature', uselist = False)
 
 class AdCondition(Base):
@@ -73,7 +77,7 @@ class AdCondition(Base):
     condition_name: str = Column(String(30), nullable = False)
     condition_description: str = Column(String(200), nullable = False)
 
-    features = relationship('Feature', back_populates = 'condition')
+    features = relationship('Feature', back_populates = 'condition', lazy = 'joined')
 
 class AdAddress(Base):
     __tablename__ = "AdAddress"
