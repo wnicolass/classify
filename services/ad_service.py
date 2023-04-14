@@ -150,7 +150,7 @@ async def get_ads_by_asc(category_id, session: AsyncSession) -> List[ad.Ad]:
             .join(Subcategory.category)
             .where(Category.id == category_id)
             .order_by(ad.Ad.title.asc()))
-    asc_ads = query.scalars().all()
+    asc_ads = query.unique().scalars().all()
 
     return asc_ads
 
@@ -160,7 +160,7 @@ async def get_ads_by_desc(category_id, session: AsyncSession) -> List[ad.Ad]:
             .join(Subcategory.category)
             .where(Category.id == category_id)
             .order_by(ad.Ad.title.desc()))
-    desc_ads = query.scalars().all()
+    desc_ads = query.unique().scalars().all()
 
     return desc_ads
 
@@ -346,18 +346,22 @@ async def get_ads_by_description(session: AsyncSession, description: str) -> Lis
     return ads_by_description
 
 
-async def get_ads_by_recency(session: AsyncSession) -> List[ad.Ad]:
-    query = await session.execute(select(ad.Ad).order_by(ad.Ad.created_at).desc())
-    recent_ads = query.unique().scalars().all()
-
-    return recent_ads
-
-async def get_ads_by_antiquity(category_id, session: AsyncSession) -> List[ad.Ad]:
+async def get_ads_by_recency(category_id: int, session: AsyncSession) -> List[ad.Ad]:
     query = await session.execute(select(ad.Ad)
             .join(ad.Ad.subcategory)
             .join(Subcategory.category)
             .where(Category.id == category_id)
-            .order_by(ad.Ad.created_at).asc())
+            .order_by(ad.Ad.created_at.desc()))
+    recent_ads = query.unique().scalars().all()
+
+    return recent_ads
+
+async def get_ads_by_antiquity(category_id: int, session: AsyncSession) -> List[ad.Ad]:
+    query = await session.execute(select(ad.Ad)
+            .join(ad.Ad.subcategory)
+            .join(Subcategory.category)
+            .where(Category.id == category_id)
+            .order_by(ad.Ad.created_at.asc()))
     antique_ads = query.unique().scalars().all()
 
     return antique_ads

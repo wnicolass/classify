@@ -54,31 +54,37 @@ async def show_ad(ad_id, session: Annotated[AsyncSession, Depends(get_db_session
 @router.get('/ads/category/{category_id}')
 @template(template_file='products/products.pt')
 async def show_ads_category(
+    session: Annotated[AsyncSession, Depends(get_db_session)], category_id: str):
+    
+    return await ViewModel(
+        all_categories = await category_service.get_all_categories(session),
+        all_ads = await ad_service.get_ads_by_asc(category_id, session),
+        all_cities = await ad_service.get_cities_with_ads(session),
+    )
+
+@router.get('ads/category/{category_id}/sort')
+async def sort_ads_category(
     session: Annotated[AsyncSession, Depends(get_db_session)],
-    category_id: int, 
+    category_id: str,
     alphabetic_order: str | None = '', 
     city: str | None = 'none',
     recency: str | None = '',
 ):
     if alphabetic_order == 'asc':
-        filtered_ads = await ad_service.get_ads_by_asc(category_id, alphabetic_order, session)
+        filtered_ads = await ad_service.get_ads_by_asc(category_id, session),
     
     elif alphabetic_order == 'desc':
-        filtered_ads = await ad_service.get_ads_by_desc(category_id, alphabetic_order, session)
+        filtered_ads = await ad_service.get_ads_by_desc(category_id, session)
         
     if city != 'none':
-        filtered_ads = await ad_service.get_ads_by_location(category_id, city, session)
+        filtered_ads = await ad_service.get_ads_by_location_and_category(city, category_id, '', session)
 
     if recency == 'recent':
-        filtered_ads = await ad_service.get_ads_by_recency(category_id, recency, session)
+        filtered_ads = await ad_service.get_ads_by_recency(category_id, session)
     elif recency == 'old':
-        filtered_ads = await ad_service.get_ads_by_antiquity(category_id, recency, session)
+        filtered_ads = await ad_service.get_ads_by_antiquity(category_id, session)
 
-    return await ViewModel(
-        all_categories = await category_service.get_all_categories(session),
-        all_ads = await ad_service.get_ads_by_category_id(session, category_id),
-        all_cities = await ad_service.get_cities_with_ads(session),
-    )
+    return filtered_ads
 
 @router.get('/ads/subcategory/{subcategory_id}')
 @template(template_file='products/products.pt')
