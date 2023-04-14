@@ -146,16 +146,18 @@
                         <tr>
                           <td class="photo">
                             <div class="table_photo">
-                              <img
-                                src="${ad.main_image}"
-                                alt="Imagem"
-                              />
+                              <a href="/ad/${ad.id}">
+                                <img
+                                  src="${ad.main_image}"
+                                  alt="Imagem"
+                                />
+                              </a>
                             </div>
                           </td>
                           <td class="title">
                             <div class="table_title">
-                              <h6 class="titles">${ad.title}</h6>
-                              <p>Ad ID: ${ad.id}</p>
+                                <h6 class="titles"><a href="/ad/${ad.id}">${ad.title}</a></h6>
+                                <p>Ad ID: ${ad.id}</p>
                             </div>
                           </td>
                           <td class="category">
@@ -231,16 +233,18 @@
                         <tr>
                           <td class="photo">
                             <div class="table_photo">
-                              <img
-                                src="${ad.main_image}"
-                                alt="Imagem"
-                              />
+                              <a href="/ad/${ad.id}">
+                                <img
+                                  src="${ad.main_image}"
+                                  alt="Imagem"
+                                />
+                              </a>
                             </div>
                           </td>
                           <td class="title">
                             <div class="table_title">
-                              <h6 class="titles">${ad.title}</h6>
-                              <p>Ad ID: ${ad.id}</p>
+                                <h6 class="titles"><a href="/ad/${ad.id}">${ad.title}</a></h6>
+                                <p>Ad ID: ${ad.id}</p>
                             </div>
                           </td>
                           <td class="category">
@@ -303,16 +307,18 @@
                         <tr>
                           <td class="photo">
                             <div class="table_photo">
-                              <img
-                                src="${ad.main_image}"
-                                alt="Imagem"
-                              />
+                              <a href="/ad/${ad.id}">
+                                <img
+                                  src="${ad.main_image}"
+                                  alt="Imagem"
+                                />
+                              </a>
                             </div>
                           </td>
                           <td class="title">
                             <div class="table_title">
-                              <h6 class="titles">${ad.title}</h6>
-                              <p>Ad ID: ${ad.id}</p>
+                                <h6 class="titles"><a href="/ad/${ad.id}">${ad.title}</a></h6>
+                                <p>Ad ID: ${ad.id}</p>
                             </div>
                           </td>
                           <td class="category">
@@ -375,16 +381,18 @@
                         <tr>
                           <td class="photo">
                             <div class="table_photo">
-                              <img
-                                src="${ad.main_image}"
-                                alt="Imagem"
-                              />
+                              <a href="/ad/${ad.id}">
+                                <img
+                                  src="${ad.main_image}"
+                                  alt="Imagem"
+                                />
+                              </a>
                             </div>
                           </td>
                           <td class="title">
                             <div class="table_title">
-                              <h6 class="titles">${ad.title}</h6>
-                              <p>Ad ID: ${ad.id}</p>
+                                <h6 class="titles"><a href="/ad/${ad.id}">${ad.title}</a></h6>
+                                <p>Ad ID: ${ad.id}</p>
                             </div>
                           </td>
                           <td class="category">
@@ -447,16 +455,18 @@
                         <tr>
                           <td class="photo">
                             <div class="table_photo">
-                              <img
-                                src="${ad.main_image}"
-                                alt="Imagem"
-                              />
+                              <a href="/ad/${ad.id}">
+                                <img
+                                  src="${ad.main_image}"
+                                  alt="Imagem"
+                                />
+                              </a>
                             </div>
                           </td>
                           <td class="title">
                             <div class="table_title">
-                              <h6 class="titles">${ad.title}</h6>
-                              <p>Ad ID: ${ad.id}</p>
+                                <h6 class="titles"><a href="/ad/${ad.id}">${ad.title}</a></h6>
+                                <p>Ad ID: ${ad.id}</p>
                             </div>
                           </td>
                           <td class="category">
@@ -519,16 +529,18 @@
                         <tr>
                           <td class="photo">
                             <div class="table_photo">
-                              <img
-                                src="${ad.main_image}"
-                                alt="Imagem"
-                              />
+                              <a href="/ad/${ad.id}">
+                                <img
+                                  src="${ad.main_image}"
+                                  alt="Imagem"
+                                />
+                              </a>
                             </div>
                           </td>
                           <td class="title">
                             <div class="table_title">
-                              <h6 class="titles">${ad.title}</h6>
-                              <p>Ad ID: ${ad.id}</p>
+                                <h6 class="titles"><a href="/ad/${ad.id}">${ad.title}</a></h6>
+                                <p>Ad ID: ${ad.id}</p>
                             </div>
                           </td>
                           <td class="category">
