@@ -27,7 +27,7 @@ class UserAccount(Base):
 
     created_at: datetime = Column(DateTime, server_default = text('NOW()'))
 
-    ads = relationship('Ad', back_populates = 'user', cascade = "delete", lazy = 'joined')
+    ads = relationship('Ad', back_populates = 'user', cascade = "delete")
     user_address = relationship('UserAddress', back_populates = 'user', cascade = "delete", uselist = False)
     user_login_data = relationship('UserLoginData', back_populates = 'user', uselist = False)
     user_login_data_ext = relationship('UserLoginDataExt', back_populates = 'user')
