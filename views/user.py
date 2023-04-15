@@ -129,10 +129,13 @@ async def add_ad_to_favourites(
     session: Annotated[AsyncSession, Depends(get_db_session)]
 ):
     vm = await ViewModel()
+    if ad_id in vm.user.fav_ads_id:
+        return
+    
     new_fav = await user_service.add_new_favourite(vm.user_id, ad_id, session)
 
     if new_fav:
-        return {'msg': 'ok'}
+        return {'msg': 'Ad added to favourites!'}
 
 
 @router.get('/user/privacy-setting', dependencies = [Depends(requires_authentication)])
