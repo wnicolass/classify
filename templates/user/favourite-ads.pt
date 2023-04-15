@@ -2,6 +2,9 @@
   <div metal:fill-slot="title" tal:omit-tag="True">
     <title> Favoritos | Classify</title>
   </div>
+  <__additional_script__ metal:fill-slot="additional_script" tal:omit-tag="True">
+  <script src="/public/scripts/favourites.js" defer></script>
+</__additional_script__>
   <div metal:fill-slot="content" tal:omit-tag="True">
 
     <div
@@ -36,7 +39,7 @@
               </div>
               <div class="my_ads_menu">
                 <ul class="ads_menu">
-                  <li><a class="active" href="#">Featured (${len(user.favourites)})</a></li>
+                  <li><a class="active" id="total-favs" href="#">Todos (${len(user.favourites)})</a></li>
                 </ul>
               </div>
 
@@ -90,7 +93,7 @@
                           <div class="table_action">
                             <ul style="text-align: center;">
                               <li style="padding-right: 23px;">
-                                <a href="#" style="width: 3rem;height: 3rem;display: flex;align-items: center;justify-content: center;"><i style="font-size: 1.5rem;" class="fal fa-trash-alt"></i></a>
+                                <a data-adid="${fav.ad.id}" class="delete-fav" style="cursor: pointer;width: 3rem;height: 3rem;display: flex;align-items: center;justify-content: center;"><i style="font-size: 1.5rem;" class="fal fa-trash-alt"></i></a>
                               </li>
                             </ul>
                           </div>
