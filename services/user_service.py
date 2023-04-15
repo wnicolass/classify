@@ -126,3 +126,9 @@ async def add_new_favourite(user_id: int, ad_id: int, session: AsyncSession) -> 
     await session.refresh(fav)
     
     return fav
+
+async def delete_user_favourite(current_user: UserAccount, fav: Favourite, session: AsyncSession) -> None:
+    await session.delete(fav)
+    await session.commit()
+    current_user = await get_user_account_by_id(current_user.user_id, session)
+    return current_user
