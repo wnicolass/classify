@@ -4,7 +4,7 @@
   </div>
     <__additional_script__ metal:fill-slot="additional_script" tal:omit-tag="True">
     <script src="/public/scripts/limit-select-size.js" defer></script>
-    <script src="/public/scripts/add-favourite.js" defer></script>
+    <script src="/public/scripts/favourites.js" defer></script>
   </__additional_script__>
   <__additional_stylesheet__ metal:fill-slot="additional_stylesheet" tal:omit-tag="True">
     <style>

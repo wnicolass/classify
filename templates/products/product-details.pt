@@ -5,7 +5,7 @@
   <__additional_script__ metal:fill-slot="additional_script" tal:omit-tag="True">
     <script src="/public/scripts/change-image.js" defer></script>
     <script src="/public/scripts/show-seller-number.js" defer></script>
-    <script src="/public/scripts/add-favourite.js" defer></script>
+    <script src="/public/scripts/favourites.js" defer></script>
   </__additional_script__>
   <__additional_stylesheet__ metal:fill-slot="additional_stylesheet" tal:omit-tag="True">
     <style>
@@ -26,8 +26,11 @@
       }
 
       .fa-heart.active {
-        color: #FF4367;
+        color: #FF4367 !important;
         transform: scale(1.3);
+      }
+      .fa-heart.active + span {
+        color: #FF4367 !important;
       }
     </style>
   </__additional_stylesheet__>
@@ -288,7 +291,7 @@
                   
                   <div class="single_action">
                     <a tal:condition="adv.id not in user.fav_ads_id" style='cursor: pointer;' class="like" data-adid="${adv.id}"><i class="fal fa-heart"></i><span>Fav</span></a>
-                    <a tal:condition="adv.id in user.fav_ads_id" style="cursor: pointer; " class="like" data-adid="${adv.id}"><i class="fal fa-heart active" style="color: #FF4367;"></i><span style="color: #FF4367;">Fav</span></a>
+                    <a tal:condition="adv.id in user.fav_ads_id" style="cursor: pointer; " class="like" data-adid="${adv.id}"><i class="fal fa-heart active"></i><span>Fav</span></a>
                   </div>
 
                   <div class="single_action">
