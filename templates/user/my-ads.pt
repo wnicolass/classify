@@ -1,7 +1,15 @@
 <div metal:use-macro="load: ../shared/_layout.pt">
 <__additional_script__ metal:fill-slot="additional_script" tal:omit-tag="True">
   <script src="/public/scripts/switch-tables.js" defer></script>
+  <script src="/public/scripts/delete-ad.js" defer></script>
 </__additional_script__>
+<__additional_stylesheet__ metal:fill-slot="additional_stylesheet" tal:omit-tag="True">
+<style>
+  tr:has(span.deleted) td:not(td.status, td.action) {
+    opacity: 0.5;
+  }
+</style>
+</__additional_stylesheet__>
   <div metal:fill-slot="title" tal:omit-tag="True">
     <title> Os Meus Anúncios | Classify</title>
   </div>
@@ -131,7 +139,13 @@
                         <tr>
                           <td class="photo">
                             <div class="table_photo">
-                              <a href="/ad/${ad.id}">
+                              <a tal:condition="ad.status_id != 5" href="/ad/${ad.id}">
+                                <img
+                                  src="${ad.main_image}"
+                                  alt="Imagem"
+                                />
+                              </a>
+                              <a tal:condition="ad.status_id == 5" tal:omit-tag="True">
                                 <img
                                   src="${ad.main_image}"
                                   alt="Imagem"
@@ -141,7 +155,10 @@
                           </td>
                           <td class="title">
                             <div class="table_title">
-                                <h6 class="titles"><a href="/ad/${ad.id}">${ad.title}</a></h6>
+                                <h6 class="titles">
+                                  <a tal:condition="ad.status_id != 5" href="/ad/${ad.id}">${ad.title}</a>
+                                  <a tal:condition="ad.status_id == 5">${ad.title}</a>
+                                </h6>
                                 <p>Ad ID: ${ad.id}</p>
                             </div>
                           </td>
@@ -162,7 +179,7 @@
                           </td>
                           <td class="action">
                             <div class="table_action">
-                              <ul>
+                              <ul tal:condition="ad.status_id != 5">
                                 <li>
                                   <a href="#"><i class="fal fa-eye"></i></a>
                                 </li>
@@ -170,9 +187,10 @@
                                   <a href="#"><i class="fal fa-pencil"></i></a>
                                 </li>
                                 <li>
-                                  <a href="#"><i class="fal fa-trash-alt"></i></a>
+                                  <a style="cursor: pointer;" class='delete-btn' data-adid="${ad.id}"><i class="fal fa-trash-alt"></i></a>
                                 </li>
                               </ul>
+                              <button tal:condition="ad.status_id == 5" class="main-btn">Recuperar</button>
                             </div>
                           </td>
                         </tr>
@@ -204,7 +222,13 @@
                         <tr>
                           <td class="photo">
                             <div class="table_photo">
-                              <a href="/ad/${ad.id}">
+                              <a tal:condition="ad.status_id != 5" href="/ad/${ad.id}">
+                                <img
+                                  src="${ad.main_image}"
+                                  alt="Imagem"
+                                />
+                              </a>
+                              <a tal:condition="ad.status_id == 5" tal:omit-tag="True">
                                 <img
                                   src="${ad.main_image}"
                                   alt="Imagem"
@@ -214,7 +238,10 @@
                           </td>
                           <td class="title">
                             <div class="table_title">
-                                <h6 class="titles"><a href="/ad/${ad.id}">${ad.title}</a></h6>
+                                <h6 class="titles">
+                                  <a tal:condition="ad.status_id != 5" href="/ad/${ad.id}">${ad.title}</a>
+                                  <a tal:condition="ad.status_id == 5">${ad.title}</a>
+                                </h6>
                                 <p>Ad ID: ${ad.id}</p>
                             </div>
                           </td>
@@ -235,7 +262,7 @@
                           </td>
                           <td class="action">
                             <div class="table_action">
-                              <ul>
+                              <ul tal:condition="ad.status_id != 5">
                                 <li>
                                   <a href="#"><i class="fal fa-eye"></i></a>
                                 </li>
@@ -243,9 +270,10 @@
                                   <a href="#"><i class="fal fa-pencil"></i></a>
                                 </li>
                                 <li>
-                                  <a href="#"><i class="fal fa-trash-alt"></i></a>
+                                  <a style="cursor: pointer;" class='delete-btn' data-adid="${ad.id}"><i class="fal fa-trash-alt"></i></a>
                                 </li>
                               </ul>
+                              <button tal:condition="ad.status_id == 5" class="main-btn">Recuperar</button>
                             </div>
                           </td>
                         </tr>
@@ -277,7 +305,13 @@
                         <tr>
                           <td class="photo">
                             <div class="table_photo">
-                              <a href="/ad/${ad.id}">
+                              <a tal:condition="ad.status_id != 5" href="/ad/${ad.id}">
+                                <img
+                                  src="${ad.main_image}"
+                                  alt="Imagem"
+                                />
+                              </a>
+                              <a tal:condition="ad.status_id == 5" tal:omit-tag="True">
                                 <img
                                   src="${ad.main_image}"
                                   alt="Imagem"
@@ -287,7 +321,10 @@
                           </td>
                           <td class="title">
                             <div class="table_title">
-                                <h6 class="titles"><a href="/ad/${ad.id}">${ad.title}</a></h6>
+                                <h6 class="titles">
+                                  <a tal:condition="ad.status_id != 5" href="/ad/${ad.id}">${ad.title}</a>
+                                  <a tal:condition="ad.status_id == 5">${ad.title}</a>
+                                </h6>
                                 <p>Ad ID: ${ad.id}</p>
                             </div>
                           </td>
@@ -308,7 +345,7 @@
                           </td>
                           <td class="action">
                             <div class="table_action">
-                              <ul>
+                              <ul tal:condition="ad.status_id != 5">
                                 <li>
                                   <a href="#"><i class="fal fa-eye"></i></a>
                                 </li>
@@ -316,9 +353,10 @@
                                   <a href="#"><i class="fal fa-pencil"></i></a>
                                 </li>
                                 <li>
-                                  <a href="#"><i class="fal fa-trash-alt"></i></a>
+                                  <a style="cursor: pointer;" class='delete-btn' data-adid="${ad.id}"><i class="fal fa-trash-alt"></i></a>
                                 </li>
                               </ul>
+                              <button tal:condition="ad.status_id == 5" class="main-btn">Recuperar</button>
                             </div>
                           </td>
                         </tr>
@@ -350,7 +388,13 @@
                         <tr>
                           <td class="photo">
                             <div class="table_photo">
-                              <a href="/ad/${ad.id}">
+                              <a tal:condition="ad.status_id != 5" href="/ad/${ad.id}">
+                                <img
+                                  src="${ad.main_image}"
+                                  alt="Imagem"
+                                />
+                              </a>
+                              <a tal:condition="ad.status_id == 5" tal:omit-tag="True">
                                 <img
                                   src="${ad.main_image}"
                                   alt="Imagem"
@@ -360,7 +404,10 @@
                           </td>
                           <td class="title">
                             <div class="table_title">
-                                <h6 class="titles"><a href="/ad/${ad.id}">${ad.title}</a></h6>
+                                <h6 class="titles">
+                                  <a tal:condition="ad.status_id != 5" href="/ad/${ad.id}">${ad.title}</a>
+                                  <a tal:condition="ad.status_id == 5">${ad.title}</a>
+                                </h6>
                                 <p>Ad ID: ${ad.id}</p>
                             </div>
                           </td>
@@ -381,7 +428,7 @@
                           </td>
                           <td class="action">
                             <div class="table_action">
-                              <ul>
+                              <ul tal:condition="ad.status_id != 5">
                                 <li>
                                   <a href="#"><i class="fal fa-eye"></i></a>
                                 </li>
@@ -389,9 +436,10 @@
                                   <a href="#"><i class="fal fa-pencil"></i></a>
                                 </li>
                                 <li>
-                                  <a href="#"><i class="fal fa-trash-alt"></i></a>
+                                  <a style="cursor: pointer;" class='delete-btn' data-adid="${ad.id}"><i class="fal fa-trash-alt"></i></a>
                                 </li>
                               </ul>
+                              <button tal:condition="ad.status_id == 5" class="main-btn">Recuperar</button>
                             </div>
                           </td>
                         </tr>
@@ -423,7 +471,13 @@
                         <tr>
                           <td class="photo">
                             <div class="table_photo">
-                              <a href="/ad/${ad.id}">
+                              <a tal:condition="ad.status_id != 5" href="/ad/${ad.id}">
+                                <img
+                                  src="${ad.main_image}"
+                                  alt="Imagem"
+                                />
+                              </a>
+                              <a tal:condition="ad.status_id == 5" tal:omit-tag="True">
                                 <img
                                   src="${ad.main_image}"
                                   alt="Imagem"
@@ -433,7 +487,10 @@
                           </td>
                           <td class="title">
                             <div class="table_title">
-                                <h6 class="titles"><a href="/ad/${ad.id}">${ad.title}</a></h6>
+                                <h6 class="titles">
+                                  <a tal:condition="ad.status_id != 5" href="/ad/${ad.id}">${ad.title}</a>
+                                  <a tal:condition="ad.status_id == 5">${ad.title}</a>
+                                </h6>
                                 <p>Ad ID: ${ad.id}</p>
                             </div>
                           </td>
@@ -454,7 +511,7 @@
                           </td>
                           <td class="action">
                             <div class="table_action">
-                              <ul>
+                              <ul tal:condition="ad.status_id != 5">
                                 <li>
                                   <a href="#"><i class="fal fa-eye"></i></a>
                                 </li>
@@ -462,9 +519,10 @@
                                   <a href="#"><i class="fal fa-pencil"></i></a>
                                 </li>
                                 <li>
-                                  <a href="#"><i class="fal fa-trash-alt"></i></a>
+                                  <a style="cursor: pointer;" class='delete-btn' data-adid="${ad.id}"><i class="fal fa-trash-alt"></i></a>
                                 </li>
                               </ul>
+                              <button tal:condition="ad.status_id == 5" class="main-btn">Recuperar</button>
                             </div>
                           </td>
                         </tr>
@@ -496,7 +554,13 @@
                         <tr>
                           <td class="photo">
                             <div class="table_photo">
-                              <a href="/ad/${ad.id}">
+                              <a tal:condition="ad.status_id != 5" href="/ad/${ad.id}">
+                                <img
+                                  src="${ad.main_image}"
+                                  alt="Imagem"
+                                />
+                              </a>
+                              <a tal:condition="ad.status_id == 5" tal:omit-tag="True">
                                 <img
                                   src="${ad.main_image}"
                                   alt="Imagem"
@@ -506,7 +570,10 @@
                           </td>
                           <td class="title">
                             <div class="table_title">
-                                <h6 class="titles"><a href="/ad/${ad.id}">${ad.title}</a></h6>
+                                <h6 class="titles">
+                                  <a tal:condition="ad.status_id != 5" href="/ad/${ad.id}">${ad.title}</a>
+                                  <a tal:condition="ad.status_id == 5">${ad.title}</a>
+                                </h6>
                                 <p>Ad ID: ${ad.id}</p>
                             </div>
                           </td>
@@ -527,7 +594,7 @@
                           </td>
                           <td class="action">
                             <div class="table_action">
-                              <ul>
+                              <ul tal:condition="ad.status_id != 5">
                                 <li>
                                   <a href="#"><i class="fal fa-eye"></i></a>
                                 </li>
@@ -535,9 +602,10 @@
                                   <a href="#"><i class="fal fa-pencil"></i></a>
                                 </li>
                                 <li>
-                                  <a href="#"><i class="fal fa-trash-alt"></i></a>
+                                  <a style="cursor: pointer;" class='delete-btn' data-adid="${ad.id}"><i class="fal fa-trash-alt"></i></a>
                                 </li>
                               </ul>
+                              <button tal:condition="ad.status_id == 5" class="main-btn">Recuperar</button>
                             </div>
                           </td>
                         </tr>
