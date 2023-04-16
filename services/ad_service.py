@@ -1,4 +1,5 @@
 from decimal import Decimal as dec
+from enum import Enum
 from typing import List, Tuple
 from sqlalchemy import and_, func
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -75,7 +76,7 @@ async def insert_ad(title: str, subcategory_id: int, brand: str, condition_id: i
     await insert_ad_images(db_ad.id, images, session)
 
 async def get_all_ads(session: AsyncSession) -> List[ad.Ad]:
-    query = await session.execute(select(ad.Ad))
+    query = await session.execute(select(ad.Ad).where(ad.Ad.status_id != AdStatusEnum.DELETED.value))
     ads = query.unique().scalars().all()
 
     return ads
@@ -85,7 +86,8 @@ async def get_3_ads(current_ad: ad.Ad, session: AsyncSession) -> List[ad.Ad]:
     where(
         and_(
             ad.Ad.subcategory_id == current_ad.subcategory_id,
-            ad.Ad.id != current_ad.id
+            ad.Ad.id != current_ad.id,
+            ad.Ad.status_id == AdStatusEnum.ACTIVE.value
         )
     ).limit(3))
     ads = query.unique().scalars().all()
@@ -93,7 +95,7 @@ async def get_3_ads(current_ad: ad.Ad, session: AsyncSession) -> List[ad.Ad]:
     return ads
 
 async def get_ad_by_id(session: AsyncSession, ad_id: int) -> ad.Ad | None:
-    query = await session.execute(select(ad.Ad).where(ad.Ad.id == ad_id))
+    query = await session.execute(select(ad.Ad).where(and_(ad.Ad.id == ad_id, ad.Ad.status_id == AdStatusEnum.ACTIVE.value)))
     adv = query.unique().scalar_one_or_none()
     
     return adv
@@ -102,7 +104,12 @@ async def get_ad_by_id(session: AsyncSession, ad_id: int) -> ad.Ad | None:
 async def get_ads_by_user_id(session: AsyncSession, user_id) -> List[ad.Ad]:
     query = await session.execute(select(ad.Ad)
             .join(ad.Ad.user)
-            .where(ad.Ad.user_id == user_id)
+            .where(
+                and_(
+                    ad.Ad.user_id == user_id,
+                    ad.Ad.status_id == AdStatusEnum.ACTIVE.value
+                )
+            )
     )   
     ads_by_user_id = query.unique().scalars().all()
     
@@ -149,7 +156,12 @@ async def get_ads_by_category_id(session: AsyncSession, category_id) -> List[ad.
     query = await session.execute(select(ad.Ad)
             .join(ad.Ad.subcategory)
             .join(Subcategory.category)
-            .filter(Category.id == category_id)
+            .where(
+                and_(
+                    Category.id == category_id,
+                    ad.Ad.status_id == AdStatusEnum.ACTIVE.value
+                )
+            )
     )   
     ads_by_category_id = query.unique().scalars().all()
     
@@ -162,7 +174,8 @@ async def get_ads_by_category(session: AsyncSession, category_id: str, title: st
             .where(
                 and_(
                     Category.id == category_id,
-                    ad.Ad.title.like(f'%{title}%')
+                    ad.Ad.title.like(f'%{title}%'),
+                    ad.Ad.status_id == AdStatusEnum.ACTIVE.value
                 )
             )
         )
@@ -173,7 +186,12 @@ async def get_ads_by_category(session: AsyncSession, category_id: str, title: st
 async def get_ads_by_subcategory_id(session: AsyncSession, subcategory_id) -> List[ad.Ad]:
     query = await session.execute(select(ad.Ad)
             .join(ad.Ad.subcategory)
-            .where(Subcategory.id == subcategory_id)
+            .where(
+                and_(
+                    Subcategory.id == subcategory_id,
+                    ad.Ad.status_id == AdStatusEnum.ACTIVE.value
+                )
+            )
     )
     ads_by_subcategory = query.unique().scalars().all()
 
@@ -232,7 +250,7 @@ async def get_ads_by_status(session: AsyncSession, status: str) -> List[ad.Ad]:
 async def get_popular_ads(session: AsyncSession, limit: int = 8) -> List[ad.Ad]:
     query = await session.execute(select(ad.Ad)
         .join(ad.Ad.ad_status)
-        .where(ad.AdStatus.status_name == 'ativo')
+        .where(ad.Ad.status_id == AdStatusEnum.ACTIVE.value)
         .order_by(ad.Ad.views.desc())
         .limit(limit)
     )
@@ -255,7 +273,8 @@ async def get_ads_by_location(session: AsyncSession, location: str, title: str) 
         .where(
             and_(
                 ad.AdAddress.city == f'{location}',
-                ad.Ad.title.like(f'%{title}%')
+                ad.Ad.title.like(f'%{title}%'),
+                ad.Ad.status_id == AdStatusEnum.ACTIVE.value
             )
         )
     )
@@ -265,6 +284,7 @@ async def get_ads_by_location(session: AsyncSession, location: str, title: str) 
 
 async def get_ads_by_creation_date(session: AsyncSession, limit: int = 8) -> List[ad.Ad]:
     query = await session.execute(select(ad.Ad)
+        .where(ad.Ad.status_id == AdStatusEnum.ACTIVE.value)
         .order_by(ad.Ad.created_at.desc())
         .limit(limit)
     )
@@ -275,7 +295,12 @@ async def get_ads_by_creation_date(session: AsyncSession, limit: int = 8) -> Lis
 async def get_ads_by_title(session: AsyncSession, title: str) -> List[ad.Ad]:
     query = await session.execute(
         select(ad.Ad)
-        .where(ad.Ad.title.like(f'%{title}%'))
+        .where(
+            and_(
+                ad.Ad.title.like(f'%{title}%'),
+                ad.Ad.status_id == AdStatusEnum.ACTIVE.value
+            )
+        )
     )
     ads_by_title = query.unique().scalars().all()
 
@@ -312,7 +337,8 @@ async def get_ads_by_location_and_category(
             and_(
                 ad.Ad.title.like(f'%{title}%'),
                 Category.id == category_id,
-                ad.AdAddress.city == city
+                ad.AdAddress.city == city,
+                ad.Ad.status_id == AdStatusEnum.ACTIVE.value
             )
         )
     )
@@ -336,6 +362,7 @@ async def get_ads_by_recency(session: AsyncSession) -> List[ad.Ad]:
 async def get_cities_with_ads(session: AsyncSession) -> List[ad.AdAddress]:
     query = await session.execute(
         select(ad.AdAddress)
+        .where(ad.Ad.status_id == AdStatusEnum.ACTIVE.value)
         .join(ad.AdAddress.ads)
         .group_by(ad.AdAddress.city)
         .order_by(func.count(ad.Ad.ad_address_id).desc())
@@ -343,3 +370,17 @@ async def get_cities_with_ads(session: AsyncSession) -> List[ad.AdAddress]:
     cities_with_ads = query.unique().scalars().all()
     
     return cities_with_ads
+
+async def set_deleted_status(ad_id: int, session: AsyncSession) -> ad.Ad:
+    ad = await get_ad_by_id(session, ad_id)
+    ad.status_id = AdStatusEnum.DELETED.value
+    await session.commit()
+    await session.refresh(ad)
+    return ad
+
+class AdStatusEnum(Enum):
+    ACTIVE = 1
+    INACTIVE = 2
+    EXPIRED = 3
+    SOLD = 4
+    DELETED = 5
