@@ -1,51 +1,87 @@
-async function handleFilters() {
-    const niceSelects = document.querySelectorAll('.nice-select ul.list li.option');
+const queryValues = [];
 
-    niceSelects.forEach((option) => {
-        const niceSelect = option.closest('.nice-select');
-        const currentSpan = niceSelect.querySelector('span.current');
-
-        option.addEventListener('click', async () => {
-            const selectedValue = option.getAttribute('data-value');
-            currentSpan.textContent = option.textContent;
-
-            const data = await fetchFilters(selectedValue);
-            console.log(data);
-            renderAds(data);
-        });
-    });
+function getQueryValues() {
+  const selectElements = document.querySelectorAll('.limit:not(.nice-select)');
+  const selectValues = [];
+  selectElements.forEach(select => {
+    selectValues.push(select.value);
+  });
+  return selectValues;
 }
 
-async function fetchFilters(selectedValue) {
-    const categoryId = window.location.href.split('/').at(-1);
+function handleEvent(event) {
+  setTimeout(() => {
+    const values = getQueryValues();
+    runFetch(values);
+  }, 0)
+}
+
+function setEventOnSubcategories() {
+  const categorySelect = document.getElementById('category-select');
+  const renderedSelect = categorySelect.nextElementSibling;
+  const listItems = renderedSelect.querySelectorAll('li');
+  
+  listItems.forEach(li => li.addEventListener('click', () => {
+    setTimeout(() => {
+      const subcategorySelect = renderedSelect.nextElementSibling;
+      const renderedSubcategoryUl = subcategorySelect.nextElementSibling;
+      let allSubcategories;
+      setTimeout(() => {
+        allSubcategories = renderedSubcategoryUl.querySelectorAll('li');
+        allSubcategories.forEach(sub => sub.addEventListener('click', handleEvent));
+      }, 100);
+    }, 0);
+  }));
+}
+
+function handleFilters() {
+  const allLis = document.querySelectorAll('.nice-select ul li');
+
+  allLis.forEach(li => li.addEventListener('click', handleEvent));
+}
+
+async function fetchData(queryParams) {
+  const queryFirstPart = window.location.href.split('?').at(-1);
+  const URL = `/ads/sort?${queryFirstPart}${queryParams}`;
+  console.log(URL);
+  try {
+    const res = await fetch(URL);
+    const data = await res.json();
+    renderAds(data);
+  } catch (err) {
+    console.error(err);
+  }
+}
+
+async function runFetch(queryValues) {
+    const pageCriteria = window.location.href.split('=').at(-1);
     const searchCriteria = window.location.href.split('/').at(-2);
+    const possibleParams = ['city', 'category_id', 'subcategory_id', 'recency', 'alphabetic_order'];
+    let query = [];
     
-    console.log(categoryId);
-    console.log(searchCriteria);
-    console.log(selectedValue);
-    let queryParams = "";
+    queryValues.forEach((value, i) => {
+      if (value !== 'none' && value !== '') {
+        let queryChunk = `${possibleParams[i]}=${value}`;
+        query.push(queryChunk);
+      }
+    });
+    
+    const queryParams = `&${query.join('&')}`;
+    
+    await fetchData(queryParams);
+    // let URL = `/ads/${searchCriteria}/${categoryId}/sort?${queryParams}`;
+    // if (window.location.href.endsWith('/ads')) {
+    //   URL = `/ads/sort?${queryParams}`
+    // }
 
-    if (selectedValue === 'asc') {
-      queryParams += "alphabetic_order=asc&";
-    } else if (selectedValue === 'desc') {
-      queryParams += "alphabetic_order=desc&";
-    } else if (selectedValue === 'recent') {
-      queryParams += "recency=recent&";
-    } else if (selectedValue === 'old') {
-      queryParams += "recency=old&";
-    } else if (selectedValue !== 'none') {
-      queryParams += `city=${selectedValue}&`;
-    }
-    const response = await fetch(`/ads/${searchCriteria}/${categoryId}/sort?${queryParams}`);
-    const data = await response.json();
-    return data;
+    // const response = await fetch(URL);
+    // const data = await response.json();
+    // return data;
 }
-
 
 function renderAds(data) {
     const allAds = data.ads;
     const adsContainer = document.getElementById('ads-container');
-    console.log(adsContainer);
     adsContainer.innerHTML = '';
   
     allAds.forEach((ad) => {
@@ -113,11 +149,12 @@ function prettyDate(date) {
     const day = defaultDate.getDate();
     const year = defaultDate.getFullYear();
 
-    return `${day} ${month} ${year}`
+    return `${day} ${month} ${year}`;
 }   
 
 function main() {
-    handleFilters();
+  handleFilters();
+  setEventOnSubcategories();
 }   
 
 window.addEventListener('load', main);
