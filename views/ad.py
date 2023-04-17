@@ -5,6 +5,7 @@ from typing import Annotated, List
 from fastapi import (
     APIRouter, 
     Depends,
+    HTTPException,
     Request,
     UploadFile,
     responses,
@@ -12,6 +13,7 @@ from fastapi import (
 )
 from sqlalchemy.ext.asyncio import AsyncSession
 from fastapi_chameleon import template
+from chameleon import PageTemplateFile
 from common.fastapi_utils import (
     form_field_as_str,
     get_db_session
@@ -39,13 +41,42 @@ async def products(session: Annotated[AsyncSession, Depends(get_db_session)]):
 async def products_viewmodel(session: Annotated[AsyncSession, Depends(get_db_session)]):
     return await ViewModel(
        all_categories = await category_service.get_all_categories(session),
+       all_cities = await ad_service.get_cities_with_ads(session),
        all_ads = await ad_service.get_all_ads(session)
     )
+
+@router.get('/ads/sort')
+async def sort_ads_category(
+    session: Annotated[AsyncSession, Depends(get_db_session)],
+    title: str | None = '',
+    description: str | None = None,
+    city: str | None = '',
+    category_id: int | None = '',
+    subcategory_id: int | None = '',
+    recency: str | None = 'asc',
+    alphabetic_order: str | None = ''
+):
+    filtered_ads = await ad_service.get_ads_by_criteria(session, title, description, city, category_id, subcategory_id, recency, alphabetic_order)
+
+    vm = await ViewModel()
+
+    response = {
+        'ads': filtered_ads,
+        'alphabetic_order': alphabetic_order,
+        'city': city,
+        'recency': recency,
+        'is_logged_in': vm.is_logged_in
+    }
+    return response
 
 @router.get('/ad/{ad_id}')
 @template(template_file='products/product-details.pt')
 async def show_ad(ad_id, session: Annotated[AsyncSession, Depends(get_db_session)]):
     current_ad = await ad_service.get_ad_by_id(session, ad_id)
+
+    if not current_ad:
+        raise HTTPException(status_code = status.HTTP_404_NOT_FOUND, detail = {'error_msg': 'Not found'})
+
     return await ViewModel(
         adv = current_ad,
         get_3_ads = await ad_service.get_3_ads(current_ad, session)
@@ -70,6 +101,8 @@ async def sort_ads_category(
     city: str | None = 'none',
     recency: str | None = '',
 ):
+    filtered_ads = await ad_service.get_ads_by_asc(category_id, session)
+
     if alphabetic_order == 'asc':
         filtered_ads = await ad_service.get_ads_by_asc(category_id, session)
     elif alphabetic_order == 'desc':
@@ -77,13 +110,11 @@ async def sort_ads_category(
         
     if city != 'none':
         filtered_ads = await ad_service.get_ads_by_location_and_category(city, category_id, '', session)
-    else:
-        filtered_ads = await ad_service.get_subcategory_ads_asc(category_id, session)
+
     if recency == 'recent':
         filtered_ads = await ad_service.get_ads_by_recency(category_id, session)
     elif recency == 'old':
         filtered_ads = await ad_service.get_ads_by_antiquity(category_id, session)
-        
 
     vm = await ViewModel()
     response = {
@@ -101,7 +132,7 @@ async def sort_ads_category(
 async def show_ads_category(subcategory_id: int, session: Annotated[AsyncSession, Depends(get_db_session)]):
     return await ViewModel(
         all_categories = await category_service.get_all_categories(session),
-        all_ads = await ad_service.get_ads_by_subcategory_id(session, subcategory_id),
+        all_ads = await ad_service.get_subcategory_ads_asc(subcategory_id, session),
         all_cities = await ad_service.get_cities_by_subcategory(subcategory_id, session),
     )
 
@@ -113,6 +144,8 @@ async def sort_ads_subcategory(
     city: str | None = 'none',
     recency: str | None = '',
 ):
+    filtered_ads = await ad_service.get_subcategory_ads_asc(subcategory_id, session)
+    
     if alphabetic_order == 'asc':
         filtered_ads = await ad_service.get_subcategory_ads_asc(subcategory_id, session)
     elif alphabetic_order == 'desc':
@@ -120,8 +153,7 @@ async def sort_ads_subcategory(
         
     if city != 'none':
         filtered_ads = await ad_service.get_ads_by_location_and_subcategory(city, subcategory_id, '', session)
-    else:
-        filtered_ads = await ad_service.get_subcategory_ads_asc(subcategory_id, session)
+
     if recency == 'recent':
         filtered_ads = await ad_service.get_subcategory_ads_by_recency(subcategory_id, session)
     elif recency == 'old':
@@ -143,26 +175,15 @@ async def sort_ads_subcategory(
 @template(template_file = 'products/products.pt')
 async def search_by_title(
     session: Annotated[AsyncSession, Depends(get_db_session)],
-    category_id: str | None = 'none',
     title: str | None = '',
-    city: str | None = 'none', 
+    description: str | None = None,
 ):
-    if len(title) == 0 and city == 'none' and category_id == 'none':
-        response = responses.RedirectResponse(url = '/ads', status_code = status.HTTP_302_FOUND)
-        return response
-
-    if city != 'none' and category_id != 'none':
-        ads_found = await ad_service.get_ads_by_location_and_category(city, category_id, title, session)
-    elif city != 'none' and category_id == 'none':
-        ads_found = await ad_service.get_ads_by_location(session, city, title)
-    elif city == 'none' and category_id != 'none':
-        ads_found = await ad_service.get_ads_by_category(session, category_id, title)
-    else:
-        ads_found = await ad_service.get_ads_by_title(session, title)
+    ads_found = await ad_service.get_ads_by_title_and_description(session, title, description)
     
     return await ViewModel(
         all_categories = await category_service.get_all_categories(session),
-        all_ads = ads_found
+        all_ads = ads_found,
+        all_cities = await ad_service.get_cities_with_ads(session),
     )
 
 @router.get('/new/ad', dependencies = [Depends(requires_authentication)])

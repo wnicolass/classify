@@ -1,6 +1,6 @@
 from decimal import Decimal as dec
 from enum import Enum
-from typing import List, Tuple
+from typing import List
 from sqlalchemy import and_, func
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
@@ -33,7 +33,23 @@ async def insert_feature(brand: str, auth: str, condition_id: int, session: Asyn
     new_feature_id = feature.id
     return new_feature_id
 
+async def get_existing_address(country: str, city: str, session: AsyncSession) -> ad.AdAddress:
+    query = await session.execute(select(ad.AdAddress)
+        .where(
+            and_(
+                ad.AdAddress.city == city,
+                ad.AdAddress.country == country
+            )
+        )
+    )
+    address = query.scalar_one_or_none()
+    
+    return address
+
 async def insert_ad_address(country: str, city: str, session: AsyncSession) -> int:
+    if ad_address:= await get_existing_address(country, city, session):
+        return ad_address.id
+    
     ad_address = ad.AdAddress(
         country = country,
         city = city
@@ -76,7 +92,19 @@ async def insert_ad(title: str, subcategory_id: int, brand: str, condition_id: i
     await insert_ad_images(db_ad.id, images, session)
 
 async def get_all_ads(session: AsyncSession) -> List[ad.Ad]:
-    query = await session.execute(select(ad.Ad).where(ad.Ad.status_id != AdStatusEnum.DELETED.value))
+    query = await session.execute(select(ad.Ad)
+        .where(ad.Ad.status_id == AdStatusEnum.ACTIVE.value)
+        .order_by(ad.Ad.title.asc())    
+    )
+    ads = query.unique().scalars().all()
+
+    return ads
+
+async def get_all_desc(session: AsyncSession) -> List[ad.Ad]:
+    query = await session.execute(select(ad.Ad)
+        .where(ad.Ad.status_id == AdStatusEnum.ACTIVE.value)
+        .order_by(ad.Ad.title.desc())    
+    )
     ads = query.unique().scalars().all()
 
     return ads
@@ -100,14 +128,19 @@ async def get_ad_by_id(session: AsyncSession, ad_id: int) -> ad.Ad | None:
     
     return adv
 
+async def get_one_ad_without_criteria(session: AsyncSession, ad_id: int) -> ad.Ad | None:
+    query = await session.execute(select(ad.Ad).where(ad.Ad.id == ad_id))
+    adv = query.unique().scalar_one_or_none()
+        
+    return adv
+
 # ADS BY USER
 async def get_ads_by_user_id(session: AsyncSession, user_id) -> List[ad.Ad]:
     query = await session.execute(select(ad.Ad)
             .join(ad.Ad.user)
             .where(
                 and_(
-                    ad.Ad.user_id == user_id,
-                    ad.Ad.status_id == AdStatusEnum.ACTIVE.value
+                    ad.Ad.user_id == user_id
                 )
             )
     )   
@@ -155,7 +188,12 @@ async def get_ads_by_asc(category_id, session: AsyncSession) -> List[ad.Ad]:
     query = await session.execute(select(ad.Ad)
             .join(ad.Ad.subcategory)
             .join(Subcategory.category)
-            .where(Category.id == category_id)
+            .where(
+                and_(
+                    Category.id == category_id,
+                    ad.Ad.status_id == AdStatusEnum.ACTIVE.value
+                    )
+                )
             .order_by(ad.Ad.title.asc()))
     asc_ads = query.unique().scalars().all()
     return asc_ads
@@ -164,21 +202,37 @@ async def get_ads_by_desc(category_id, session: AsyncSession) -> List[ad.Ad]:
     query = await session.execute(select(ad.Ad)
             .join(ad.Ad.subcategory)
             .join(Subcategory.category)
-            .where(Category.id == category_id)
+            .where(
+                and_(
+                    Category.id == category_id,
+                    ad.Ad.status_id == AdStatusEnum.ACTIVE.value
+                    )
+                )
             .order_by(ad.Ad.title.desc()))
     desc_ads = query.unique().scalars().all()
+    
     return desc_ads
 
 async def get_subcategory_ads_asc(subcategory_id, session: AsyncSession) -> List[ad.Ad]:
     query = await session.execute(select(ad.Ad)
-            .where(ad.Ad.subcategory_id == subcategory_id)
+            .where(
+                and_(
+                    ad.Ad.subcategory_id == subcategory_id,
+                    ad.Ad.status_id == AdStatusEnum.ACTIVE.value
+                    )
+                )
             .order_by(ad.Ad.title.asc()))
     asc_ads = query.unique().scalars().all()
     return asc_ads
 
 async def get_subcategory_ads_desc(subcategory_id, session: AsyncSession) -> List[ad.Ad]:
     query = await session.execute(select(ad.Ad)
-            .where(ad.Ad.subcategory_id == subcategory_id)
+            .where(
+                and_(
+                    ad.Ad.subcategory_id == subcategory_id,
+                    ad.Ad.status_id == AdStatusEnum.ACTIVE.value
+                    )
+                )
             .order_by(ad.Ad.title.desc()))
     desc_ads = query.unique().scalars().all()
     return desc_ads
@@ -324,23 +378,86 @@ async def get_ads_by_creation_date(session: AsyncSession, limit: int = 8) -> Lis
 
     return recent_ads
 
-async def get_ads_by_title(session: AsyncSession, title: str) -> List[ad.Ad]:
-    query = await session.execute(
-        select(ad.Ad)
-        .where(
-            and_(
-                ad.Ad.title.like(f'%{title}%'),
-                ad.Ad.status_id == AdStatusEnum.ACTIVE.value
-            )
-        )
+async def get_all_ads_by_recency(session: AsyncSession) -> List[ad.Ad]:
+    query = await session.execute(select(ad.Ad)
+        .where(ad.Ad.status_id == AdStatusEnum.ACTIVE.value)
+        .order_by(ad.Ad.created_at.desc())
     )
-    ads_by_title = query.unique().scalars().all()
+    recent_ads = query.unique().scalars().all()
 
-    return ads_by_title
+    return recent_ads
+
+async def get_all_ads_by_antiquity(session: AsyncSession) -> List[ad.Ad]:
+    query = await session.execute(select(ad.Ad)
+        .where(ad.Ad.status_id == AdStatusEnum.ACTIVE.value)
+        .order_by(ad.Ad.created_at.asc())
+    )
+    old_ads = query.unique().scalars().all()
+
+    return old_ads
+
+async def get_ads_by_title_and_description(session: AsyncSession, title: str, description: str) -> List[ad.Ad]:
+    criteria = and_(ad.Ad.title.like(f'%{title}%'), ad.Ad.status_id == AdStatusEnum.ACTIVE.value)
+    if description:
+        criteria = (ad.Ad.title.like(f'%{title}%')) | (ad.Ad.ad_description.like(f'%{title}%')) & ad.Ad.status_id == AdStatusEnum.ACTIVE.value
+
+    query = await session.execute(select(ad.Ad).where(criteria))
+    ads_by_criteria = query.unique().scalars().all()
+
+    return ads_by_criteria
+
+async def get_ads_by_criteria(
+    session: AsyncSession,
+    title: str,
+    description: str,
+    city: str,
+    category_id: int = 0, 
+    subcategory_id: int = 0,
+    recency: str = '',
+    alphabetic_order: str = 'asc',
+) -> List[ad.Ad]:
+    filters = []
+    print(title)
+    print(city)
+    if title:
+        filters.append(ad.Ad.title.like(f'%{title}%'))
+    if description:
+        filters.append(ad.Ad.description.like(f'%${description}%'))
+    if city:
+        filters.append(ad.AdAddress.city == city)
+    if category_id:
+        filters.append(Category.id == category_id)
+    if subcategory_id:
+        filters.append(Subcategory.id == subcategory_id)
+
+    orders = []
+    if recency == 'recent':
+        orders.append(ad.Ad.created_at.desc())
+    else:
+        orders.append(ad.Ad.created_at.asc())
+    
+    if alphabetic_order == 'asc':
+        orders.append(ad.Ad.title.asc())
+    else:
+        orders.append(ad.Ad.title.desc())
+
+    query = await session.execute(select(ad.Ad)
+        .join(ad.Ad.address)
+        .join(ad.Ad.subcategory)
+        .join(Subcategory.category)
+        .where(and_(*filters))
+        .order_by(*orders)
+    )
+    ads_found = query.unique().scalars().all()
+    print(ads_found)
+
+    return ads_found
+
 
 async def get_locations_by_total_ads(session: AsyncSession) -> List[ad.AdAddress]:
     query = await session.execute(select(ad.AdAddress, func.count(ad.Ad.ad_address_id))
         .join(ad.Ad.address)
+        .where(ad.Ad.status_id == AdStatusEnum.ACTIVE.value)
         .group_by(ad.AdAddress.city)
         .order_by(func.count(ad.Ad.ad_address_id).desc())
         .limit(3)
@@ -408,7 +525,12 @@ async def get_ads_by_recency(category_id: int, session: AsyncSession) -> List[ad
     query = await session.execute(select(ad.Ad)
             .join(ad.Ad.subcategory)
             .join(Subcategory.category)
-            .where(Category.id == category_id)
+            .where(
+                    and_(
+                        Category.id == category_id,
+                        ad.Ad.status_id == AdStatusEnum.ACTIVE.value
+                        )
+                    )
             .order_by(ad.Ad.created_at.desc()))
     recent_ads = query.unique().scalars().all()
 
@@ -418,7 +540,12 @@ async def get_ads_by_antiquity(category_id: int, session: AsyncSession) -> List[
     query = await session.execute(select(ad.Ad)
             .join(ad.Ad.subcategory)
             .join(Subcategory.category)
-            .where(Category.id == category_id)
+            .where(
+                    and_(
+                        Category.id == category_id,
+                        ad.Ad.status_id == AdStatusEnum.ACTIVE.value
+                        )
+                    )
             .order_by(ad.Ad.created_at.asc()))
     antique_ads = query.unique().scalars().all()
 
@@ -426,7 +553,12 @@ async def get_ads_by_antiquity(category_id: int, session: AsyncSession) -> List[
 
 async def get_subcategory_ads_by_recency(subcategory_id: int, session: AsyncSession) -> List[ad.Ad]:
     query = await session.execute(select(ad.Ad)
-            .where(ad.Ad.subcategory_id == subcategory_id)
+            .where(
+                    and_(
+                        ad.Ad.subcategory_id == subcategory_id,
+                        ad.Ad.status_id == AdStatusEnum.ACTIVE.value
+                        )
+                    )
             .order_by(ad.Ad.created_at.desc()))
     recent_ads = query.unique().scalars().all()
 
@@ -434,7 +566,12 @@ async def get_subcategory_ads_by_recency(subcategory_id: int, session: AsyncSess
 
 async def get_subcategory_ads_by_antiquity(subcategory_id: int, session: AsyncSession) -> List[ad.Ad]:
     query = await session.execute(select(ad.Ad)
-            .where(ad.Ad.subcategory_id == subcategory_id)
+            .where(
+                    and_(
+                        ad.Ad.subcategory_id == subcategory_id,
+                        ad.Ad.status_id == AdStatusEnum.ACTIVE.value
+                        )
+                    )
             .order_by(ad.Ad.created_at.asc()))
     antique_ads = query.unique().scalars().all()
 
@@ -443,7 +580,7 @@ async def get_subcategory_ads_by_antiquity(subcategory_id: int, session: AsyncSe
 # RELATED WITH ADS
 async def get_cities_with_ads(session: AsyncSession) -> List[ad.AdAddress]:
     query = await session.execute(
-        select(ad.AdAddress)
+        select(ad.AdAddress.city)
         .where(ad.Ad.status_id == AdStatusEnum.ACTIVE.value)
         .join(ad.AdAddress.ads)
         .group_by(ad.AdAddress.city)
@@ -458,7 +595,12 @@ async def get_cities_by_category(category_id: int, session: AsyncSession) -> Lis
         .join(ad.Ad.address)
         .join(ad.Ad.subcategory)
         .join(Subcategory.category)
-        .where(Category.id == category_id)
+        .where(
+                and_(
+                    Category.id == category_id,
+                    ad.Ad.status_id == AdStatusEnum.ACTIVE.value
+                    )
+                )
         .group_by(ad.AdAddress.city)
     )
     cities = query.unique().scalars().all()
@@ -469,7 +611,12 @@ async def get_cities_by_subcategory(subcategory_id: int, session: AsyncSession) 
     query = await session.execute(select(ad.AdAddress.city)
         .join(ad.Ad.address)
         .join(ad.Ad.subcategory)
-        .where(ad.Ad.subcategory_id == subcategory_id)
+        .where(
+            and_(
+                ad.Ad.subcategory_id == subcategory_id,
+                ad.Ad.status_id == AdStatusEnum.ACTIVE.value
+                )
+            )
         .group_by(ad.AdAddress.city)
     )
     cities = query.unique().scalars().all()
@@ -477,7 +624,7 @@ async def get_cities_by_subcategory(subcategory_id: int, session: AsyncSession) 
     return cities
 
 async def set_deleted_status(ad_id: int, session: AsyncSession) -> ad.Ad:
-    ad = await get_ad_by_id(session, ad_id)
+    ad = await get_one_ad_without_criteria(session, ad_id)
     ad.status_id = AdStatusEnum.DELETED.value
     await session.commit()
     await session.refresh(ad)
