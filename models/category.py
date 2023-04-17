@@ -17,7 +17,9 @@ class Category(Base):
 
     @property
     def count_total_ads(self) -> int:
-        total: int = 0
+        total_ads = []
         for subcategory in self.subcategories:
-            total += len(subcategory.ads)
-        return total
+            for ad in subcategory.ads:
+                if ad.status_id == 1:
+                    total_ads.append(ad)
+        return len(total_ads)

@@ -3,10 +3,28 @@
   <script src="/public/scripts/show-subcategories.js" defer></script>
   <script src="/public/scripts/limit-select-size.js" defer></script>
   <script src="/public/scripts/filters.js" defer></script>
+  <script src="/public/scripts/favourites.js" defer></script>
 </__additional_script__>
   <div metal:fill-slot="title" tal:omit-tag="True">
     <title> Anúncios | Classify</title>
   </div>
+  <__additional_stylesheet__ metal:fill-slot="additional_stylesheet" tal:omit-tag="True">
+    <style>
+      .fa-heart {
+        transition: transform .3s ease, color .3s ease;
+      }
+
+      .fa-heart:hover {
+        color: #FF4367;
+        transform: scale(1.3);
+      }
+
+      .fa-heart.active {
+        color: #FF4367;
+        transform: scale(1.3);
+      }
+    </style>
+  </__additional_stylesheet__>
   <div metal:fill-slot="content" tal:omit-tag="True">
 
     <div

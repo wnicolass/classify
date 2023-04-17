@@ -1,4 +1,5 @@
 from datetime import datetime
+from typing import List
 from sqlalchemy import (
     Column,
     Integer,
@@ -39,6 +40,10 @@ class UserAccount(Base):
     @property
     def email_addrs(self) -> str:
         return self.user_login_data.email_addr
+    
+    @property
+    def fav_ads_id(self) -> List[int]:
+        return [fav.ad_id for fav in self.favourites]
 
 class UserLoginData(Base):
     __tablename__ = 'UserLoginData'
@@ -104,7 +109,7 @@ class Favourite(Base):
     fav_date: datetime = Column(DateTime, default = datetime.now())
 
     user = relationship('UserAccount', back_populates = 'favourites', uselist = False)
-    ad = relationship('Ad', back_populates = 'users_favourited', uselist = False)
+    ad = relationship('Ad', back_populates = 'users_favourited', uselist = False, lazy = 'joined')
 
 class HashAlgo(Base):
     __tablename__ = 'HashAlgo'

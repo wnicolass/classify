@@ -2,7 +2,9 @@ from datetime import datetime
 from typing import List
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
-from models.user import UserAccount, UserLoginData, UserLoginDataExt
+from sqlalchemy.orm import joinedload
+from models.user import UserAccount, UserLoginData, UserLoginDataExt, Favourite
+from models.ad import Ad
 
 async def get_user_by_email(email: str, session: AsyncSession) -> UserLoginData | None:
     query = await session.execute(select(UserLoginData).where(UserLoginData.email_addr == email))
@@ -17,9 +19,11 @@ async def get_user_by_id(id: int, session: AsyncSession) -> UserLoginData:
     return user
 
 async def get_user_account_by_id(id: int, session: AsyncSession) -> UserAccount:
-    query = await session.execute(select(UserAccount).where(UserAccount.user_id == id))
-    user = query.scalar_one_or_none()
-    
+    query = await session.execute(select(UserAccount)
+        .where(UserAccount.user_id == id)
+        .options(joinedload(UserAccount.favourites))
+    )
+    user = query.unique().scalar_one_or_none()
     return user
 
 async def get_all_verified_users(session: AsyncSession) -> List[UserAccount]:
@@ -27,6 +31,13 @@ async def get_all_verified_users(session: AsyncSession) -> List[UserAccount]:
     verified_users = query.unique().scalars().all()
 
     return verified_users
+
+async def get_user_favs(user_id: int, session: AsyncSession) -> List[int]:
+    query = await session.execute(select(Favourite.ad_id)
+        .where(Favourite.user_id == user_id)
+    )
+    user_favs_ids = query.unique().scalars().all()
+    return user_favs_ids
 
 async def set_email_confirmation_token(user_id: int, token: str, expiration_time: datetime, session: AsyncSession):
     user = await get_user_by_id(user_id, session)
@@ -107,3 +118,17 @@ async def create_user_login_data(user_id: int, hashed_password: str, password_sa
     await session.commit()
     await session.refresh(user_login_data)
     return user_login_data
+
+async def add_new_favourite(user_id: int, ad_id: int, session: AsyncSession) -> Favourite:
+    fav = Favourite(user_id = user_id, ad_id = ad_id)
+    session.add(fav)
+    await session.commit()
+    await session.refresh(fav)
+    
+    return fav
+
+async def delete_user_favourite(current_user: UserAccount, fav: Favourite, session: AsyncSession) -> None:
+    await session.delete(fav)
+    await session.commit()
+    current_user = await get_user_account_by_id(current_user.user_id, session)
+    return current_user

@@ -4,7 +4,25 @@
   </div>
     <__additional_script__ metal:fill-slot="additional_script" tal:omit-tag="True">
     <script src="/public/scripts/limit-select-size.js" defer></script>
+    <script src="/public/scripts/favourites.js" defer></script>
   </__additional_script__>
+  <__additional_stylesheet__ metal:fill-slot="additional_stylesheet" tal:omit-tag="True">
+    <style>
+      .fa-heart {
+        transition: transform .3s ease, color .3s ease;
+      }
+
+      .fa-heart:hover {
+        color: #FF4367;
+        transform: scale(1.3);
+      }
+
+      .fa-heart.active {
+        color: #FF4367;
+        transform: scale(1.3);
+      }
+    </style>
+  </__additional_stylesheet__>
   <div metal:fill-slot="content" tal:omit-tag="True">
 
     
@@ -152,10 +170,10 @@
                 <div class="ads_card_content">
                   <div class="meta d-flex justify-content-between">
                     <p>Ram & Laptop</p>
-                    <a class="like" href="#"><i class="fal fa-heart"></i></a>
+                    <a style="cursor: pointer;" class="like" data-adid="1"><i class="fal fa-heart"></i></a>
                   </div>
                   <h4 class="title">
-                    <a href="/ad/${ad.id]">8 GB DDR4 Ram, 4th Gen</a>
+                    <a title="Adicione este anúncio aos favoritos" href="/ad/${ad.id]">8 GB DDR4 Ram, 4th Gen</a>
                   </h4>
                   <p><i class="far fa-map-marker-alt"></i>New York, USA</p>
                   <div class="ads_price_date d-flex justify-content-between">
@@ -165,156 +183,7 @@
                 </div>
               </div>
             </div>
-            <div class="col-lg-3 col-sm-6">
-              <div class="single_ads_card mt-30">
-                <div class="ads_card_image">
-                  <img src="/public/assets/images/ads-2.png" alt="ads" />
-                  <p class="sticker sticker_color-1">New</p>
-                </div>
-                <div class="ads_card_content">
-                  <div class="meta d-flex justify-content-between">
-                    <p>Ram & Laptop</p>
-                    <a class="like" href="#"><i class="fal fa-heart"></i></a>
-                  </div>
-                  <h4 class="title">
-                    <a href="/products/product-details">8 GB DDR4 Ram, 4th Gen</a>
-                  </h4>
-                  <p><i class="far fa-map-marker-alt"></i>New York, USA</p>
-                  <div class="ads_price_date d-flex justify-content-between">
-                    <span class="price">$299.00</span>
-                    <span class="date">25 Jan, 2023</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="col-lg-3 col-sm-6">
-              <div class="single_ads_card mt-30">
-                <div class="ads_card_image">
-                  <img src="/public/assets/images/ads-3.png" alt="ads" />
-                </div>
-                <div class="ads_card_content">
-                  <div class="meta d-flex justify-content-between">
-                    <p>Ram & Laptop</p>
-                    <a class="like" href="#"><i class="fal fa-heart"></i></a>
-                  </div>
-                  <h4 class="title">
-                    <a href="/products/product-details">8 GB DDR4 Ram, 4th Gen</a>
-                  </h4>
-                  <p><i class="far fa-map-marker-alt"></i>New York, USA</p>
-                  <div class="ads_price_date d-flex justify-content-between">
-                    <span class="price">$299.00</span>
-                    <span class="date">25 Jan, 2023</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="col-lg-3 col-sm-6">
-              <div class="single_ads_card mt-30">
-                <div class="ads_card_image">
-                  <img src="/public/assets/images/ads-4.png" alt="ads" />
-                </div>
-                <div class="ads_card_content">
-                  <div class="meta d-flex justify-content-between">
-                    <p>Ram & Laptop</p>
-                    <a class="like" href="#"><i class="fal fa-heart"></i></a>
-                  </div>
-                  <h4 class="title">
-                    <a href="/products/product-details">8 GB DDR4 Ram, 4th Gen</a>
-                  </h4>
-                  <p><i class="far fa-map-marker-alt"></i>New York, USA</p>
-                  <div class="ads_price_date d-flex justify-content-between">
-                    <span class="price">$299.00</span>
-                    <span class="date">25 Jan, 2023</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="col-lg-3 col-sm-6">
-              <div class="single_ads_card mt-30">
-                <div class="ads_card_image">
-                  <img src="/public/assets/images/ads-5.png" alt="ads" />
-                </div>
-                <div class="ads_card_content">
-                  <div class="meta d-flex justify-content-between">
-                    <p>Ram & Laptop</p>
-                    <a class="like" href="#"><i class="fal fa-heart"></i></a>
-                  </div>
-                  <h4 class="title">
-                    <a href="/products/product-details">8 GB DDR4 Ram, 4th Gen</a>
-                  </h4>
-                  <p><i class="far fa-map-marker-alt"></i>New York, USA</p>
-                  <div class="ads_price_date d-flex justify-content-between">
-                    <span class="price">$299.00</span>
-                    <span class="date">25 Jan, 2023</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="col-lg-3 col-sm-6">
-              <div class="single_ads_card mt-30">
-                <div class="ads_card_image">
-                  <img src="/public/assets/images/ads-6.png" alt="ads" />
-                </div>
-                <div class="ads_card_content">
-                  <div class="meta d-flex justify-content-between">
-                    <p>Ram & Laptop</p>
-                    <a class="like" href="#"><i class="fal fa-heart"></i></a>
-                  </div>
-                  <h4 class="title">
-                    <a href="/products/product-details">8 GB DDR4 Ram, 4th Gen</a>
-                  </h4>
-                  <p><i class="far fa-map-marker-alt"></i>New York, USA</p>
-                  <div class="ads_price_date d-flex justify-content-between">
-                    <span class="price">$299.00</span>
-                    <span class="date">25 Jan, 2023</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="col-lg-3 col-sm-6">
-              <div class="single_ads_card mt-30">
-                <div class="ads_card_image">
-                  <img src="/public/assets/images/ads-7.png" alt="ads" />
-                  <p class="sticker sticker_color-2">Popular</p>
-                </div>
-                <div class="ads_card_content">
-                  <div class="meta d-flex justify-content-between">
-                    <p>Ram & Laptop</p>
-                    <a class="like" href="#"><i class="fal fa-heart"></i></a>
-                  </div>
-                  <h4 class="title">
-                    <a href="/products/product-details">8 GB DDR4 Ram, 4th Gen</a>
-                  </h4>
-                  <p><i class="far fa-map-marker-alt"></i>New York, USA</p>
-                  <div class="ads_price_date d-flex justify-content-between">
-                    <span class="price">$299.00</span>
-                    <span class="date">25 Jan, 2023</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="col-lg-3 col-sm-6">
-              <div class="single_ads_card mt-30">
-                <div class="ads_card_image">
-                  <img src="/public/assets/images/ads-8.png" alt="ads" />
-                </div>
-                <div class="ads_card_content">
-                  <div class="meta d-flex justify-content-between">
-                    <p>Ram & Laptop</p>
-                    <a class="like" href="#"><i class="fal fa-heart"></i></a>
-                  </div>
-                  <h4 class="title">
-                    <a href="/products/product-details">8 GB DDR4 Ram, 4th Gen</a>
-                  </h4>
-                  <p><i class="far fa-map-marker-alt"></i>New York, USA</p>
-                  <div class="ads_price_date d-flex justify-content-between">
-                    <span class="price">$299.00</span>
-                    <span class="date">25 Jan, 2023</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
+            
           <div class="published_btn">
             <a href="/products" class="main-btn">Mais Anúncios</a>
           </div>
@@ -426,9 +295,8 @@
                       <div class="ads_card_content">
                         <div class="meta d-flex justify-content-between">
                           <p>${ad.subcategory.subcategory_name}</p>
-                          <a class="like" href="#"
-                            ><i class="fal fa-heart"></i
-                          ></a>
+                          <a tal:condition="ad.id not in current_user_fav_ads" style="cursor: pointer;" class="like" data-adid="${ad.id}"><i class="fal fa-heart"></i></a>
+                          <a tal:condition="ad.id in current_user_fav_ads" style="cursor: pointer;" class="like" data-adid="${ad.id}"><i class="fal fa-heart active"></i></a>
                         </div>
                         <h4 class="title">
                           <a href="/ad/${ad.id}">${ad.title}</a>
@@ -464,9 +332,8 @@
                       <div class="ads_card_content">
                         <div class="meta d-flex justify-content-between">
                           <p>${ad.subcategory.subcategory_name}</p>
-                          <a class="like" href="#"
-                            ><i class="fal fa-heart"></i
-                          ></a>
+                          <a tal:condition="ad.id not in current_user_fav_ads" style="cursor: pointer;" class="like" data-adid="${ad.id}"><i class="fal fa-heart"></i></a>
+                          <a tal:condition="ad.id in current_user_fav_ads" style="cursor: pointer;" class="like" data-adid="${ad.id}"><i class="fal fa-heart active"></i></a>
                         </div>
                         <h4 class="title">
                           <a href="/ad/${ad.id}"

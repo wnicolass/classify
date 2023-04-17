@@ -287,3 +287,8 @@ async def post_ad_viewmodel(request: Request, files: list[UploadFile], session: 
         )
 
     return vm
+
+@router.delete('/ad/{ad_id}', dependencies = [Depends(requires_authentication)])
+async def delete_ad(ad_id: int, session: Annotated[AsyncSession, Depends(get_db_session)]):
+    ad = await ad_service.set_deleted_status(ad_id, session)
+    return {'msg': 'Ad deleted successfully!'}

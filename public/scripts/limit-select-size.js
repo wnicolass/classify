@@ -1,6 +1,7 @@
 function limitSize(select) {
     const renderedSelect = select.nextElementSibling.querySelector('ul');
-    renderedSelect.style.height = '10rem';
+    renderedSelect.style.height = 'fit-content';
+    renderedSelect.style.maxHeight = '10rem';
     renderedSelect.style.overflowY = 'auto';
 }
 

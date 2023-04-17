@@ -14,7 +14,8 @@ class ViewModel(dict):
             'user_id': user.user_id if user else None,
             'is_logged_in': user is not None,
             'username': user.username.split(' ')[0] if user else None,
-            'profile_image': user.profile_image_url or '/public/assets/images/author-1.jpg' if user else None
+            'profile_image': user.profile_image_url or '/public/assets/images/author-1.jpg' if user else None,
+            'user': user
         }
         all.update(kargs)
         super().__init__(self, *args, **all)

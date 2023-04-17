@@ -2,6 +2,7 @@ from typing import Annotated
 from fastapi import (
     APIRouter, 
     Depends,
+    HTTPException,
     Request,
     responses,
     status
@@ -122,6 +123,35 @@ async def payments():
 @template('user/favourite-ads.pt')
 async def favourite_ads():
     return await ViewModel()
+
+@router.post('/user/favourite/{ad_id}')
+async def add_ad_to_favourites(
+    ad_id: int, 
+    session: Annotated[AsyncSession, Depends(get_db_session)]
+):
+    vm = await ViewModel()
+    if not vm.user_id:
+        return {'message': 'not logged in'}
+    
+    if ad_id in vm.user.fav_ads_id:
+        return
+    
+    new_fav = await user_service.add_new_favourite(vm.user_id, ad_id, session)
+
+    if new_fav:
+        return {'msg': 'Ad added to favourites!'}
+    
+@router.delete('/user/favourite/{ad_id}', dependencies = [Depends(requires_authentication)])
+async def delete_from_fav(
+    ad_id: int,
+    session: Annotated[AsyncSession, Depends(get_db_session)]
+):
+    vm = await ViewModel()
+    for fav in vm.user.favourites:
+        if fav.ad_id == ad_id and fav.user_id == vm.user_id:
+            curr_user = await user_service.delete_user_favourite(vm.user, fav, session)
+    
+    return {'current_total_ads': len(curr_user.favourites)}
 
 @router.get('/user/privacy-setting', dependencies = [Depends(requires_authentication)])
 @template('user/privacy-setting.pt')
