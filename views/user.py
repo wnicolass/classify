@@ -49,9 +49,10 @@ async def profile_settings():
 @template('user/profile-settings.pt')
 async def profile_settings(
     request: Request,
-    file: UploadFile,
-    session: Annotated[AsyncSession, Depends(get_db_session)]
+    session: Annotated[AsyncSession, Depends(get_db_session)],
+    file: UploadFile | None = None
 ):
+    print(file)
     user = await get_current_auth_user()
     vm = await profile_settings_viewmodel(request, session, user, file)
     
@@ -71,7 +72,7 @@ async def profile_settings_viewmodel(
     request: Request, 
     session: Annotated[AsyncSession, Depends(get_db_session)],
     user: UserAccount,
-    file: UploadFile
+    file: UploadFile | None = None
 ):
     form_data = await request.form()
     
@@ -88,19 +89,21 @@ async def profile_settings_viewmodel(
     elif vm.new_birth_date != '' and not is_valid_birth_date(vm.new_birth_date):
         vm.error, vm.error_msg = True, 'Data de nascimento inválida!'
         
+    print(file)
     if file is not None:
         file_size_in_bytes = len(await file.read())
         file_size_in_kb = file_size_in_bytes / 1024
         file_ext = os.path.splitext(file.filename)[-1]
-        if file_size_in_kb > 500:
-            vm.error, vm.error_msg = True, 'O tamanho limite da imagem é de 500kb.'
-        elif file.content_type not in ('image/jpg', 'image/png', 'image/jpeg') or file_ext not in ['.jpg', '.jpeg', '.png']:
-            vm.error, vm.error_msg = True, 'Apenas imagens do tipo ".png", ".jpg" ou ".jpeg".'
-        await file.seek(0)
+        if file_ext is not "":
+            if file_size_in_kb > 500:
+                vm.error, vm.error_msg = True, 'O tamanho limite da imagem é de 500kb.'
+            elif file.content_type not in ('image/jpg', 'image/png', 'image/jpeg') or file_ext not in ['.jpg', '.jpeg', '.png']:
+                vm.error, vm.error_msg = True, 'Apenas imagens do tipo ".png", ".jpg" ou ".jpeg".'
+            await file.seek(0)
         
     if not vm.error:
         profile_picture_url = ''
-        if file is not None:
+        if file_ext is not "":
             url = upload_image(file)
             profile_picture_url = url['secure_url']
         if user:
