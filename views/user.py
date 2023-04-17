@@ -38,14 +38,21 @@ async def dashboard():
 async def profile_settings(session: Annotated[AsyncSession, Depends(get_db_session)]):
     user = await get_current_auth_user()
     address = await user_service.get_user_address_by_user_id(user.user_id, session)
-    return await ViewModel(
-        name = user.username,
-        phone_number = user.phone_number,
-        birth_date = user.birth_date,
-        country = address.country,
-        city = address.city,
-        all_countries = await fetch_countries()
-    )
+    
+    vm = await ViewModel()
+        
+    vm.name = user.username
+    vm.phone_number = user.phone_number
+    vm.birth_date = user.birth_date
+    if address:
+        vm.country = address.country
+        vm.city = address.city
+    else:
+        vm.country = ''
+        vm.city = ''
+    vm.all_countries = await fetch_countries()
+        
+    return vm
     
 @router.post('/user/profile-settings', dependencies = [Depends(requires_authentication_secure)])
 @template('user/profile-settings.pt')
