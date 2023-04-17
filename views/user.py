@@ -15,7 +15,6 @@ from common.auth import requires_authentication, requires_authentication_secure
 from common.auth import get_current_auth_user
 from common.fastapi_utils import get_db_session, form_field_as_str
 from sqlalchemy.ext.asyncio import AsyncSession
-from services import user_service
 from models.user import UserAccount
 from common.utils import (
     is_valid_birth_date, 
@@ -23,7 +22,7 @@ from common.utils import (
     is_valid_phone_number,
     handle_phone
 )
-from services import ad_service
+from services import ad_service, user_service
 from views.ad import fetch_countries
 from config.cloudinary import upload_image
 
@@ -36,12 +35,15 @@ async def dashboard():
 
 @router.get('/user/profile-settings', dependencies = [Depends(requires_authentication)])
 @template('user/profile-settings.pt')
-async def profile_settings():
+async def profile_settings(session: Annotated[AsyncSession, Depends(get_db_session)]):
     user = await get_current_auth_user()
+    address = await user_service.get_user_address_by_user_id(user.user_id, session)
     return await ViewModel(
         name = user.username,
         phone_number = user.phone_number,
         birth_date = user.birth_date,
+        country = address.country,
+        city = address.city,
         all_countries = await fetch_countries()
     )
     
@@ -52,19 +54,13 @@ async def profile_settings(
     session: Annotated[AsyncSession, Depends(get_db_session)],
     file: UploadFile | None = None
 ):
-    print(file)
     user = await get_current_auth_user()
     vm = await profile_settings_viewmodel(request, session, user, file)
-    
-    vm.name = user.username
-    vm.phone_number = user.phone_number
-    vm.birth_date = user.birth_date
-    vm.all_countries = await fetch_countries()
     
     if vm.error:
         return vm
     
-    template = PageTemplateFile('./templates/user/profile-settings.pt')
+    template = PageTemplateFile('./templates/user/dashboard.pt')
     content = template(**vm)
     return responses.HTMLResponse(content, status_code = status.HTTP_200_OK)
 
@@ -79,7 +75,9 @@ async def profile_settings_viewmodel(
     vm = await ViewModel(
         new_username = form_field_as_str(form_data, 'username'),
         new_phone_number = form_field_as_str(form_data, 'phone_number'),
-        new_birth_date = form_field_as_str(form_data, 'birth_date')
+        new_birth_date = form_field_as_str(form_data, 'birth_date'),
+        new_country = form_field_as_str(form_data, 'country'),
+        new_city = form_field_as_str(form_data, 'city')
     )
     
     if vm.new_username != '' and not is_valid_username(vm.new_username):
@@ -114,6 +112,17 @@ async def profile_settings_viewmodel(
                 vm.new_birth_date, 
                 profile_picture_url,
                 session)
+        if user and vm.new_country != '' and vm.new_city != '':
+            user_address = await user_service.get_user_address_by_user_id(vm.user_id, session)
+            if not user_address:
+                user_address = await user_service.create_user_address(
+                    vm.new_country,
+                    vm.new_city,
+                    vm.user_id,
+                    session
+                )
+            else:
+                await user_service.update_user_address(user_address, vm.new_country, vm.new_city, session)
             vm.success, vm.success_msg = True, 'Dados da conta alterados com sucesso!.'
     
     return vm
