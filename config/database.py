@@ -10,7 +10,7 @@ from sqlalchemy.ext.declarative import declarative_base
 
 load_dotenv(find_dotenv())
 
-engine: AsyncEngine = create_async_engine(url = os.getenv('CONNECTION_STRING'))
+engine: AsyncEngine = create_async_engine(url = os.getenv('CONNECTION_STRING'), echo = True)
 Session: AsyncSession = sessionmaker(
     autocommit = False,
     autoflush = False,
