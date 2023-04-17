@@ -1,3 +1,5 @@
+const categoriesSelectElement = document.getElementById('category-select');
+
 function rejectFirstOption(options) {
     const [firstOption,] = options;
     firstOption.classList.add('reject');
@@ -15,7 +17,7 @@ function buildList(subcategories) {
     const subcategoriesUnorderedList = subcategoriesSelect.nextElementSibling.querySelector('ul');
     subcategoriesUnorderedList.textContent = '';
     const selectCategoryMessage = document.createElement('li');
-    selectCategoryMessage.textContent = 'Seleciona a SubCategoria';
+    selectCategoryMessage.textContent = 'Subcategoria';
     selectCategoryMessage.classList.add('option', 'selected');
     subcategoriesUnorderedList.appendChild(selectCategoryMessage);
     
@@ -26,7 +28,6 @@ function buildList(subcategories) {
         li.classList.add('option');
         li.dataset.value = subcategory.id;
         li.textContent = subcategory.subcategory_name;
-
         subcategoriesUnorderedList.appendChild(li);
         subcategoriesSelect.appendChild(option);
     });
@@ -44,13 +45,12 @@ async function fetchSubcategories(categoryId) {
         buildList(subcategories);
     } catch (error) {
         alert(error.message);
-        console.error(error.message);
+        console.error(error);
     }
 } 
 
 async function getCategoryId(option) {
     const categoryId = !option.classList.contains('reject') && option.dataset.value;
-    const categoriesSelectElement = document.getElementById('categories-select');
     categoriesSelectElement.value = categoryId;
     [...categoriesSelectElement].forEach(option => {
         if  (option.value === categoryId) {
@@ -62,7 +62,6 @@ async function getCategoryId(option) {
 }
 
 function main() {
-    const categoriesSelectElement = document.getElementById('categories-select');
     const renderedSelect = categoriesSelectElement.nextElementSibling;
     const options = renderedSelect.querySelectorAll('li');
     rejectFirstOption(options);
