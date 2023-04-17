@@ -30,7 +30,11 @@ class Subcategory(Base):
 
     @property
     def count_total_ads(self) -> int:
-        return len(self.ads)
+        total_ads = []
+        for ad in self.ads:
+            if ad.status_id == 1:
+                total_ads.append(ad)
+        return len(total_ads)
 
 class FieldDefinition(Base):
     __tablename__ = "FieldDefinition"

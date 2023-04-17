@@ -6,7 +6,8 @@ function handleCountriesSelect() {
     [countriesSelectElement, citiesSelectElement].forEach(select => {
         const renderedSelect = select.nextElementSibling;
         const renderedUl = renderedSelect.querySelector('ul');
-        renderedUl.style.height = '10rem';
+        renderedUl.style.height = 'fit-content';
+        renderedUl.style.maxHeight = '10rem';
         renderedUl.style.overflowY = 'auto';
     })
 
