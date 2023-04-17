@@ -29,11 +29,6 @@
             <div class="error_content text-center">
               <span class="error">404</span>
               <p>Ooooops! Something Went Wrong...</p>
-
-              <div class="error_search">
-                <input type="text" placeholder="search" />
-                <button><i class="fal fa-search"></i></button>
-              </div>
             </div>
           </div>
         </div>
