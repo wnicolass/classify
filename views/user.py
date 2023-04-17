@@ -1,8 +1,9 @@
-from typing import Annotated
+import os
+from typing import Annotated, List
 from fastapi import (
     APIRouter, 
     Depends,
-    HTTPException,
+    UploadFile,
     Request,
     responses,
     status
@@ -23,6 +24,8 @@ from common.utils import (
     handle_phone
 )
 from services import ad_service
+from views.ad import fetch_countries
+from config.cloudinary import upload_image
 
 router = APIRouter()
 
@@ -37,24 +40,25 @@ async def profile_settings():
     user = await get_current_auth_user()
     return await ViewModel(
         name = user.username,
-        email = '',
         phone_number = user.phone_number,
-        birth_date = user.birth_date
+        birth_date = user.birth_date,
+        all_countries = await fetch_countries()
     )
     
-@router.post('/user/profile-settings')
+@router.post('/user/profile-settings', dependencies = [Depends(requires_authentication_secure)])
 @template('user/profile-settings.pt')
 async def profile_settings(
     request: Request,
+    file: UploadFile,
     session: Annotated[AsyncSession, Depends(get_db_session)]
 ):
     user = await get_current_auth_user()
-    vm = await profile_settings_viewmodel(request, session, user)
+    vm = await profile_settings_viewmodel(request, session, user, file)
     
     vm.name = user.username
-    vm.email = ''
     vm.phone_number = user.phone_number
     vm.birth_date = user.birth_date
+    vm.all_countries = await fetch_countries()
     
     if vm.error:
         return vm
@@ -66,7 +70,8 @@ async def profile_settings(
 async def profile_settings_viewmodel(
     request: Request, 
     session: Annotated[AsyncSession, Depends(get_db_session)],
-    user: UserAccount
+    user: UserAccount,
+    file: UploadFile
 ):
     form_data = await request.form()
     
@@ -82,9 +87,30 @@ async def profile_settings_viewmodel(
         vm.error, vm.error_msg = True, 'Número de telemóvel inválido!'    
     elif vm.new_birth_date != '' and not is_valid_birth_date(vm.new_birth_date):
         vm.error, vm.error_msg = True, 'Data de nascimento inválida!'
+        
+    if file is not None:
+        file_size_in_bytes = len(await file.read())
+        file_size_in_kb = file_size_in_bytes / 1024
+        file_ext = os.path.splitext(file.filename)[-1]
+        if file_size_in_kb > 500:
+            vm.error, vm.error_msg = True, 'O tamanho limite da imagem é de 500kb.'
+        elif file.content_type not in ('image/jpg', 'image/png', 'image/jpeg') or file_ext not in ['.jpg', '.jpeg', '.png']:
+            vm.error, vm.error_msg = True, 'Apenas imagens do tipo ".png", ".jpg" ou ".jpeg".'
+        await file.seek(0)
+        
     if not vm.error:
+        profile_picture_url = ''
+        if file is not None:
+            url = upload_image(file)
+            profile_picture_url = url['secure_url']
         if user:
-            await user_service.update_user_details(user, vm.new_username, handle_phone(vm.new_phone_number), vm.new_birth_date, session)
+            await user_service.update_user_details(
+                user, 
+                vm.new_username, 
+                handle_phone(vm.new_phone_number), 
+                vm.new_birth_date, 
+                profile_picture_url,
+                session)
             vm.success, vm.success_msg = True, 'Dados da conta alterados com sucesso!.'
     
     return vm
