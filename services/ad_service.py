@@ -151,6 +151,38 @@ async def get_ad_count_by_user_id_and_status(session: AsyncSession, user_id, sta
     
     return ads_by_user_id
 
+async def get_ads_by_asc(category_id, session: AsyncSession) -> List[ad.Ad]:
+    query = await session.execute(select(ad.Ad)
+            .join(ad.Ad.subcategory)
+            .join(Subcategory.category)
+            .where(Category.id == category_id)
+            .order_by(ad.Ad.title.asc()))
+    asc_ads = query.unique().scalars().all()
+    return asc_ads
+
+async def get_ads_by_desc(category_id, session: AsyncSession) -> List[ad.Ad]:
+    query = await session.execute(select(ad.Ad)
+            .join(ad.Ad.subcategory)
+            .join(Subcategory.category)
+            .where(Category.id == category_id)
+            .order_by(ad.Ad.title.desc()))
+    desc_ads = query.unique().scalars().all()
+    return desc_ads
+
+async def get_subcategory_ads_asc(subcategory_id, session: AsyncSession) -> List[ad.Ad]:
+    query = await session.execute(select(ad.Ad)
+            .where(ad.Ad.subcategory_id == subcategory_id)
+            .order_by(ad.Ad.title.asc()))
+    asc_ads = query.unique().scalars().all()
+    return asc_ads
+
+async def get_subcategory_ads_desc(subcategory_id, session: AsyncSession) -> List[ad.Ad]:
+    query = await session.execute(select(ad.Ad)
+            .where(ad.Ad.subcategory_id == subcategory_id)
+            .order_by(ad.Ad.title.desc()))
+    desc_ads = query.unique().scalars().all()
+    return desc_ads
+
 # ADS BY CATEGORIES & SUBCATEGORIES
 async def get_ads_by_category_id(session: AsyncSession, category_id) -> List[ad.Ad]:
     query = await session.execute(select(ad.Ad)
@@ -345,6 +377,26 @@ async def get_ads_by_location_and_category(
     ads_found = query.unique().scalars().all()
     return ads_found
 
+async def get_ads_by_location_and_subcategory(
+    city: str, 
+    subcategory_id: int, 
+    title: str, 
+    session: AsyncSession
+) -> List[ad.Ad]:
+    query = await session.execute(
+        select(ad.Ad)
+        .join(ad.Ad.address)
+        .where(
+            and_(
+                ad.Ad.title.like(f'%{title}%'),
+                ad.Ad.subcategory_id == subcategory_id,
+                ad.AdAddress.city == city
+            )
+        )
+    )
+    ads_found = query.unique().scalars().all()
+    return ads_found
+
 async def get_ads_by_description(session: AsyncSession, description: str) -> List[ad.Ad]:
     query = await session.execute(select(ad.Ad).filter(ad.Ad.ad_description.like(f'%{description}%')))
     ads_by_description = query.unique().scalars().all()
@@ -352,11 +404,41 @@ async def get_ads_by_description(session: AsyncSession, description: str) -> Lis
     return ads_by_description
 
 
-async def get_ads_by_recency(session: AsyncSession) -> List[ad.Ad]:
-    query = await session.execute(select(ad.Ad).order_by(ad.Ad.created_at).desc())
+async def get_ads_by_recency(category_id: int, session: AsyncSession) -> List[ad.Ad]:
+    query = await session.execute(select(ad.Ad)
+            .join(ad.Ad.subcategory)
+            .join(Subcategory.category)
+            .where(Category.id == category_id)
+            .order_by(ad.Ad.created_at.desc()))
     recent_ads = query.unique().scalars().all()
 
     return recent_ads
+
+async def get_ads_by_antiquity(category_id: int, session: AsyncSession) -> List[ad.Ad]:
+    query = await session.execute(select(ad.Ad)
+            .join(ad.Ad.subcategory)
+            .join(Subcategory.category)
+            .where(Category.id == category_id)
+            .order_by(ad.Ad.created_at.asc()))
+    antique_ads = query.unique().scalars().all()
+
+    return antique_ads
+
+async def get_subcategory_ads_by_recency(subcategory_id: int, session: AsyncSession) -> List[ad.Ad]:
+    query = await session.execute(select(ad.Ad)
+            .where(ad.Ad.subcategory_id == subcategory_id)
+            .order_by(ad.Ad.created_at.desc()))
+    recent_ads = query.unique().scalars().all()
+
+    return recent_ads
+
+async def get_subcategory_ads_by_antiquity(subcategory_id: int, session: AsyncSession) -> List[ad.Ad]:
+    query = await session.execute(select(ad.Ad)
+            .where(ad.Ad.subcategory_id == subcategory_id)
+            .order_by(ad.Ad.created_at.asc()))
+    antique_ads = query.unique().scalars().all()
+
+    return antique_ads
 
 # RELATED WITH ADS
 async def get_cities_with_ads(session: AsyncSession) -> List[ad.AdAddress]:
@@ -370,6 +452,29 @@ async def get_cities_with_ads(session: AsyncSession) -> List[ad.AdAddress]:
     cities_with_ads = query.unique().scalars().all()
     
     return cities_with_ads
+
+async def get_cities_by_category(category_id: int, session: AsyncSession) -> List[ad.AdAddress]:
+    query = await session.execute(select(ad.AdAddress.city)
+        .join(ad.Ad.address)
+        .join(ad.Ad.subcategory)
+        .join(Subcategory.category)
+        .where(Category.id == category_id)
+        .group_by(ad.AdAddress.city)
+    )
+    cities = query.unique().scalars().all()
+
+    return cities
+
+async def get_cities_by_subcategory(subcategory_id: int, session: AsyncSession) -> List[ad.AdAddress]:
+    query = await session.execute(select(ad.AdAddress.city)
+        .join(ad.Ad.address)
+        .join(ad.Ad.subcategory)
+        .where(ad.Ad.subcategory_id == subcategory_id)
+        .group_by(ad.AdAddress.city)
+    )
+    cities = query.unique().scalars().all()
+
+    return cities
 
 async def set_deleted_status(ad_id: int, session: AsyncSession) -> ad.Ad:
     ad = await get_ad_by_id(session, ad_id)
