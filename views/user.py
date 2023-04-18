@@ -20,7 +20,8 @@ from common.utils import (
     is_valid_birth_date, 
     is_valid_username,
     is_valid_phone_number,
-    handle_phone
+    handle_phone,
+    add_plus_sign_to_phone_number
 )
 from services import ad_service, user_service
 from views.ad import fetch_countries
@@ -42,7 +43,7 @@ async def profile_settings(session: Annotated[AsyncSession, Depends(get_db_sessi
     vm = await ViewModel()
         
     vm.name = user.username
-    vm.phone_number = user.phone_number
+    vm.phone_number = add_plus_sign_to_phone_number(user.phone_number)
     vm.birth_date = user.birth_date
     if address:
         vm.country = address.country
@@ -63,11 +64,24 @@ async def profile_settings(
 ):
     user = await get_current_auth_user()
     vm = await profile_settings_viewmodel(request, session, user, file)
+    address = await user_service.get_user_address_by_user_id(user.user_id, session)
+    
+    
+    vm.name = user.username
+    vm.phone_number = add_plus_sign_to_phone_number(user.phone_number)
+    vm.birth_date = user.birth_date
+    if address:
+        vm.country = address.country
+        vm.city = address.city
+    else:
+        vm.country = ''
+        vm.city = ''
+    vm.all_countries = await fetch_countries()
     
     if vm.error:
         return vm
     
-    template = PageTemplateFile('./templates/user/dashboard.pt')
+    template = PageTemplateFile('./templates/user/profile-settings.pt')
     content = template(**vm)
     return responses.HTMLResponse(content, status_code = status.HTTP_200_OK)
 
@@ -130,7 +144,7 @@ async def profile_settings_viewmodel(
                 )
             else:
                 await user_service.update_user_address(user_address, vm.new_country, vm.new_city, session)
-            vm.success, vm.success_msg = True, 'Dados da conta alterados com sucesso!.'
+        vm.success, vm.success_msg = True, 'Dados da conta alterados com sucesso!.'
     
     return vm
 
