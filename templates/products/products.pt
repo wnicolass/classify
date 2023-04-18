@@ -33,10 +33,10 @@
       style="background-image: url(/public/assets/images/page-banner.jpg)">
       <div class="container">
         <div class="page_banner_content">
-          <h3 class="title">Product Listing</h3>
+          <h3 class="title">Anúncios</h3>
           <ul class="breadcrumb">
             <li><a href="/">Home</a></li>
-            <li>Product Listing</li>
+            <li>Anúncios</li>
           </ul>
         </div>
       </div>
@@ -89,163 +89,26 @@
 
               <div class="sidebar_price_range mt-30">
                 <div class="sidebar_title">
-                  <h5 class="title">Price Range</h5>
+                  <h5 class="title">Preço</h5>
                 </div>
                 <div class="price_range_content">
                   <div class="range-slider">
                     <input type="text" class="js-range-slider" value="" />
                   </div>
                   <div class="extra-controls">
-                    <input type="text" class="js-input-from" value="0" />
-                    <input type="text" class="js-input-to" value="0" />
+                    <input type="text" class="js-input-from outra-class" value="0" />
+                    <input type="text" class="js-input-to outra-class" value="0" />
                   </div>
-                </div>
-              </div>
-
-              <div class="sidebar_discount mt-30">
-                <div class="sidebar_title">
-                  <h5 class="title">Top Deals</h5>
-                </div>
-                <div class="discount_content">
-                  <ul class="discount_radio">
-                    <li>
-                      <input type="radio" checked="" name="radio" id="radio1" />
-                      <label for="radio1"></label> <span>Flat 10% Off</span>
-                    </li>
-
-                    <li>
-                      <input type="radio" name="radio" id="radio2" />
-                      <label for="radio2"></label> <span>Flat 20% Off</span>
-                    </li>
-
-                    <li>
-                      <input type="radio" name="radio" id="radio3" />
-                      <label for="radio3"></label> <span>Flat 50% Off</span>
-                    </li>
-                  </ul>
-                </div>
-              </div>
-
-              <div class="sidebar_rating mt-30">
-                <div class="sidebar_title">
-                  <h5 class="title">Top Deals</h5>
-                </div>
-                <div class="rating_content">
-                  <ul class="rating_checkbox">
-                    <li>
-                      <input
-                        type="checkbox"
-                        checked=""
-                        name="checkbox"
-                        id="checkbox1"
-                      />
-                      <label for="checkbox1"></label>
-                      <span>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                      </span>
-                      <span class="count">(25)</span>
-                    </li>
-                    <li>
-                      <input type="checkbox" name="checkbox" id="checkbox2" />
-                      <label for="checkbox2"></label>
-                      <span>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fal fa-star"></i>
-                      </span>
-                      <span class="count">(17)</span>
-                    </li>
-                    <li>
-                      <input type="checkbox" name="checkbox" id="checkbox3" />
-                      <label for="checkbox3"></label>
-                      <span>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fal fa-star"></i>
-                        <i class="fal fa-star"></i>
-                      </span>
-                      <span class="count">(12)</span>
-                    </li>
-                    <li>
-                      <input type="checkbox" name="checkbox" id="checkbox4" />
-                      <label for="checkbox4"></label>
-                      <span>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fal fa-star"></i>
-                        <i class="fal fa-star"></i>
-                        <i class="fal fa-star"></i>
-                      </span>
-                      <span class="count">(2)</span>
-                    </li>
-                    <li>
-                      <input type="checkbox" name="checkbox" id="checkbox5" />
-                      <label for="checkbox5"></label>
-                      <span>
-                        <i class="fas fa-star"></i>
-                        <i class="fal fa-star"></i>
-                        <i class="fal fa-star"></i>
-                        <i class="fal fa-star"></i>
-                        <i class="fal fa-star"></i>
-                      </span>
-                      <span class="count">(5)</span>
-                    </li>
-                  </ul>
+                  <input id="min-price" type="hidden" value="${min_price}" />
+                  <input id="max-price" type="hidden" value="${max_price}" />
                 </div>
               </div>
             </div>
           </div>
-
-          <div class="col-lg-9">
-            <div
-              class="product_topbar d-md-flex align-items-center justify-content-between"
-            >
-              <div class="product_select pt-40 d-flex flex-wrap">
-              <form style="width: 100%; display: flex;">
-                <select id="city-select" class="limit">
-                  <option value="none">Localização</option>
-                  <__repeat tal:repeat="city all_cities" tal:omit-tag="True">
-                    <option data-id="city.id" value="${city}">${city}</option>
-                  </__repeat>
-                </select>
-                <div tal:condition="not in_subcategories_view" tal:omit-tag="True">
-                  <select tal:condition="len(all_subcategories) == 0" id="category-select" class="limit">
-                      <option value="none">Categoria</option>
-                      <__repeat tal:repeat="category all_categories" tal:omit-tag="True">
-                        <option value="${category.id}">${category.category_name}</option>
-                      </__repeat>
-                  </select>
-                  <select tal:condition="len(all_subcategories) > 0" id="subcategories-select" class="limit" name="subcategory">
-                    <option value="none">Subcategoria</option>
-                    <__repeat tal:repeat="subcategory all_subcategories" tal:omit-tag="True">
-                      <option value="${subcategory.id}">${subcategory.subcategory_name}</option>
-                    </__repeat>
-                  </select>
-                  <select tal:condition="len(all_subcategories) == 0" id="subcategories-select" class="limit" name="subcategory">
-                    <option value="none">Subcategoria</option>
-                  </select>
-                </div>
-                <select id="recency-select" class="limit">
-                  <option value="none">Ordenar Por</option>
-                  <option value="recent">Mais Recentes</option>
-                  <option value="old">Mais Antigos</option>
-                </select>
-                <select id="alphabetic-select" class="limit">
-                  <option value="asc">A-Z</option>
-                  <option value="desc">Z-A</option>
-                </select>
-              </form>
-              </div>
-              <div class="product_tab_menu mt-50">
+          <div class="col-lg-9" style="margin-top: -3rem;">
+          <div class="product_tab_menu mt-50">
                 <ul
-                  class="nav justify-content-center"
+                  class="nav justify-content-end"
                   id="myTab"
                   role="tablist"
                 >
@@ -275,6 +138,45 @@
                     </a>
                   </li>
                 </ul>
+              </div>
+            <div
+              class="product_topbar d-md-flex align-items-center justify-content-between"
+            >
+              <div class="product_select d-flex flex-wrap">
+              <form style="width: 100%; display: flex;">
+                <select id="city-select" class="limit">
+                  <option value="none">Localização</option>
+                  <__repeat tal:repeat="city all_cities" tal:omit-tag="True">
+                    <option data-id="city.id" value="${city}">${city}</option>
+                  </__repeat>
+                </select>
+                <div tal:condition="not in_subcategories_view" tal:omit-tag="True">
+                  <select tal:condition="len(all_subcategories) == 0" id="category-select" class="limit">
+                      <option value="none">Categoria</option>
+                      <__repeat tal:repeat="category all_categories" tal:omit-tag="True">
+                        <option value="${category.id}">${category.category_name}</option>
+                      </__repeat>
+                  </select>
+                  <select tal:condition="len(all_subcategories) > 0" id="subcategories-select" class="limit" name="subcategory">
+                    <option value="none">Subcategoria</option>
+                    <__repeat tal:repeat="subcategory all_subcategories" tal:omit-tag="True">
+                      <option value="${subcategory.id}">${subcategory.subcategory_name}</option>
+                    </__repeat>
+                  </select>
+                  <select tal:condition="len(all_subcategories) == 0" id="subcategories-select" class="limit" name="subcategory">
+                    <option value="none">Subcategoria</option>
+                  </select>
+                </div>
+                <select id="recency-select" class="limit">
+                  <option value="none">Ordenar Por</option>
+                  <option value="recent">Mais Recentes</option>
+                  <option value="old">Mais Antigos</option>
+                  <option value="asc">A-Z</option>
+                  <option value="desc">Z-A</option>
+                  <option value="expensive">Mais Caros</option>
+                  <option value="cheap">Mais Baratos</option>
+                </select>
+              </form>
               </div>
             </div>
             
