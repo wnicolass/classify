@@ -23,6 +23,12 @@ def make_test_regex_fn(regex: str):
 def handle_phone(phone_number: str) -> str:
     return re.sub(r'\+|\s', '', phone_number.strip())
 
+def add_plus_sign_to_phone_number(phone_number: str) -> str:
+    if phone_number is not None:    
+        if len(phone_number) == 12:
+            phone_number = "+" + phone_number
+    return phone_number
+
 is_valid_email = make_test_regex_fn(
     r"[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*"
 )
