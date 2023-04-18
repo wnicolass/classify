@@ -13,7 +13,6 @@ from fastapi import (
 )
 from sqlalchemy.ext.asyncio import AsyncSession
 from fastapi_chameleon import template
-from chameleon import PageTemplateFile
 from common.fastapi_utils import (
     form_field_as_str,
     get_db_session
@@ -87,13 +86,15 @@ async def show_ad(ad_id, session: Annotated[AsyncSession, Depends(get_db_session
 
 @router.get('/ads/category/{category_id}')
 @template(template_file='products/products.pt')
-async def show_ads_category(
-    session: Annotated[AsyncSession, Depends(get_db_session)], category_id: str):
-    
+async def show_ads_category(session: Annotated[AsyncSession, Depends(get_db_session)], category_id: str):
+
     return await ViewModel(
         all_categories = await category_service.get_all_categories(session),
         all_ads = await ad_service.get_ads_by_asc(category_id, session),
         all_cities = await ad_service.get_cities_by_category(category_id, session),
+        all_subcategories = await category_service.get_subcategory_by_category_id(category_id, session),
+        in_subcategories_view = True,
+        in_categories_view = True
     )
 
 @router.get('/ads/category/{category_id}/sort')
@@ -132,11 +133,19 @@ async def sort_ads_category(
 
 @router.get('/ads/subcategory/{subcategory_id}')
 @template(template_file='products/products.pt')
-async def show_ads_category(subcategory_id: int, session: Annotated[AsyncSession, Depends(get_db_session)]):
+async def show_ads_category(request: Request, subcategory_id: int, session: Annotated[AsyncSession, Depends(get_db_session)]):
+    in_subcategories_view = False
+    request_path = request.url.path
+    if request_path.endswith(f'/subcategory/{subcategory_id}'):
+        in_subcategories_view = True
+    
     return await ViewModel(
         all_categories = await category_service.get_all_categories(session),
         all_ads = await ad_service.get_subcategory_ads_asc(subcategory_id, session),
         all_cities = await ad_service.get_cities_by_subcategory(subcategory_id, session),
+        all_subcategories = [],
+        in_subcategories_view = in_subcategories_view,
+        in_categories_view = True
     )
 
 @router.get('/ads/subcategory/{subcategory_id}/sort')
@@ -187,6 +196,9 @@ async def search_by_title(
         all_categories = await category_service.get_all_categories(session),
         all_ads = ads_found,
         all_cities = await ad_service.get_cities_with_ads(session),
+        all_subcategories = [],
+        in_subcategories_view = False,
+        in_categories_view = False
     )
 
 @router.get('/new/ad', dependencies = [Depends(requires_authentication)])
