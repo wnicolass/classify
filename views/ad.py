@@ -53,9 +53,12 @@ async def sort_ads_category(
     city: str | None = '',
     category_id: int | None = '',
     subcategory_id: int | None = '',
-    recency: str | None = 'asc',
+    recency: str | None = '',
     alphabetic_order: str | None = ''
 ):
+    print(alphabetic_order)
+    if subcategory_id and not category_id:
+        category_id = await category_service.get_category_by_subcategory_id(subcategory_id, session)
     filtered_ads = await ad_service.get_ads_by_criteria(session, title, description, city, category_id, subcategory_id, recency, alphabetic_order)
 
     vm = await ViewModel()
