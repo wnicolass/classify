@@ -414,15 +414,15 @@ async def get_ads_by_criteria(
     category_id: int = 0, 
     subcategory_id: int = 0,
     recency: str = '',
-    alphabetic_order: str = 'asc',
+    alphabetic_order: str = '',
 ) -> List[ad.Ad]:
     filters = []
-    print(title)
-    print(city)
+    print(category_id, subcategory_id)
+    filters.append(ad.Ad.status_id == AdStatusEnum.ACTIVE.value)
     if title:
         filters.append(ad.Ad.title.like(f'%{title}%'))
     if description:
-        filters.append(ad.Ad.description.like(f'%${description}%'))
+        filters.append(ad.Ad.description.like(f'%{title}%'))
     if city:
         filters.append(ad.AdAddress.city == city)
     if category_id:
@@ -433,7 +433,7 @@ async def get_ads_by_criteria(
     orders = []
     if recency == 'recent':
         orders.append(ad.Ad.created_at.desc())
-    else:
+    elif recency == 'old':
         orders.append(ad.Ad.created_at.asc())
     
     if alphabetic_order == 'asc':
@@ -449,7 +449,6 @@ async def get_ads_by_criteria(
         .order_by(*orders)
     )
     ads_found = query.unique().scalars().all()
-    print(ads_found)
 
     return ads_found
 
