@@ -3,7 +3,7 @@ from typing import List
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
 from sqlalchemy.orm import joinedload
-from models.user import UserAccount, UserLoginData, UserLoginDataExt, Favourite
+from models.user import UserAccount, UserLoginData, UserLoginDataExt, UserAddress, Favourite
 from models.ad import Ad
 
 async def get_user_by_email(email: str, session: AsyncSession) -> UserLoginData | None:
@@ -68,11 +68,38 @@ async def get_user_by_google_hash(token: str, session: AsyncSession) -> UserLogi
     user_ext_data = result.scalar_one_or_none()
     return user_ext_data
 
-async def update_user_details(user: UserAccount, new_username: str, new_phone_number: str, new_birth_date: str, session: AsyncSession):
+async def get_user_address_by_user_id(user_id: int, session: AsyncSession) -> UserAddress:
+    result = await session.execute(select(UserAddress).where(UserAddress.user_id == user_id))
+    user_address = result.scalar_one_or_none()
+    return user_address
+
+async def update_user_details(
+    user: UserAccount, 
+    new_username: str, 
+    new_phone_number: str, 
+    new_birth_date: str,
+    new_profile_picture_link: str,
+    session: AsyncSession):
     db_user = await get_user_account_by_id(user.user_id, session)
-    db_user.username = new_username
-    db_user.phone_number = new_phone_number
-    db_user.birth_date = new_birth_date
+    if new_username != '':
+        db_user.username = new_username
+    if new_phone_number != '':
+        db_user.phone_number = new_phone_number
+    if new_birth_date != '':
+        db_user.birth_date = new_birth_date
+    if new_profile_picture_link != '':
+        db_user.profile_image_url = new_profile_picture_link
+    
+    await session.commit()
+    
+async def update_user_address(
+    user_address: UserAddress,
+    new_country: str,
+    new_city: str,
+    session: AsyncSession):
+    user_address.country = new_country
+    user_address.city = new_city
+
     await session.commit()
 
 async def update_user_email_validation_status(user: UserLoginData, session: AsyncSession):
@@ -118,6 +145,23 @@ async def create_user_login_data(user_id: int, hashed_password: str, password_sa
     await session.commit()
     await session.refresh(user_login_data)
     return user_login_data
+
+async def create_user_address(
+    new_country: str,
+    new_city: str,
+    user_id: int,
+    session: AsyncSession):
+    
+    user_address = UserAddress(
+        country = new_country,
+        city = new_city,
+        user_id = user_id
+    )
+    session.add(user_address)
+    await session.commit()
+    await session.refresh(user_address)
+    return user_address
+
 
 async def add_new_favourite(user_id: int, ad_id: int, session: AsyncSession) -> Favourite:
     fav = Favourite(user_id = user_id, ad_id = ad_id)

@@ -25,6 +25,12 @@
                       </a>
                     </li>
                     <li>
+                      <a href="/user/change-password">
+                        <i class="fal fa-key"></i>
+                        Alterar Password
+                      </a>
+                    </li>
+                    <li>
                       <a href="/user/my-ads">
                         <i class="fal fa-layer-group"></i> 
                         Os Meus Anúncios
