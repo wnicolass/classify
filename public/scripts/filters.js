@@ -52,7 +52,6 @@ async function fetchData(queryParams) {
     const categoryId = newUrl.at(-1);
     URL = `/ads/sort?${newUrl.at(-2)}_id=${categoryId}${queryParams}`;
   }
-  console.log(URL);
   try {
     const res = await fetch(URL);
     const data = await res.json();
@@ -73,7 +72,8 @@ async function runFetch(queryValues) {
     let query = [];
     
     queryValues.forEach((value, i) => {
-      if (i === 1 && value === 'none' && possibleParams[i] !== 'subcategory_id') {
+      if (i === 1 && value === 'none' && possibleParams[i] !== 'subcategory_id' 
+          && possibleParams[i] !== 'order_by') {
         queryValues[i + 1] = '';
         return;
       } 

@@ -30,7 +30,6 @@ function buildList(subcategories) {
         option.value = subcategory.id;
         li.classList.add('option');
         li.setAttribute('data-value', subcategory.id);
-        console.log('haha, trollei')
         li.textContent = subcategory.subcategory_name;
         subcategoriesUnorderedList.appendChild(li);
         subcategoriesSelect.appendChild(option);
