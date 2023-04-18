@@ -36,12 +36,16 @@ async def dashboard():
 
 @router.get('/user/profile-settings', dependencies = [Depends(requires_authentication)])
 @template('user/profile-settings.pt')
-async def profile_settings(session: Annotated[AsyncSession, Depends(get_db_session)]):
+async def profile_settings(request: Request, session: Annotated[AsyncSession, Depends(get_db_session)]):
     user = await get_current_auth_user()
     address = await user_service.get_user_address_by_user_id(user.user_id, session)
     
     vm = await ViewModel()
-        
+    request_from = request.headers['referer'].split('/')[-1]
+    
+    if request_from == 'profile-settings':
+        vm.success, vm.success_msg = True, 'Dados da conta alterados com sucesso!'
+
     vm.name = user.username
     vm.phone_number = add_plus_sign_to_phone_number(user.phone_number)
     vm.birth_date = user.birth_date
@@ -66,7 +70,6 @@ async def profile_settings(
     vm = await profile_settings_viewmodel(request, session, user, file)
     address = await user_service.get_user_address_by_user_id(user.user_id, session)
     
-    
     vm.name = user.username
     vm.phone_number = add_plus_sign_to_phone_number(user.phone_number)
     vm.birth_date = user.birth_date
@@ -76,14 +79,11 @@ async def profile_settings(
     else:
         vm.country = ''
         vm.city = ''
-    vm.all_countries = await fetch_countries()
     
     if vm.error:
         return vm
     
-    template = PageTemplateFile('./templates/user/profile-settings.pt')
-    content = template(**vm)
-    return responses.HTMLResponse(content, status_code = status.HTTP_200_OK)
+    return responses.RedirectResponse(url = '/user/profile-settings', status_code = status.HTTP_302_FOUND)
 
 async def profile_settings_viewmodel(
     request: Request, 
@@ -108,21 +108,33 @@ async def profile_settings_viewmodel(
     elif vm.new_birth_date != '' and not is_valid_birth_date(vm.new_birth_date):
         vm.error, vm.error_msg = True, 'Data de nascimento inválida!'
         
-    print(file)
     if file is not None:
         file_size_in_bytes = len(await file.read())
         file_size_in_kb = file_size_in_bytes / 1024
         file_ext = os.path.splitext(file.filename)[-1]
-        if file_ext is not "":
+        if file_ext != "":
             if file_size_in_kb > 500:
                 vm.error, vm.error_msg = True, 'O tamanho limite da imagem é de 500kb.'
             elif file.content_type not in ('image/jpg', 'image/png', 'image/jpeg') or file_ext not in ['.jpg', '.jpeg', '.png']:
                 vm.error, vm.error_msg = True, 'Apenas imagens do tipo ".png", ".jpg" ou ".jpeg".'
             await file.seek(0)
-        
+    vm.all_countries = await fetch_countries()
+    
+    countries = []
+    for country in vm.all_countries:
+        countries.append(country['country'])
+       
+    if vm.new_country not in countries:
+        vm.error, vm.error_msg = True, 'País inválido.'
+    else:
+        for dict in vm.all_countries:
+            if dict['country'] == vm.new_country:
+                if vm.new_city not in dict['cities']:
+                    vm.error, vm.error_msg = True, 'Cidade inválida.'
+
     if not vm.error:
         profile_picture_url = ''
-        if file_ext is not "":
+        if file_ext != "":
             url = upload_image(file)
             profile_picture_url = url['secure_url']
         if user:
@@ -144,7 +156,7 @@ async def profile_settings_viewmodel(
                 )
             else:
                 await user_service.update_user_address(user_address, vm.new_country, vm.new_city, session)
-        vm.success, vm.success_msg = True, 'Dados da conta alterados com sucesso!.'
+        vm.success, vm.success_msg = True, 'Dados da conta alterados com sucesso!'
     
     return vm
 
