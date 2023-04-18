@@ -14,6 +14,9 @@ function getCurrentSelectedSubcategory({target: li}) {
 function buildList(subcategories) {
     const subcategoriesSelect = document.getElementById('subcategories-select');
     subcategoriesSelect.textContent = '';
+    const missingOption = document.createElement('option');
+    missingOption.value = 'none';
+    subcategoriesSelect.appendChild(missingOption);
     const subcategoriesUnorderedList = subcategoriesSelect.nextElementSibling.querySelector('ul');
     subcategoriesUnorderedList.textContent = '';
     const selectCategoryMessage = document.createElement('li');
@@ -26,7 +29,8 @@ function buildList(subcategories) {
         option = document.createElement('option');
         option.value = subcategory.id;
         li.classList.add('option');
-        li.dataset.value = subcategory.id;
+        li.setAttribute('data-value', subcategory.id);
+        console.log('haha, trollei')
         li.textContent = subcategory.subcategory_name;
         subcategoriesUnorderedList.appendChild(li);
         subcategoriesSelect.appendChild(option);
