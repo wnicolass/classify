@@ -1,17 +1,24 @@
 const queryFirstPart = window.location.href.split('?').at(-1);
-const inCategoryView = /(http(s)?:\/\/).*\/ads\/category\/\d{1,2}/.test(queryFirstPart)
-const inSubcategoryView = /(http(s)?:\/\/).*\/ads\/subcategory\/\d{1,3}/.test(queryFirstPart)
+const inCategoryView = /(http(s)?:\/\/).*\/ads\/category\/\d{1,2}/.test(queryFirstPart);
+const inSubcategoryView = /(http(s)?:\/\/).*\/ads\/subcategory\/\d{1,3}/.test(queryFirstPart);
+
+function getMinMaxPrice() {
+  const minPrice = document.querySelector('.irs-handle.from');
+  const maxPrice = document.querySelector('.irs-handle.to');
+  [minPrice, maxPrice].forEach(price => price.addEventListener('mouseup', handleEvent));
+}
 
 function getQueryValues() {
   const selectElements = document.querySelectorAll('.limit:not(.nice-select)');
   const selectValues = [];
-  selectElements.forEach(select => {
-    selectValues.push(select.value);
-  });
+  const prices = document.querySelectorAll('.outra-class');
+  selectElements.forEach(select => selectValues.push(select.value));
+  prices.forEach(price => selectValues.push(price.value));
+  
   return selectValues;
 }
 
-function handleEvent(event) {
+function handleEvent() {
   setTimeout(() => {
     const values = getQueryValues();
     runFetch(values);
@@ -57,14 +64,16 @@ async function fetchData(queryParams) {
 
 async function runFetch(queryValues) {
   setTimeout(async() => {
-    let possibleParams = ['city', 'category_id', 'subcategory_id', 'recency', 'alphabetic_order'];
+    let possibleParams = ['city', 'category_id', 'subcategory_id', 'order_by', 'min_price', 'max_price'];
     if (inCategoryView) {
-      possibleParams = ['city', 'subcategory_id', 'recency', 'alphabetic_order'];
+      possibleParams = ['city', 'subcategory_id', 'order_by',  'min_price', 'max_price'];
+    } else if (inSubcategoryView) {
+      possibleParams = ['city', 'order_by',  'min_price', 'max_price'];
     }
     let query = [];
     
     queryValues.forEach((value, i) => {
-      if (i === 1 && value === 'none') {
+      if (i === 1 && value === 'none' && possibleParams[i] !== 'subcategory_id') {
         queryValues[i + 1] = '';
         return;
       } 
@@ -154,9 +163,9 @@ function prettyDate(date) {
 }   
 
 function main() {
-  // setEventOnSubcategories();
   handleFilters();
   infinityEvent();
+  getMinMaxPrice();
 }   
 
 window.addEventListener('load', main);
