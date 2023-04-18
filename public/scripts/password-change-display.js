@@ -1,6 +1,6 @@
 // SOURCE: https://codepen.io/coding_beast/pen/LYGrXde
 
-let password = document.getElementById("new_password");
+let password = document.getElementById("new-password");
 let passwordStrength = document.getElementById("password-strength");
 let lowUpperCase = document.querySelector(".low-upper-case i");
 let number = document.querySelector(".one-number i");
@@ -16,7 +16,7 @@ password.addEventListener("focusout", function(){
 });
 
 password.addEventListener("keyup", function(){
-    let pass = document.getElementById("new_password").value;
+    let pass = document.getElementById("new-password").value;
     checkStrength(pass);
 });
 
