@@ -92,6 +92,15 @@ async def get_subcategory_by_category_id(category_id: int, session: AsyncSession
 
     return subcategories
 
+async def get_category_by_subcategory_id(subcategory_id: int, session: AsyncSession) -> Category:
+    query = await session.execute(select(Category)
+        .join(Category.subcategories)
+        .where(Subcategory.id == subcategory_id)
+    )
+    category = query.unique().scalar_one_or_none()
+
+    return category.id
+
 async def get_subcategory_count(session: AsyncSession) -> int | None:
     query = await session.execute(select(func.count(Subcategory.id)))
     subcategory_count = query.scalar_one_or_none()
