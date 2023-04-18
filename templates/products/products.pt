@@ -3,7 +3,7 @@
   <script src="/public/scripts/show-subcategories.js" defer></script>
   <script src="/public/scripts/limit-select-size.js" defer></script>
   <script src="/public/scripts/favourites.js" defer></script>
-  <script src="/public/scripts/get-subcategories.js" defer></script>
+  <script tal:condition="not in_categories_view and not in_subcategories_view" src="/public/scripts/get-subcategories.js" defer></script>
   <script src="/public/scripts/filters.js" defer></script>
 </__additional_script__>
   <div metal:fill-slot="title" tal:omit-tag="True">
@@ -215,15 +215,23 @@
                     <option data-id="city.id" value="${city}">${city}</option>
                   </__repeat>
                 </select>
-                <select id="category-select" class="limit">
-                    <option value="none">Categoria</option>
-                    <__repeat tal:repeat="category all_categories" tal:omit-tag="True">
-                      <option value="${category.id}">${category.category_name}</option>
+                <div tal:condition="not in_subcategories_view" tal:omit-tag="True">
+                  <select tal:condition="len(all_subcategories) == 0" id="category-select" class="limit">
+                      <option value="none">Categoria</option>
+                      <__repeat tal:repeat="category all_categories" tal:omit-tag="True">
+                        <option value="${category.id}">${category.category_name}</option>
+                      </__repeat>
+                  </select>
+                  <select tal:condition="len(all_subcategories) > 0" id="subcategories-select" class="limit" name="subcategory">
+                    <option value="none">Subcategoria</option>
+                    <__repeat tal:repeat="subcategory all_subcategories" tal:omit-tag="True">
+                      <option value="${subcategory.id}">${subcategory.subcategory_name}</option>
                     </__repeat>
-                </select>
-                <select id="subcategories-select" class="limit" name="subcategory">
-                  <option value="none">Subcategoria</option>
-                </select>
+                  </select>
+                  <select tal:condition="len(all_subcategories) == 0" id="subcategories-select" class="limit" name="subcategory">
+                    <option value="none">Subcategoria</option>
+                  </select>
+                </div>
                 <select id="recency-select" class="limit">
                   <option value="none">Ordenar Por</option>
                   <option value="recent">Mais Recentes</option>
