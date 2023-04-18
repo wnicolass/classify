@@ -1,3 +1,7 @@
+const queryFirstPart = window.location.href.split('?').at(-1);
+const inCategoryView = /(http(s)?:\/\/).*\/ads\/category\/\d{1,2}/.test(queryFirstPart)
+const inSubcategoryView = /(http(s)?:\/\/).*\/ads\/subcategory\/\d{1,3}/.test(queryFirstPart)
+
 function getQueryValues() {
   const selectElements = document.querySelectorAll('.limit:not(.nice-select)');
   const selectValues = [];
@@ -13,24 +17,6 @@ function handleEvent(event) {
     runFetch(values);
   }, 0)
 }
-
-// function setEventOnSubcategories() {
-//   const categorySelect = document.getElementById('category-select');
-//   const renderedSelect = categorySelect.nextElementSibling;
-//   const listItems = renderedSelect.querySelectorAll('li');
-  
-//   listItems.forEach(li => li.addEventListener('click', () => {
-//     setTimeout(() => {
-//       const subcategorySelect = renderedSelect.nextElementSibling;
-//       const renderedSubcategoryUl = subcategorySelect.nextElementSibling;
-//       let allSubcategories;
-//       setTimeout(() => {
-//         allSubcategories = renderedSubcategoryUl.querySelectorAll('li');
-//         allSubcategories.forEach(sub => sub.addEventListener('click', handleEvent));
-//       }, 100);
-//     }, 0);
-//   }));
-// }
 
 function infinityEvent() {
   setInterval(() => {
@@ -49,14 +35,15 @@ function handleFilters() {
 }
 
 async function fetchData(queryParams) {
-  const queryFirstPart = window.location.href.split('?').at(-1);
   let URL = `/ads/sort?${queryFirstPart}${queryParams}`;
-  if (/(http(s)?:\/\/).*\/ads\/subcategory\/\d{1,3}/.test(queryFirstPart)) {
+  if (inSubcategoryView) {
     const newUrl = queryFirstPart.split('/');
     const subcategoryId = newUrl.at(-1);
     URL = `/ads/sort?${newUrl.at(-2)}_id=${subcategoryId}${queryParams}`;
-  } else if (/(http(s)?:\/\/).*\/ads\/category\/\d{1,2}/.test(queryFirstPart)) {
-
+  } else if (inCategoryView) {
+    const newUrl = queryFirstPart.split('/');
+    const categoryId = newUrl.at(-1);
+    URL = `/ads/sort?${newUrl.at(-2)}_id=${categoryId}${queryParams}`;
   }
   console.log(URL);
   try {
@@ -70,7 +57,10 @@ async function fetchData(queryParams) {
 
 async function runFetch(queryValues) {
   setTimeout(async() => {
-    const possibleParams = ['city', 'category_id', 'subcategory_id', 'recency', 'alphabetic_order'];
+    let possibleParams = ['city', 'category_id', 'subcategory_id', 'recency', 'alphabetic_order'];
+    if (inCategoryView) {
+      possibleParams = ['city', 'subcategory_id', 'recency', 'alphabetic_order'];
+    }
     let query = [];
     
     queryValues.forEach((value, i) => {
