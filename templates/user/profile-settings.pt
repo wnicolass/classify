@@ -1,16 +1,16 @@
 <div metal:use-macro="load: ../shared/_layout.pt">
   <__additional_script__ metal:fill-slot="additional_script" tal:omit-tag="True">
-  <script src="/public/scripts/get-cities-user-details.js" defer></script>
-  <script>
-    var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
-    var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
-      return new bootstrap.Tooltip(tooltipTriggerEl)  
-    })
-    $(function() {
-      $('.marker').tooltip({placement: 'right'});
-    });
-  </script>
-</__additional_script__>
+    <script src="/public/scripts/get-cities-user-details.js" defer></script>
+    <script>
+      var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+      var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+        return new bootstrap.Tooltip(tooltipTriggerEl)  
+      })
+      $(function() {
+        $('.marker').tooltip({placement: 'right'});
+      });
+    </script>
+  </__additional_script__>
   <div metal:fill-slot="title" tal:omit-tag="True">
     <title> Definições de Perfil | Classify</title>
   </div>
