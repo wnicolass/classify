@@ -1,5 +1,5 @@
 from datetime import date
-import re
+import regex
 
 MIN_DATE = date.fromisoformat('1920-01-01')
 
@@ -14,14 +14,14 @@ def is_valid_iso_date(iso_date: str) -> bool:
 def is_valid_birth_date(birth_date: str) -> bool:
         return (is_valid_iso_date(birth_date) and date.fromisoformat(birth_date) >= MIN_DATE and date.fromisoformat(birth_date) <= date.today())
 
-def make_test_regex_fn(regex: str):
-    compiled_regex = re.compile(regex)
+def make_test_regex_fn(reg: str):
+    compiled_regex = regex.compile(reg)
     def test_regex_fn(value: str) -> bool:
-        return bool(re.fullmatch(compiled_regex, value))
+        return bool(regex.fullmatch(compiled_regex, value))
     return test_regex_fn
 
 def handle_phone(phone_number: str) -> str:
-    return re.sub(r'\+|\s', '', phone_number.strip())
+    return regex.sub(r'\+|\s', '', phone_number.strip())
 
 def add_plus_sign_to_phone_number(phone_number: str) -> str:
     if phone_number is not None:    
@@ -38,7 +38,7 @@ is_valid_password = make_test_regex_fn(
 )
 
 is_valid_username = make_test_regex_fn(
-    r'^(?!.*\d)(?!.*[~`!@#$%^&*()_\-+={[}\]|\\:;"\'<,>.?/]).{2,}$'
+    r'^(\p{L}{2,}\p{Zs}?)+$'
 )
 
 is_valid_txt_field = make_test_regex_fn(
