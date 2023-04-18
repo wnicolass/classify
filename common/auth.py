@@ -1,5 +1,4 @@
 import os
-from typing import Optional
 from dotenv import (
     load_dotenv, 
     find_dotenv
@@ -9,11 +8,9 @@ from fastapi import (
     HTTPException, 
     Request, 
     Response, 
-    responses,
     status
 )
 from passlib.context import CryptContext
-from common.fastapi_utils import get_db_session
 from models.user import UserAccount, UserLoginData
 from middlewares.global_request import global_request
 from services.user_service import get_user_account_by_id
@@ -77,7 +74,6 @@ async def get_current_auth_user() -> UserAccount | None:
             user = await get_user_account_by_id(user_id, session)
             return user
     return None
-#:
 
 class HTTPUnauthorizedAccess(HTTPException):
     def __init__(self, *args, **kwargs):

@@ -1,7 +1,18 @@
 from datetime import date
 import re
+from typing import List
 
 MIN_DATE = date.fromisoformat('1920-01-01')
+
+def get_min_max_price(ads: List):
+    max = 0
+    min = ads[0].price
+    for ad in ads:
+        if min > ad.price:
+            min = ad.price
+        elif max < ad.price:
+            max = ad.price
+    return min, max 
 
 def is_valid_iso_date(iso_date: str) -> bool:
     try:

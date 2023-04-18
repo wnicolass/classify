@@ -6,12 +6,11 @@ from sqlalchemy import (
     Integer,
     String,
     ForeignKey,
-    Table,
     DECIMAL,
     text,
 )
 from sqlalchemy.dialects.mysql import BIT
-from sqlalchemy.orm import relationship, joinedload
+from sqlalchemy.orm import relationship
 from config.database import Base
 from models.ad_approval import ad_approval
 from models.subcategory import Subcategory
