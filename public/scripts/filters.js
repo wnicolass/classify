@@ -1,5 +1,3 @@
-const queryValues = [];
-
 function getQueryValues() {
   const selectElements = document.querySelectorAll('.limit:not(.nice-select)');
   const selectValues = [];
@@ -16,22 +14,32 @@ function handleEvent(event) {
   }, 0)
 }
 
-function setEventOnSubcategories() {
-  const categorySelect = document.getElementById('category-select');
-  const renderedSelect = categorySelect.nextElementSibling;
-  const listItems = renderedSelect.querySelectorAll('li');
+// function setEventOnSubcategories() {
+//   const categorySelect = document.getElementById('category-select');
+//   const renderedSelect = categorySelect.nextElementSibling;
+//   const listItems = renderedSelect.querySelectorAll('li');
   
-  listItems.forEach(li => li.addEventListener('click', () => {
-    setTimeout(() => {
-      const subcategorySelect = renderedSelect.nextElementSibling;
-      const renderedSubcategoryUl = subcategorySelect.nextElementSibling;
-      let allSubcategories;
-      setTimeout(() => {
-        allSubcategories = renderedSubcategoryUl.querySelectorAll('li');
-        allSubcategories.forEach(sub => sub.addEventListener('click', handleEvent));
-      }, 100);
-    }, 0);
-  }));
+//   listItems.forEach(li => li.addEventListener('click', () => {
+//     setTimeout(() => {
+//       const subcategorySelect = renderedSelect.nextElementSibling;
+//       const renderedSubcategoryUl = subcategorySelect.nextElementSibling;
+//       let allSubcategories;
+//       setTimeout(() => {
+//         allSubcategories = renderedSubcategoryUl.querySelectorAll('li');
+//         allSubcategories.forEach(sub => sub.addEventListener('click', handleEvent));
+//       }, 100);
+//     }, 0);
+//   }));
+// }
+
+function infinityEvent() {
+  setInterval(() => {
+    const subcategoriesLis = document.querySelectorAll('#subcategories-select + .nice-select ul li');
+    
+    if (subcategoriesLis.length > 1) {
+      subcategoriesLis.forEach(subList => subList.addEventListener('click', handleEvent));
+    }
+  },1000);
 }
 
 function handleFilters() {
@@ -42,7 +50,14 @@ function handleFilters() {
 
 async function fetchData(queryParams) {
   const queryFirstPart = window.location.href.split('?').at(-1);
-  const URL = `/ads/sort?${queryFirstPart}${queryParams}`;
+  let URL = `/ads/sort?${queryFirstPart}${queryParams}`;
+  if (/(http(s)?:\/\/).*\/ads\/subcategory\/\d{1,3}/.test(queryFirstPart)) {
+    const newUrl = queryFirstPart.split('/');
+    const subcategoryId = newUrl.at(-1);
+    URL = `/ads/sort?${newUrl.at(-2)}_id=${subcategoryId}${queryParams}`;
+  } else if (/(http(s)?:\/\/).*\/ads\/category\/\d{1,2}/.test(queryFirstPart)) {
+
+  }
   console.log(URL);
   try {
     const res = await fetch(URL);
@@ -54,12 +69,15 @@ async function fetchData(queryParams) {
 }
 
 async function runFetch(queryValues) {
-    const pageCriteria = window.location.href.split('=').at(-1);
-    const searchCriteria = window.location.href.split('/').at(-2);
+  setTimeout(async() => {
     const possibleParams = ['city', 'category_id', 'subcategory_id', 'recency', 'alphabetic_order'];
     let query = [];
     
     queryValues.forEach((value, i) => {
+      if (i === 1 && value === 'none') {
+        queryValues[i + 1] = '';
+        return;
+      } 
       if (value !== 'none' && value !== '') {
         let queryChunk = `${possibleParams[i]}=${value}`;
         query.push(queryChunk);
@@ -69,14 +87,7 @@ async function runFetch(queryValues) {
     const queryParams = `&${query.join('&')}`;
     
     await fetchData(queryParams);
-    // let URL = `/ads/${searchCriteria}/${categoryId}/sort?${queryParams}`;
-    // if (window.location.href.endsWith('/ads')) {
-    //   URL = `/ads/sort?${queryParams}`
-    // }
-
-    // const response = await fetch(URL);
-    // const data = await response.json();
-    // return data;
+  }, 100);
 }
 
 function renderAds(data) {
@@ -153,8 +164,9 @@ function prettyDate(date) {
 }   
 
 function main() {
+  // setEventOnSubcategories();
   handleFilters();
-  setEventOnSubcategories();
+  infinityEvent();
 }   
 
 window.addEventListener('load', main);
