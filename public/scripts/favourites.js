@@ -53,8 +53,16 @@ async function addToFavourites({target: favBtn}) {
 
 function removeTr(btn, responseData) {
     btn.closest('tr').remove();
-    let totalFavs = responseData['current_total_ads'];
-    document.getElementById('total-favs').textContent = `Todos (${totalFavs})`;
+
+    // These two lines are commented out because adding more tables meant that 
+    // rows would not be removed on the other tables. On top of that, we will
+    // need a modal to warn the user and ask for confirmation, which should reload the page.
+    // Because of that, updating only one of the numbers and then reloading the page
+    // looks wrong.
+
+    // let totalFavs = responseData['current_total_ads'];
+    // document.getElementById('all-favs-tab').textContent = `Todos (${totalFavs})`;
+    location.reload();
     return;
 }
 
