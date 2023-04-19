@@ -69,6 +69,9 @@ async def requires_authentication_secure():
     through a unique session id that is stored on the browser.
     But have in mind that we are not storing that user temporary data
     on our server, we're storing in the cookies.
+
+    The following lines of code were taken from:
+    https://github.com/jfgalamba/Courseca22031
 """
 def get_session(session_attr = 'session') -> Any:
     request = global_request.get()
