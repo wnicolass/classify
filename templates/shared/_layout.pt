@@ -144,8 +144,8 @@
                             >
                             </li>
                             <li>
-                            <a href="/user/profile-settings"
-                                ><i class="fal fa-cog"></i>Detalhes da Conta</a
+                            <a href="/user/offermessages"
+                                ><i class="fal fa-envelope"></i>Mensagens</a
                             >
                             </li>
                             <li>
@@ -154,24 +154,14 @@
                             >
                             </li>
                             <li>
-                            <a href="/user/offermessages"
-                                ><i class="fal fa-envelope"></i>Mensagens</a
-                            >
-                            </li>
-                            <li>
                             <a href="/user/payments"
                                 ><i class="fal fa-wallet"></i>Pagamentos</a
                             >
                             </li>
                             <li>
-                            <a href="/user/favourite-ads"
-                                ><i class="fal fa-heart"></i>Favoritos</a
-                            >
-                            </li>
-                            <li>
-                            <a href="/user/privacy-setting"
-                                ><i class="fal fa-star"></i>Definições</a
-                            >
+                                <a href="/user/profile-settings"
+                                    ><i class="fal fa-cog"></i>Definições de Perfil</a
+                                >
                             </li>
                             <li>
                             <a href="/auth/logout"
