@@ -122,8 +122,9 @@ async def search_by_title(
     description: str | None = None,
 ):
     ads_found = await ad_service.get_ads_by_title_or_description(session, title, description)
-    min, max = get_min_max_price(ads_found)
-    print(min, max)
+    if ads_found:
+        min, max = get_min_max_price(ads_found)
+    min, max = 0, 0
     return await ViewModel(
         all_categories = await category_service.get_all_categories(session),
         all_ads = ads_found,
@@ -132,7 +133,8 @@ async def search_by_title(
         in_subcategories_view = False,
         in_categories_view = False,
         min_price = min,
-        max_price = max
+        max_price = max,
+        subject = title
     )
 
 @router.get('/new/ad', dependencies = [Depends(requires_authentication)])
