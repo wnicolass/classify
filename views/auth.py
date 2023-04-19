@@ -207,10 +207,11 @@ async def post_sign_in_viewmodel(
     elif user.is_active != 1:
         vm.error, vm.error_msg = True, f'Sua conta ainda não foi ativada, verifique seu endereço de e-mail.'
 
-    user.user.last_login = datetime.now()
-    await session.commit()
-    await session.refresh(user)
-    vm.user = user
+    if not vm.error:
+        user.user.last_login = datetime.now()
+        await session.commit()
+        await session.refresh(user)
+        vm.user = user
     return vm
 
 @router.post('/auth/google')

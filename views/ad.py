@@ -5,6 +5,7 @@ from typing import Annotated, List
 from fastapi import (
     APIRouter, 
     Depends,
+    HTTPException,
     Request,
     UploadFile,
     responses,
@@ -22,30 +23,50 @@ from services import category_service, ad_service
 from common.utils import (
     is_valid_txt_field,
     is_valid_price,
-    is_valid_phone_number
+    is_valid_phone_number,
+    get_min_max_price
 )
 from services.user_service import get_user_account_by_id
 from config.cloudinary import upload_image
 
 router = APIRouter()
 
-@router.get('/ads')
-@template(template_file='products/products.pt')
-async def products(session: Annotated[AsyncSession, Depends(get_db_session)]):
-    vm = await products_viewmodel(session)
+@router.get('/ads/sort')
+async def sort_ads_category(
+    session: Annotated[AsyncSession, Depends(get_db_session)],
+    title: str | None = '',
+    description: str | None = None,
+    city: str | None = '',
+    category_id: int | None = '',
+    subcategory_id: int | None = '',
+    order_by: str | None = '',
+    min_price: dec = 0,
+    max_price: dec = 0
+):
 
-    return vm
+    if subcategory_id and not category_id:
+        category_id = await category_service.get_category_by_subcategory_id(subcategory_id, session)
+    filtered_ads = await ad_service.get_ads_by_criteria(session, title, description, 
+                city, category_id, subcategory_id, order_by,  min_price, max_price)
 
-async def products_viewmodel(session: Annotated[AsyncSession, Depends(get_db_session)]):
-    return await ViewModel(
-       all_categories = await category_service.get_all_categories(session),
-       all_ads = await ad_service.get_all_ads(session)
-    )
+    vm = await ViewModel()
+    
+    response = {
+        'ads': filtered_ads,
+        'city': city,
+        'order_by': order_by,
+        'is_logged_in': vm.is_logged_in,
+    }
+    return response
 
 @router.get('/ad/{ad_id}')
 @template(template_file='products/product-details.pt')
 async def show_ad(ad_id, session: Annotated[AsyncSession, Depends(get_db_session)]):
     current_ad = await ad_service.get_ad_by_id(session, ad_id)
+
+    if not current_ad:
+        raise HTTPException(status_code = status.HTTP_404_NOT_FOUND, detail = {'error_msg': 'Not found'})
+
     return await ViewModel(
         adv = current_ad,
         get_3_ads = await ad_service.get_3_ads(current_ad, session)
@@ -53,116 +74,67 @@ async def show_ad(ad_id, session: Annotated[AsyncSession, Depends(get_db_session
 
 @router.get('/ads/category/{category_id}')
 @template(template_file='products/products.pt')
-async def show_ads_category(
-    session: Annotated[AsyncSession, Depends(get_db_session)], category_id: str):
-    
+async def show_ads_category(session: Annotated[AsyncSession, Depends(get_db_session)], category_id: str):
+
+    all_ads = await ad_service.get_ads_by_asc(category_id, session)
+    min, max = get_min_max_price(all_ads)
+
     return await ViewModel(
         all_categories = await category_service.get_all_categories(session),
-        all_ads = await ad_service.get_ads_by_asc(category_id, session),
+        all_ads = all_ads,
         all_cities = await ad_service.get_cities_by_category(category_id, session),
+        all_subcategories = await category_service.get_subcategory_by_category_id(category_id, session),
+        in_subcategories_view = False,
+        in_categories_view = True,
+        min_price = min,
+        max_price = max,
+        subject = ''
     )
-
-@router.get('/ads/category/{category_id}/sort')
-async def sort_ads_category(
-    session: Annotated[AsyncSession, Depends(get_db_session)],
-    category_id: str,
-    alphabetic_order: str | None = '', 
-    city: str | None = 'none',
-    recency: str | None = '',
-):
-    if alphabetic_order == 'asc':
-        filtered_ads = await ad_service.get_ads_by_asc(category_id, session)
-    elif alphabetic_order == 'desc':
-        filtered_ads = await ad_service.get_ads_by_desc(category_id, session)
-        
-    if city != 'none':
-        filtered_ads = await ad_service.get_ads_by_location_and_category(city, category_id, '', session)
-    else:
-        filtered_ads = await ad_service.get_subcategory_ads_asc(category_id, session)
-    if recency == 'recent':
-        filtered_ads = await ad_service.get_ads_by_recency(category_id, session)
-    elif recency == 'old':
-        filtered_ads = await ad_service.get_ads_by_antiquity(category_id, session)
-        
-
-    vm = await ViewModel()
-    response = {
-        'ads': filtered_ads,
-        'category': category_id,
-        'alphabetic_order': alphabetic_order,
-        'city': city,
-        'recency': recency,
-        'is_logged_in': vm.is_logged_in
-    }
-    return response
 
 @router.get('/ads/subcategory/{subcategory_id}')
 @template(template_file='products/products.pt')
-async def show_ads_category(subcategory_id: int, session: Annotated[AsyncSession, Depends(get_db_session)]):
+async def show_ads_category(request: Request, subcategory_id: int, session: Annotated[AsyncSession, Depends(get_db_session)]):
+    in_subcategories_view = False
+    request_path = request.url.path
+    if request_path.endswith(f'/subcategory/{subcategory_id}'):
+        in_subcategories_view = True
+
+    all_ads = await ad_service.get_subcategory_ads_asc(subcategory_id, session)
+    min, max = get_min_max_price(all_ads)
+
     return await ViewModel(
         all_categories = await category_service.get_all_categories(session),
-        all_ads = await ad_service.get_ads_by_subcategory_id(session, subcategory_id),
+        all_ads = all_ads,
         all_cities = await ad_service.get_cities_by_subcategory(subcategory_id, session),
+        all_subcategories = [],
+        in_subcategories_view = in_subcategories_view,
+        in_categories_view = True,
+        min_price = min,
+        max_price = max,
+        subject = ''
     )
-
-@router.get('/ads/subcategory/{subcategory_id}/sort')
-async def sort_ads_subcategory(
-    session: Annotated[AsyncSession, Depends(get_db_session)],
-    subcategory_id: str,
-    alphabetic_order: str | None = '', 
-    city: str | None = 'none',
-    recency: str | None = '',
-):
-    if alphabetic_order == 'asc':
-        filtered_ads = await ad_service.get_subcategory_ads_asc(subcategory_id, session)
-    elif alphabetic_order == 'desc':
-        filtered_ads = await ad_service.get_subcategory_ads_desc(subcategory_id, session)
-        
-    if city != 'none':
-        filtered_ads = await ad_service.get_ads_by_location_and_subcategory(city, subcategory_id, '', session)
-    else:
-        filtered_ads = await ad_service.get_subcategory_ads_asc(subcategory_id, session)
-    if recency == 'recent':
-        filtered_ads = await ad_service.get_subcategory_ads_by_recency(subcategory_id, session)
-    elif recency == 'old':
-        filtered_ads = await ad_service.get_subcategory_ads_by_antiquity(subcategory_id, session)
-        
-
-    vm = await ViewModel()
-    response = {
-        'ads': filtered_ads,
-        'category': subcategory_id,
-        'alphabetic_order': alphabetic_order,
-        'city': city,
-        'recency': recency,
-        'is_logged_in': vm.is_logged_in
-    }
-    return response
 
 @router.get('/ads/search')
 @template(template_file = 'products/products.pt')
 async def search_by_title(
     session: Annotated[AsyncSession, Depends(get_db_session)],
-    category_id: str | None = 'none',
     title: str | None = '',
-    city: str | None = 'none', 
+    description: str | None = None,
 ):
-    if len(title) == 0 and city == 'none' and category_id == 'none':
-        response = responses.RedirectResponse(url = '/ads', status_code = status.HTTP_302_FOUND)
-        return response
-
-    if city != 'none' and category_id != 'none':
-        ads_found = await ad_service.get_ads_by_location_and_category(city, category_id, title, session)
-    elif city != 'none' and category_id == 'none':
-        ads_found = await ad_service.get_ads_by_location(session, city, title)
-    elif city == 'none' and category_id != 'none':
-        ads_found = await ad_service.get_ads_by_category(session, category_id, title)
-    else:
-        ads_found = await ad_service.get_ads_by_title(session, title)
-    
+    ads_found = await ad_service.get_ads_by_title_or_description(session, title, description)
+    if ads_found:
+        min, max = get_min_max_price(ads_found)
+    min, max = 0, 0
     return await ViewModel(
         all_categories = await category_service.get_all_categories(session),
-        all_ads = ads_found
+        all_ads = ads_found,
+        all_cities = await ad_service.get_cities_with_ads_by_text(title, session),
+        all_subcategories = [],
+        in_subcategories_view = False,
+        in_categories_view = False,
+        min_price = min,
+        max_price = max,
+        subject = title
     )
 
 @router.get('/new/ad', dependencies = [Depends(requires_authentication)])

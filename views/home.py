@@ -25,7 +25,6 @@ async def index_viewmodel(
     vm = await ViewModel()
     vm.current_user_fav_ads = await user_service.get_user_favs(vm.user_id, session)
     vm.popular_categories = await category_service.popular_categories(session)
-    vm.all_cities = await ad_service.get_cities_with_ads(session)
     vm.all_categories = await category_service.get_all_categories(session)
     vm.popular_ads = await ad_service.get_popular_ads(session)
     vm.recent_ads = await ad_service.get_ads_by_creation_date(session)

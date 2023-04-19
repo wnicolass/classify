@@ -106,8 +106,8 @@ $(function () {
         $inputFrom = $(".js-input-from"),
         $inputTo = $(".js-input-to"),
         instance,
-        min = 500,
-        max = 8000,
+        min = $("#min-price").val(),
+        max = $("#max-price").val(),
         from = 0,
         to = 0;
 
@@ -116,8 +116,8 @@ $(function () {
         type: "double",
         min: min,
         max: max,
-        from: 500,
-        to: 5500,
+        from: $("#min-price").val(),
+        to: $("#max-price").val(),
         onStart: updateInputs,
         onChange: updateInputs
     });

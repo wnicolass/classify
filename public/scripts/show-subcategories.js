@@ -5,7 +5,6 @@ function toggleShow(event) {
 
 function main() {
     const subcategoryElements = document.body.querySelectorAll('.card-header > a');
-    console.log(subcategoryElements)
     subcategoryElements.forEach(elem => elem.addEventListener('click', toggleShow));
 }
 

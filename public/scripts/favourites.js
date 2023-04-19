@@ -27,7 +27,6 @@ function swapEvents(adId, criteria) {
 }
 
 async function addToFavourites({target: favBtn}) {
-    console.log(favBtn);
     const adId = favBtn.closest('a').dataset.adid;
     
     try {
@@ -60,7 +59,6 @@ function removeTr(btn, responseData) {
 }
 
 async function removeFromFavourites({currentTarget: favBtn}) {
-    console.log(favBtn);
     const adId = favBtn.closest('a').dataset.adid ?? favBtn.dataset.adid;
     
     try {
@@ -93,9 +91,7 @@ function main() {
     
     if (!inFavsView) {
         favButtons.forEach(favBtn => favBtn.addEventListener('click', addToFavourites));
-        console.log(favButtons);
         alreadyFavourites.forEach(fav => fav.addEventListener('click', removeFromFavourites));
-        console.log(alreadyFavourites);
     }
     inFavsView && trashBtns.forEach(btn => btn.addEventListener('click', removeFromFavourites));
 }

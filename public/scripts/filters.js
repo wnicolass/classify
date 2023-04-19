@@ -1,51 +1,97 @@
-async function handleFilters() {
-    const niceSelects = document.querySelectorAll('.nice-select ul.list li.option');
+const queryFirstPart = window.location.href.split('?').at(-1);
+const inCategoryView = /(http(s)?:\/\/).*\/ads\/category\/\d{1,2}/.test(queryFirstPart);
+const inSubcategoryView = /(http(s)?:\/\/).*\/ads\/subcategory\/\d{1,3}/.test(queryFirstPart);
 
-    niceSelects.forEach((option) => {
-        const niceSelect = option.closest('.nice-select');
-        const currentSpan = niceSelect.querySelector('span.current');
-
-        option.addEventListener('click', async () => {
-            const selectedValue = option.getAttribute('data-value');
-            currentSpan.textContent = option.textContent;
-
-            const data = await fetchFilters(selectedValue);
-            console.log(data);
-            renderAds(data);
-        });
-    });
+function getMinMaxPrice() {
+  const minPrice = document.querySelector('.irs-handle.from');
+  const maxPrice = document.querySelector('.irs-handle.to');
+  [minPrice, maxPrice].forEach(price => price.addEventListener('mouseup', handleEvent));
 }
 
-async function fetchFilters(selectedValue) {
-    const categoryId = window.location.href.split('/').at(-1);
-    const searchCriteria = window.location.href.split('/').at(-2);
+function getQueryValues() {
+  const selectElements = document.querySelectorAll('.limit:not(.nice-select)');
+  const selectValues = [];
+  const prices = document.querySelectorAll('.outra-class');
+  selectElements.forEach(select => selectValues.push(select.value));
+  prices.forEach(price => selectValues.push(price.value));
+  
+  return selectValues;
+}
+
+function handleEvent() {
+  setTimeout(() => {
+    const values = getQueryValues();
+    runFetch(values);
+  }, 0)
+}
+
+function infinityEvent() {
+  setInterval(() => {
+    const subcategoriesLis = document.querySelectorAll('#subcategories-select + .nice-select ul li');
     
-    console.log(categoryId);
-    console.log(searchCriteria);
-    console.log(selectedValue);
-    let queryParams = "";
-
-    if (selectedValue === 'asc') {
-      queryParams += "alphabetic_order=asc&";
-    } else if (selectedValue === 'desc') {
-      queryParams += "alphabetic_order=desc&";
-    } else if (selectedValue === 'recent') {
-      queryParams += "recency=recent&";
-    } else if (selectedValue === 'old') {
-      queryParams += "recency=old&";
-    } else if (selectedValue !== 'none') {
-      queryParams += `city=${selectedValue}&`;
+    if (subcategoriesLis.length > 1) {
+      subcategoriesLis.forEach(subList => subList.addEventListener('click', handleEvent));
     }
-    const response = await fetch(`/ads/${searchCriteria}/${categoryId}/sort?${queryParams}`);
-    const data = await response.json();
-    return data;
+  },1000);
 }
 
+function handleFilters() {
+  const allLis = document.querySelectorAll('.nice-select ul li');
+
+  allLis.forEach(li => li.addEventListener('click', handleEvent));
+}
+
+async function fetchData(queryParams) {
+  let URL = `/ads/sort?${queryFirstPart}${queryParams}`;
+  if (inSubcategoryView) {
+    const newUrl = queryFirstPart.split('/');
+    const subcategoryId = newUrl.at(-1);
+    URL = `/ads/sort?${newUrl.at(-2)}_id=${subcategoryId}${queryParams}`;
+  } else if (inCategoryView) {
+    const newUrl = queryFirstPart.split('/');
+    const categoryId = newUrl.at(-1);
+    URL = `/ads/sort?${newUrl.at(-2)}_id=${categoryId}${queryParams}`;
+  }
+  try {
+    const res = await fetch(URL);
+    const data = await res.json();
+    renderAds(data);
+  } catch (err) {
+    console.error(err);
+  }
+}
+
+async function runFetch(queryValues) {
+  setTimeout(async() => {
+    let possibleParams = ['city', 'category_id', 'subcategory_id', 'order_by', 'min_price', 'max_price'];
+    if (inCategoryView) {
+      possibleParams = ['city', 'subcategory_id', 'order_by',  'min_price', 'max_price'];
+    } else if (inSubcategoryView) {
+      possibleParams = ['city', 'order_by',  'min_price', 'max_price'];
+    }
+    let query = [];
+    
+    queryValues.forEach((value, i) => {
+      if (i === 1 && value === 'none' && possibleParams[i] !== 'subcategory_id' 
+          && possibleParams[i] !== 'order_by') {
+        queryValues[i + 1] = '';
+        return;
+      } 
+      if (value !== 'none' && value !== '') {
+        let queryChunk = `${possibleParams[i]}=${value}`;
+        query.push(queryChunk);
+      }
+    });
+    
+    const queryParams = `&${query.join('&')}`;
+    
+    await fetchData(queryParams);
+  }, 100);
+}
 
 function renderAds(data) {
     const allAds = data.ads;
     const adsContainer = document.getElementById('ads-container');
-    console.log(adsContainer);
     adsContainer.innerHTML = '';
   
     allAds.forEach((ad) => {
@@ -113,11 +159,13 @@ function prettyDate(date) {
     const day = defaultDate.getDate();
     const year = defaultDate.getFullYear();
 
-    return `${day} ${month} ${year}`
+    return `${day} ${month} ${year}`;
 }   
 
 function main() {
-    handleFilters();
+  handleFilters();
+  infinityEvent();
+  getMinMaxPrice();
 }   
 
 window.addEventListener('load', main);
