@@ -17,6 +17,7 @@ from common.viewmodel import ViewModel
 from config.database import create_metadata
 from data.seed import seed_data
 from middlewares.global_request import add_global_request
+from middlewares.session import add_session_middleware
 
 from views import(
     home,
@@ -100,6 +101,7 @@ def config_routes():
 
 def config_middlewares():
     add_global_request(app)
+    add_session_middleware(app)
 
 def config_exception_handlers():
     async def unauthorized_access_handler(*_, **__):
