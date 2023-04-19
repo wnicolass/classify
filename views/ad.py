@@ -50,13 +50,12 @@ async def sort_ads_category(
                 city, category_id, subcategory_id, order_by,  min_price, max_price)
 
     vm = await ViewModel()
-    print(order_by)
+    
     response = {
         'ads': filtered_ads,
         'city': city,
         'order_by': order_by,
         'is_logged_in': vm.is_logged_in,
-        
     }
     return response
 
@@ -79,7 +78,6 @@ async def show_ads_category(session: Annotated[AsyncSession, Depends(get_db_sess
 
     all_ads = await ad_service.get_ads_by_asc(category_id, session)
     min, max = get_min_max_price(all_ads)
-    print(min,max)
 
     return await ViewModel(
         all_categories = await category_service.get_all_categories(session),
@@ -89,7 +87,8 @@ async def show_ads_category(session: Annotated[AsyncSession, Depends(get_db_sess
         in_subcategories_view = False,
         in_categories_view = True,
         min_price = min,
-        max_price = max
+        max_price = max,
+        subject = ''
     )
 
 @router.get('/ads/subcategory/{subcategory_id}')
@@ -111,7 +110,8 @@ async def show_ads_category(request: Request, subcategory_id: int, session: Anno
         in_subcategories_view = in_subcategories_view,
         in_categories_view = True,
         min_price = min,
-        max_price = max
+        max_price = max,
+        subject = ''
     )
 
 @router.get('/ads/search')
