@@ -61,15 +61,6 @@ async def requires_authentication_secure():
         raise HTTPUnauthorizedAccess(detail = 'This area requires authentication')
 
 """
-    In a starter version of this app we were using cookies
-    to store user information on the browser, but we were only
-    storing the user_id. As now we need to store more information
-    (e.g. the nounce for oauth2 authentication) we are using sessions.
-    A Session is just a way to store temporary user data on the server,
-    through a unique session id that is stored on the browser.
-    But have in mind that we are not storing that user temporary data
-    on our server, we're storing in the cookies.
-
     The following lines of code were taken from:
     https://github.com/jfgalamba/Courseca22031
 """
