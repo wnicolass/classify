@@ -1,4 +1,16 @@
 <div metal:use-macro="load: ../shared/_layout.pt">
+  <__additional_script__ metal:fill-slot="additional_script" tal:omit-tag="True">
+    <script src="/public/scripts/get-cities-user-details.js" defer></script>
+    <script>
+      var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+      var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+        return new bootstrap.Tooltip(tooltipTriggerEl)  
+      })
+      $(function() {
+        $('.marker').tooltip({placement: 'right'});
+      });
+    </script>
+  </__additional_script__>
   <div metal:fill-slot="title" tal:omit-tag="True">
     <title> Definições de Perfil | Classify</title>
   </div>
@@ -33,53 +45,109 @@
               <div class="post_title">
                 <h5 class="title">Definições de Perfil</h5>
               </div>
-              <form action="/user/profile-settings" method="POST">
+              <form action="/user/profile-settings" method="POST" enctype="multipart/form-data">
                 <div class="row">
-                  <div class="col-md-6">
+                  <div class="col-md-6 sign_form_wrapper">
                     <div class="single_form">
-                      <input type="text" placeholder="Nome" name="username" value="${name}"/>
+                      <input 
+                        type="text" 
+                        placeholder="Nome" 
+                        name="username" 
+                        value="${username}" 
+                        minlength="2"
+                        maxlength="100"
+                        data-bs-toggle="tooltip" 
+                        data-bs-placement="top" 
+                        title="O seu nome deverá ter entre 2 a 100 letras (pode ter espaços)."
+                        />
+                      <i class="fal fa-user"></i>
+                    </div>
+                    <div class="single_form">
+                      <input 
+                        type="text" 
+                        placeholder="Número Telemóvel" 
+                        name="phone_number" 
+                        value="${phone_number}"
+                        minlength="9"
+                        maxlength="13"
+                        pattern="(^(\d\s?){9}$)|(^\+(\d\s?){12}$)" 
+                        data-bs-toggle="tooltip" 
+                        data-bs-placement="top" 
+                        title="O seu nº tel deverá ter 9 dígitos numéricos, ou 12 depois de um '+'."
+                        />
+                      <i class="fal fa-phone"></i>
+                    </div>
+                    <div class="single_form">
+                      <input 
+                        type="date" 
+                        placeholder="Data de Nascimento" 
+                        name="birth_date" 
+                        value="${birth_date}"
+                        data-bs-toggle="tooltip" 
+                        data-bs-placement="top" 
+                        title="A sua data de nascimento deverá seguir o formato DD/MM/AAAA."
+                        />
+                      <i class="fal fa-calendar"></i>
+                    </div>
+                    <div class="row">
+                      <div class="col-md-6">
+                        <div class="single_form">
+                          <input 
+                            type="text"
+                            id="countries-input"
+                            list="countries-datalist"
+                            placeholder="País" 
+                            name="country"
+                            value="${country}"
+                            maxlength="50"
+                            data-bs-toggle="tooltip" 
+                            data-bs-placement="top" 
+                            title="Escreva o seu país e escolha uma das opções."
+                            />
+                          <datalist id="countries-datalist">
+                            <__repeat tal:repeat="country all_countries" tal:omit-tag="True">
+                              <option value="${country.country}">
+                            </__repeat>
+                          </datalist>
+                          <i class="fal fa-globe"></i>
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <div class="single_form">
+                          <input type="text"
+                            id="cities-input"
+                            list="cities-datalist"
+                            placeholder="Cidade" 
+                            name="city"
+                            value="${city}"
+                            maxlength="50"
+                            data-bs-toggle="tooltip" 
+                            data-bs-placement="top" 
+                            title="Escreva a sua cidade e escolha uma das opções."
+                          />
+                          <datalist id="cities-datalist">
+                          </datalist>
+                          <i class="fal fa-building"></i>
+                        </div>
+                      </div>
                     </div>
                   </div>
                   <div class="col-md-6">
-                    <div class="single_form">
-                      <input type="email" placeholder="Endereço de Email" name="email" value="${email}"/>
+                    <div class="post_title">
+                      <h5 class="title">Altere a Imagem de Perfil</h5>
+                    </div>
+                    <div class="post_upload_file">
+                      <label for="upload">
+                        <span>Arrasta imagens aqui</span>
+                        <span>Ou</span>
+                        <span class="main-btn">Seleciona Imagens</span>
+                        <span>Máximo tamanho de upload: 500 KB</span>
+                        <input type="file" name="file" id="upload" accept="image/jpg,/image/png"/>
+                      </label>
                     </div>
                   </div>
-                  <div class="col-md-6">
-                    <div class="single_form">
-                      <input type="text" placeholder="Número Telemóvel" name="phone_number" value="${phone_number}"/>
-                    </div>
-                  </div>
-                  <div class="col-md-6">
-                    <div class="single_form">
-                      <input type="text" placeholder="Data de Nascimento" name="birth_date" value="${birth_date}"/>
-                    </div>
-                  </div>
-                  <div class="col-md-6">
-                    <div class="single_form">
-                      <button class="main-btn">Confirmar Alterações</button>
-                    </div>
-                  </div>
-                </div>
-              </form>
-            </div>
-            <div class="post_form mt-50">
-              <div class="post_title">
-                <h5 class="title">Definições de Password</h5>
-              </div>
-              <form action="#">
-                <div class="row">
-                  <div class="col-md-6">
-                    <div class="single_form">
-                      <input type="password" placeholder="Nova Password" />
-                    </div>
-                  </div>
-                  <div class="col-md-6">
-                    <div class="single_form">
-                      <input type="password" placeholder="Confirma Password" />
-                    </div>
-                  </div>
-                  <div class="col-md-6">
+                  
+                  <div class="col">
                     <div class="single_form">
                       <button class="main-btn">Confirmar Alterações</button>
                     </div>

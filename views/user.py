@@ -1,27 +1,37 @@
-from typing import Annotated
+import os
+from typing import Annotated, List
 from fastapi import (
     APIRouter, 
     Depends,
+    UploadFile,
     Request,
     responses,
     status
 )
 from fastapi_chameleon import template
-from chameleon import PageTemplateFile
+from uuid import uuid4
 from common.viewmodel import ViewModel
-from common.auth import requires_authentication
-from common.auth import get_current_auth_user
+from common.auth import (
+    requires_authentication, 
+    requires_authentication_secure,
+    get_current_auth_user, 
+    check_password,
+    hash_password,
+)
 from common.fastapi_utils import get_db_session, form_field_as_str
 from sqlalchemy.ext.asyncio import AsyncSession
-from services import user_service
-from models.user import UserAccount
+from models.user import UserAccount, UserLoginData
 from common.utils import (
     is_valid_birth_date, 
     is_valid_username,
+    is_valid_password,
     is_valid_phone_number,
-    handle_phone
+    handle_phone,
+    add_plus_sign_to_phone_number
 )
-from services import ad_service
+from services import ad_service, user_service
+from views.ad import fetch_countries
+from config.cloudinary import upload_image
 
 router = APIRouter()
 
@@ -32,59 +42,196 @@ async def dashboard():
 
 @router.get('/user/profile-settings', dependencies = [Depends(requires_authentication)])
 @template('user/profile-settings.pt')
-async def profile_settings():
+async def profile_settings(request: Request, session: Annotated[AsyncSession, Depends(get_db_session)]):
     user = await get_current_auth_user()
-    return await ViewModel(
-        name = user.username,
-        email = '',
-        phone_number = user.phone_number,
-        birth_date = user.birth_date
-    )
+    address = await user_service.get_user_address_by_user_id(user.user_id, session)
     
-@router.post('/user/profile-settings')
+    vm: ViewModel = await ViewModel()
+    
+    request_from = request.headers['referer'].split('/')[-1]
+    
+    if request_from == 'change-password':
+        vm.error, vm.error_msg = True, 'A sua conta foi criada pela Google e não possui password!'
+        
+    vm.phone_number = add_plus_sign_to_phone_number(user.phone_number)
+    vm.birth_date = user.birth_date
+    if address:
+        vm.country = address.country
+        vm.city = address.city
+    else:
+        vm.country = ''
+        vm.city = ''
+    vm.all_countries = await fetch_countries()
+        
+    return vm
+    
+@router.post('/user/profile-settings', dependencies = [Depends(requires_authentication_secure)])
 @template('user/profile-settings.pt')
 async def profile_settings(
     request: Request,
-    session: Annotated[AsyncSession, Depends(get_db_session)]
+    session: Annotated[AsyncSession, Depends(get_db_session)],
+    file: UploadFile | None = None
 ):
     user = await get_current_auth_user()
-    vm = await profile_settings_viewmodel(request, session, user)
-    
-    vm.name = user.username
-    vm.email = ''
-    vm.phone_number = user.phone_number
-    vm.birth_date = user.birth_date
+    vm = await profile_settings_viewmodel(request, session, user, file)
+    address = await user_service.get_user_address_by_user_id(user.user_id, session)
     
     if vm.error:
         return vm
     
-    template = PageTemplateFile('./templates/user/profile-settings.pt')
-    content = template(**vm)
-    return responses.HTMLResponse(content, status_code = status.HTTP_200_OK)
+    vm.username = vm.new_username
+    vm.phone_number = add_plus_sign_to_phone_number(user.phone_number)
+    vm.birth_date = user.birth_date
+    if address:
+        vm.country = address.country
+        vm.city = address.city
+    else:
+        vm.country = ''
+        vm.city = ''
+    vm.all_countries = await fetch_countries()
+    
+    return vm
 
 async def profile_settings_viewmodel(
     request: Request, 
     session: Annotated[AsyncSession, Depends(get_db_session)],
-    user: UserAccount
+    user: UserAccount,
+    file: UploadFile | None = None
 ):
     form_data = await request.form()
     
     vm = await ViewModel(
         new_username = form_field_as_str(form_data, 'username'),
         new_phone_number = form_field_as_str(form_data, 'phone_number'),
-        new_birth_date = form_field_as_str(form_data, 'birth_date')
+        new_birth_date = form_field_as_str(form_data, 'birth_date'),
+        new_country = form_field_as_str(form_data, 'country'),
+        new_city = form_field_as_str(form_data, 'city')
     )
     
-    if not is_valid_username(vm.new_username):
+    if vm.new_username != '' and not is_valid_username(vm.new_username):
         vm.error, vm.error_msg = True, 'Username inválido!'
-    elif not is_valid_phone_number(vm.new_phone_number):
+    elif vm.new_phone_number != '' and not is_valid_phone_number(vm.new_phone_number):
         vm.error, vm.error_msg = True, 'Número de telemóvel inválido!'    
-    elif not is_valid_birth_date(vm.new_birth_date):
+    elif vm.new_birth_date != '' and not is_valid_birth_date(vm.new_birth_date):
         vm.error, vm.error_msg = True, 'Data de nascimento inválida!'
+        
+    if file is not None:
+        file_size_in_bytes = len(await file.read())
+        file_size_in_kb = file_size_in_bytes / 1024
+        file_ext = os.path.splitext(file.filename)[-1]
+        if file_ext != "":
+            if file_size_in_kb > 500:
+                vm.error, vm.error_msg = True, 'O tamanho limite da imagem é de 500kb.'
+            elif file.content_type not in ('image/jpg', 'image/png', 'image/jpeg') or file_ext not in ['.jpg', '.jpeg', '.png']:
+                vm.error, vm.error_msg = True, 'Apenas imagens do tipo ".png", ".jpg" ou ".jpeg".'
+            await file.seek(0)
+    vm.all_countries = await fetch_countries()
+    
+    countries = []
+    for country in vm.all_countries:
+        countries.append(country['country'])
+    
+    if vm.new_country != '':
+        if vm.new_country not in countries:
+            vm.error, vm.error_msg = True, 'País inválido.'
+        else:
+            for dict in vm.all_countries:
+                if dict['country'] == vm.new_country:
+                    if vm.new_city not in dict['cities']:
+                        vm.error, vm.error_msg = True, 'Cidade inválida.'
+
     if not vm.error:
+        profile_picture_url = ''
+        if file_ext != "":
+            url = upload_image(file)
+            profile_picture_url = url['secure_url']
         if user:
-            await user_service.update_user_details(user, vm.new_username, handle_phone(vm.new_phone_number), vm.new_birth_date, session)
-            vm.success, vm.success_msg = True, 'Dados da conta alterados com sucesso!.'
+            await user_service.update_user_details(
+                user, 
+                vm.new_username, 
+                handle_phone(vm.new_phone_number), 
+                vm.new_birth_date, 
+                profile_picture_url,
+                session)
+        if user and vm.new_country != '' and vm.new_city != '':
+            user_address = await user_service.get_user_address_by_user_id(vm.user_id, session)
+            if not user_address:
+                user_address = await user_service.create_user_address(
+                    vm.new_country,
+                    vm.new_city,
+                    vm.user_id,
+                    session
+                )
+            else:
+                await user_service.update_user_address(user_address, vm.new_country, vm.new_city, session)
+        vm.success, vm.success_msg = True, 'Dados da conta alterados com sucesso!'
+    
+    return vm
+
+@router.get('/user/change-password', dependencies = [Depends(requires_authentication_secure)])
+@template('user/change-password.pt')
+async def change_password(session: Annotated[AsyncSession, Depends(get_db_session)]):
+    vm = await ViewModel()
+    user = await user_service.get_user_by_id(vm.user.user_id, session)
+    
+    if not user:
+        vm.error, vm.error_msg = True, "A sua conta, criada pela Google, não tem password para alterar!"
+        vm.login_data_exists = "no"
+        
+    if vm.error:
+        return vm
+    
+    return await change_password_viewmodel(session)
+
+async def change_password_viewmodel(session: Annotated[AsyncSession, Depends(get_db_session)]):
+    vm = await ViewModel()
+    
+    vm.login_data_exists = "yes"
+    
+    return vm
+
+@router.post('/user/change-password', dependencies = [Depends(requires_authentication_secure)])
+@template('user/change-password.pt')
+async def submit_password(request: Request, session: Annotated[AsyncSession, Depends(get_db_session)]):
+    vm = await ViewModel()
+    user = await user_service.get_user_by_id(vm.user.user_id, session)
+    if not user:
+        return responses.RedirectResponse(url = '/user/profile-settings', status_code = status.HTTP_303_SEE_OTHER)
+    
+    return await submit_password_viewmodel(request, session, user)
+
+async def submit_password_viewmodel(
+    request: Request, 
+    session: Annotated[AsyncSession, Depends(get_db_session)],
+    user: UserLoginData):
+    
+    form_data = await request.form()
+    
+    vm = await ViewModel(
+        current_password = form_field_as_str(form_data, 'current_password'),
+        new_password = form_field_as_str(form_data, 'new_password'),
+        confirm_password = form_field_as_str(form_data, 'confirm_password'),
+    )
+    vm.login_data_exists = "yes"
+    
+    if not check_password(vm.current_password + user.password_salt, user.password_hash):
+        vm.error, vm.error_msg = True, "A password atual está incorreta!"
+    elif vm.new_password != vm.confirm_password:
+        vm.error, vm.error_msg = True, "A confirmação de password está incorreta"
+    elif vm.new_password == vm.current_password:
+        vm.error, vm.error_msg = True, "A password nova é igual á atual!"
+    elif not is_valid_password(vm.new_password):
+        vm.error, vm.error_msg = True, 'A nova password é inválida!'
+        
+    salt = uuid4().hex
+    hashed_password = hash_password(vm.new_password + salt)
+    
+    if vm.error:
+        return vm
+    
+    if hashed_password and salt:
+        await user_service.update_user_password(user, hashed_password, salt, session)
+        vm.success, vm.success_msg = True, 'Password alterada com sucesso!'
     
     return vm
 
