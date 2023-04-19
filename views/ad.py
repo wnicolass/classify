@@ -122,9 +122,10 @@ async def search_by_title(
     description: str | None = None,
 ):
     ads_found = await ad_service.get_ads_by_title_or_description(session, title, description)
+    min, max = 0, 0
     if ads_found:
         min, max = get_min_max_price(ads_found)
-    min, max = 0, 0
+
     return await ViewModel(
         all_categories = await category_service.get_all_categories(session),
         all_ads = ads_found,
@@ -228,7 +229,8 @@ async def post_ad_viewmodel(request: Request, files: list[UploadFile], session: 
                 vm.error, vm.error_msg = True, 'Apenas imagens do tipo ".png", ".jpg" ou ".jpeg".'
                 break
             await file.seek(0)
-    elif user:= await get_user_account_by_id(vm.user_id, session):
+    
+    if user:= await get_user_account_by_id(vm.user_id, session):
         if not user.phone_number and len(vm.phone) == 0:
             vm.error, vm.error_msg = True, 'Insira um número de telemóvel com o seguinte formato: +351 123 456 789 ou 123 456 789'
 

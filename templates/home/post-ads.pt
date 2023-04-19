@@ -43,7 +43,7 @@
                   <input type="text" placeholder="Título do Anúncio" name="title"/>
                 </div>
                 <div class="single_form">
-                  <select id="categories-select" name="category">
+                  <select id="category-select" name="category">
                     <option value="none">Seleciona a Categoria</option>
                     <__repeat tal:repeat="category all_categories" tal:omit-tag="True">
                     <option value="${category.id}">${category.category_name}</option>

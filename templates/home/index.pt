@@ -77,10 +77,10 @@
                 </p>
                 <ul class="header_btn">
                   <li>
-                    <a class="main-btn" href="/products">Destaques Classify</a>
+                    <a class="main-btn" href="/ads/search">Destaques Classify</a>
                   </li>
                   <li>
-                    <a tal:condition='is_logged_in' class="main-btn main-btn-2" href="/ad"
+                    <a tal:condition='is_logged_in' class="main-btn main-btn-2" href="/new/ad"
                       >Publicar Anúncio</a
                     >
                     <a tal:condition='not is_logged_in' class="main-btn main-btn-2" href="/auth/sign-in"
@@ -196,7 +196,7 @@
             </div>
             
           <div class="published_btn">
-            <a href="/products" class="main-btn">Mais Anúncios</a>
+            <a href="/ads/search" class="main-btn">Mais Anúncios</a>
           </div>
         </div>
       </div>
