@@ -26,10 +26,10 @@ from common.auth import (
     hash_google_id,
     check_password,
     hash_recovery_token,
-    set_auth_cookie,
-    delete_auth_cookie,
     requires_unauthentication,
-    InvalidToken
+    InvalidToken,
+    set_current_user,
+    remove_current_user
 )
 from common.email import (send_email, EmailValidationStatus, send_reset_password_email)
 from services import user_service
@@ -184,7 +184,7 @@ async def post_sign_in(
         return vm
     
     response = responses.RedirectResponse(url = '/', status_code = status.HTTP_302_FOUND)
-    set_auth_cookie(response, vm.user)
+    set_current_user(vm.user.user_id)
     return response
 
 async def post_sign_in_viewmodel(
@@ -238,7 +238,7 @@ async def google_sign_in(
         await user_service.create_user_ext(db_user, hashed_id, 1, session)
     
     response = responses.RedirectResponse(url = '/', status_code = status.HTTP_302_FOUND)
-    set_auth_cookie(response, db_user)
+    set_current_user(db_user.user_id)
     db_user.last_login = datetime.now()
     await session.commit()
     return response
@@ -254,7 +254,7 @@ def google_sign_in_viewmodel(credentials: Credentials):
 @router.get('/auth/logout')
 async def logout():
     response = responses.RedirectResponse(url = '/', status_code = status.HTTP_302_FOUND)
-    delete_auth_cookie(response)
+    remove_current_user()
     return response
 
 @router.get('/auth/reset-password', dependencies = [Depends(requires_unauthentication)])
