@@ -82,13 +82,13 @@
     </div>
 
     <div class="container">
-      <div class="header_search" style="padding-bottom: 13px;">
+      <div class="header_search" style="padding-bottom: 13px; background-color: #fff;">
         <form action="/ads/search" method="GET">
           <div class="search_wrapper d-flex flex-wrap">
             <div class="search_column d-flex flex-wrap" style="width: 100%;">
               <div class="search_form mt-15" style="width: 85%;">
-                <input type="text" placeholder="Type Your Keyword" name="title" value="${subject}"/>
-                <i class="fa-solid fa-i-cursor"></i>
+                <input type="text" placeholder="O que procuras?" name="title" value="${subject}" style="background-color: #f0f0f0;"/>
+                <i class="fa-solid fa-magnifying-glass" style="color: #463ce5b0; margin-left: -3.5px;"></i>
               </div>
               <div class="search_btn mt-15" style="width: 15%;">
                 <button type="submit" class="main-btn">Pesquisar</button>
@@ -98,7 +98,7 @@
           <div class="single_form d-sm-flex mt-10">
             <div class="sign_checkbox" style="display: flex; align-items: center; gap: .3rem; margin-left: .7rem;">
               <input type="checkbox" id="checkbox" name="description"/>
-              <label id="search-label" for="checkbox" style="color: #fff;margin: 0 0 0 12px;">Também pesquisar por descrição.</label>
+              <label id="search-label" for="checkbox" style="color: #565656;margin: 0 0 0 12px;">Também pesquisar por descrição</label>
             </div>
           </div>
         </form>
