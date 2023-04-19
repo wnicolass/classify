@@ -9,16 +9,22 @@ from fastapi import (
     status
 )
 from fastapi_chameleon import template
-from chameleon import PageTemplateFile
+from uuid import uuid4
 from common.viewmodel import ViewModel
-from common.auth import requires_authentication, requires_authentication_secure
-from common.auth import get_current_auth_user
+from common.auth import (
+    requires_authentication, 
+    requires_authentication_secure,
+    get_current_auth_user, 
+    check_password,
+    hash_password,
+)
 from common.fastapi_utils import get_db_session, form_field_as_str
 from sqlalchemy.ext.asyncio import AsyncSession
-from models.user import UserAccount
+from models.user import UserAccount, UserLoginData
 from common.utils import (
     is_valid_birth_date, 
     is_valid_username,
+    is_valid_password,
     is_valid_phone_number,
     handle_phone,
     add_plus_sign_to_phone_number
@@ -40,13 +46,13 @@ async def profile_settings(request: Request, session: Annotated[AsyncSession, De
     user = await get_current_auth_user()
     address = await user_service.get_user_address_by_user_id(user.user_id, session)
     
-    vm = await ViewModel()
+    vm: ViewModel = await ViewModel()
+    
     request_from = request.headers['referer'].split('/')[-1]
     
-    if request_from == 'profile-settings':
-        vm.success, vm.success_msg = True, 'Dados da conta alterados com sucesso!'
-
-    vm.name = user.username
+    if request_from == 'change-password':
+        vm.error, vm.error_msg = True, 'A sua conta foi criada pela Google e não possui password!'
+        
     vm.phone_number = add_plus_sign_to_phone_number(user.phone_number)
     vm.birth_date = user.birth_date
     if address:
@@ -70,7 +76,10 @@ async def profile_settings(
     vm = await profile_settings_viewmodel(request, session, user, file)
     address = await user_service.get_user_address_by_user_id(user.user_id, session)
     
-    vm.name = user.username
+    if vm.error:
+        return vm
+    
+    vm.username = vm.new_username
     vm.phone_number = add_plus_sign_to_phone_number(user.phone_number)
     vm.birth_date = user.birth_date
     if address:
@@ -79,11 +88,9 @@ async def profile_settings(
     else:
         vm.country = ''
         vm.city = ''
+    vm.all_countries = await fetch_countries()
     
-    if vm.error:
-        return vm
-    
-    return responses.RedirectResponse(url = '/user/profile-settings', status_code = status.HTTP_302_FOUND)
+    return vm
 
 async def profile_settings_viewmodel(
     request: Request, 
@@ -123,14 +130,15 @@ async def profile_settings_viewmodel(
     countries = []
     for country in vm.all_countries:
         countries.append(country['country'])
-       
-    if vm.new_country not in countries:
-        vm.error, vm.error_msg = True, 'País inválido.'
-    else:
-        for dict in vm.all_countries:
-            if dict['country'] == vm.new_country:
-                if vm.new_city not in dict['cities']:
-                    vm.error, vm.error_msg = True, 'Cidade inválida.'
+    
+    if vm.new_country != '':
+        if vm.new_country not in countries:
+            vm.error, vm.error_msg = True, 'País inválido.'
+        else:
+            for dict in vm.all_countries:
+                if dict['country'] == vm.new_country:
+                    if vm.new_city not in dict['cities']:
+                        vm.error, vm.error_msg = True, 'Cidade inválida.'
 
     if not vm.error:
         profile_picture_url = ''
@@ -162,9 +170,70 @@ async def profile_settings_viewmodel(
 
 @router.get('/user/change-password', dependencies = [Depends(requires_authentication_secure)])
 @template('user/change-password.pt')
-async def dashboard():
-    return await ViewModel()
+async def change_password(session: Annotated[AsyncSession, Depends(get_db_session)]):
+    vm = await ViewModel()
+    user = await user_service.get_user_by_id(vm.user.user_id, session)
+    
+    if not user:
+        vm.error, vm.error_msg = True, "A sua conta, criada pela Google, não tem password para alterar!"
+        vm.login_data_exists = "no"
+        
+    if vm.error:
+        return vm
+    
+    return await change_password_viewmodel(session)
 
+async def change_password_viewmodel(session: Annotated[AsyncSession, Depends(get_db_session)]):
+    vm = await ViewModel()
+    
+    vm.login_data_exists = "yes"
+    
+    return vm
+
+@router.post('/user/change-password', dependencies = [Depends(requires_authentication_secure)])
+@template('user/change-password.pt')
+async def submit_password(request: Request, session: Annotated[AsyncSession, Depends(get_db_session)]):
+    vm = await ViewModel()
+    user = await user_service.get_user_by_id(vm.user.user_id, session)
+    if not user:
+        return responses.RedirectResponse(url = '/user/profile-settings', status_code = status.HTTP_303_SEE_OTHER)
+    
+    return await submit_password_viewmodel(request, session, user)
+
+async def submit_password_viewmodel(
+    request: Request, 
+    session: Annotated[AsyncSession, Depends(get_db_session)],
+    user: UserLoginData):
+    
+    form_data = await request.form()
+    
+    vm = await ViewModel(
+        current_password = form_field_as_str(form_data, 'current_password'),
+        new_password = form_field_as_str(form_data, 'new_password'),
+        confirm_password = form_field_as_str(form_data, 'confirm_password'),
+    )
+    vm.login_data_exists = "yes"
+    
+    if not check_password(vm.current_password + user.password_salt, user.password_hash):
+        vm.error, vm.error_msg = True, "A password atual está incorreta!"
+    elif vm.new_password != vm.confirm_password:
+        vm.error, vm.error_msg = True, "A confirmação de password está incorreta"
+    elif vm.new_password == vm.current_password:
+        vm.error, vm.error_msg = True, "A password nova é igual á atual!"
+    elif not is_valid_password(vm.new_password):
+        vm.error, vm.error_msg = True, 'A nova password é inválida!'
+        
+    salt = uuid4().hex
+    hashed_password = hash_password(vm.new_password + salt)
+    
+    if vm.error:
+        return vm
+    
+    if hashed_password and salt:
+        await user_service.update_user_password(user, hashed_password, salt, session)
+        vm.success, vm.success_msg = True, 'Password alterada com sucesso!'
+    
+    return vm
 
 @router.get('/user/my-ads', dependencies = [Depends(requires_authentication)])
 @template('user/my-ads.pt')
