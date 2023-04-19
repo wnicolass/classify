@@ -49,7 +49,6 @@ async def profile_settings(request: Request, session: Annotated[AsyncSession, De
     vm: ViewModel = await ViewModel()
     
     request_from = request.headers['referer'].split('/')[-1]
-    print(request.headers)
     
     if request_from == 'change-password':
         vm.error, vm.error_msg = True, 'A sua conta foi criada pela Google e não possui password!'
@@ -218,7 +217,7 @@ async def submit_password_viewmodel(
     if not check_password(vm.current_password + user.password_salt, user.password_hash):
         vm.error, vm.error_msg = True, "A password atual está incorreta!"
     elif vm.new_password != vm.confirm_password:
-        vm.error, vm.error_msg = True, "As confirmação de password está incorreta"
+        vm.error, vm.error_msg = True, "A confirmação de password está incorreta"
     elif vm.new_password == vm.current_password:
         vm.error, vm.error_msg = True, "A password nova é igual á atual!"
     elif not is_valid_password(vm.new_password):
