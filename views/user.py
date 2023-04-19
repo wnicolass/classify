@@ -267,8 +267,25 @@ async def payments():
 
 @router.get('/user/favourite-ads', dependencies = [Depends(requires_authentication)])
 @template('user/favourite-ads.pt')
-async def favourite_ads():
-    return await ViewModel()
+async def favourite_ads(session: Annotated[AsyncSession, Depends(get_db_session)]):
+    vm = await ViewModel()
+    
+    favorite_active_ads = await ad_service.get_favorite_ads_by_user_id_and_status(session, vm.user_id, 1)
+    
+    vm.favorite_active_ads = favorite_active_ads
+    vm.favorite_active_ads_count = len(favorite_active_ads)
+    
+    favorite_expired_ads = await ad_service.get_favorite_ads_by_user_id_and_status(session, vm.user_id, 3)
+    favorite_sold_ads = await ad_service.get_favorite_ads_by_user_id_and_status(session, vm.user_id, 4)
+    
+    favorite_not_active_ads = favorite_expired_ads
+    for ad in favorite_sold_ads:
+        favorite_not_active_ads.append(ad)
+    
+    vm.favorite_not_active_ads = favorite_not_active_ads
+    vm.favorite_not_active_ads_count = len(favorite_not_active_ads)
+    
+    return vm
 
 @router.post('/user/favourite/{ad_id}')
 async def add_ad_to_favourites(
