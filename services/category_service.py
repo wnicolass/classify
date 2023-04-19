@@ -38,7 +38,7 @@ async def get_subcategory_by_category_id(category_id: int, session: AsyncSession
 
     return subcategories
 
-async def get_category_by_subcategory_id(subcategory_id: int, session: AsyncSession) -> Category:
+async def get_category_by_subcategory_id(subcategory_id: int, session: AsyncSession) -> int:
     query = await session.execute(select(Category)
         .join(Category.subcategories)
         .where(Subcategory.id == subcategory_id)
