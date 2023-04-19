@@ -418,6 +418,9 @@
         <!--====== Main js ======-->
         <script src="/public/assets/js/main.js"></script>
 
+        <!--====== Toast js ======-->
+        <script src="/public/scripts/toast.js"></script>
+
         <__additional_script__ metal:define-slot="additional_script" tal:omit-tag="True"></__additional_script__>
     </body>
 </html>
