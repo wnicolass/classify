@@ -109,13 +109,13 @@ async def post_sign_up_viewmodel(
         salt = uuid4().hex
         hashed_password = hash_password(vm.password + salt)
         user_data = await user_service.create_user_login_data(
-            user.user_id,
-            hashed_password,
-            salt,
-            vm.email,
-            2,
-            2,
-            session
+            user_id = user.user_id,
+            email = vm.email,
+            email_validation_status_id = 2,
+            session = session,
+            hashed_password = hashed_password,
+            password_salt = salt,
+            hash_algo_id = 2,
         )
         bg_task.add_task(send_email, [vm.email], user, session)
         vm.user = user
@@ -197,7 +197,7 @@ async def post_sign_in_viewmodel(
         password = form_field_as_str(form_data, 'password')
     )
 
-    user = await user_service.get_user_by_email(vm.email, session)
+    user = await user_service.get_user_login_data_by_email(vm.email, session)
 
     if not user:
         vm.error, vm.error_msg = True, f'Utilizador com email {vm.email} não encontrado.'
