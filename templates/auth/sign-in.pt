@@ -17,19 +17,18 @@
   }
 
   #microsoft-login-btn {
-    margin-top: 1rem;
-    width: 100%;
-    text-align: center;
     background-color: #fbfbfb;
-    box-shadow: 0px 5px #FF4367;
-    padding: 0.5rem;
     color: #FF4367;
     font-weight: 700;
+    text-align: center;
+    width: 100%;
+    margin-top: 1rem;
+    padding: 0.5rem;
+    border: 2px solid #ff436770;
   }
 
-  #microsoft-login-btn:active {
-    transform: translateY(5px);
-    box-shadow: 0px 2px #FF4367;
+  #microsoft-login-btn:hover {
+    border: 5px solid #ff436770;
   }
 
   .sign_form_wrapper:has(> a) > a {
