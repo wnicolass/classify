@@ -3,8 +3,7 @@ from typing import List
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
 from sqlalchemy.orm import joinedload
-from models.user import UserAccount, UserLoginData, UserLoginDataExt, UserAddress, Favourite
-from models.ad import Ad
+from models.user import UserAccount, UserLoginData, UserLoginDataExt, UserAddress, Favourite, ExternalProvider
 
 # CREATE
 async def create_user(username: str, phone_number: str, birth_date: str, is_active: int, session: AsyncSession, image_url: str | None = None) -> UserAccount:
@@ -21,7 +20,12 @@ async def create_user(username: str, phone_number: str, birth_date: str, is_acti
     await session.refresh(user)
     return user
 
-async def create_user_ext(user: UserAccount, token: str, external_provider_id: int, session: AsyncSession):
+async def create_user_ext(
+    user: UserAccount, 
+    token: str, 
+    session: AsyncSession,
+    external_provider_id: int = 1 
+):
     external_data = UserLoginDataExt(external_provider_token = token, external_provider_id = external_provider_id, user_id = user.user_id)
     session.add(external_data)
     await session.commit()
@@ -48,12 +52,6 @@ async def add_new_favourite(user_id: int, ad_id: int, session: AsyncSession) -> 
     await session.refresh(fav)
     
     return fav
-    
-async def create_user_ext(user: UserAccount, token: str, external_provider_id: int, session: AsyncSession):
-    external_data = UserLoginDataExt(external_provider_token = token, external_provider_id = external_provider_id, user_id = user.user_id)
-    session.add(external_data)
-    await session.commit()
-    await session.refresh(user)
 
 async def create_user_login_data(user_id: int, hashed_password: str, password_salt: str, email: str, hash_algo_id: int, email_validation_status_id: int, session: AsyncSession) -> UserLoginData:
     user_login_data = UserLoginData(
@@ -86,10 +84,14 @@ async def create_user_address(
     return user_address
 
 # READ
-async def get_user_by_email(email: str, session: AsyncSession) -> UserLoginData | None:
-    query = await session.execute(select(UserLoginData).where(UserLoginData.email_addr == email))
+async def get_user_by_email(email: str, session: AsyncSession) -> UserAccount:
+    query = await session.execute(
+        select(UserAccount)
+        .join(UserLoginData)
+        .where(UserLoginData.email_addr == email)
+    )
     user = query.scalar_one_or_none()
-    
+
     return user
 
 async def get_user_by_id(id: int, session: AsyncSession) -> UserLoginData:
@@ -132,8 +134,14 @@ async def get_user_by_email_token(token: str, session: AsyncSession) -> UserLogi
 
     return user
 
-async def get_user_by_google_hash(token: str, session: AsyncSession) -> UserLoginDataExt:
-    result = await session.execute(select(UserLoginDataExt).where(UserLoginDataExt.external_provider_token == token))
+async def get_user_by_hashed_sub(token: str, session: AsyncSession, ext_provider_id: int = 1) -> UserAccount:
+    result = await session.execute(
+        select(UserAccount)
+        .join(UserLoginDataExt)
+        .join(ExternalProvider)
+        .where(UserLoginDataExt.external_provider_token == token)
+        .where(ExternalProvider.id == ext_provider_id)
+    )
     user_ext_data = result.scalar_one_or_none()
     return user_ext_data
     
@@ -141,6 +149,18 @@ async def get_user_address_by_user_id(user_id: int, session: AsyncSession) -> Us
     result = await session.execute(select(UserAddress).where(UserAddress.user_id == user_id))
     user_address = result.scalar_one_or_none()
     return user_address
+
+async def get_external_provider_by_id(
+    session: AsyncSession, 
+    ext_provider_id: int = 1
+) -> ExternalProvider:
+    query_result = await session.execute(
+        select(ExternalProvider)
+        .where(ExternalProvider.id == ext_provider_id)
+    )
+    external_provider = query_result.scalar_one_or_none()
+
+    return external_provider
 
 # UPDATE
 async def set_email_confirmation_token(user_id: int, token: str, expiration_time: datetime, session: AsyncSession):
