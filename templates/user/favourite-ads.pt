@@ -60,7 +60,7 @@
                       role="tab"
                       aria-controls="active-favs"
                       aria-selected="false"
-                      >Ativos (${favorite_active_ads_count})</a
+                      >Ativos (${len(user.active_favs)})</a
                     >
                   </li>
                   <li>
@@ -71,7 +71,7 @@
                       role="tab"
                       aria-controls="not-active-favs"
                       aria-selected="false"
-                      >Não Ativos (${favorite_not_active_ads_count})</a
+                      >Não Ativos (${len(user.inactive_favs)})</a
                     >
                   </li>
                 </ul>
@@ -164,44 +164,44 @@
                       </tr>
                     </thead>
                     <tbody>
-                      <__repeat tal:repeat="fav favorite_active_ads" tal:omit-tag="True">
+                      <__repeat tal:repeat="fav user.active_favs" tal:omit-tag="True">
                         <tr>
                           <td class="photo">
                             <div class="table_photo">
-                              <a href="/ad/${fav.id}">
+                              <a href="/ad/${fav.ad.id}">
                                 <img
-                                  src="${fav.main_image}"
-                                  alt="${fav.title}"
+                                  src="${fav.ad.main_image}"
+                                  alt="${fav.ad.title}"
                                 />
                               </a>
                             </div>
                           </td>
                           <td class="title">
                             <div class="table_title">
-                              <h6 class="titles"><a href="/ad/${fav.id}">${fav.title}</a></h6>
-                              <p>Ad ID: ${fav.id}</p>
+                              <h6 class="titles"><a href="/ad/${fav.ad.id}">${fav.ad.title}</a></h6>
+                              <p>Ad ID: ${fav.ad.id}</p>
                             </div>
                           </td>
                           <td class="category" style="padding-left: 10px;">
                             <div class="table_category">
-                              <p>${fav.subcategory.subcategory_name}</p>
+                              <p>${fav.ad.subcategory.subcategory_name}</p>
                             </div>
                           </td>
                           <td class="status">
                             <div class="table_status">
-                              <span class="${fav.ad_status.status_name_internal}">${fav.ad_status.status_name}</span>
+                              <span class="${fav.ad.ad_status.status_name_internal}">${fav.ad.ad_status.status_name}</span>
                             </div>
                           </td>
                           <td class="price" style="text-align: center;">
                             <div class="table_price">
-                              <span>${fav.price}€</span>
+                              <span>${fav.ad.price}€</span>
                             </div>
                           </td>
                           <td class="action">
                             <div class="table_action">
                               <ul style="text-align: center;">
                                 <li style="padding-right: 23px;">
-                                  <a data-adid="${fav.id}" class="delete-fav" style="cursor: pointer;width: 3rem;height: 3rem;display: flex;align-items: center;justify-content: center;"><i style="font-size: 1.5rem;" class="fal fa-trash-alt"></i></a>
+                                  <a data-adid="${fav.ad.id}" class="delete-fav" style="cursor: pointer;width: 3rem;height: 3rem;display: flex;align-items: center;justify-content: center;"><i style="font-size: 1.5rem;" class="fal fa-trash-alt"></i></a>
                                 </li>
                               </ul>
                             </div>
@@ -232,44 +232,44 @@
                       </tr>
                     </thead>
                     <tbody>
-                      <__repeat tal:repeat="fav favorite_not_active_ads" tal:omit-tag="True">
+                      <__repeat tal:repeat="fav user.inactive_favs" tal:omit-tag="True">
                         <tr>
                           <td class="photo">
                             <div class="table_photo">
-                              <a href="/ad/${fav.id}">
+                              <a href="/ad/${fav.ad.id}">
                                 <img
-                                  src="${fav.main_image}"
-                                  alt="${fav.title}"
+                                  src="${fav.ad.main_image}"
+                                  alt="${fav.ad.title}"
                                 />
                               </a>
                             </div>
                           </td>
                           <td class="title">
                             <div class="table_title">
-                              <h6 class="titles"><a href="/ad/${fav.id}">${fav.title}</a></h6>
-                              <p>Ad ID: ${fav.id}</p>
+                              <h6 class="titles"><a href="/ad/${fav.ad.id}">${fav.ad.title}</a></h6>
+                              <p>Ad ID: ${fav.ad.id}</p>
                             </div>
                           </td>
                           <td class="category" style="padding-left: 10px;">
                             <div class="table_category">
-                              <p>${fav.subcategory.subcategory_name}</p>
+                              <p>${fav.ad.subcategory.subcategory_name}</p>
                             </div>
                           </td>
                           <td class="status">
                             <div class="table_status">
-                              <span class="${fav.ad_status.status_name_internal}">${fav.ad_status.status_name}</span>
+                              <span class="${fav.ad.ad_status.status_name_internal}">${fav.ad.ad_status.status_name}</span>
                             </div>
                           </td>
                           <td class="price" style="text-align: center;">
                             <div class="table_price">
-                              <span>${fav.price}€</span>
+                              <span>${fav.ad.price}€</span>
                             </div>
                           </td>
                           <td class="action">
                             <div class="table_action">
                               <ul style="text-align: center;">
                                 <li style="padding-right: 23px;">
-                                  <a data-adid="${fav.id}" class="delete-fav" style="cursor: pointer;width: 3rem;height: 3rem;display: flex;align-items: center;justify-content: center;"><i style="font-size: 1.5rem;" class="fal fa-trash-alt"></i></a>
+                                  <a data-adid="${fav.ad.id}" class="delete-fav" style="cursor: pointer;width: 3rem;height: 3rem;display: flex;align-items: center;justify-content: center;"><i style="font-size: 1.5rem;" class="fal fa-trash-alt"></i></a>
                                 </li>
                               </ul>
                             </div>
@@ -280,6 +280,7 @@
                   </table>
                 </div>
               </div>
+              
             </div>
           </div>
         </div>
