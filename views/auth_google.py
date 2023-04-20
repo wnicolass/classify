@@ -131,7 +131,7 @@ async def google_external_login_response(
         http_session, 
         tokens,
     )
-    print(decoded_id_token)
+    
     if decoded_id_token:
         await authenticate_user(decoded_id_token, session)
 
@@ -158,7 +158,6 @@ async def exchange_code_for_tokens(code: str, client: httpx.AsyncClient):
         res = await async_client.post(token_endpoint, data = request_body)
         data = res.json()
     
-    print(data)
     return {
         'access_token': data['access_token'],
         'expires_in': data['expires_in'],
@@ -185,7 +184,7 @@ async def validate_and_decode_token(
             audience = GOOGLE_CLIENT_ID,
             access_token = tokens['access_token']
         )
-        print(decoded_token)
+        
         issuer = decoded_token['iss']
         if issuer not in [
             'https://accounts.google.com', 
@@ -239,10 +238,19 @@ async def authenticate_user(id_token: dict, session: AsyncSession):
     if user_found_by_email:
         if not user_found_by_sub:
             await user_service.create_user_ext(
-            new_user,
-            hashed_sub,
-            session
-        )
+                user_found_by_email,
+                hashed_sub,
+                session
+            )
+            await user_service.update_user_details(
+                user = user_found_by_email,
+                new_username = '',
+                new_phone_number = '',
+                new_birth_date = '',
+                new_profile_picture_link = id_token['profile_picture'],
+                session = session
+            )
+           
         return set_current_user(user_found_by_email.user_id)
     
     """
@@ -250,7 +258,7 @@ async def authenticate_user(id_token: dict, session: AsyncSession):
         Potentially is a new user, so create a new user account, and then associate
         a external data to this created user.
     """
-    if not user_found_by_sub:    
+    if not user_found_by_sub:
         new_user = await user_service.create_user(
             username = id_token['username'],
             phone_number = None, 
@@ -259,19 +267,18 @@ async def authenticate_user(id_token: dict, session: AsyncSession):
             is_active = int(id_token['email_verified']),
             session = session
         )
+        await user_service.create_user_login_data(
+            new_user.user_id,
+            id_token['email_address'],
+            1,
+            session
+        )
         await user_service.create_user_ext(
             new_user,
             hashed_sub,
             session
         )
         return set_current_user(new_user.user_id)
-    
-    """
-        3. User don't have an email in the table UserLoginData
-        but have external login data, so it's a user that is already
-        registered on the website.
-    """
-    set_current_user(user_found_by_sub.user_id)
 
 async def get_discovery_document(client: httpx.AsyncClient):
     async with client() as async_client:
