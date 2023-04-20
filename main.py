@@ -17,6 +17,7 @@ from common.viewmodel import ViewModel
 from config.database import create_metadata
 from data.seed import seed_data
 from middlewares.global_request import add_global_request
+from middlewares.session import add_session_middleware
 
 from views import(
     home,
@@ -24,7 +25,8 @@ from views import(
     posts,
     auth,
     common,
-    ad
+    ad,
+    auth_google
 ) 
 
 app = FastAPI()
@@ -95,11 +97,12 @@ def config_templates():
 
 def config_routes():
     app.mount('/public', StaticFiles(directory='public'), name='static')
-    for view in [home, user, auth, ad, posts, common]:
+    for view in [home, user, auth, auth_google, ad, posts, common]:
         app.include_router(view.router)
 
 def config_middlewares():
     add_global_request(app)
+    add_session_middleware(app)
 
 def config_exception_handlers():
     async def unauthorized_access_handler(*_, **__):

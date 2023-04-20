@@ -1,6 +1,6 @@
 from asyncinit import asyncinit
 from typing import Any
-from common.auth import get_current_auth_user
+from common.auth import get_current_user
 
 """
     The ViewModel is responsable to prepare (and sometimes get) 
@@ -26,7 +26,7 @@ from common.auth import get_current_auth_user
 @asyncinit
 class ViewModel(dict):
     async def __init__(self, *args, **kargs):
-        user = await get_current_auth_user()
+        user = await get_current_user()
         all = {
             'success': None,
             'success_msg': None,

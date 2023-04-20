@@ -1,3 +1,7 @@
+import hashlib
+import math
+import os
+import secrets
 from datetime import date
 from typing import List
 import regex
@@ -39,6 +43,20 @@ def add_plus_sign_to_phone_number(phone_number: str) -> str:
         if len(phone_number) == 12:
             phone_number = "+" + phone_number
     return phone_number
+
+def generate_csrf_token() -> str:
+    return hashlib.sha256(os.urandom(1024)).hexdigest()
+
+def generate_nonce(length: int) -> str:
+    return secrets.token_hex(math.ceil(length / 2))[:length]
+
+def is_ascii(txt: str) -> bool:
+    try:
+        txt.encode('ascii')
+    except UnicodeEncodeError:
+        return False
+    else:
+        return True
 
 is_valid_email = make_test_regex_fn(
     r"[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*"

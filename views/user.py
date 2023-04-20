@@ -1,5 +1,5 @@
 import os
-from typing import Annotated, List
+from typing import Annotated
 from fastapi import (
     APIRouter, 
     Depends,
@@ -12,9 +12,9 @@ from fastapi_chameleon import template
 from uuid import uuid4
 from common.viewmodel import ViewModel
 from common.auth import (
-    requires_authentication, 
+    requires_authentication,
+    get_current_user,
     requires_authentication_secure,
-    get_current_auth_user, 
     check_password,
     hash_password,
 )
@@ -43,7 +43,7 @@ async def dashboard():
 @router.get('/user/profile-settings', dependencies = [Depends(requires_authentication)])
 @template('user/profile-settings.pt')
 async def profile_settings(request: Request, session: Annotated[AsyncSession, Depends(get_db_session)]):
-    user = await get_current_auth_user()
+    user = await get_current_user()
     address = await user_service.get_user_address_by_user_id(user.user_id, session)
     
     vm: ViewModel = await ViewModel()
@@ -72,7 +72,7 @@ async def profile_settings(
     session: Annotated[AsyncSession, Depends(get_db_session)],
     file: UploadFile | None = None
 ):
-    user = await get_current_auth_user()
+    user = await get_current_user()
     vm = await profile_settings_viewmodel(request, session, user, file)
     address = await user_service.get_user_address_by_user_id(user.user_id, session)
     

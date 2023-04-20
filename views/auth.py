@@ -23,13 +23,12 @@ from common.utils import (
 )
 from common.auth import (
     hash_password,
-    hash_google_id,
     check_password,
     hash_recovery_token,
-    set_auth_cookie,
-    delete_auth_cookie,
     requires_unauthentication,
-    InvalidToken
+    InvalidToken,
+    set_current_user,
+    remove_current_user
 )
 from common.email import (send_email, EmailValidationStatus, send_reset_password_email)
 from services import user_service
@@ -110,13 +109,13 @@ async def post_sign_up_viewmodel(
         salt = uuid4().hex
         hashed_password = hash_password(vm.password + salt)
         user_data = await user_service.create_user_login_data(
-            user.user_id,
-            hashed_password,
-            salt,
-            vm.email,
-            2,
-            2,
-            session
+            user_id = user.user_id,
+            email = vm.email,
+            email_validation_status_id = 2,
+            session = session,
+            hashed_password = hashed_password,
+            password_salt = salt,
+            hash_algo_id = 2,
         )
         bg_task.add_task(send_email, [vm.email], user, session)
         vm.user = user
@@ -184,7 +183,7 @@ async def post_sign_in(
         return vm
     
     response = responses.RedirectResponse(url = '/', status_code = status.HTTP_302_FOUND)
-    set_auth_cookie(response, vm.user)
+    set_current_user(vm.user.user_id)
     return response
 
 async def post_sign_in_viewmodel(
@@ -198,7 +197,7 @@ async def post_sign_in_viewmodel(
         password = form_field_as_str(form_data, 'password')
     )
 
-    user = await user_service.get_user_by_email(vm.email, session)
+    user = await user_service.get_user_login_data_by_email(vm.email, session)
 
     if not user:
         vm.error, vm.error_msg = True, f'Utilizador com email {vm.email} não encontrado.'
@@ -214,47 +213,10 @@ async def post_sign_in_viewmodel(
         vm.user = user
     return vm
 
-@router.post('/auth/google')
-async def google_sign_in(
-    request: Request, 
-    session: Annotated[AsyncSession, Depends(get_db_session)]
-):
-    form_data = await request.form()
-    credential = form_field_as_str(form_data, 'credential')
-    user_info = google_sign_in_viewmodel(credential)
-
-    hashed_id = hash_google_id(user_info['sub'])
-    db_user = await user_service.get_user_by_google_hash(hashed_id, session)
-
-    if not db_user:
-        db_user = await user_service.create_user(
-            username = user_info['name'], 
-            phone_number = None, 
-            birth_date = None, 
-            image_url = user_info['picture'], 
-            is_active = int(user_info['email_verified']), 
-            session = session
-        )
-        await user_service.create_user_ext(db_user, hashed_id, 1, session)
-    
-    response = responses.RedirectResponse(url = '/', status_code = status.HTTP_302_FOUND)
-    set_auth_cookie(response, db_user)
-    db_user.last_login = datetime.now()
-    await session.commit()
-    return response
-
-def google_sign_in_viewmodel(credentials: Credentials):
-    id_info = verify_oauth2_token(credentials, requests.Request(), os.getenv('CLIENT_ID'), 1)
-    
-    if id_info['iss'] not in ['accounts.google.com', 'https://accounts.google.com']:
-        raise ValueError('Invalid issuer')
-
-    return id_info
-
 @router.get('/auth/logout')
 async def logout():
     response = responses.RedirectResponse(url = '/', status_code = status.HTTP_302_FOUND)
-    delete_auth_cookie(response)
+    remove_current_user()
     return response
 
 @router.get('/auth/reset-password', dependencies = [Depends(requires_unauthentication)])
