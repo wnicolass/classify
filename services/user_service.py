@@ -97,7 +97,7 @@ async def get_user_login_data_by_email(email: str, session: AsyncSession) -> Use
 
     return user
 
-async def get_user_by_id(id: int, session: AsyncSession) -> UserLoginData:
+async def get_user_login_data_by_id(id: int, session: AsyncSession) -> UserLoginData:
     query = await session.execute(select(UserLoginData).where(UserLoginData.user_id == id))
     user = query.scalar_one_or_none()
     
@@ -167,13 +167,13 @@ async def get_external_provider_by_id(
 
 # UPDATE
 async def set_email_confirmation_token(user_id: int, token: str, expiration_time: datetime, session: AsyncSession):
-    user = await get_user_by_id(user_id, session)
+    user = await get_user_login_data_by_id(user_id, session)
     user.confirm_token = token
     user.confirm_token_time = expiration_time
     await session.commit()
 
 async def set_user_recovery_token(user: UserLoginData, recovery_token_hash: str, recovery_token_time: datetime, session: AsyncSession):
-    user = await get_user_by_id(user.user_id, session)
+    user = await get_user_login_data_by_id(user.user_id, session)
     user.recovery_token = recovery_token_hash
     user.recovery_token_time = recovery_token_time
     await session.commit()
