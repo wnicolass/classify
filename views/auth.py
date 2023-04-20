@@ -23,7 +23,6 @@ from common.utils import (
 )
 from common.auth import (
     hash_password,
-    hash_google_id,
     check_password,
     hash_recovery_token,
     requires_unauthentication,
@@ -213,43 +212,6 @@ async def post_sign_in_viewmodel(
         await session.refresh(user)
         vm.user = user
     return vm
-
-@router.post('/auth/google')
-async def google_sign_in(
-    request: Request, 
-    session: Annotated[AsyncSession, Depends(get_db_session)]
-):
-    form_data = await request.form()
-    credential = form_field_as_str(form_data, 'credential')
-    user_info = google_sign_in_viewmodel(credential)
-
-    hashed_id = hash_google_id(user_info['sub'])
-    db_user = await user_service.get_user_by_google_hash(hashed_id, session)
-
-    if not db_user:
-        db_user = await user_service.create_user(
-            username = user_info['name'], 
-            phone_number = None, 
-            birth_date = None, 
-            image_url = user_info['picture'], 
-            is_active = int(user_info['email_verified']), 
-            session = session
-        )
-        await user_service.create_user_ext(db_user, hashed_id, 1, session)
-    
-    response = responses.RedirectResponse(url = '/', status_code = status.HTTP_302_FOUND)
-    set_current_user(db_user.user_id)
-    db_user.last_login = datetime.now()
-    await session.commit()
-    return response
-
-def google_sign_in_viewmodel(credentials: Credentials):
-    id_info = verify_oauth2_token(credentials, requests.Request(), os.getenv('CLIENT_ID'), 1)
-    
-    if id_info['iss'] not in ['accounts.google.com', 'https://accounts.google.com']:
-        raise ValueError('Invalid issuer')
-
-    return id_info
 
 @router.get('/auth/logout')
 async def logout():
