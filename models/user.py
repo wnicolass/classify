@@ -32,7 +32,7 @@ class UserAccount(Base):
     user_address = relationship('UserAddress', back_populates = 'user', cascade = "delete", uselist = False)
     user_login_data = relationship('UserLoginData', back_populates = 'user', uselist = False)
     user_login_data_ext = relationship('UserLoginDataExt', back_populates = 'user')
-    favourites = relationship('Favourite', back_populates = 'user', lazy = 'joined')
+    favourites = relationship('Favourite', back_populates = 'user')
 
     @property
     def pretty_created_at(self):
