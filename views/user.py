@@ -268,6 +268,12 @@ async def payments():
 @router.get('/user/favourite-ads', dependencies = [Depends(requires_authentication)])
 @template('user/favourite-ads.pt')
 async def favourite_ads():
+    """
+        As the user model has properties that holds
+        information about all favourites, just need
+        to return the view model to make this information
+        available on the template
+    """
     return await ViewModel()
 
 @router.post('/user/favourite/{ad_id}')

@@ -19,15 +19,9 @@
                       </a>
                     </li>
                     <li>
-                      <a href="/user/profile-settings">
-                        <i class="fal fa-cog"></i>
-                        Definições de Perfil
-                      </a>
-                    </li>
-                    <li>
-                      <a href="/user/change-password">
-                        <i class="fal fa-key"></i>
-                        Alterar Password
+                      <a href="/user/offermessages">
+                        <i class="fal fa-envelope"></i>
+                        Mensagens
                       </a>
                     </li>
                     <li>
@@ -37,9 +31,9 @@
                       </a>
                     </li>
                     <li>
-                      <a href="/user/offermessages">
-                        <i class="fal fa-envelope"></i>
-                        Mensagens
+                      <a href="/user/favourite-ads">
+                        <i class="fal fa-heart"></i>
+                        Favoritos
                       </a>
                     </li>
                     <li>
@@ -49,9 +43,15 @@
                       </a>
                     </li>
                     <li>
-                      <a href="/user/favourite-ads">
-                        <i class="fal fa-heart"></i>
-                        Favoritos
+                      <a href="/user/profile-settings">
+                        <i class="fal fa-cog"></i>
+                        Definições de Perfil
+                      </a>
+                    </li>
+                    <li>
+                      <a href="/user/change-password">
+                        <i class="fal fa-key"></i>
+                        Alterar Password
                       </a>
                     </li>
                     <li>

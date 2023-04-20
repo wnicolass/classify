@@ -13,6 +13,7 @@ from sqlalchemy.dialects.mysql import BIT
 from sqlalchemy.orm import relationship
 from config.database import Base
 from models.ad import Ad
+from services.ad_service import AdStatusEnum
 
 class UserAccount(Base):
     __tablename__ = 'UserAccount'
@@ -31,7 +32,7 @@ class UserAccount(Base):
     user_address = relationship('UserAddress', back_populates = 'user', cascade = "delete", uselist = False)
     user_login_data = relationship('UserLoginData', back_populates = 'user', uselist = False)
     user_login_data_ext = relationship('UserLoginDataExt', back_populates = 'user')
-    favourites = relationship('Favourite', back_populates = 'user')
+    favourites = relationship('Favourite', back_populates = 'user', lazy = 'joined')
 
     @property
     def pretty_created_at(self):
@@ -44,6 +45,20 @@ class UserAccount(Base):
     @property
     def fav_ads_id(self) -> List[int]:
         return [fav.ad_id for fav in self.favourites]
+    
+    @property
+    def active_favs(self) -> List['Favourite']:
+        return [fav for fav in self.favourites if fav.ad.status_id == AdStatusEnum.ACTIVE.value]
+    
+    @property
+    def inactive_favs(self) -> List['Favourite']:
+        inactive_ads = []
+        for fav in self.favourites:
+            is_expired_ad = fav.ad.status_id == AdStatusEnum.EXPIRED.value
+            is_sold_ad = fav.ad.status_id == AdStatusEnum.SOLD.value
+            if is_expired_ad or is_sold_ad:
+                inactive_ads.append(fav)
+        return inactive_ads
 
 class UserLoginData(Base):
     __tablename__ = 'UserLoginData'

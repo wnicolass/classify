@@ -1,10 +1,11 @@
 <div metal:use-macro="load: ../shared/_layout.pt">
+  <__additional_script__ metal:fill-slot="additional_script" tal:omit-tag="True">
+    <script src="/public/scripts/switch-fav-tables.js" defer></script>
+    <script src="/public/scripts/favourites.js" defer></script>
+  </__additional_script__>
   <div metal:fill-slot="title" tal:omit-tag="True">
     <title> Favoritos | Classify</title>
   </div>
-  <__additional_script__ metal:fill-slot="additional_script" tal:omit-tag="True">
-  <script src="/public/scripts/favourites.js" defer></script>
-</__additional_script__>
   <div metal:fill-slot="content" tal:omit-tag="True">
 
     <div
@@ -38,71 +39,248 @@
                 <h5 class="title">Favoritos</h5>
               </div>
               <div class="my_ads_menu">
-                <ul class="ads_menu">
-                  <li><a class="active" id="total-favs" href="#">Todos (${len(user.favourites)})</a></li>
+                <ul class="ads_menu nav" id="myTab" role="tablist">
+                  <li>
+                    <a
+                      class="active"
+                      id="all-favs-tab"
+                      data-toggle="tab"
+                      href="#all-favs"
+                      role="tab"
+                      aria-controls="all-favs"
+                      aria-selected="true"
+                      >Todos (${len(user.favourites)})</a
+                    >
+                  </li>
+                  <li>
+                    <a
+                      id="active-favs-tab"
+                      data-toggle="tab"
+                      href="#active-favs"
+                      role="tab"
+                      aria-controls="active-favs"
+                      aria-selected="false"
+                      >Ativos (${len(user.active_favs)})</a
+                    >
+                  </li>
+                  <li>
+                    <a
+                      id="not-active-favs-tab"
+                      data-toggle="tab"
+                      href="#not-active-favs"
+                      role="tab"
+                      aria-controls="not-active-favs"
+                      aria-selected="false"
+                      >Não Ativos (${len(user.inactive_favs)})</a
+                    >
+                  </li>
                 </ul>
               </div>
 
-              <div class="ads_table table-responsive mt-30">
-                <table class="table">
-                  <thead>
-                    <tr>
-                      <th class="photo">Foto</th>
-                      <th class="title">Título</th>
-                      <th class="category">Subcategoria</th>
-                      <th class="status" style="text-align: center;">Status</th>
-                      <th class="price" style="text-align: center;">Preço</th>
-                      <th class="action" style="text-align: center; padding-right: 35px;">Ação</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <__repeat tal:repeat="fav user.favourites" tal:omit-tag="True">
+              <div class="ads_table table-responsive mt-30" id="all-favs-table" >
+                <div
+                  class="tab-pane fade show active"
+                  id="all-favs"
+                  role="tabpanel"
+                  aria-labelledby="all-favs-tab"
+                >
+                  <table class="table">
+                    <thead>
                       <tr>
-                        <td class="photo">
-                          <div class="table_photo">
-                            <a href="/ad/${fav.ad.id}">
-                              <img
-                                src="${fav.ad.main_image}"
-                                alt="${fav.ad.title}"
-                              />
-                            </a>
-                          </div>
-                        </td>
-                        <td class="title">
-                          <div class="table_title">
-                            <h6 class="titles"><a href="/ad/${fav.ad.id}">${fav.ad.title}</a></h6>
-                            <p>Ad ID: ${fav.ad.id}</p>
-                          </div>
-                        </td>
-                        <td class="category" style="padding-left: 10px;">
-                          <div class="table_category">
-                            <p>${fav.ad.subcategory.subcategory_name}</p>
-                          </div>
-                        </td>
-                        <td class="status">
-                          <div class="table_status">
-                            <span class="${fav.ad.ad_status.status_name_internal}">${fav.ad.ad_status.status_name}</span>
-                          </div>
-                        </td>
-                        <td class="price" style="text-align: center;">
-                          <div class="table_price">
-                            <span>${fav.ad.price}€</span>
-                          </div>
-                        </td>
-                        <td class="action">
-                          <div class="table_action">
-                            <ul style="text-align: center;">
-                              <li style="padding-right: 23px;">
-                                <a data-adid="${fav.ad.id}" class="delete-fav" style="cursor: pointer;width: 3rem;height: 3rem;display: flex;align-items: center;justify-content: center;"><i style="font-size: 1.5rem;" class="fal fa-trash-alt"></i></a>
-                              </li>
-                            </ul>
-                          </div>
-                        </td>
+                        <th class="photo">Foto</th>
+                        <th class="title">Título</th>
+                        <th class="category">Subcategoria</th>
+                        <th class="status" style="text-align: center;">Status</th>
+                        <th class="price" style="text-align: center;">Preço</th>
+                        <th class="action" style="text-align: center; padding-right: 35px;">Ação</th>
                       </tr>
-                    </__repeat>
-                  </tbody>
-                </table>
+                    </thead>
+                    <tbody>
+                      <__repeat tal:repeat="fav user.favourites" tal:omit-tag="True">
+                        <tr>
+                          <td class="photo">
+                            <div class="table_photo">
+                              <a href="/ad/${fav.ad.id}">
+                                <img
+                                  src="${fav.ad.main_image}"
+                                  alt="${fav.ad.title}"
+                                />
+                              </a>
+                            </div>
+                          </td>
+                          <td class="title">
+                            <div class="table_title">
+                              <h6 class="titles"><a href="/ad/${fav.ad.id}">${fav.ad.title}</a></h6>
+                              <p>Ad ID: ${fav.ad.id}</p>
+                            </div>
+                          </td>
+                          <td class="category" style="padding-left: 10px;">
+                            <div class="table_category">
+                              <p>${fav.ad.subcategory.subcategory_name}</p>
+                            </div>
+                          </td>
+                          <td class="status">
+                            <div class="table_status">
+                              <span class="${fav.ad.ad_status.status_name_internal}">${fav.ad.ad_status.status_name}</span>
+                            </div>
+                          </td>
+                          <td class="price" style="text-align: center;">
+                            <div class="table_price">
+                              <span>${fav.ad.price}€</span>
+                            </div>
+                          </td>
+                          <td class="action">
+                            <div class="table_action">
+                              <ul style="text-align: center;">
+                                <li style="padding-right: 23px;">
+                                  <a data-adid="${fav.ad.id}" class="delete-fav" style="cursor: pointer;width: 3rem;height: 3rem;display: flex;align-items: center;justify-content: center;"><i style="font-size: 1.5rem;" class="fal fa-trash-alt"></i></a>
+                                </li>
+                              </ul>
+                            </div>
+                          </td>
+                        </tr>
+                      </__repeat>
+                    </tbody>
+                  </table>
+                </div>
               </div>
+
+              <div class="ads_table table-responsive" id="active-favs-table" style="max-height:0px;">
+                <div
+                  class="tab-pane fade"
+                  id="active-favs"
+                  role="tabpanel"
+                  aria-labelledby="active-favs-tab"
+                >
+                  <table class="table">
+                    <thead>
+                      <tr>
+                        <th class="photo">Foto</th>
+                        <th class="title">Título</th>
+                        <th class="category">Subcategoria</th>
+                        <th class="status" style="text-align: center;">Status</th>
+                        <th class="price" style="text-align: center;">Preço</th>
+                        <th class="action" style="text-align: center; padding-right: 35px;">Ação</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <__repeat tal:repeat="fav user.active_favs" tal:omit-tag="True">
+                        <tr>
+                          <td class="photo">
+                            <div class="table_photo">
+                              <a href="/ad/${fav.ad.id}">
+                                <img
+                                  src="${fav.ad.main_image}"
+                                  alt="${fav.ad.title}"
+                                />
+                              </a>
+                            </div>
+                          </td>
+                          <td class="title">
+                            <div class="table_title">
+                              <h6 class="titles"><a href="/ad/${fav.ad.id}">${fav.ad.title}</a></h6>
+                              <p>Ad ID: ${fav.ad.id}</p>
+                            </div>
+                          </td>
+                          <td class="category" style="padding-left: 10px;">
+                            <div class="table_category">
+                              <p>${fav.ad.subcategory.subcategory_name}</p>
+                            </div>
+                          </td>
+                          <td class="status">
+                            <div class="table_status">
+                              <span class="${fav.ad.ad_status.status_name_internal}">${fav.ad.ad_status.status_name}</span>
+                            </div>
+                          </td>
+                          <td class="price" style="text-align: center;">
+                            <div class="table_price">
+                              <span>${fav.ad.price}€</span>
+                            </div>
+                          </td>
+                          <td class="action">
+                            <div class="table_action">
+                              <ul style="text-align: center;">
+                                <li style="padding-right: 23px;">
+                                  <a data-adid="${fav.ad.id}" class="delete-fav" style="cursor: pointer;width: 3rem;height: 3rem;display: flex;align-items: center;justify-content: center;"><i style="font-size: 1.5rem;" class="fal fa-trash-alt"></i></a>
+                                </li>
+                              </ul>
+                            </div>
+                          </td>
+                        </tr>
+                      </__repeat>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+
+              <div class="ads_table table-responsive" id="not-active-favs-table" style="max-height:0px;">
+                <div
+                  class="tab-pane fade"
+                  id="not-active-favs"
+                  role="tabpanel"
+                  aria-labelledby="not-active-favs-tab"
+                >
+                  <table class="table">
+                    <thead>
+                      <tr>
+                        <th class="photo">Foto</th>
+                        <th class="title">Título</th>
+                        <th class="category">Subcategoria</th>
+                        <th class="status" style="text-align: center;">Status</th>
+                        <th class="price" style="text-align: center;">Preço</th>
+                        <th class="action" style="text-align: center; padding-right: 35px;">Ação</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <__repeat tal:repeat="fav user.inactive_favs" tal:omit-tag="True">
+                        <tr>
+                          <td class="photo">
+                            <div class="table_photo">
+                              <a href="/ad/${fav.ad.id}">
+                                <img
+                                  src="${fav.ad.main_image}"
+                                  alt="${fav.ad.title}"
+                                />
+                              </a>
+                            </div>
+                          </td>
+                          <td class="title">
+                            <div class="table_title">
+                              <h6 class="titles"><a href="/ad/${fav.ad.id}">${fav.ad.title}</a></h6>
+                              <p>Ad ID: ${fav.ad.id}</p>
+                            </div>
+                          </td>
+                          <td class="category" style="padding-left: 10px;">
+                            <div class="table_category">
+                              <p>${fav.ad.subcategory.subcategory_name}</p>
+                            </div>
+                          </td>
+                          <td class="status">
+                            <div class="table_status">
+                              <span class="${fav.ad.ad_status.status_name_internal}">${fav.ad.ad_status.status_name}</span>
+                            </div>
+                          </td>
+                          <td class="price" style="text-align: center;">
+                            <div class="table_price">
+                              <span>${fav.ad.price}€</span>
+                            </div>
+                          </td>
+                          <td class="action">
+                            <div class="table_action">
+                              <ul style="text-align: center;">
+                                <li style="padding-right: 23px;">
+                                  <a data-adid="${fav.ad.id}" class="delete-fav" style="cursor: pointer;width: 3rem;height: 3rem;display: flex;align-items: center;justify-content: center;"><i style="font-size: 1.5rem;" class="fal fa-trash-alt"></i></a>
+                                </li>
+                              </ul>
+                            </div>
+                          </td>
+                        </tr>
+                      </__repeat>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+              
             </div>
           </div>
         </div>

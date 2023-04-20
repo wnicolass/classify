@@ -5,7 +5,7 @@ from sqlalchemy import and_, func, or_
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
 from sqlalchemy.orm import selectinload
-from models import ad
+from models import ad, user
 from models.category import Category
 from models.subcategory import Subcategory
 
@@ -153,6 +153,24 @@ async def get_ads_by_user_id_and_status(session: AsyncSession, user_id, status_i
     ads_by_user_id = query.unique().scalars().all()
     
     return ads_by_user_id
+
+async def get_favorite_ads_by_user_id_and_status(session: AsyncSession, user_id, status_id) -> List[ad.Ad]:
+    subquery = await session.execute(select(user.Favourite.ad_id)
+            .where(user.Favourite.user_id == user_id)
+    )
+    subquery_result = subquery.unique().scalars().all()
+    
+    query = await session.execute(select(ad.Ad)
+            .join(ad.Ad.users_favourited)
+            .where(and_(
+                    ad.Ad.status_id == status_id,
+                    ad.Ad.id.in_(subquery_result)
+                )
+            )
+    )   
+    favorite_ads_by_user_id_and_status = query.unique().scalars().all()
+    
+    return favorite_ads_by_user_id_and_status
 
 async def get_ad_count_by_user_id(session: AsyncSession, user_id) -> List[ad.Ad]:
     query = await session.execute(select(func.count(ad.Ad.id))
