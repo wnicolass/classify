@@ -49,15 +49,15 @@ class UserLoginData(Base):
     __tablename__ = 'UserLoginData'
 
     user_id: int = Column(Integer, ForeignKey('UserAccount.user_id'), primary_key = True)
-    password_hash: str = Column(String(300), nullable = False)
-    password_salt: str = Column(String(300), nullable = False)
+    password_hash: str = Column(String(300), nullable = True)
+    password_salt: str = Column(String(300), nullable = True)
     email_addr: str = Column(String(320), nullable = False, unique = True)
     confirm_token: str = Column(String(200), nullable = True)
     confirm_token_time: str = Column(String(50), nullable = True)
     recovery_token: str = Column(String(200), nullable = True)
     recovery_token_time: str = Column(String(50), nullable = True)
 
-    hash_algo_id: int = Column(Integer, ForeignKey('HashAlgo.id'), nullable = False)
+    hash_algo_id: int = Column(Integer, ForeignKey('HashAlgo.id'), nullable = True)
     email_validation_status_id: int = Column(Integer, ForeignKey('EmailValidationStatus.id'), nullable = False)
 
     user = relationship('UserAccount', back_populates = 'user_login_data', uselist = False, lazy = 'joined')
