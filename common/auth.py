@@ -29,7 +29,7 @@ def check_password(password: str, hashed_password: str) -> bool:
 def hash_password(password: str) -> str:
     return hash_context.hash(password)
 
-def hash_google_id(sub: str) -> str:
+def hash_google_sub(sub: str) -> str:
     return sha512(f'{sub}{GOOGLE_SECRET}'.encode('utf-8')).hexdigest()
 
 def hash_recovery_token(token: str) -> str:
@@ -45,6 +45,9 @@ class HTTPUnauthenticatedOnly(HTTPUnauthorizedAccess):
 class InvalidToken(Exception):
     def __init__(self, user_id):
         self.user_id = user_id
+class ExternalLoginError(HTTPException):
+    def __init__(self, *args, **kargs):
+        super().__init__(status_code = status.HTTP_401_UNAUTHORIZED, *args, **kargs)
 
 async def requires_unauthentication():
     if await get_current_user():
