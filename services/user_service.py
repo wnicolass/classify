@@ -31,7 +31,15 @@ async def create_user_ext(
     await session.commit()
     await session.refresh(user)
 
-async def create_user_login_data(user_id: int, hashed_password: str, password_salt: str, email: str, hash_algo_id: int, email_validation_status_id: int, session: AsyncSession) -> UserLoginData:
+async def create_user_login_data(
+    user_id: int, 
+    email: str, 
+    email_validation_status_id: int, 
+    session: AsyncSession,
+    hashed_password: str | None = None, 
+    password_salt: str | None = None, 
+    hash_algo_id: int = 2 
+) -> UserLoginData:
     user_login_data = UserLoginData(
         user_id = user_id,
         password_hash = hashed_password,
@@ -52,20 +60,6 @@ async def add_new_favourite(user_id: int, ad_id: int, session: AsyncSession) -> 
     await session.refresh(fav)
     
     return fav
-
-async def create_user_login_data(user_id: int, hashed_password: str, password_salt: str, email: str, hash_algo_id: int, email_validation_status_id: int, session: AsyncSession) -> UserLoginData:
-    user_login_data = UserLoginData(
-        user_id = user_id,
-        password_hash = hashed_password,
-        password_salt = password_salt,
-        email_addr = email,
-        hash_algo_id = hash_algo_id,
-        email_validation_status_id = email_validation_status_id
-    )
-    session.add(user_login_data)
-    await session.commit()
-    await session.refresh(user_login_data)
-    return user_login_data
 
 async def create_user_address(
     new_country: str,
@@ -88,6 +82,15 @@ async def get_user_by_email(email: str, session: AsyncSession) -> UserAccount:
     query = await session.execute(
         select(UserAccount)
         .join(UserLoginData)
+        .where(UserLoginData.email_addr == email)
+    )
+    user = query.scalar_one_or_none()
+
+    return user
+
+async def get_user_login_data_by_email(email: str, session: AsyncSession) -> UserLoginData:
+    query = await session.execute(
+        select(UserLoginData)
         .where(UserLoginData.email_addr == email)
     )
     user = query.scalar_one_or_none()
