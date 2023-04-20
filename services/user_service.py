@@ -197,6 +197,7 @@ async def update_user_details(
         db_user.profile_image_url = new_profile_picture_link
     
     await session.commit()
+    await session.refresh(db_user)
     
 async def update_user_address(
     user_address: UserAddress,
