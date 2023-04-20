@@ -54,23 +54,7 @@
               <div class="sign_title">
                 <h5 class="title">Sign In Now</h5>
               </div>
-              <div id="g_id_onload"
-                      data-client_id="512639004249-g85jscbj56quqhogv9jnnq57e62fuv9v.apps.googleusercontent.com"
-                      data-context="signup"
-                      data-ux_mode="redirect"
-                      data-login_uri="http://localhost:8000/auth/google"
-                      data-nonce=""
-                      data-itp_support="false">
-                    </div>
-
-                    <div class="g_id_signin"
-                      data-type="standard"
-                      data-shape="rectangular"
-                      data-theme="outline"
-                      data-text="signin_with"
-                      data-size="large"
-                      data-logo_alignment="left">
-                    </div>
+              <a href="/auth/google">Login with google<a/>
               <form action="/auth/sign-in" method="POST">
                 <div class="sign_form_wrapper">
                   <div class="single_form">
