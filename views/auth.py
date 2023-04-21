@@ -2,7 +2,16 @@ import os
 from dotenv import load_dotenv, find_dotenv
 from typing import Annotated
 from datetime import date, datetime
-from fastapi import (APIRouter, Depends, HTTPException, Request, responses, status, BackgroundTasks)
+from fastapi import (
+    APIRouter, 
+    Depends, 
+    UploadFile,
+    HTTPException, 
+    Request, 
+    responses, 
+    status, 
+    BackgroundTasks
+)
 from sqlalchemy.ext.asyncio import AsyncSession
 from fastapi_chameleon import template
 from chameleon import PageTemplateFile
@@ -32,6 +41,7 @@ from common.auth import (
 )
 from common.email import (send_email, EmailValidationStatus, send_reset_password_email)
 from services import user_service
+from config.cloudinary import upload_image
 
 router = APIRouter()
 load_dotenv(find_dotenv())
@@ -52,9 +62,10 @@ async def sign_up_viewmodel():
 async def sign_up(
     request: Request, 
     session: Annotated[AsyncSession, Depends(get_db_session)],
-    bg_task: BackgroundTasks
+    bg_task: BackgroundTasks,
+    file: UploadFile | None = None
 ):
-    vm = await post_sign_up_viewmodel(request, session, bg_task)
+    vm = await post_sign_up_viewmodel(request, session, bg_task, file)
 
     if vm.error:
         return vm
@@ -66,7 +77,8 @@ async def sign_up(
 async def post_sign_up_viewmodel(
     request: Request, 
     session: Annotated[AsyncSession, Depends(get_db_session)],
-    bg_task: BackgroundTasks
+    bg_task: BackgroundTasks,
+    file: UploadFile | None = None
 ):
     form_data = await request.form()
     vm = await ViewModel(
@@ -97,13 +109,31 @@ async def post_sign_up_viewmodel(
     else:
         vm.error, vm.error_msg = False, ''
 
+    if file is not None:
+        file_size_in_bytes = len(await file.read())
+        file_size_in_kb = file_size_in_bytes / 1024
+        file_ext = os.path.splitext(file.filename)[-1]
+        if file_ext != "":
+            if file_size_in_kb > 500:
+                vm.error, vm.error_msg = True, 'O tamanho limite da imagem é de 500kb.'
+            elif file.content_type not in ('image/jpg', 'image/png', 'image/jpeg') or file_ext not in ['.jpg', '.jpeg', '.png']:
+                vm.error, vm.error_msg = True, 'Apenas imagens do tipo ".png", ".jpg" ou ".jpeg".'
+            await file.seek(0)
+    else:
+        file_ext = ""
+
     if not vm.error:
+        profile_picture_url = None
+        if file_ext != "":
+            url = upload_image(file)
+            profile_picture_url = url['secure_url']
         user = await user_service.create_user(
             vm.username,
             handle_phone(vm.phone_number),
             vm.birth_date,
             0, 
-            session
+            session,
+            profile_picture_url
         )
 
         salt = uuid4().hex
