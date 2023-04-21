@@ -125,6 +125,9 @@ async def profile_settings_viewmodel(
             elif file.content_type not in ('image/jpg', 'image/png', 'image/jpeg') or file_ext not in ['.jpg', '.jpeg', '.png']:
                 vm.error, vm.error_msg = True, 'Apenas imagens do tipo ".png", ".jpg" ou ".jpeg".'
             await file.seek(0)
+    else:
+        file_ext = ""         
+            
     vm.all_countries = await fetch_countries()
     
     countries = []
