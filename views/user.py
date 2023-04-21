@@ -48,11 +48,6 @@ async def profile_settings(request: Request, session: Annotated[AsyncSession, De
     address = await user_service.get_user_address_by_user_id(user.user_id, session)
     
     vm: ViewModel = await ViewModel()
-    
-    request_from = request.headers['referer'].split('/')[-1]
-    
-    if request_from == 'change-password':
-        vm.error, vm.error_msg = True, 'A sua conta foi criada pela Google e não possui password!'
         
     vm.phone_number = add_plus_sign_to_phone_number(user.phone_number)
     vm.birth_date = user.birth_date
@@ -81,15 +76,19 @@ async def profile_settings(
         return vm
     
     vm.username = vm.new_username
-    vm.phone_number = add_plus_sign_to_phone_number(user.phone_number)
-    vm.birth_date = user.birth_date
+    vm.phone_number = add_plus_sign_to_phone_number(vm.new_phone_number)
+    vm.birth_date = vm.new_birth_date
+    
     if address:
-        vm.country = address.country
-        vm.city = address.city
+        vm.country = vm.new_country
+        vm.city = vm.new_city
     else:
         vm.country = ''
         vm.city = ''
     vm.all_countries = await fetch_countries()
+        
+    if vm.new_profile_picture_url != "":
+        vm.profile_image = vm.new_profile_picture_url
     
     return vm
 
@@ -126,6 +125,9 @@ async def profile_settings_viewmodel(
             elif file.content_type not in ('image/jpg', 'image/png', 'image/jpeg') or file_ext not in ['.jpg', '.jpeg', '.png']:
                 vm.error, vm.error_msg = True, 'Apenas imagens do tipo ".png", ".jpg" ou ".jpeg".'
             await file.seek(0)
+    else:
+        file_ext = ""         
+            
     vm.all_countries = await fetch_countries()
     
     countries = []
@@ -165,6 +167,11 @@ async def profile_settings_viewmodel(
                 )
             else:
                 await user_service.update_user_address(user_address, vm.new_country, vm.new_city, session)
+                
+        if profile_picture_url:
+            vm.new_profile_picture_url = profile_picture_url
+        else:
+            vm.new_profile_picture_url = ""
         vm.success, vm.success_msg = True, 'Dados da conta alterados com sucesso!'
     
     return vm
@@ -254,18 +261,29 @@ async def submit_password_viewmodel(
 async def my_ads(session: Annotated[AsyncSession, Depends(get_db_session)]):
     vm = await ViewModel()
     
-    vm.ad_count_total = await ad_service.get_ad_count_by_user_id(session, vm.user_id)
-    vm.ad_count_active = await ad_service.get_ad_count_by_user_id_and_status(session, vm.user_id, 1)
-    vm.ad_count_inactive = await ad_service.get_ad_count_by_user_id_and_status(session, vm.user_id, 2)
-    vm.ad_count_expired = await ad_service.get_ad_count_by_user_id_and_status(session, vm.user_id, 3)
-    vm.ad_count_sold = await ad_service.get_ad_count_by_user_id_and_status(session, vm.user_id, 4)
-    vm.ad_count_deleted = await ad_service.get_ad_count_by_user_id_and_status(session, vm.user_id, 5)
-    vm.all_ads = await ad_service.get_ads_by_user_id(session, vm.user_id)
-    vm.all_active_ads = await ad_service.get_ads_by_user_id_and_status(session, vm.user_id, 1)
-    vm.all_inactive_ads = await ad_service.get_ads_by_user_id_and_status(session, vm.user_id, 2)
-    vm.all_expired_ads = await ad_service.get_ads_by_user_id_and_status(session, vm.user_id, 3)
-    vm.all_sold_ads = await ad_service.get_ads_by_user_id_and_status(session, vm.user_id, 4)
-    vm.all_deleted_ads = await ad_service.get_ads_by_user_id_and_status(session, vm.user_id, 5)
+    all_ads = await ad_service.get_ads_by_user_id(session, vm.user_id)
+    vm.all_ads = all_ads
+    vm.ad_count_total = len(all_ads)
+    
+    all_active_ads = await ad_service.get_ads_by_user_id_and_status(session, vm.user_id, 1)
+    vm.all_active_ads = all_active_ads
+    vm.ad_count_active = len(all_active_ads)
+    
+    all_inactive_ads = await ad_service.get_ads_by_user_id_and_status(session, vm.user_id, 2)
+    vm.all_inactive_ads = all_inactive_ads
+    vm.ad_count_inactive = len(all_inactive_ads)
+    
+    all_expired_ads = await ad_service.get_ads_by_user_id_and_status(session, vm.user_id, 3)
+    vm.all_expired_ads = all_expired_ads
+    vm.ad_count_expired = len(all_expired_ads)
+
+    all_sold_ads = await ad_service.get_ads_by_user_id_and_status(session, vm.user_id, 4)
+    vm.all_sold_ads = all_sold_ads
+    vm.ad_count_sold = len(all_sold_ads)
+    
+    all_deleted_ads = await ad_service.get_ads_by_user_id_and_status(session, vm.user_id, 5)
+    vm.all_deleted_ads = all_deleted_ads
+    vm.ad_count_deleted = len(all_deleted_ads)
     
     return vm
 

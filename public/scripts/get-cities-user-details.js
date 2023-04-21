@@ -2,7 +2,8 @@ const countriesInputElement = document.getElementById('countries-input');
 const citiesInputElement = document.getElementById('cities-input');
 
 function buildDatalist(cities) {
-    var cityDatalist = document.getElementById('cities-datalist');
+    const cityDatalist = document.getElementById('cities-datalist');
+    cityDatalist.innerHTML = "";
 
     cities.forEach(city => {
         var option = document.createElement('option');
@@ -34,7 +35,7 @@ function setDatalistValues() {
 }
 
 function main() {
-    citiesInputElement.addEventListener('click', setDatalistValues);
+    countriesInputElement.addEventListener('focusout', setDatalistValues);
 }
 
 window.addEventListener('load', main);

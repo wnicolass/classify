@@ -19,7 +19,7 @@ from common.fastapi_utils import (
 )
 from common.viewmodel import ViewModel
 from common.auth import requires_authentication
-from services import category_service, ad_service
+from services import category_service, ad_service, user_service
 from common.utils import (
     is_valid_txt_field,
     is_valid_price,
@@ -147,12 +147,22 @@ async def post_ads_viewmodel(session: Annotated[AsyncSession, Depends(get_db_ses
     all_countries = await fetch_countries()
     features = await ad_service.get_all_features(session)
     conditions = await ad_service.get_all_ad_conditions(session)
-    return await ViewModel(
-        all_categories = await category_service.get_all_categories(session),
-        all_countries = all_countries,
-        all_features = features,
-        all_ad_conditions = conditions
-    )
+    vm = await ViewModel()
+    address = await user_service.get_user_address_by_user_id(vm.user.user_id, session)
+    
+    vm.all_categories = await category_service.get_all_categories(session)
+    vm.all_countries = all_countries
+    vm.all_features = features
+    vm.all_ad_conditions = conditions
+    
+    if address:
+        vm.country = address.country
+        vm.city = address.city
+    else:
+        vm.country = ''
+        vm.city = ''
+        
+    return vm
 
 async def fetch_countries():
     async with httpx.AsyncClient() as client:
