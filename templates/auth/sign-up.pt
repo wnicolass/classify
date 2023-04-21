@@ -81,11 +81,11 @@
       <div class="container">
         <div class="row justify-content-center">
           <div class="col-lg-5 col-md-7 col-sm-9">
-            <div class="sign_in_form">
+            <div class="sign_in_form post_form">
               <div class="sign_title">
                 <h5 class="title">Registe-se agora</h5>
               </div>
-              <form action="/auth/sign-up" method="POST">
+              <form action="/auth/sign-up" method="POST" enctype="multipart/form-data">
                 <div class="sign_form_wrapper">
                   <div class="single_form">
                     <input 
@@ -219,6 +219,20 @@
                     <span class="show-pass" onclick="toggle_visibility(this)">
                       <i class="far fa-eye" onclick="toggle_eye(this)"></i>
                     </span>
+                  </div>
+                  <div class="mt-30 mb-30">
+                    <div class="post_title">
+                      <h5 class="title">Imagem de Perfil (Opcional)</h5>
+                    </div>
+                    <div class="post_upload_file">
+                      <label for="upload">
+                        <span>Arrasta imagens aqui</span>
+                        <span>Ou</span>
+                        <span class="main-btn">Seleciona Imagens</span>
+                        <span>Máximo tamanho de upload: 500 KB</span>
+                        <input type="file" name="file" id="upload" accept="image/jpg,/image/png"/>
+                      </label>
+                    </div>
                   </div>
                   <div class="single_form">
                     <div class="sign_checkbox">
