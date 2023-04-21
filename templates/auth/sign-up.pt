@@ -1,4 +1,59 @@
 <div metal:use-macro="load: ../shared/_layout.pt">
+  <__additional_script__ metal:fill-slot="additional_script" tal:omit-tag="True">
+    <script src="/public/scripts/password-change-display.js" defer></script>
+    <script>
+      var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+      var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+        return new bootstrap.Tooltip(tooltipTriggerEl)  
+      })
+      $(function() {
+        $('.marker').tooltip({placement: 'right'});
+      });
+    </script>
+  </__additional_script__>
+  <__additional_stylesheet__ metal:fill-slot="additional_stylesheet" tal:omit-tag="True">
+    <style>
+      #password-str-bar {
+        height: 4px;
+        margin-top: 8px;
+        margin-bottom: 8px;
+        transition: height 500ms, margin 500ms;
+      }
+      #password-str-bar.is-active {
+        height: 20px;
+        margin-top: 0px;
+        margin-bottom: 0px;
+      }
+      .progress-bar-empty {
+        background-color: #8f0b0c;
+      }
+      .progress-bar-danger {
+        background-color: #e90f10;
+      }
+      .progress-bar-warning{
+          background-color: #ffad00;
+      }
+      .progress-bar-notify{
+          background-color: #046604;
+      }
+      .progress-bar-success{
+          background-color: #02b502;
+      }
+      .fa-circle{
+        font-size: 8px;  
+      }
+      .fa-check{
+          color: #02b502;
+      }
+      #submit-button{
+        opacity: 1;
+        transition: opacity 500ms;
+      }
+      #submit-button:disabled{
+        opacity: 0.3;
+      }
+    </style>
+  </__additional_stylesheet__>
   <div metal:fill-slot="title" tal:omit-tag="True">
     <title> Registar | Classify</title>
   </div>
@@ -33,11 +88,11 @@
               <form action="/auth/sign-up" method="POST">
                 <div class="sign_form_wrapper">
                   <div class="single_form">
-                    <input type="text" placeholder="Username" name="username"/>
+                    <input type="text" placeholder="Username" name="username" autocomplete="username" required/>
                     <i class="fal fa-user"></i>
                   </div>
                   <div class="single_form">
-                    <input type="email" placeholder="Email" name="email"/>
+                    <input type="email" placeholder="Email" name="email" autocomplete="email" required/>
                     <i class="fal fa-envelope"></i>
                   </div>
                   <div class="single_form">
@@ -48,21 +103,90 @@
                     <input type="text" placeholder="+351 123 456 789" name="phone-number"/>
                     <i class="fal fa-phone"></i>
                   </div>
-                  <div class="single_form">
-                    <input type="password" placeholder="Senha" name="password"/>
-                    <i class="fal fa-key"></i>
+
+                  <!--SOURCE: https://codepen.io/coding_beast/pen/LYGrXde-->
+                  <div id="popover-password">
+                    <p><span id="result"></span></p>
+                    <div class="progress" id="password-str-bar">
+                      <div id="password-strength" 
+                        class="progress-bar" 
+                        role="progressbar" 
+                        aria-valuenow="40" 
+                        aria-valuemin="0" 
+                        aria-valuemax="100" 
+                        style="width:0%">
+                      </div>
+                    </div>
+                    <ul class="list-unstyled">
+                      <li class="">
+                        <span class="low-upper-case">
+                          <i class="fas fa-circle" aria-hidden="true"></i>
+                          &nbsp;Maiúscula &amp; Minúscula
+                        </span>
+                        </li>
+                        <li class="">
+                          <span class="one-number">
+                            <i class="fas fa-circle" aria-hidden="true"></i>
+                            &nbsp;Número (0-9)
+                            </span> 
+                        </li>
+                      <li class="">
+                        <span class="one-special-char">
+                          <i class="fas fa-circle" aria-hidden="true"></i>
+                          &nbsp;Caracter Especial (!@#$%^&*, etc.)
+                        </span>
+                      </li>
+                      <li class="">
+                        <span class="eight-character">
+                          <i class="fas fa-circle" aria-hidden="true"></i>
+                          &nbsp;Pelo Menos 8 Caracteres
+                        </span>
+                      </li>
+                    </ul>
                   </div>
+
                   <div class="single_form">
-                    <input type="password" placeholder="Confirmar senha" name="confirm-password"/>
-                    <i class="fal fa-key"></i>
+                    <input
+                      id="new-password" 
+                      type="password" 
+                      placeholder="Password Nova" 
+                      name="new-password" 
+                      minlength="8"
+                      maxlength="100"
+                      data-bs-toggle="tooltip" 
+                      data-bs-placement="top" 
+                      title="Escreva a sua password."
+                      autocomplete="new-password"
+                      required/>
+                    <span class="show-pass" onclick="toggle_visibility(this)">
+                      <i class="far fa-eye" onclick="toggle_eye(this)"></i>
+                    </span>
+                  </div>
+                  
+                  <div class="single_form">
+                    <input
+                      id="confirm-password" 
+                      type="password" 
+                      placeholder="Confirme Password" 
+                      name="confirm-password" 
+                      minlength="8"
+                      maxlength="100"
+                      data-bs-toggle="tooltip" 
+                      data-bs-placement="top" 
+                      title="Confirme a sua password."
+                      autocomplete="new-password"
+                      required/>
+                    <span class="show-pass" onclick="toggle_visibility(this)">
+                      <i class="far fa-eye" onclick="toggle_eye(this)"></i>
+                    </span>
                   </div>
                   <div class="single_form">
                     <div class="sign_checkbox">
-                      <input type="checkbox" id="checkbox" />
+                      <input type="checkbox" id="checkbox" required/>
                       <label for="checkbox"></label>
-                      <span
-                        >Concordo com os Termos e Condições de Serviço.</span
-                      >
+                      <span>
+                        Concordo com os Termos e Condições de Serviço.
+                      </span>
                     </div>
                   </div>
                   <div class="single_form">
