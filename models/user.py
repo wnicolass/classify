@@ -146,6 +146,5 @@ class EmailValidationStatus(Base):
 class OpenIdConnectTokens(Base):
     __tablename__ = 'OpenIdConnectTokens'
 
-    id: int = Column(Integer, primary_key = True, autoincrement = True)
-    state: str = Column(String(1000), nullable = False)
+    state: str = Column(String(256), nullable = False, primary_key = True)
     nonce: str = Column(String(1000), nullable = False)
