@@ -1,29 +1,42 @@
 <div metal:use-macro="load: ../shared/_layout.pt">
-  <__additional_script__ metal:fill-slot="additional_script" tal:omit-tag="True">
-  <script src="https://accounts.google.com/gsi/client" onload="initClient()" async defer></script>
-  <script>
-      var client;
-      var access_token;
+  <__additional_stylesheet__ metal:fill-slot="additional_stylesheet" tal:omit-tag="True">
+  <style>
+  #google-login-btn {
+    width: 100%;
+    text-align: center;
+    background-color: #fbfbfb;
+    box-shadow: 0px 5px #FF4367;
+    padding: 0.5rem;
+    color: #FF4367;
+    font-weight: 700;
+  }
 
-      function initClient() {
-        client = google.accounts.oauth2.initTokenClient({
-          client_id: 'YOUR_CLIENT_ID',
-          scope: 'https://www.googleapis.com/auth/calendar.readonly \
-                  https://www.googleapis.com/auth/contacts.readonly',
-          callback: (tokenResponse) => {
-            access_token = tokenResponse.access_token;
-          },
-        });
-      }
-      function getToken() {
-        client.requestAccessToken();
-      }
-      function revokeToken() {
-        google.accounts.oauth2.revoke(access_token, () => {console.log('access token revoked')});
-      }
+  #google-login-btn:active {
+    transform: translateY(5px);
+    box-shadow: 0px 2px #FF4367;
+  }
 
-  </script>
-    </__additional_script__>
+  #microsoft-login-btn {
+    margin-top: 1rem;
+    width: 100%;
+    text-align: center;
+    background-color: #fbfbfb;
+    box-shadow: 0px 5px #FF4367;
+    padding: 0.5rem;
+    color: #FF4367;
+    font-weight: 700;
+  }
+
+  #microsoft-login-btn:active {
+    transform: translateY(5px);
+    box-shadow: 0px 2px #FF4367;
+  }
+
+  .sign_form_wrapper:has(> a) > a {
+    width: 100%;
+  }
+  </style>
+  </__additional_stylesheet__>
   <div metal:fill-slot="title" tal:omit-tag="True">
     <title> Entrar | Classify</title>
   </div>
@@ -54,7 +67,14 @@
               <div class="sign_title">
                 <h5 class="title">Sign In Now</h5>
               </div>
-              <a href="/auth/google">Login with google<a/>
+              <a id="google-login-btn" href="/auth/google">
+                <svg width="1.5rem" height="1.5rem" viewBox="0 0 17 18" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M16.9911 9.16838C16.9911 8.43093 16.9333 7.89279 16.8081 7.33472H8.66943V10.6632H13.4467C13.3504 11.4904 12.8303 12.7361 11.6745 13.5732L11.6583 13.6846L14.2316 15.7472L14.4099 15.7657C16.0472 14.201 16.9911 11.899 16.9911 9.16838Z" fill="#4285F4"></path><path d="M8.66913 17.9381C11.0096 17.9381 12.9744 17.1408 14.4096 15.7656L11.6742 13.5731C10.9422 14.1013 9.95973 14.47 8.66913 14.47C6.37682 14.47 4.43125 12.9055 3.73771 10.7429L3.63605 10.7519L0.960285 12.8945L0.925293 12.9951C2.35076 15.925 5.27877 17.9381 8.66913 17.9381Z" fill="#34A853"></path><path d="M3.738 10.7428C3.555 10.1848 3.4491 9.58679 3.4491 8.96896C3.4491 8.35105 3.555 7.75313 3.72837 7.19506L3.72353 7.07621L1.01423 4.89917L0.925588 4.9428C0.338086 6.15862 0.000976562 7.52394 0.000976562 8.96896C0.000976562 10.414 0.338086 11.7792 0.925588 12.995L3.738 10.7428Z" fill="#FBBC05"></path><path d="M8.66912 3.46802C10.2968 3.46802 11.3948 4.19551 12.0209 4.80346L14.4673 2.33196C12.9648 0.886946 11.0096 0 8.66912 0C5.27877 0 2.35076 2.01305 0.925293 4.94292L3.72808 7.19519C4.43125 5.03265 6.37682 3.46802 8.66912 3.46802Z" fill="#EB4335"></path></svg> 
+                Sign in with Google
+              <a/>
+              <a id="microsoft-login-btn">
+                <svg width="1.5rem" height="1.5rem" enable-background="new 0 0 2499.6 2500" viewBox="0 0 2499.6 2500" xmlns="http://www.w3.org/2000/svg"><path d="m1187.9 1187.9h-1187.9v-1187.9h1187.9z" fill="#f1511b"/><path d="m2499.6 1187.9h-1188v-1187.9h1187.9v1187.9z" fill="#80cc28"/><path d="m1187.9 2500h-1187.9v-1187.9h1187.9z" fill="#00adef"/><path d="m2499.6 2500h-1188v-1187.9h1187.9v1187.9z" fill="#fbbc09"/></svg>
+                Sign in with Microsoft
+              <a/>
               <form action="/auth/sign-in" method="POST">
                 <div class="sign_form_wrapper">
                   <div class="single_form">
@@ -65,12 +85,7 @@
                     <input type="password" placeholder="Password" name="password" value="${password}"/>
                     <i class="fal fa-key"></i>
                   </div>
-                  <div class="single_form d-sm-flex justify-content-between">
-                    <div class="sign_checkbox">
-                      <input type="checkbox" id="checkbox" />
-                      <label for="checkbox"></label>
-                      <span>Keep me logged in</span>
-                    </div>
+                  <div class="single_form d-sm-flex justify-content-end">
                     <div class="sign_forgot">
                       <a href="/auth/reset-password">Esqueceu sua senha?</a>
                     </div>
