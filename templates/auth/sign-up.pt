@@ -88,19 +88,59 @@
               <form action="/auth/sign-up" method="POST">
                 <div class="sign_form_wrapper">
                   <div class="single_form">
-                    <input type="text" placeholder="Username" name="username" autocomplete="username" required/>
+                    <input 
+                      type="text" 
+                      placeholder="Nome" 
+                      name="username"
+                      minlength="2"
+                      maxlength="100"
+                      data-bs-toggle="tooltip" 
+                      data-bs-placement="top" 
+                      title="O seu nome deverá ter entre 2 a 100 letras (pode ter espaços)."
+                      required
+                      />
                     <i class="fal fa-user"></i>
                   </div>
                   <div class="single_form">
-                    <input type="email" placeholder="Email" name="email" autocomplete="email" required/>
-                    <i class="fal fa-envelope"></i>
+                    <input 
+                      type="email" 
+                      placeholder="Email" 
+                      name="email" 
+                      minlength="2"
+                      maxlength="100"
+                      data-bs-toggle="tooltip" 
+                      data-bs-placement="top" 
+                      title="O seu email deverá seguir o formato 'exemplo@exemplo.exemplo'."
+                      autocomplete="email"
+                      required
+                      />
+                      <i class="fal fa-envelope"></i>
                   </div>
                   <div class="single_form">
-                    <input type="date" placeholder="dd/mm/yyyy" name="birth-date" min="${min_date}" max="${max_date}" required/>
+                    <input 
+                      type="date" 
+                      placeholder="Data Nasc. (dd/mm/yyyy)" 
+                      name="birth-date" 
+                      min="${min_date}"
+                      max="${max_date}"
+                      data-bs-toggle="tooltip" 
+                      data-bs-placement="top" 
+                      title="A sua data de nascimento deverá seguir o formato DD/MM/AAAA."
+                      />
                     <i class="fal fa-calendar"></i>
                   </div>
                   <div class="single_form">
-                    <input type="text" placeholder="+351 123 456 789" name="phone-number" required/>
+                    <input 
+                      type="text" 
+                      placeholder="Nº Telemóvel (+351 123 456 789)" 
+                      name="phone-number" 
+                      minlength="9"
+                      maxlength="13"
+                      data-bs-toggle="tooltip" 
+                      data-bs-placement="top" 
+                      title="O seu nº tel deverá ter 9 dígitos numéricos, ou 12 depois de um '+'."
+                      autocomplete="off"
+                      />
                     <i class="fal fa-phone"></i>
                   </div>
 
@@ -155,7 +195,7 @@
                       maxlength="100"
                       data-bs-toggle="tooltip" 
                       data-bs-placement="top" 
-                      title="Escreva a sua password."
+                      title="Escreva a sua password, de acordo com a lista acima."
                       autocomplete="new-password"
                       required/>
                     <span class="show-pass" onclick="toggle_visibility(this)">
