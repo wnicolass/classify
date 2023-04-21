@@ -26,7 +26,8 @@ from views import(
     auth,
     common,
     ad,
-    auth_google
+    auth_google,
+    auth_microsoft
 ) 
 
 app = FastAPI()
@@ -97,7 +98,7 @@ def config_templates():
 
 def config_routes():
     app.mount('/public', StaticFiles(directory='public'), name='static')
-    for view in [home, user, auth, auth_google, ad, posts, common]:
+    for view in [home, user, auth, auth_google, auth_microsoft, ad, posts, common]:
         app.include_router(view.router)
 
 def config_middlewares():
