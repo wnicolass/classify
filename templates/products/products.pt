@@ -347,15 +347,15 @@
             <div class="pagination_wrapper mt-50">
               <ul class="pagination justify-content-center">
                 <li>
-                  <a class="Previous" href="#"
+                  <a class="Previous" style="cursor: pointer;"
                     ><i class="fal fa-angle-left"></i
                   ></a>
                 </li>
-                <li><a class="number" href="#">1</a></li>
-                <li><a class="number active" href="#">2</a></li>
-                <li><a class="number" href="#">3</a></li>
+                <__repeat tal:repeat="num range(all_ads_count)" tal:omit-tag="True">
+                  <li><a class="number" data-value="${num+1}">${num+1}</a></li>
+                </__repeat>
                 <li>
-                  <a class="next" href="#"
+                  <a class="next" style="cursor: pointer;"
                     ><i class="fal fa-angle-right"></i
                   ></a>
                 </li>
