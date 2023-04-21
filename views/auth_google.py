@@ -22,7 +22,7 @@ from common.auth import (
     requires_unauthentication,
     ExternalLoginError,
     set_current_user,
-    hash_google_sub
+    hash_sub
 )
 from common.fastapi_utils import get_db_session
 from common.utils import (
@@ -54,6 +54,7 @@ GOOGLE_CLIENT_ID = os.getenv('GOOGLE_CLIENT_ID')
 GOOGLE_REDIRECT_URI = os.getenv('GOOGLE_REDIRECT_URI')
 GOOGLE_CLIENT_SECRET = os.getenv('GOOGLE_CLIENT_SECRET')
 GOOGLE_GRANT_TYPE = os.getenv('GOOGLE_GRANT_TYPE')
+GOOGLE_SECRET = os.getenv('GOOGLE_TOKEN_SECRET')
 
 @router.get('/auth/google', dependencies = [Depends(requires_unauthentication)])
 async def google_external_login(
@@ -227,7 +228,7 @@ def check_csrf_token(state: str):
     
 async def authenticate_user(id_token: dict, session: AsyncSession):
     user_found_by_email = await user_service.get_user_by_email(id_token['email_address'], session)
-    hashed_sub = hash_google_sub(id_token['sub'])
+    hashed_sub = hash_sub(id_token['sub'], GOOGLE_SECRET)
     
     """
         1. User is registed but don't have external login data
