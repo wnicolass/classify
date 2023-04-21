@@ -74,7 +74,7 @@ async def post_sign_up_viewmodel(
         email = form_field_as_str(form_data, 'email'),
         birth_date = form_field_as_str(form_data, 'birth-date'),
         phone_number = form_field_as_str(form_data, 'phone-number'),
-        password = form_field_as_str(form_data, 'password'),
+        password = form_field_as_str(form_data, 'new-password'),
         confirm_password = form_field_as_str(form_data, 'confirm-password'),
         min_date = MIN_DATE,
         max_date = date.today()
