@@ -3,7 +3,7 @@ from typing import List
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
 from sqlalchemy.orm import joinedload
-from models.user import UserAccount, UserLoginData, UserLoginDataExt, UserAddress, Favourite, ExternalProvider
+from models.user import UserAccount, UserLoginData, UserLoginDataExt, UserAddress, Favourite, ExternalProvider, OpenIdConnectTokens
 
 # CREATE
 async def create_user(username: str, phone_number: str, birth_date: str, is_active: int, session: AsyncSession, image_url: str | None = None) -> UserAccount:
@@ -76,6 +76,18 @@ async def create_user_address(
     await session.commit()
     await session.refresh(user_address)
     return user_address
+
+async def save_oauth_tokens(
+    state: str, 
+    nonce: str, 
+    session: AsyncSession
+) -> OpenIdConnectTokens:
+    token_instance = OpenIdConnectTokens(state = state, nonce = nonce)
+    session.add(token_instance)
+    await session.commit()
+    await session.refresh(token_instance)
+
+    return token_instance
 
 # READ
 async def get_user_by_email(email: str, session: AsyncSession) -> UserAccount:
@@ -165,6 +177,15 @@ async def get_external_provider_by_id(
 
     return external_provider
 
+async def get_oauth_tokens(state_token: str, session: AsyncSession) -> OpenIdConnectTokens:
+    query = await session.execute(
+        select(OpenIdConnectTokens)
+        .where(OpenIdConnectTokens.state == state_token)
+    )
+    token_instance = query.scalar_one_or_none()
+
+    return token_instance
+
 # UPDATE
 async def set_email_confirmation_token(user_id: int, token: str, expiration_time: datetime, session: AsyncSession):
     user = await get_user_login_data_by_id(user_id, session)
@@ -225,3 +246,10 @@ async def delete_user_favourite(current_user: UserAccount, fav: Favourite, sessi
     await session.commit()
     current_user = await get_user_account_by_id(current_user.user_id, session)
     return current_user
+
+async def delete_token_instance(
+    token_instance: OpenIdConnectTokens, 
+    session: AsyncSession
+) -> None:
+    await session.delete(token_instance)
+    await session.commit()
