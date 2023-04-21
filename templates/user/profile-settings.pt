@@ -103,6 +103,7 @@
                             data-bs-toggle="tooltip" 
                             data-bs-placement="top" 
                             title="Escreva o seu país e escolha uma das opções."
+                            autocomplete="off"
                             />
                           <datalist id="countries-datalist">
                             <__repeat tal:repeat="country all_countries" tal:omit-tag="True">
@@ -124,6 +125,7 @@
                             data-bs-toggle="tooltip" 
                             data-bs-placement="top" 
                             title="Escreva a sua cidade e escolha uma das opções."
+                            autocomplete="off"
                           />
                           <datalist id="cities-datalist">
                           </datalist>
