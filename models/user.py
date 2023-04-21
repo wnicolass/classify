@@ -142,3 +142,10 @@ class EmailValidationStatus(Base):
     status_name: str = Column(String(30))
 
     users = relationship('UserLoginData', back_populates = 'email_status')
+
+class OpenIdConnectTokens(Base):
+    __tablename__ = 'OpenIdConnectTokens'
+
+    id: int = Column(Integer, primary_key = True, autoincrement = True)
+    state: str = Column(String(1000), nullable = False)
+    nonce: str = Column(String(1000), nullable = False)
