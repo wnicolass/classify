@@ -130,6 +130,7 @@
                     data-bs-toggle="tooltip" 
                     data-bs-placement="top" 
                     title="Escreva o seu país e escolha uma das opções."
+                    autocomplete="off"
                     required
                     />
                   <datalist id="countries-datalist">
@@ -151,6 +152,7 @@
                     data-bs-toggle="tooltip" 
                     data-bs-placement="top" 
                     title="Escreva a sua cidade e escolha uma das opções."
+                    autocomplete="off"
                     required
                   />
                   <datalist id="cities-datalist">
