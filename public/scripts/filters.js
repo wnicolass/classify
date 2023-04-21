@@ -1,6 +1,55 @@
 const queryFirstPart = window.location.href.split('?').at(-1);
 const inCategoryView = /(http(s)?:\/\/).*\/ads\/category\/\d{1,2}/.test(queryFirstPart);
 const inSubcategoryView = /(http(s)?:\/\/).*\/ads\/subcategory\/\d{1,3}/.test(queryFirstPart);
+const pageNumber = document.querySelectorAll('.number');
+let activePage;
+
+function setOneAsActive() {
+  const pageOneIcon = document.querySelector('a[data-value="1"]');
+  pageOneIcon.classList.add('active');
+  activePage = pageOneIcon.dataset.value;
+}
+
+function handlePage(event) {
+  const selectedPage = event.currentTarget;
+  
+  if (selectedPage.classList.contains('number')) {
+    pageNumber.forEach(page => page.classList.remove('active'));
+    selectedPage.classList.add('active');
+    activePage = selectedPage.dataset.value;
+  } else if (selectedPage.classList.contains('Previous')) {
+    const previousPage = activePage.parentElement.previousElementSibling.querySelector('.number');
+    
+    if (previousPage) {
+      pageNumber.forEach(page => page.classList.remove('active'));
+      previousPage.classList.add('active');
+      activePage = previousPage.dataset.value;
+    }
+  } else if (selectedPage.classList.contains('next')) {
+    const nextPage = activePage.parentElement.nextElementSibling.querySelector('.number');
+    
+    if (nextPage) {
+      pageNumber.forEach(page => page.classList.remove('active'));
+      nextPage.classList.add('active');
+      activePage = nextPage.dataset.value;
+    }
+  }
+  const page = +activePage;
+
+  const values = getQueryValues();
+  runFetch(values, page);
+}
+
+function getActivePage() {
+  const previousBtn = document.querySelector('li .Previous')
+  const nextBtn = document.querySelector('li .next');
+  pageNumber.forEach(page => {
+    page.addEventListener('click', handlePage);
+  });
+
+  previousBtn.addEventListener('click', handlePage);
+  nextBtn.addEventListener('click', handlePage);
+}
 
 function getMinMaxPrice() {
   const minPrice = document.querySelector('.irs-handle.from');
@@ -21,7 +70,7 @@ function getQueryValues() {
 function handleEvent() {
   setTimeout(() => {
     const values = getQueryValues();
-    runFetch(values);
+    runFetch(values, activePage);
   }, 0)
 }
 
@@ -61,7 +110,7 @@ async function fetchData(queryParams) {
   }
 }
 
-async function runFetch(queryValues) {
+async function runFetch(queryValues, page = 1) {
   setTimeout(async() => {
     let possibleParams = ['city', 'category_id', 'subcategory_id', 'order_by', 'min_price', 'max_price'];
     if (inCategoryView) {
@@ -83,7 +132,7 @@ async function runFetch(queryValues) {
       }
     });
     
-    const queryParams = `&${query.join('&')}`;
+    const queryParams = `&${query.join('&')}&page=${page}`;
     
     await fetchData(queryParams);
   }, 100);
@@ -166,6 +215,8 @@ function main() {
   handleFilters();
   infinityEvent();
   getMinMaxPrice();
+  getActivePage();
+  setOneAsActive();
 }   
 
 window.addEventListener('load', main);
