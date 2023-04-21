@@ -127,7 +127,7 @@ async def resend_verification_email(
     user_id: int,
     session: Annotated[AsyncSession, Depends(get_db_session)]
 ):
-    user = await user_service.get_user_by_id(user_id, session)
+    user = await user_service.get_user_login_data_by_id(user_id, session)
 
     if not user:
         raise HTTPException(status_code = status.HTTP_404_NOT_FOUND, detail = 'User not found.')

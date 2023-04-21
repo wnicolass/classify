@@ -36,6 +36,7 @@ function toggle_eye(show){
 
 function checkStrength(password) {
     let strength = 0;
+    let submit_button = document.getElementById("submit-button");
 
     //If password contains both lower and uppercase characters
     if (password.match(/([a-z].*[A-Z])|([A-Z].*[a-z])/)) {
@@ -79,21 +80,26 @@ function checkStrength(password) {
         passwordStrength.classList.add('progress-bar-empty');
         passwordStrength.classList.remove('progress-bar-danger', 'progress-bar-warning', 'progress-bar-notify', 'progress-bar-success');
         passwordStrength.style = 'width: 0%';
+        submit_button.disabled = true;
     } else if (strength == 1) {
         passwordStrength.classList.add('progress-bar-danger');
         passwordStrength.classList.remove('progress-bar-empty', 'progress-bar-warning', 'progress-bar-notify', 'progress-bar-success');
         passwordStrength.style = 'width: 10%';
+        submit_button.disabled = true;
     } else if (strength == 2) {
         passwordStrength.classList.add('progress-bar-warning');
         passwordStrength.classList.remove('progress-bar-empty', 'progress-bar-danger', 'progress-bar-notify', 'progress-bar-success');
         passwordStrength.style = 'width: 40%';
+        submit_button.disabled = true;
     } else if (strength == 3) {
         passwordStrength.classList.add('progress-bar-notify');
         passwordStrength.classList.remove('progress-bar-empty', 'progress-bar-danger', 'progress-bar-warning', 'progress-bar-success');
         passwordStrength.style = 'width: 70%';
+        submit_button.disabled = true;
     } else if (strength == 4) {
         passwordStrength.classList.add('progress-bar-success');
         passwordStrength.classList.remove('progress-bar-empty', 'progress-bar-danger', 'progress-bar-warning', 'progress-bar-notify');
         passwordStrength.style = 'width: 100%';
+        submit_button.disabled = false;
     }
 }

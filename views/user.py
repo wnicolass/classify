@@ -6,7 +6,8 @@ from fastapi import (
     UploadFile,
     Request,
     responses,
-    status
+    status,
+    HTTPException
 )
 from fastapi_chameleon import template
 from uuid import uuid4
@@ -172,21 +173,25 @@ async def profile_settings_viewmodel(
 @template('user/change-password.pt')
 async def change_password(session: Annotated[AsyncSession, Depends(get_db_session)]):
     vm = await ViewModel()
-    user = await user_service.get_user_by_id(vm.user.user_id, session)
+    user_login_data = await user_service.get_user_login_data_by_id(vm.user.user_id, session)
     
-    if not user:
-        vm.error, vm.error_msg = True, "A sua conta, criada pela Google, não tem password para alterar!"
-        vm.login_data_exists = "no"
+    if not user_login_data:
+        raise HTTPException(status_code=404, detail="User data not found")
+    
+    password_hash = user_login_data.password_hash
+        
+    password_exists = True
+    if not password_hash:    
+        password_exists = False
         
     if vm.error:
         return vm
     
-    return await change_password_viewmodel(session)
+    return await change_password_viewmodel(session, password_exists)
 
-async def change_password_viewmodel(session: Annotated[AsyncSession, Depends(get_db_session)]):
+async def change_password_viewmodel(session: Annotated[AsyncSession, Depends(get_db_session)], password_exists: str):
     vm = await ViewModel()
-    
-    vm.login_data_exists = "yes"
+    vm.password_exists = password_exists
     
     return vm
 
@@ -194,32 +199,41 @@ async def change_password_viewmodel(session: Annotated[AsyncSession, Depends(get
 @template('user/change-password.pt')
 async def submit_password(request: Request, session: Annotated[AsyncSession, Depends(get_db_session)]):
     vm = await ViewModel()
-    user = await user_service.get_user_by_id(vm.user.user_id, session)
-    if not user:
-        return responses.RedirectResponse(url = '/user/profile-settings', status_code = status.HTTP_303_SEE_OTHER)
+    user_login_data = await user_service.get_user_login_data_by_id(vm.user.user_id, session)
     
-    return await submit_password_viewmodel(request, session, user)
+    if not user_login_data:
+        raise HTTPException(status_code=404, detail="User data not found")
+    
+    return await submit_password_viewmodel(request, session, user_login_data)
 
 async def submit_password_viewmodel(
     request: Request, 
     session: Annotated[AsyncSession, Depends(get_db_session)],
-    user: UserLoginData):
+    user_login_data: UserLoginData):
     
+    password_hash = user_login_data.password_hash
+    
+    password_exists = True
+    if not password_hash:    
+        password_exists = False
+        
     form_data = await request.form()
     
     vm = await ViewModel(
-        current_password = form_field_as_str(form_data, 'current_password'),
+        current_password = form_field_as_str(form_data, 'current_password') if password_exists else '',
         new_password = form_field_as_str(form_data, 'new_password'),
         confirm_password = form_field_as_str(form_data, 'confirm_password'),
     )
-    vm.login_data_exists = "yes"
+    vm.password_exists = password_exists
     
-    if not check_password(vm.current_password + user.password_salt, user.password_hash):
-        vm.error, vm.error_msg = True, "A password atual está incorreta!"
-    elif vm.new_password != vm.confirm_password:
+    if password_exists:
+        if not check_password(vm.current_password + user_login_data.password_salt, password_hash):
+            vm.error, vm.error_msg = True, "A password atual está incorreta!"
+        elif vm.new_password == vm.current_password:
+            vm.error, vm.error_msg = True, "A password nova é igual á atual!"
+    
+    if vm.new_password != vm.confirm_password:
         vm.error, vm.error_msg = True, "A confirmação de password está incorreta"
-    elif vm.new_password == vm.current_password:
-        vm.error, vm.error_msg = True, "A password nova é igual á atual!"
     elif not is_valid_password(vm.new_password):
         vm.error, vm.error_msg = True, 'A nova password é inválida!'
         
@@ -230,7 +244,7 @@ async def submit_password_viewmodel(
         return vm
     
     if hashed_password and salt:
-        await user_service.update_user_password(user, hashed_password, salt, session)
+        await user_service.update_user_password(user_login_data, hashed_password, salt, session)
         vm.success, vm.success_msg = True, 'Password alterada com sucesso!'
     
     return vm
