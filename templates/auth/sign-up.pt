@@ -96,11 +96,11 @@
                     <i class="fal fa-envelope"></i>
                   </div>
                   <div class="single_form">
-                    <input type="date" placeholder="dd/mm/yyyy" name="birth-date" min="${min_date}" max="${max_date}"/>
+                    <input type="date" placeholder="dd/mm/yyyy" name="birth-date" min="${min_date}" max="${max_date}" required/>
                     <i class="fal fa-calendar"></i>
                   </div>
                   <div class="single_form">
-                    <input type="text" placeholder="+351 123 456 789" name="phone-number"/>
+                    <input type="text" placeholder="+351 123 456 789" name="phone-number" required/>
                     <i class="fal fa-phone"></i>
                   </div>
 
@@ -149,7 +149,7 @@
                     <input
                       id="new-password" 
                       type="password" 
-                      placeholder="Password Nova" 
+                      placeholder="Password" 
                       name="new-password" 
                       minlength="8"
                       maxlength="100"
