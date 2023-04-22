@@ -2,6 +2,7 @@ import hashlib
 import math
 import os
 import secrets
+from urllib.parse import quote_plus as quote
 from datetime import date
 from typing import List
 import regex
@@ -49,6 +50,11 @@ def generate_csrf_token() -> str:
 
 def generate_nonce(length: int) -> str:
     return secrets.token_hex(math.ceil(length / 2))[:length]
+
+def generate_query_string(params: dict) -> str:
+    return '&'.join(
+        f'{param}={quote(value)}' for param, value in params.items()
+    )
 
 def is_ascii(txt: str) -> bool:
     try:
