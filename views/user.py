@@ -23,6 +23,7 @@ from common.fastapi_utils import get_db_session, form_field_as_str
 from sqlalchemy.ext.asyncio import AsyncSession
 from models.user import UserAccount, UserLoginData
 from common.utils import (
+    filter_ads_by_status,
     is_valid_birth_date, 
     is_valid_username,
     is_valid_password,
@@ -261,29 +262,25 @@ async def submit_password_viewmodel(
 async def my_ads(session: Annotated[AsyncSession, Depends(get_db_session)]):
     vm = await ViewModel()
     
-    all_ads = await ad_service.get_ads_by_user_id(session, vm.user_id)
-    vm.all_ads = all_ads
-    vm.ad_count_total = len(all_ads)
+    vm.all_ads = await ad_service.get_ads_by_user_id(session, vm.user_id)
+    vm.ad_count_total = len(vm.all_ads)
     
-    all_active_ads = await ad_service.get_ads_by_user_id_and_status(session, vm.user_id, 1)
-    vm.all_active_ads = all_active_ads
-    vm.ad_count_active = len(all_active_ads)
+    vm.all_active_ads = filter_ads_by_status(vm.all_ads, 1)
+    vm.ad_count_active = len(vm.all_active_ads)
     
-    all_inactive_ads = await ad_service.get_ads_by_user_id_and_status(session, vm.user_id, 2)
-    vm.all_inactive_ads = all_inactive_ads
-    vm.ad_count_inactive = len(all_inactive_ads)
+    vm.all_inactive_ads = filter_ads_by_status(vm.all_ads, 2)
+    vm.ad_count_inactive = len(vm.all_inactive_ads)
     
-    all_expired_ads = await ad_service.get_ads_by_user_id_and_status(session, vm.user_id, 3)
-    vm.all_expired_ads = all_expired_ads
-    vm.ad_count_expired = len(all_expired_ads)
+    vm.all_expired_ads = filter_ads_by_status(vm.all_ads, 3)
+    vm.ad_count_expired = len(vm.all_expired_ads)
 
-    all_sold_ads = await ad_service.get_ads_by_user_id_and_status(session, vm.user_id, 4)
-    vm.all_sold_ads = all_sold_ads
-    vm.ad_count_sold = len(all_sold_ads)
+    vm.all_sold_ads = filter_ads_by_status(vm.all_ads, 4)
+    vm.ad_count_sold = len(vm.all_sold_ads)
     
-    all_deleted_ads = await ad_service.get_ads_by_user_id_and_status(session, vm.user_id, 5)
-    vm.all_deleted_ads = all_deleted_ads
-    vm.ad_count_deleted = len(all_deleted_ads)
+    vm.all_deleted_ads = filter_ads_by_status(vm.all_ads, 5)
+    vm.ad_count_deleted = len(vm.all_deleted_ads)
+
+    vm.paid_promos = await ad_service.get_paid_promos(session)
     
     return vm
 
