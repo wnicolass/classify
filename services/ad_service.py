@@ -245,6 +245,17 @@ async def get_ads_by_status(session: AsyncSession, status: str) -> List[ad.Ad]:
     
     return ads_by_status
 
+async def get_paid_promos(session: AsyncSession) -> List[ad.Promo]:
+    query = await session.execute(
+        select(ad.Promo)
+        .where(ad.Promo.promo_price != None)
+        .order_by(ad.Promo.promo_price.desc())
+    )
+    paid_promos = query.unique().scalars().all()
+    assert len(paid_promos) == 2
+
+    return paid_promos
+
 async def get_popular_ads(session: AsyncSession, limit: int = 8) -> List[ad.Ad]:
     query = await session.execute(select(ad.Ad)
         .join(ad.Ad.ad_status)
