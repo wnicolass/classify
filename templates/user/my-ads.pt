@@ -2,12 +2,15 @@
 <__additional_script__ metal:fill-slot="additional_script" tal:omit-tag="True">
   <script src="/public/scripts/switch-tables.js" defer></script>
   <script src="/public/scripts/delete-ad.js" defer></script>
+  <script src="/public/scripts/promo-handler.js" defer></script>
 </__additional_script__>
 <__additional_stylesheet__ metal:fill-slot="additional_stylesheet" tal:omit-tag="True">
 <style>
   tr:has(span.deleted) td:not(td.status, td.action) {
     opacity: 0.5;
   }
+
+  /* Pen by Ryan Mulligan, see https://codepen.io/hexagoncircle/pen/XWbWKwL */
 
   @import url("https://fonts.googleapis.com/css?family=Cardo:400i|Rubik:400,700&display=swap");
   :root {
@@ -98,7 +101,7 @@
     margin-top: 1rem;
   }
 
-  .title {
+  .title-promo {
     font-size: 1.3rem;
     font-weight: bold;
     line-height: 1.2;
@@ -138,7 +141,7 @@
       transform: translateY(calc(100% - 14.5rem));
     }
 
-    .content > *:not(.title) {
+    .content > *:not(.title-promo) {
       opacity: 0;
       transform: translateY(1rem);
       transition: transform var(--d) var(--e), opacity var(--d) var(--e);
@@ -160,8 +163,8 @@
   .card-modal:focus-within .content {
       transform: translateY(0);
     }
-    .card-modal:hover .content > *:not(.title),
-  .card-modal:focus-within .content > *:not(.title) {
+    .card-modal:hover .content > *:not(.title-promo),
+  .card-modal:focus-within .content > *:not(.title-promo) {
       opacity: 1;
       transform: translateY(0);
       transition-delay: calc(var(--d) / 8);
@@ -169,7 +172,7 @@
 
     .card-modal:focus-within:before, .card-modal:focus-within:after,
   .card-modal:focus-within .content,
-  .card-modal:focus-within .content > *:not(.title) {
+  .card-modal:focus-within .content > *:not(.title-promo) {
       transition-duration: 0s;
     }
   }
@@ -209,6 +212,7 @@
           </div>
 
           <div class="modal-body">
+          <!-- Pen by Ryan Mulligan, see https://codepen.io/hexagoncircle/pen/XWbWKwL -->
             <main class="page-content">
               <div class="card-modal">
                 <div class="content">
@@ -218,9 +222,9 @@
                       alt="Icon"
                     />
                   </div>
-                  <h2 style="color: #fff;" class="title">Profissional</h2>
-                  <p style="color: #fff;" class="copy">Seu anúncio terá máxima visibilidade por apenas €10.99</p>
-                  <button style="background-color: #fff; color: #FF4367;" class="btn">Escolho Profissional</button>
+                  <h2 style="color: #fff;" class="title-promo">${paid_promos[0].promo_name}</h2>
+                  <p style="color: #fff;" class="copy">Seu anúncio terá máxima visibilidade por apenas €${paid_promos[0].promo_price}</p>
+                  <button data-promoid="${paid_promos[0].id}" style="background-color: #fff; color: #FF4367;" class="btn">Escolho Profissional</button>
                 </div>
               </div>
               <div class="card-modal">
@@ -231,10 +235,10 @@
                       alt="Icon"
                     />
                   </div>
-                  <h2 style="color: #FF4367;" class="title">Premium</h2>
+                  <h2 style="color: #FF4367;" class="title-promo">${paid_promos[1].promo_name}</h2>
                   <p style="color: #FF4367;" class="copy">Seu anúncio estará no
-                  topo dos resultados de pesquisa por apenas €5.99</p>
-                  <button style="background-color: #FF4367; color: #fff;" class="btn">Escolho Premium</button>
+                  topo dos resultados de pesquisa por apenas €${paid_promos[1].promo_price}</p>
+                  <button data-promoid="${paid_promos[1].id}" style="background-color: #FF4367; color: #fff;" class="btn">Escolho Premium</button>
                 </div>
               </div>
             </main>
@@ -394,7 +398,7 @@
                             <div class="table_action">
                               <ul tal:condition="ad.status_id != 5">
                                 <li>
-                                  <a href="#" data-toggle="modal" data-target="#select-price"><i class="fa-solid fa-euro-sign"></i></a>
+                                  <a tal:condition="ad.status_id == 1" data-adid="${ad.id}" href="#" data-toggle="modal" data-target="#select-price"><i class="fa-solid fa-euro-sign"></i></a>
                                 </li>
                                 <li>
                                   <a href="#"><i class="fal fa-pencil"></i></a>
@@ -477,7 +481,7 @@
                             <div class="table_action">
                               <ul tal:condition="ad.status_id != 5">
                                 <li>
-                                  <a href="#" data-toggle="modal" data-target="#select-price"><i class="fa-solid fa-euro-sign"></i></a>
+                                  <a data-adid="${ad.id}" href="#" data-toggle="modal" data-target="#select-price"><i class="fa-solid fa-euro-sign"></i></a>
                                 </li>
                                 <li>
                                   <a href="#"><i class="fal fa-pencil"></i></a>
@@ -560,9 +564,6 @@
                             <div class="table_action">
                               <ul tal:condition="ad.status_id != 5">
                                 <li>
-                                  <a href="#" data-toggle="modal" data-target="#select-price"><i class="fa-solid fa-euro-sign"></i></a>
-                                </li>
-                                <li>
                                   <a href="#"><i class="fal fa-pencil"></i></a>
                                 </li>
                                 <li>
@@ -642,9 +643,6 @@
                           <td class="action">
                             <div class="table_action">
                               <ul tal:condition="ad.status_id != 5">
-                                <li>
-                                  <a href="#" data-toggle="modal" data-target="#select-price"><i class="fa-solid fa-euro-sign"></i></a>
-                                </li>
                                 <li>
                                   <a href="#"><i class="fal fa-pencil"></i></a>
                                 </li>
@@ -726,9 +724,6 @@
                             <div class="table_action">
                               <ul tal:condition="ad.status_id != 5">
                                 <li>
-                                  <a href="#" data-toggle="modal" data-target="#select-price"><i class="fa-solid fa-euro-sign"></i></a>
-                                </li>
-                                <li>
                                   <a href="#"><i class="fal fa-pencil"></i></a>
                                 </li>
                                 <li>
@@ -807,18 +802,7 @@
                           </td>
                           <td class="action">
                             <div class="table_action">
-                              <ul tal:condition="ad.status_id != 5">
-                                <li>
-                                  <a href="#" data-toggle="modal" data-target="#select-price"><i class="fa-solid fa-euro-sign"></i></a>
-                                </li>
-                                <li>
-                                  <a href="#"><i class="fal fa-pencil"></i></a>
-                                </li>
-                                <li>
-                                  <a style="cursor: pointer;" class='delete-btn' data-adid="${ad.id}"><i class="fal fa-trash-alt"></i></a>
-                                </li>
-                              </ul>
-                              <button tal:condition="ad.status_id == 5" class="main-btn">Recuperar</button>
+                              <button data-adid="${ad.id}" tal:condition="ad.status_id == 5" class="main-btn">Recuperar</button>
                             </div>
                           </td>
                         </tr>
