@@ -181,7 +181,7 @@
                             <div class="table_action">
                               <ul tal:condition="ad.status_id != 5">
                                 <li>
-                                  <a href="#"><i class="fal fa-eye"></i></a>
+                                  <a href="#"><i class="fa-solid fa-euro-sign"></i></a>
                                 </li>
                                 <li>
                                   <a href="#"><i class="fal fa-pencil"></i></a>
@@ -264,7 +264,7 @@
                             <div class="table_action">
                               <ul tal:condition="ad.status_id != 5">
                                 <li>
-                                  <a href="#"><i class="fal fa-eye"></i></a>
+                                  <a href="#"><i class="fa-solid fa-euro-sign"></i></a>
                                 </li>
                                 <li>
                                   <a href="#"><i class="fal fa-pencil"></i></a>
@@ -347,7 +347,7 @@
                             <div class="table_action">
                               <ul tal:condition="ad.status_id != 5">
                                 <li>
-                                  <a href="#"><i class="fal fa-eye"></i></a>
+                                  <a href="#"><i class="fa-solid fa-euro-sign"></i></a>
                                 </li>
                                 <li>
                                   <a href="#"><i class="fal fa-pencil"></i></a>
@@ -430,7 +430,7 @@
                             <div class="table_action">
                               <ul tal:condition="ad.status_id != 5">
                                 <li>
-                                  <a href="#"><i class="fal fa-eye"></i></a>
+                                  <a href="#"><i class="fa-solid fa-euro-sign"></i></a>
                                 </li>
                                 <li>
                                   <a href="#"><i class="fal fa-pencil"></i></a>
@@ -513,7 +513,7 @@
                             <div class="table_action">
                               <ul tal:condition="ad.status_id != 5">
                                 <li>
-                                  <a href="#"><i class="fal fa-eye"></i></a>
+                                  <a href="#"><i class="fa-solid fa-euro-sign"></i></a>
                                 </li>
                                 <li>
                                   <a href="#"><i class="fal fa-pencil"></i></a>
@@ -596,7 +596,7 @@
                             <div class="table_action">
                               <ul tal:condition="ad.status_id != 5">
                                 <li>
-                                  <a href="#"><i class="fal fa-eye"></i></a>
+                                  <a href="#"><i class="fa-solid fa-euro-sign"></i></a>
                                 </li>
                                 <li>
                                   <a href="#"><i class="fal fa-pencil"></i></a>
