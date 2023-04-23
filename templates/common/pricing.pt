@@ -43,8 +43,7 @@
                 <p>
                   Com o nosso plano básico gratuito, pode criar e publicar um
                   anúncio para vender os seus produtos ou serviços. 
-                  O anúncio será exibido nos resultados de pesquisa para os
-                  utilizadores relevantes. Comece hoje mesmo e alcance novos clientes.
+                  O anúncio será exibido nos resultados de pesquisa normalmente.
                 </p>
                 <span class="price">FREE</span>
               </div>
@@ -63,15 +62,15 @@
               </div>
               <div class="pricing_title">
                 <h4 class="title">Profissional</h4>
-                <p>Aumente a visibilidade do seu anúncio</p>
+                <p>Máxima visibilidade do seu Anúncio</p>
               </div>
               <div class="pricing_content">
                 <p>
-                  Com o nosso plano profissional, pode publicar um anúncio no
-                  topo dos resultados de pesquisa. Isso aumentará
-                  as suas hipóteses de vendas.
+                  Com o nosso plano profissional, o seu anúncio terá
+                  máxima visibilidade no topo dos resultados de pesquisa
+                  e como anúncio featured. Aumente significativamente as suas hipóteses de vendas.
                 </p>
-                <span class="price">$5.99</span>
+                <span class="price">€10.99</span>
               </div>
               <div class="pricing_btn">
                 <a href="#" class="main-btn main-btn-2">Ver Mais</a>
@@ -88,15 +87,15 @@
               </div>
               <div class="pricing_title">
                 <h4 class="title">Premium</h4>
-                <p>Máxima visibilidade do seu Anúncio</p>
+                <p>Aumente a visibilidade do seu anúncio</p>
               </div>
               <div class="pricing_content">
                 <p>
-                  Com o nosso plano premium, o seu anúncio terá
-                  máxima visibilidade no topo dos resultados de pesquisa
-                  e como anúncio featured. Aumente significativamente as suas hipóteses de vendas.
+                  Com o nosso plano premium, pode publicar um anúncio no
+                  topo dos resultados de pesquisa. Isso aumentará
+                  as suas hipóteses de vendas.
                 </p>
-                <span class="price">$10.99</span>
+                <span class="price">€5.99</span>
               </div>
               <div class="pricing_btn">
                 <a href="#" class="main-btn">Ver Mais</a>
