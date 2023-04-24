@@ -227,7 +227,7 @@
                   <button data-promoid="${paid_promos[0].id}" style="background-color: #fff; color: #FF4367;" class="btn">Escolho Profissional</button>
                 </div>
               </div>
-              <div class="card-modal">
+              <div class="card-modal" id="premium-card">
                 <div class="content">
                   <div style="height:50px;width:50px;" class="pricing_icon">
                     <img
@@ -398,7 +398,7 @@
                             <div class="table_action">
                               <ul tal:condition="ad.status_id != 5">
                                 <li>
-                                  <a tal:condition="ad.status_id == 1" data-adid="${ad.id}" href="#" data-toggle="modal" data-target="#select-price"><i class="fa-solid fa-euro-sign"></i></a>
+                                  <a tal:condition="ad.status_id == 1 and ad.promo_id != 3" data-adid="${ad.id}" data-promoid="${ad.promo_id}" href="#" data-toggle="modal" data-target="#select-price"><i class="fa-solid fa-euro-sign"></i></a>
                                 </li>
                                 <li>
                                   <a href="#"><i class="fal fa-pencil"></i></a>
@@ -479,9 +479,9 @@
                           </td>
                           <td class="action">
                             <div class="table_action">
-                              <ul tal:condition="ad.status_id != 5">
+                              <ul tal:condition="ad.status_id != 5 and ad.promo_id != 3">
                                 <li>
-                                  <a data-adid="${ad.id}" href="#" data-toggle="modal" data-target="#select-price"><i class="fa-solid fa-euro-sign"></i></a>
+                                  <a data-adid="${ad.id}" data-promoid="${ad.promo_id}" href="#" data-toggle="modal" data-target="#select-price"><i class="fa-solid fa-euro-sign"></i></a>
                                 </li>
                                 <li>
                                   <a href="#"><i class="fal fa-pencil"></i></a>
