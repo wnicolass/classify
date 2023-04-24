@@ -272,29 +272,25 @@ async def get_ads_by_creation_date(session: AsyncSession, limit: int = 8) -> Lis
 async def get_ads_by_title_or_description(
     session: AsyncSession, title: str,
     description: str,
-    page: int = 1,
-    items_per_page: int = 9
-) -> List[ad.Ad]:
+):
     filters = []
     if title:
         filters.append(ad.Ad.title.like(f'%{title}%'))
     if description:
         filters.append(ad.Ad.ad_description.like(f'%{title}%'))
 
-    offset = (page - 1) * items_per_page
-
-    query = await session.execute(select(ad.Ad)
-            .where(
+    query = select(ad.Ad).where(
                 and_(ad.Ad.status_id == AdStatusEnum.ACTIVE.value),
                 or_(*filters)
-            )
-            .order_by(ad.Ad.promo_id.desc(), ad.Ad.title.asc())
-            .offset(offset)
-            .limit(items_per_page)
-    )
-    ads_found = query.unique().scalars().all()
+            ).order_by(ad.Ad.promo_id.desc(), ad.Ad.title.asc())
 
-    return ads_found
+    ads_result = await session.execute(query)
+    count_result = await session.execute(query)
+
+    total_ads_found = len(count_result.unique().scalars().all())
+    ads_found = ads_result.unique().scalars().all()
+
+    return ads_found, total_ads_found
 
 async def get_ads_by_criteria(
     session: AsyncSession,
@@ -325,33 +321,44 @@ async def get_ads_by_criteria(
     if min_price and max_price:
         filters.append(ad.Ad.price.between(min_price, max_price))
 
+    criteria = (ad.Ad.title.asc())
+    has_criteria = False
     if order_by == 'asc':
+        has_criteria = True
         criteria = (ad.Ad.title.asc())
     elif order_by == 'desc':
+        has_criteria = True
         criteria = (ad.Ad.title.desc())
     elif order_by == 'recent':
+        has_criteria = True
         criteria = (ad.Ad.created_at.desc())
     elif order_by == 'old':
+        has_criteria = True
         criteria = (ad.Ad.created_at.asc())
     elif order_by == 'expensive':
+        has_criteria = True
         criteria = (ad.Ad.price.desc())
     elif order_by == 'cheap':
+        has_criteria = True
         criteria = (ad.Ad.price.asc())
-    else:
-        criteria = (ad.Ad.promo_id.desc())
 
     offset = (page - 1) * items_per_page
 
-    query = await session.execute(select(ad.Ad)
+    query = (select(ad.Ad)
         .join(ad.Ad.address)
         .join(ad.Ad.subcategory)
         .join(Subcategory.category)
         .where(and_(*filters))
-        .order_by(criteria)
         .offset(offset)
         .limit(items_per_page)
     )
-    ads_by_criteria = query.unique().scalars().all()
+
+    query = query.order_by(criteria)
+    if not has_criteria:
+        query = query.order_by(ad.Ad.promo_id.desc(), ad.Ad.title.asc())
+
+    partial_result = await session.execute(query)
+    ads_by_criteria = partial_result.unique().scalars().all()
 
     return ads_by_criteria
 
