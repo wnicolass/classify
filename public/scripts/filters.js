@@ -2,7 +2,9 @@ const queryFirstPart = window.location.href.split('?').at(-1);
 const inCategoryView = /(http(s)?:\/\/).*\/ads\/category\/\d{1,2}/.test(queryFirstPart);
 const inSubcategoryView = /(http(s)?:\/\/).*\/ads\/subcategory\/\d{1,3}/.test(queryFirstPart);
 const pageNumber = document.querySelectorAll('.number');
+const currentURL = new URL(window.location.href);
 let activePage;
+let currentSearch = `${currentURL.pathname}${currentURL.search}`;
 
 function setOneAsActive() {
   const pageOneIcon = document.querySelector('a[data-value="1"]');
@@ -103,6 +105,7 @@ async function fetchData(queryParams) {
     const categoryId = newUrl.at(-1);
     URL = `/ads/sort?${newUrl.at(-2)}_id=${categoryId}${queryParams}`;
   }
+  currentSearch = URL;
   try {
     const res = await fetch(URL);
     const data = await res.json();
@@ -232,7 +235,34 @@ function prettyDate(date) {
     const year = defaultDate.getFullYear();
 
     return `${day} ${month} ${year}`;
-}   
+}
+
+async function addNewFavSearch() {
+  if (currentSearch) {
+    try {
+      const res = await fetch('/user/favourite-search', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          url: currentSearch
+        })
+      });
+      if (!res.ok) {
+        window.location.href = `${currentURL.origin}/auth/sign-in`;
+      }
+    } catch (err) {
+      console.error(err.message);
+    }
+  }
+}
+
+function addFavouriteSearchEvent() {
+  const favSearchBtn = document.querySelector('.fav-search');
+
+  favSearchBtn.addEventListener('click', addNewFavSearch);
+}
 
 function main() {
   handleFilters();
@@ -240,6 +270,7 @@ function main() {
   getMinMaxPrice();
   getActivePage();
   setOneAsActive();
+  addFavouriteSearchEvent();
 }   
 
 window.addEventListener('load', main);
