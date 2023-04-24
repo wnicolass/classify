@@ -2,11 +2,179 @@
 <__additional_script__ metal:fill-slot="additional_script" tal:omit-tag="True">
   <script src="/public/scripts/switch-tables.js" defer></script>
   <script src="/public/scripts/delete-ad.js" defer></script>
+  <script src="/public/scripts/promo-handler.js" defer></script>
 </__additional_script__>
 <__additional_stylesheet__ metal:fill-slot="additional_stylesheet" tal:omit-tag="True">
 <style>
   tr:has(span.deleted) td:not(td.status, td.action) {
     opacity: 0.5;
+  }
+
+  /* Pen by Ryan Mulligan, see https://codepen.io/hexagoncircle/pen/XWbWKwL */
+
+  @import url("https://fonts.googleapis.com/css?family=Cardo:400i|Rubik:400,700&display=swap");
+  :root {
+    --d: 700ms;
+    --e: cubic-bezier(0.19, 1, 0.22, 1);
+    --font-sans: "Rubik", sans-serif;
+    --font-serif: "Cardo", serif;
+  }
+
+  .model-body {
+    display: grid;
+    place-items: center;
+  }
+
+  .page-content {
+    display: grid;
+    grid-gap: 1rem;
+    padding: 1rem;
+    max-width: 1024px;
+    margin: 0 auto;
+  }
+  @media (min-width: 600px) {
+    .page-content {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  .card-modal {
+    position: relative;
+    display: flex;
+    align-items: flex-end;
+    overflow: hidden;
+    padding: 1rem;
+    width: 100%;
+    text-align: center;
+    color: whitesmoke;
+    background-color: whitesmoke;
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1), 0 2px 2px rgba(0, 0, 0, 0.1), 0 4px 4px rgba(0, 0, 0, 0.1), 0 8px 8px rgba(0, 0, 0, 0.1), 0 16px 16px rgba(0, 0, 0, 0.1);
+  }
+  @media (min-width: 600px) {
+    .card-modal {
+      height: 350px;
+    }
+  }
+  .card-modal:before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 110%;
+    background-size: cover;
+    background-position: 0 0;
+    transition: transform calc(var(--d) * 1.5) var(--e);
+    pointer-events: none;
+  }
+  .card-modal:after {
+    content: "";
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 200%;
+    pointer-events: none;
+    transform: translateY(-50%);
+    transition: transform calc(var(--d) * 2) var(--e);
+  }
+  .card-modal:nth-child(1):before {
+    background-color: #FF4367;
+  }
+  .card-modal:nth-child(2):before {
+    background-color: #fff;
+  }
+
+  .content {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    padding: 1rem;
+    transition: transform var(--d) var(--e);
+    z-index: 1;
+  }
+
+  .content > * + * {
+    margin-top: 1rem;
+  }
+
+  .title-promo {
+    font-size: 1.3rem;
+    font-weight: bold;
+    line-height: 1.2;
+  }
+
+  .copy {
+    font-size: 1rem;
+    line-height: 1.35;
+  }
+
+  .btn {
+    cursor: pointer;
+    margin-top: 1.5rem;
+    padding: 0.75rem 1.5rem;
+    font-size: 0.65rem;
+    font-weight: bold;
+    letter-spacing: 0.025rem;
+    text-transform: uppercase;
+    color: white;
+    background-color: black;
+    border: none;
+  }
+  .btn:hover {
+    background-color: #0d0d0d;
+  }
+  .btn:focus {
+    outline: 1px dashed yellow;
+    outline-offset: 3px;
+  }
+
+  @media (hover: hover) and (min-width: 600px) {
+    .card-modal:after {
+      transform: translateY(0);
+    }
+
+    .content {
+      transform: translateY(calc(100% - 14.5rem));
+    }
+
+    .content > *:not(.title-promo) {
+      opacity: 0;
+      transform: translateY(1rem);
+      transition: transform var(--d) var(--e), opacity var(--d) var(--e);
+    }
+
+    .card-modal:hover,
+  .card-modal:focus-within {
+      align-items: center;
+    }
+    .card-modal:hover:before,
+  .card-modal:focus-within:before {
+      transform: translateY(-4%);
+    }
+    .card-modal:hover:after,
+  .card-modal:focus-within:after {
+      transform: translateY(-50%);
+    }
+    .card-modal:hover .content,
+  .card-modal:focus-within .content {
+      transform: translateY(0);
+    }
+    .card-modal:hover .content > *:not(.title-promo),
+  .card-modal:focus-within .content > *:not(.title-promo) {
+      opacity: 1;
+      transform: translateY(0);
+      transition-delay: calc(var(--d) / 8);
+    }
+
+    .card-modal:focus-within:before, .card-modal:focus-within:after,
+  .card-modal:focus-within .content,
+  .card-modal:focus-within .content > *:not(.title-promo) {
+      transition-duration: 0s;
+    }
   }
 </style>
 </__additional_stylesheet__>
@@ -31,6 +199,55 @@
  
 
     <!--====== HEADER PART ENDS ======-->
+
+    <!--====== MODAL PART START ======-->
+    <div class="modal fade" id="select-price" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div style="background-color: #FF4367;" class="modal-header">
+            <h5 style="color: #fff;" class="modal-title">Selecione um dos nossos pacotes!</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span style="color: #fff;" aria-hidden="true">&times;</span>
+            </button>
+          </div>
+
+          <div class="modal-body">
+          <!-- Pen by Ryan Mulligan, see https://codepen.io/hexagoncircle/pen/XWbWKwL -->
+            <main class="page-content">
+              <div class="card-modal">
+                <div class="content">
+                  <div style="height:50px;width:50px;" class="pricing_icon">
+                    <img
+                      src="/public/assets/images/icon/pricing-2.svg"
+                      alt="Icon"
+                    />
+                  </div>
+                  <h2 style="color: #fff;" class="title-promo">${paid_promos[0].promo_name}</h2>
+                  <p style="color: #fff;" class="copy">Seu anúncio terá máxima visibilidade por apenas €${paid_promos[0].promo_price}</p>
+                  <button data-promoid="${paid_promos[0].id}" style="background-color: #fff; color: #FF4367;" class="btn">Escolho Profissional</button>
+                </div>
+              </div>
+              <div class="card-modal" id="premium-card">
+                <div class="content">
+                  <div style="height:50px;width:50px;" class="pricing_icon">
+                    <img
+                      src="/public/assets/images/icon/pricing-3.svg"
+                      alt="Icon"
+                    />
+                  </div>
+                  <h2 style="color: #FF4367;" class="title-promo">${paid_promos[1].promo_name}</h2>
+                  <p style="color: #FF4367;" class="copy">Seu anúncio estará no
+                  topo dos resultados de pesquisa por apenas €${paid_promos[1].promo_price}</p>
+                  <button data-promoid="${paid_promos[1].id}" style="background-color: #FF4367; color: #fff;" class="btn">Escolho Premium</button>
+                </div>
+              </div>
+            </main>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!--====== MODAL PART ENDS ======-->
 
     <!--====== My Ads PART START ======-->
 
@@ -181,7 +398,7 @@
                             <div class="table_action">
                               <ul tal:condition="ad.status_id != 5">
                                 <li>
-                                  <a href="#"><i class="fal fa-eye"></i></a>
+                                  <a tal:condition="ad.status_id == 1 and ad.promo_id != 3" data-adid="${ad.id}" data-promoid="${ad.promo_id}" href="#" data-toggle="modal" data-target="#select-price"><i class="fa-solid fa-euro-sign"></i></a>
                                 </li>
                                 <li>
                                   <a href="#"><i class="fal fa-pencil"></i></a>
@@ -262,9 +479,9 @@
                           </td>
                           <td class="action">
                             <div class="table_action">
-                              <ul tal:condition="ad.status_id != 5">
+                              <ul tal:condition="ad.status_id != 5 and ad.promo_id != 3">
                                 <li>
-                                  <a href="#"><i class="fal fa-eye"></i></a>
+                                  <a data-adid="${ad.id}" data-promoid="${ad.promo_id}" href="#" data-toggle="modal" data-target="#select-price"><i class="fa-solid fa-euro-sign"></i></a>
                                 </li>
                                 <li>
                                   <a href="#"><i class="fal fa-pencil"></i></a>
@@ -347,9 +564,6 @@
                             <div class="table_action">
                               <ul tal:condition="ad.status_id != 5">
                                 <li>
-                                  <a href="#"><i class="fal fa-eye"></i></a>
-                                </li>
-                                <li>
                                   <a href="#"><i class="fal fa-pencil"></i></a>
                                 </li>
                                 <li>
@@ -429,9 +643,6 @@
                           <td class="action">
                             <div class="table_action">
                               <ul tal:condition="ad.status_id != 5">
-                                <li>
-                                  <a href="#"><i class="fal fa-eye"></i></a>
-                                </li>
                                 <li>
                                   <a href="#"><i class="fal fa-pencil"></i></a>
                                 </li>
@@ -513,9 +724,6 @@
                             <div class="table_action">
                               <ul tal:condition="ad.status_id != 5">
                                 <li>
-                                  <a href="#"><i class="fal fa-eye"></i></a>
-                                </li>
-                                <li>
                                   <a href="#"><i class="fal fa-pencil"></i></a>
                                 </li>
                                 <li>
@@ -594,18 +802,7 @@
                           </td>
                           <td class="action">
                             <div class="table_action">
-                              <ul tal:condition="ad.status_id != 5">
-                                <li>
-                                  <a href="#"><i class="fal fa-eye"></i></a>
-                                </li>
-                                <li>
-                                  <a href="#"><i class="fal fa-pencil"></i></a>
-                                </li>
-                                <li>
-                                  <a style="cursor: pointer;" class='delete-btn' data-adid="${ad.id}"><i class="fal fa-trash-alt"></i></a>
-                                </li>
-                              </ul>
-                              <button tal:condition="ad.status_id == 5" class="main-btn">Recuperar</button>
+                              <button data-adid="${ad.id}" tal:condition="ad.status_id == 5" class="main-btn">Recuperar</button>
                             </div>
                           </td>
                         </tr>

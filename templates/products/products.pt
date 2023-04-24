@@ -261,6 +261,7 @@
                               src="${ad.main_image}"
                               alt="ads"
                             />
+                            <p tal:condition="ad.promo_id in [2, 3]" class="sticker">Promovido</p>
                           </div>
                           <div class="ads_card_content">
                             <div class="meta d-flex justify-content-between">
