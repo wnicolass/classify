@@ -78,6 +78,7 @@ class Promo(Base):
     promo_name: str = Column(String(50), nullable = False)
     promo_internal_name: str = Column(String(50), nullable = False)
     promo_description: str = Column(String(200), nullable = True)
+    promo_price: dec = Column(DECIMAL(8,2), nullable = True)
 
     ads = relationship('Ad', back_populates = 'promo')
 
