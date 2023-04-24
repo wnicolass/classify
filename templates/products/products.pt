@@ -344,7 +344,7 @@
                 </div>
               </div>
             </div>
-            <div class="pagination_wrapper mt-50">
+            <div tal:condition="all_ads_count > 0" class="pagination_wrapper mt-50">
               <ul class="pagination justify-content-center">
                 <li>
                   <a class="Previous" style="cursor: pointer;"

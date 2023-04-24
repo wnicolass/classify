@@ -77,11 +77,12 @@ async def show_ad(ad_id, session: Annotated[AsyncSession, Depends(get_db_session
 @router.get('/ads/category/{category_id}')
 @template(template_file='products/products.pt')
 async def show_ads_category(session: Annotated[AsyncSession, Depends(get_db_session)], category_id: str):
-
+    min, max = 0, 0
     all_ads = await ad_service.get_ads_by_asc(category_id, session)
-    min, max = get_min_max_price(all_ads)
+    if all_ads:
+        min, max = get_min_max_price(all_ads)
 
-    all_ads_count = math.ceil(len(await ad_service.get_all_ads(session)) / 9)
+    all_ads_count = math.ceil(len(all_ads) / 9)
 
     return await ViewModel(
         all_categories = await category_service.get_all_categories(session),
@@ -99,15 +100,17 @@ async def show_ads_category(session: Annotated[AsyncSession, Depends(get_db_sess
 @router.get('/ads/subcategory/{subcategory_id}')
 @template(template_file='products/products.pt')
 async def show_ads_category(request: Request, subcategory_id: int, session: Annotated[AsyncSession, Depends(get_db_session)]):
+    min, max = 0, 0
     in_subcategories_view = False
     request_path = request.url.path
     if request_path.endswith(f'/subcategory/{subcategory_id}'):
         in_subcategories_view = True
 
     all_ads = await ad_service.get_subcategory_ads_asc(subcategory_id, session)
-    min, max = get_min_max_price(all_ads)
+    if all_ads:
+        min, max = get_min_max_price(all_ads)
 
-    all_ads_count = math.ceil(len(await ad_service.get_all_ads(session)) / 9)
+    all_ads_count = math.ceil(len(all_ads) / 9)
 
     return await ViewModel(
         all_categories = await category_service.get_all_categories(session),
@@ -136,7 +139,7 @@ async def search_by_title(
     if ads_found:
         min, max = get_min_max_price(ads_found)
 
-    all_ads_count = math.ceil(len(await ad_service.get_all_ads(session)) / 9)
+    all_ads_count = math.ceil(len(ads_found) / 9)
 
     return await ViewModel(
         all_categories = await category_service.get_all_categories(session),
