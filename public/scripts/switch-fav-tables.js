@@ -25,16 +25,21 @@ function tableSwitchNotActive() {
     showTable('not-active-favs-table', 'not-active-favs');
 }
 
-
+function tableSwitchFavsSearch() {
+    hideOtherTables();
+    showTable('search-favs-table', 'search-favs');
+}
 
 function main() {
     const allTabButton = document.getElementById("all-favs-tab");
     const activeTabButton = document.getElementById("active-favs-tab");
     const notActiveTabButton = document.getElementById("not-active-favs-tab");
+    const favSearchTabButton = document.getElementById('search-favs-tab');
 
-    allTabButton.addEventListener('click', tableSwitchAll)
-    activeTabButton.addEventListener('click', tableSwitchActive)
-    notActiveTabButton.addEventListener('click', tableSwitchNotActive)
+    allTabButton.addEventListener('click', tableSwitchAll);
+    activeTabButton.addEventListener('click', tableSwitchActive);
+    notActiveTabButton.addEventListener('click', tableSwitchNotActive);
+    favSearchTabButton.addEventListener('click', tableSwitchFavsSearch);
 }
 
 window.addEventListener('load', main);

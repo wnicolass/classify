@@ -74,6 +74,17 @@
                       >Não Ativos (${len(user.inactive_favs)})</a
                     >
                   </li>
+                  <li>
+                    <a
+                      id="search-favs-tab"
+                      data-toggle="tab"
+                      href="#search-favs"
+                      role="tab"
+                      aria-controls="search-favs"
+                      aria-selected="false"
+                      >Pesquisas (haha)</a
+                    >
+                  </li>
                 </ul>
               </div>
 
@@ -276,6 +287,41 @@
                           </td>
                         </tr>
                       </__repeat>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+
+              <div class="ads_table table-responsive" id="search-favs-table" style="max-height:0px;">
+                <div
+                  class="tab-pane fade"
+                  id="search-favs"
+                  role="tabpanel"
+                  aria-labelledby="search-favs-tab"
+                >
+                  <table class="table">
+                    <thead>
+                      <tr>
+                        <th class="title">Título</th>
+                        <th class="action" style="text-align: center; padding-right: 35px;">Ação</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <td class="title">
+                        <div class="table_title">
+                          <h6 class="titles"><a href="#">${fav.ad.title]</a></h6>
+                          <p>Ad ID: ${fav.ad.id]</p>
+                        </div>
+                      </td>
+                      <td class="action">
+                        <div class="table_action">
+                          <ul style="text-align: center;">
+                            <li style="padding-right: 23px;">
+                              <a data-adid="${fav.ad.id]" class="delete-fav" style="cursor: pointer;width: 3rem;height: 3rem;display: flex;align-items: center;justify-content: center;"><i style="font-size: 1.5rem;" class="fal fa-trash-alt"></i></a>
+                            </li>
+                          </ul>
+                        </div>
+                      </td>
                     </tbody>
                   </table>
                 </div>
