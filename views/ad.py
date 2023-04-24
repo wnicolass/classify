@@ -1,5 +1,7 @@
 import os
 import httpx
+import stripe
+from dotenv import load_dotenv, find_dotenv
 from decimal import Decimal as dec
 from typing import Annotated, List
 from fastapi import (
@@ -13,12 +15,17 @@ from fastapi import (
 )
 from sqlalchemy.ext.asyncio import AsyncSession
 from fastapi_chameleon import template
+from pydantic import BaseModel
 from common.fastapi_utils import (
     form_field_as_str,
     get_db_session
 )
 from common.viewmodel import ViewModel
-from common.auth import requires_authentication
+from common.auth import (
+    requires_authentication,
+    get_session,
+    get_current_user
+)
 from services import category_service, ad_service, user_service
 from common.utils import (
     is_valid_txt_field,
@@ -29,7 +36,12 @@ from common.utils import (
 from services.user_service import get_user_account_by_id
 from config.cloudinary import upload_image
 
+load_dotenv(find_dotenv())
+
 router = APIRouter()
+
+STRIPE_API_KEY = os.getenv('STRIPE_API_KEY')
+stripe.api_key = STRIPE_API_KEY
 
 @router.get('/ads/sort')
 async def sort_ads_category(
@@ -271,6 +283,61 @@ async def post_ad_viewmodel(request: Request, files: list[UploadFile], session: 
         )
 
     return vm
+
+class CheckoutData(BaseModel):
+    ad_id: int
+    promo_id: int
+
+@router.post('/ad/checkout', dependencies = [Depends(requires_authentication)])
+async def upgrade_ad_promo(
+    checkout_data: CheckoutData,
+    db_session: Annotated[AsyncSession, Depends(get_db_session)]
+):
+    promo = await ad_service.get_promo_by_id(checkout_data.promo_id, db_session)
+    session = get_session()
+    session['ad_id'] = checkout_data.ad_id
+    session['promo_id'] = checkout_data.promo_id
+    user = await get_current_user()
+    user_data = await user_service.get_user_login_data_by_id(user.user_id, db_session)
+    try:
+        checkout_session = stripe.checkout.Session.create(
+            customer_email = user_data.email_addr,
+            line_items=[
+                {
+                    'price_data': {
+                        'currency': 'eur',
+                        'product_data': {
+                            'name': promo.promo_name
+                        },
+                        'unit_amount': int(promo.promo_price * 100),
+                    },
+                    'quantity': 1
+                }
+            ],
+            mode='payment',
+            success_url='http://localhost:8000/ad/checkout/success',
+            cancel_url='http://localhost:8000/ad/checkout/failure',
+        )
+        
+        return checkout_session.url
+    except Exception as e:
+        return str(e)
+
+
+@router.get('/ad/checkout/success', dependencies = [Depends(requires_authentication)])
+@template(template_file = 'user/checkout_success.pt')
+async def checkout_success(db_session: Annotated[AsyncSession, Depends(get_db_session)]):
+    session = get_session()
+    ad_id = session.get('ad_id')
+    promo_id = session.get('promo_id')
+    print(ad_id, promo_id)
+    await ad_service.update_promo_id(ad_id, promo_id, db_session)
+    return await ViewModel()
+
+@router.get('/ad/checkout/failure', dependencies = [Depends(requires_authentication)])
+@template(template_file = 'user/checkout_failure.pt')
+async def checkout_failure():
+    return await ViewModel()
 
 @router.delete('/ad/{ad_id}', dependencies = [Depends(requires_authentication)])
 async def delete_ad(ad_id: int, session: Annotated[AsyncSession, Depends(get_db_session)]):
