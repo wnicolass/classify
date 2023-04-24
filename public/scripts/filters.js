@@ -18,7 +18,8 @@ function handlePage(event) {
     selectedPage.classList.add('active');
     activePage = selectedPage.dataset.value;
   } else if (selectedPage.classList.contains('Previous')) {
-    const previousPage = activePage.parentElement.previousElementSibling.querySelector('.number');
+    const currentPage = document.querySelector('.number.active');
+    const previousPage = currentPage.parentElement.previousElementSibling.querySelector('.number');
     
     if (previousPage) {
       pageNumber.forEach(page => page.classList.remove('active'));
@@ -26,7 +27,8 @@ function handlePage(event) {
       activePage = previousPage.dataset.value;
     }
   } else if (selectedPage.classList.contains('next')) {
-    const nextPage = activePage.parentElement.nextElementSibling.querySelector('.number');
+    const currentPage = document.querySelector('.number.active');
+    const nextPage = currentPage.parentElement.nextElementSibling.querySelector('.number');
     
     if (nextPage) {
       pageNumber.forEach(page => page.classList.remove('active'));
