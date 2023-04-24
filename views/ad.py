@@ -98,7 +98,7 @@ async def show_ads_category(session: Annotated[AsyncSession, Depends(get_db_sess
 
     return await ViewModel(
         all_categories = await category_service.get_all_categories(session),
-        all_ads = all_ads,
+        all_ads = all_ads[:9],
         all_cities = await ad_service.get_cities_by_category(category_id, session),
         all_subcategories = await category_service.get_subcategory_by_category_id(category_id, session),
         in_subcategories_view = False,
@@ -126,7 +126,7 @@ async def show_ads_category(request: Request, subcategory_id: int, session: Anno
 
     return await ViewModel(
         all_categories = await category_service.get_all_categories(session),
-        all_ads = all_ads,
+        all_ads = all_ads[:9],
         all_cities = await ad_service.get_cities_by_subcategory(subcategory_id, session),
         all_subcategories = [],
         in_subcategories_view = in_subcategories_view,
@@ -146,16 +146,17 @@ async def search_by_title(
     page: int = 1,
     items_per_page: int = 9,
 ):
-    ads_found = await ad_service.get_ads_by_title_or_description(session, title,description, page, items_per_page)
+    ads_found, total_ads_found = await ad_service.get_ads_by_title_or_description(session, title,description, page, items_per_page)
+    
     min, max = 0, 0
     if ads_found:
         min, max = get_min_max_price(ads_found)
 
-    all_ads_count = math.ceil(len(ads_found) / 9)
+    all_ads_count = math.ceil(total_ads_found / 9)
 
     return await ViewModel(
         all_categories = await category_service.get_all_categories(session),
-        all_ads = ads_found,
+        all_ads = ads_found[:9],
         all_cities = await ad_service.get_cities_with_ads_by_text(title, session),
         all_subcategories = [],
         in_subcategories_view = False,
