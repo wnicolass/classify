@@ -11,6 +11,8 @@ from fastapi import (
 )
 from fastapi_chameleon import template
 from uuid import uuid4
+
+from pydantic import BaseModel
 from common.viewmodel import ViewModel
 from common.auth import (
     requires_authentication,
@@ -319,6 +321,26 @@ async def add_ad_to_favourites(
     if new_fav:
         return {'msg': 'Ad added to favourites!'}
     
+class SearchFavourite(BaseModel):
+    url: str
+
+@router.post('/user/favourite-search')
+async def add_search_to_favourites(
+    search_fav: SearchFavourite,
+    session: Annotated[AsyncSession, Depends(get_db_session)]
+):
+    user = await get_current_user()
+    if not user:
+        raise HTTPException(
+            status_code = status.HTTP_400_BAD_REQUEST,
+            detail = 'User must be logged in'
+        )
+    new_favourite_search = await user_service.add_new_favourite_search(user.user_id, search_fav.url, session)
+
+    if new_favourite_search:
+        return {'msg': 'Search added successfully'}
+
+
 @router.delete('/user/favourite/{ad_id}', dependencies = [Depends(requires_authentication)])
 async def delete_from_fav(
     ad_id: int,

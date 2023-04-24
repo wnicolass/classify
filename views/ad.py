@@ -142,9 +142,7 @@ async def show_ads_category(request: Request, subcategory_id: int, session: Anno
 async def search_by_title(
     session: Annotated[AsyncSession, Depends(get_db_session)],
     title: str | None = '',
-    description: str | None = None,
-    page: int = 1,
-    items_per_page: int = 9,
+    description: str | None = None
 ):
     ads_found, total_ads_found = await ad_service.get_ads_by_title_or_description(session, title,description)
     
@@ -264,7 +262,9 @@ async def post_ad_viewmodel(request: Request, files: list[UploadFile], session: 
             if file_size_in_kb > 500:
                 vm.error, vm.error_msg = True, 'O tamanho limite das imagens é de 500kb.'
                 break
-            elif file.content_type not in ('image/jpg', 'image/png', 'image/jpeg') or file_ext not in ['.jpg', '.jpeg', '.png']:
+            elif (file.content_type not in ('image/jpg', 'image/png', 'image/jpeg') or
+                  file_ext not in ['.jpg', '.jpeg', '.png']
+                ):
                 vm.error, vm.error_msg = True, 'Apenas imagens do tipo ".png", ".jpg" ou ".jpeg".'
                 break
             await file.seek(0)
