@@ -51,11 +51,11 @@ class Ad(Base):
 
     @property
     def main_image(self):
-        return transform_image_from_url(self.images[0].image_path_url, image_formats["ad_landscape_fill"])
+        return transform_image_from_url(self.images[0].image_path_url, image_formats["ad_main_image_landscape_small"])
     
     @property
     def main_image_ad_page(self):
-        return transform_image_from_url(self.images[0].image_path_url, image_formats["ad_main_page_image"])
+        return transform_image_from_url(self.images[0].image_path_url, image_formats["ad_main_image_ad_page"])
 
     @property
     def pretty_date(self):
@@ -131,5 +131,5 @@ class AdImage(Base):
     
     @property
     def image_ad_page(self):
-        return transform_image_from_url(self.image_path_url, image_formats["ad_main_page_image"])
+        return transform_image_from_url(self.image_path_url, image_formats["ad_main_image_ad_page"])
     
