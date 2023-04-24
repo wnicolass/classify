@@ -63,6 +63,15 @@
         -ms-transform: rotate(45deg) scale(1);
         transform: rotate(45deg) scale(1);
       }
+
+      .fav-search {
+        transition: all .3s ease;
+      }
+
+      .fav-search:hover {
+        background-color: #ff4367 !important;
+        color: #fff !important;
+      }
     </style>
   </__additional_stylesheet__>
   <div metal:fill-slot="content" tal:omit-tag="True">
@@ -95,11 +104,15 @@
               </div>
             </div>
           </div>
-          <div class="single_form d-sm-flex mt-10">
+          <div class="single_form d-sm-flex justify-content-between mt-10">
             <div class="sign_checkbox" style="display: flex; align-items: center; gap: .3rem; margin-left: .7rem;">
               <input type="checkbox" id="checkbox" name="description"/>
               <label id="search-label" for="checkbox" style="color: #565656;margin: 0 0 0 12px;">Também pesquisar por descrição</label>
             </div>
+            <button style="height: 30px; line-height: 0px; padding: 0rem 1rem;border: 1px solid #ff4367;background-color: transparent;color: #ff4367;margin-right: 9px;" class="main-btn fav-search">
+              <i class="fa-regular fa-star"></i>
+              Guardar Pesquisa
+            </button>
           </div>
         </form>
       </div>
