@@ -146,7 +146,7 @@ async def search_by_title(
     page: int = 1,
     items_per_page: int = 9,
 ):
-    ads_found, total_ads_found = await ad_service.get_ads_by_title_or_description(session, title,description, page, items_per_page)
+    ads_found, total_ads_found = await ad_service.get_ads_by_title_or_description(session, title,description)
     
     min, max = 0, 0
     if ads_found:
