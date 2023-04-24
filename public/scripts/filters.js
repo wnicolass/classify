@@ -173,9 +173,13 @@ function renderAds(data) {
         adCardImage.className = 'ads_card_image';
 
         const image = document.createElement('img');
+        const sticker = document.createElement('p');
+        sticker.classList.add('sticker');
+        sticker.textContent = 'Promovido';
         image.src = transform_image_from_url(ad.images[0].image_path_url, "c_fill,h_200,w_250");
         image.alt = ad.title;
         adCardImage.appendChild(image);
+        ad.promo_id != 1 && adCardImage.appendChild(sticker);
 
         const adCardContent = document.createElement('div');
         adCardContent.className = 'ads_card_content';

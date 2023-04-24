@@ -30,8 +30,17 @@ async function fetchCitiesByCountry(country) {
     }
 }
 
-function setDatalistValues() {
-    cityList = fetchCitiesByCountry(countriesInputElement.value);
+async function setDatalistValues() {
+    try {
+        const res = await fetch('https://countriesnow.space/api/v0.1/countries');
+        const data = await res.json();
+        
+        if (data.data.find(obj => obj.country === countriesInputElement.value)){
+            const cityList = fetchCitiesByCountry(countriesInputElement.value);
+        }
+    } catch (err) {
+        console.error(err.message);
+    }
 }
 
 function main() {
