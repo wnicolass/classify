@@ -205,24 +205,9 @@ async def get_ads_by_asc(category_id, session: AsyncSession) -> List[ad.Ad]:
                     ad.Ad.status_id == AdStatusEnum.ACTIVE.value
                     )
                 )
-            .order_by(ad.Ad.title.asc()))
+            .order_by(ad.Ad.promo_id.desc(), ad.Ad.title.asc()))
     asc_ads = query.unique().scalars().all()
     return asc_ads
-
-async def get_ads_by_desc(category_id, session: AsyncSession) -> List[ad.Ad]:
-    query = await session.execute(select(ad.Ad)
-            .join(ad.Ad.subcategory)
-            .join(Subcategory.category)
-            .where(
-                and_(
-                    Category.id == category_id,
-                    ad.Ad.status_id == AdStatusEnum.ACTIVE.value
-                    )
-                )
-            .order_by(ad.Ad.title.desc()))
-    desc_ads = query.unique().scalars().all()
-    
-    return desc_ads
 
 async def get_subcategory_ads_asc(subcategory_id, session: AsyncSession) -> List[ad.Ad]:
     query = await session.execute(select(ad.Ad)
@@ -232,7 +217,7 @@ async def get_subcategory_ads_asc(subcategory_id, session: AsyncSession) -> List
                     ad.Ad.status_id == AdStatusEnum.ACTIVE.value
                     )
                 )
-            .order_by(ad.Ad.title.asc()))
+            .order_by(ad.Ad.promo_id.desc(), ad.Ad.title.asc()))
     asc_ads = query.unique().scalars().all()
     return asc_ads
 
@@ -255,6 +240,13 @@ async def get_paid_promos(session: AsyncSession) -> List[ad.Promo]:
     assert len(paid_promos) == 2
 
     return paid_promos
+
+async def get_promo_by_id(promo_id: int, session: AsyncSession) -> ad.Promo:
+    query = await session.execute(select(ad.Promo).where(ad.Promo.id == promo_id))
+    promo = query.scalar_one_or_none()
+    assert isinstance(promo, ad.Promo)
+
+    return promo
 
 async def get_popular_ads(session: AsyncSession, limit: int = 8) -> List[ad.Ad]:
     query = await session.execute(select(ad.Ad)
@@ -289,6 +281,7 @@ async def get_ads_by_title_or_description(session: AsyncSession, title: str, des
                 and_(ad.Ad.status_id == AdStatusEnum.ACTIVE.value),
                 or_(*filters)
             )
+            .order_by(ad.Ad.promo_id.desc(), ad.Ad.title.asc())
     )
     ads_by_criteria = query.unique().scalars().all()
     
@@ -334,7 +327,7 @@ async def get_ads_by_criteria(
     elif order_by == 'cheap':
         criteria = (ad.Ad.price.asc())
     else:
-        criteria = (ad.Ad.title.asc())
+        criteria = (ad.Ad.promo_id.desc())
 
     query = await session.execute(select(ad.Ad)
         .join(ad.Ad.address)
@@ -412,7 +405,13 @@ async def get_cities_by_subcategory(subcategory_id: int, session: AsyncSession) 
 
     return cities
 
-# UPDATE/DELETE
+# UPDATE
+async def update_promo_id(ad_id: int, new_promo_id: int, session: AsyncSession) -> None:
+    ad = await get_ad_by_id(session, ad_id)
+    ad.promo_id = new_promo_id
+    await session.commit()
+
+# DELETE
 async def set_deleted_status(ad_id: int, session: AsyncSession) -> ad.Ad:
     ad = await get_one_ad_without_criteria(session, ad_id)
     ad.status_id = AdStatusEnum.DELETED.value
