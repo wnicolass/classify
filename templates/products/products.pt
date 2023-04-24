@@ -109,7 +109,7 @@
               <input type="checkbox" id="checkbox" name="description"/>
               <label id="search-label" for="checkbox" style="color: #565656;margin: 0 0 0 12px;">Também pesquisar por descrição</label>
             </div>
-            <button style="height: 30px; line-height: 0px; padding: 0rem 1rem;border: 1px solid #ff4367;background-color: transparent;color: #ff4367;margin-right: 9px;" class="main-btn fav-search">
+            <button type="button" style="height: 30px; line-height: 0px; padding: 0rem 1rem;border: 1px solid #ff4367;background-color: transparent;color: #ff4367;margin-right: 9px;" class="main-btn fav-search">
               <i class="fa-regular fa-star"></i>
               Guardar Pesquisa
             </button>
