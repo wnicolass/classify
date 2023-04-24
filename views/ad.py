@@ -1,3 +1,4 @@
+import math
 import os
 import httpx
 import stripe
@@ -53,13 +54,14 @@ async def sort_ads_category(
     subcategory_id: int | None = '',
     order_by: str | None = '',
     min_price: dec = 0,
-    max_price: dec = 0
+    max_price: dec = 0,
+    page: int = 1,
 ):
-
+    items_per_page = 9
     if subcategory_id and not category_id:
         category_id = await category_service.get_category_by_subcategory_id(subcategory_id, session)
     filtered_ads = await ad_service.get_ads_by_criteria(session, title, description, 
-                city, category_id, subcategory_id, order_by,  min_price, max_price)
+                city, category_id, subcategory_id, order_by,  min_price, max_price,page, items_per_page)
 
     vm = await ViewModel()
     
@@ -87,9 +89,12 @@ async def show_ad(ad_id, session: Annotated[AsyncSession, Depends(get_db_session
 @router.get('/ads/category/{category_id}')
 @template(template_file='products/products.pt')
 async def show_ads_category(session: Annotated[AsyncSession, Depends(get_db_session)], category_id: str):
-
+    min, max = 0, 0
     all_ads = await ad_service.get_ads_by_asc(category_id, session)
-    min, max = get_min_max_price(all_ads)
+    if all_ads:
+        min, max = get_min_max_price(all_ads)
+
+    all_ads_count = math.ceil(len(all_ads) / 9)
 
     return await ViewModel(
         all_categories = await category_service.get_all_categories(session),
@@ -100,19 +105,24 @@ async def show_ads_category(session: Annotated[AsyncSession, Depends(get_db_sess
         in_categories_view = True,
         min_price = min,
         max_price = max,
-        subject = ''
+        subject = '',
+        all_ads_count = all_ads_count
     )
 
 @router.get('/ads/subcategory/{subcategory_id}')
 @template(template_file='products/products.pt')
 async def show_ads_category(request: Request, subcategory_id: int, session: Annotated[AsyncSession, Depends(get_db_session)]):
+    min, max = 0, 0
     in_subcategories_view = False
     request_path = request.url.path
     if request_path.endswith(f'/subcategory/{subcategory_id}'):
         in_subcategories_view = True
 
     all_ads = await ad_service.get_subcategory_ads_asc(subcategory_id, session)
-    min, max = get_min_max_price(all_ads)
+    if all_ads:
+        min, max = get_min_max_price(all_ads)
+
+    all_ads_count = math.ceil(len(all_ads) / 9)
 
     return await ViewModel(
         all_categories = await category_service.get_all_categories(session),
@@ -123,7 +133,8 @@ async def show_ads_category(request: Request, subcategory_id: int, session: Anno
         in_categories_view = True,
         min_price = min,
         max_price = max,
-        subject = ''
+        subject = '',
+        all_ads_count = all_ads_count
     )
 
 @router.get('/ads/search')
@@ -132,11 +143,15 @@ async def search_by_title(
     session: Annotated[AsyncSession, Depends(get_db_session)],
     title: str | None = '',
     description: str | None = None,
+    page: int = 1,
+    items_per_page: int = 9,
 ):
-    ads_found = await ad_service.get_ads_by_title_or_description(session, title, description)
+    ads_found = await ad_service.get_ads_by_title_or_description(session, title,description, page, items_per_page)
     min, max = 0, 0
     if ads_found:
         min, max = get_min_max_price(ads_found)
+
+    all_ads_count = math.ceil(len(ads_found) / 9)
 
     return await ViewModel(
         all_categories = await category_service.get_all_categories(session),
@@ -147,7 +162,8 @@ async def search_by_title(
         in_categories_view = False,
         min_price = min,
         max_price = max,
-        subject = title
+        subject = title,
+        all_ads_count = all_ads_count
     )
 
 @router.get('/new/ad', dependencies = [Depends(requires_authentication)])

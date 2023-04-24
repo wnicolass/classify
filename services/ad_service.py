@@ -269,12 +269,19 @@ async def get_ads_by_creation_date(session: AsyncSession, limit: int = 8) -> Lis
 
     return recent_ads
 
-async def get_ads_by_title_or_description(session: AsyncSession, title: str, description: str) -> List[ad.Ad]:
+async def get_ads_by_title_or_description(
+    session: AsyncSession, title: str,
+    description: str,
+    page: int = 1,
+    items_per_page: int = 9
+) -> List[ad.Ad]:
     filters = []
     if title:
         filters.append(ad.Ad.title.like(f'%{title}%'))
     if description:
         filters.append(ad.Ad.ad_description.like(f'%{title}%'))
+
+    offset = (page - 1) * items_per_page
 
     query = await session.execute(select(ad.Ad)
             .where(
@@ -282,10 +289,12 @@ async def get_ads_by_title_or_description(session: AsyncSession, title: str, des
                 or_(*filters)
             )
             .order_by(ad.Ad.promo_id.desc(), ad.Ad.title.asc())
+            .offset(offset)
+            .limit(items_per_page)
     )
-    ads_by_criteria = query.unique().scalars().all()
-    
-    return ads_by_criteria
+    ads_found = query.unique().scalars().all()
+
+    return ads_found
 
 async def get_ads_by_criteria(
     session: AsyncSession,
@@ -296,7 +305,9 @@ async def get_ads_by_criteria(
     subcategory_id: int = 0,
     order_by: str = '',
     min_price: dec = 0,
-    max_price: dec = 0
+    max_price: dec = 0,
+    page: int = 1,
+    items_per_page: int = 9
 ) -> List[ad.Ad]:
     filters = []
     filters.append(ad.Ad.status_id == AdStatusEnum.ACTIVE.value)
@@ -329,16 +340,20 @@ async def get_ads_by_criteria(
     else:
         criteria = (ad.Ad.promo_id.desc())
 
+    offset = (page - 1) * items_per_page
+
     query = await session.execute(select(ad.Ad)
         .join(ad.Ad.address)
         .join(ad.Ad.subcategory)
         .join(Subcategory.category)
         .where(and_(*filters))
         .order_by(criteria)
+        .offset(offset)
+        .limit(items_per_page)
     )
-    ads_found = query.unique().scalars().all()
+    ads_by_criteria = query.unique().scalars().all()
 
-    return ads_found
+    return ads_by_criteria
 
 async def get_locations_by_total_ads(session: AsyncSession) -> List[ad.AdAddress]:
     query = await session.execute(select(ad.AdAddress, func.count(ad.Ad.ad_address_id))
