@@ -140,6 +140,23 @@ async function runFetch(queryValues, page = 1) {
   }, 100);
 }
 
+function transform_image_from_url(url, formatString) {
+  // If url exists and uploadString is found, generate newUrl and return it
+  if (url.length > 0) {
+    const uploadString = "/upload/";
+    let uploadIndex = url.indexOf(uploadString);
+      
+    if (uploadIndex > -1) {
+      uploadIndex = uploadIndex + uploadString.length;
+      let newUrl = url.slice(0, uploadIndex) + formatString + "/" + url.slice(uploadIndex);
+      
+      return newUrl;
+    }
+  }
+  // Else, return original string and don't transform it    
+  return url;
+}
+
 function renderAds(data) {
     const allAds = data.ads;
     const adsContainer = document.getElementById('ads-container');
@@ -159,7 +176,7 @@ function renderAds(data) {
         const sticker = document.createElement('p');
         sticker.classList.add('sticker');
         sticker.textContent = 'Promovido';
-        image.src = ad.images[0].image_path_url;
+        image.src = transform_image_from_url(ad.images[0].image_path_url, "c_fill,h_200,w_250");
         image.alt = ad.title;
         adCardImage.appendChild(image);
         ad.promo_id != 1 && adCardImage.appendChild(sticker);

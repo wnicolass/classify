@@ -74,7 +74,7 @@
                     aria-labelledby="details-0-tab"
                   >
                     <img
-                      src="${adv.main_image}"
+                      src="${adv.main_image_ad_page}"
                       alt="Ad Image"
                     />
                     <!-- <ul class="sticker">
@@ -90,7 +90,7 @@
                     aria-labelledby="details-${repeat.image.index}-tab"
                   >
                     <img
-                      src="${image.image_path_url}"
+                      src="${image.image_ad_page}"
                       alt="Ad Image"
                     />
                   </div>
@@ -229,7 +229,7 @@
                   <div class="owner_author d-flex align-items-center"> 
                     <div class="">
                       <img tal:condition="adv.user.profile_image_url"
-                        src="${adv.user.profile_image_url}"
+                        src="${adv.user.profile_image_squared}"
                         alt="author"
                       />
                       <img tal:condition="not adv.user.profile_image_url"

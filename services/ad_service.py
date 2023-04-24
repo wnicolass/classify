@@ -427,6 +427,9 @@ async def get_cities_by_subcategory(subcategory_id: int, session: AsyncSession) 
 
     return cities
 
+def filter_ads_by_status(ads_list: List[ad.Ad], status_id: int) -> List[ad.Ad]:
+    return [ad for ad in ads_list if ad.status_id == status_id]
+
 # UPDATE
 async def update_promo_id(ad_id: int, new_promo_id: int, session: AsyncSession) -> None:
     ad = await get_ad_by_id(session, ad_id)

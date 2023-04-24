@@ -6,10 +6,13 @@ from urllib.parse import quote_plus as quote
 from datetime import date
 from typing import List
 import regex
-
-from models.ad import Ad
-
 MIN_DATE = date.fromisoformat('1920-01-01')
+
+image_formats = {
+    "ad_main_image_landscape_small": "c_fill,h_200,w_250",
+    "ad_main_image_ad_page": "c_lpad,b_auto,h_450,w_700",
+    "square_fill": "c_fill,h_200,w_200"
+}
 
 def get_min_max_price(ads: List):
     max = 0
@@ -65,9 +68,19 @@ def is_ascii(txt: str) -> bool:
         return False
     else:
         return True
-
-def filter_ads_by_status(ads_list: List[Ad], status_id: int) -> List[Ad]:
-    return [ad for ad in ads_list if ad.status_id == status_id]
+    
+def transform_image_from_url(url: str, formatString: str) -> str:
+    # If url exists and uploadString is found, generate newUrl and return it
+    if url != None and len(url) > 0:
+        uploadString = "/upload/"
+        uploadIndex = url.find(uploadString)
+        
+        if uploadIndex != -1:
+            uploadIndex += len(uploadString)
+            newUrl = url[:uploadIndex] + formatString + "/" + url[uploadIndex:]
+            return newUrl
+    # Else, return original string and don't transform it    
+    return url
 
 is_valid_email = make_test_regex_fn(
     r"[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*"

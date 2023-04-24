@@ -23,13 +23,14 @@ from common.fastapi_utils import get_db_session, form_field_as_str
 from sqlalchemy.ext.asyncio import AsyncSession
 from models.user import UserAccount, UserLoginData
 from common.utils import (
-    filter_ads_by_status,
     is_valid_birth_date, 
     is_valid_username,
     is_valid_password,
     is_valid_phone_number,
     handle_phone,
-    add_plus_sign_to_phone_number
+    add_plus_sign_to_phone_number,
+    image_formats,
+    transform_image_from_url
 )
 from services import ad_service, user_service
 from views.ad import fetch_countries
@@ -73,9 +74,6 @@ async def profile_settings(
     vm = await profile_settings_viewmodel(request, session, user, file)
     address = await user_service.get_user_address_by_user_id(user.user_id, session)
     
-    if vm.error:
-        return vm
-    
     vm.username = vm.new_username
     vm.phone_number = add_plus_sign_to_phone_number(vm.new_phone_number)
     vm.birth_date = vm.new_birth_date
@@ -89,7 +87,7 @@ async def profile_settings(
     vm.all_countries = await fetch_countries()
         
     if vm.new_profile_picture_url != "":
-        vm.profile_image = vm.new_profile_picture_url
+        vm.profile_image = transform_image_from_url(vm.new_profile_picture_url, image_formats["square_fill"])
     
     return vm
 
@@ -108,6 +106,7 @@ async def profile_settings_viewmodel(
         new_country = form_field_as_str(form_data, 'country'),
         new_city = form_field_as_str(form_data, 'city')
     )
+    vm.new_profile_picture_url = ""
     
     if vm.new_username != '' and not is_valid_username(vm.new_username):
         vm.error, vm.error_msg = True, 'Username inválido!'
@@ -171,8 +170,6 @@ async def profile_settings_viewmodel(
                 
         if profile_picture_url:
             vm.new_profile_picture_url = profile_picture_url
-        else:
-            vm.new_profile_picture_url = ""
         vm.success, vm.success_msg = True, 'Dados da conta alterados com sucesso!'
     
     return vm
@@ -265,19 +262,19 @@ async def my_ads(session: Annotated[AsyncSession, Depends(get_db_session)]):
     vm.all_ads = await ad_service.get_ads_by_user_id(session, vm.user_id)
     vm.ad_count_total = len(vm.all_ads)
     
-    vm.all_active_ads = filter_ads_by_status(vm.all_ads, 1)
+    vm.all_active_ads = ad_service.filter_ads_by_status(vm.all_ads, 1)
     vm.ad_count_active = len(vm.all_active_ads)
     
-    vm.all_inactive_ads = filter_ads_by_status(vm.all_ads, 2)
+    vm.all_inactive_ads = ad_service.filter_ads_by_status(vm.all_ads, 2)
     vm.ad_count_inactive = len(vm.all_inactive_ads)
     
-    vm.all_expired_ads = filter_ads_by_status(vm.all_ads, 3)
+    vm.all_expired_ads = ad_service.filter_ads_by_status(vm.all_ads, 3)
     vm.ad_count_expired = len(vm.all_expired_ads)
 
-    vm.all_sold_ads = filter_ads_by_status(vm.all_ads, 4)
+    vm.all_sold_ads = ad_service.filter_ads_by_status(vm.all_ads, 4)
     vm.ad_count_sold = len(vm.all_sold_ads)
     
-    vm.all_deleted_ads = filter_ads_by_status(vm.all_ads, 5)
+    vm.all_deleted_ads = ad_service.filter_ads_by_status(vm.all_ads, 5)
     vm.ad_count_deleted = len(vm.all_deleted_ads)
 
     vm.paid_promos = await ad_service.get_paid_promos(session)

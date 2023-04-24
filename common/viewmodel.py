@@ -1,6 +1,7 @@
 from asyncinit import asyncinit
 from typing import Any
 from common.auth import get_current_user
+from common.utils import image_formats, transform_image_from_url
 
 """
     The ViewModel is responsable to prepare (and sometimes get) 
@@ -35,7 +36,8 @@ class ViewModel(dict):
             'user_id': user.user_id if user else None,
             'is_logged_in': user is not None,
             'username': user.username.split(' ')[0] if user else None,
-            'profile_image': user.profile_image_url or '/public/assets/images/author-1.jpg' if user else None,
+            'profile_image': transform_image_from_url(user.profile_image_url, image_formats["square_fill"]) 
+                            or '/public/assets/images/author-1.jpg' if user else None,
             'user': user
         }
         all.update(kargs)
