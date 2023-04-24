@@ -173,28 +173,30 @@
         </div>
         <div class="published_wrapper">
           <div class="row">
-            <div class="col-lg-3 col-sm-6">
-              <div class="single_ads_card mt-30">
-                <div class="ads_card_image">
-                  <img src="/public/assets/images/ads-1.png" alt="ads" />
-                </div>
-                <div class="ads_card_content">
-                  <div class="meta d-flex justify-content-between">
-                    <p>Ram & Laptop</p>
-                    <a style="cursor: pointer;" class="like" data-adid="1"><i class="fal fa-heart"></i></a>
+            <__repeat tal:repeat="ad professional_ads" tal:omit-tag="True">
+              <div class="col-lg-3 col-sm-6">
+                <div class="single_ads_card mt-30">
+                  <div class="ads_card_image">
+                    <img src="${ad.main_image}" alt="ads" />
+                    <p class="sticker">Promovido</p>
                   </div>
-                  <h4 class="title">
-                    <a title="Adicione este anúncio aos favoritos" href="/ad/${ad.id]">8 GB DDR4 Ram, 4th Gen</a>
-                  </h4>
-                  <p><i class="far fa-map-marker-alt"></i>New York, USA</p>
-                  <div class="ads_price_date d-flex justify-content-between">
-                    <span class="price">$299.00</span>
-                    <span class="date">25 Jan, 2023</span>
+                  <div class="ads_card_content">
+                    <div class="meta d-flex justify-content-between">
+                      <p>${ad.subcategory.subcategory_name}</p>
+                      <a style="cursor: pointer;" class="like" data-adid="${ad.id}"><i class="fal fa-heart"></i></a>
+                    </div>
+                    <h4 class="title">
+                      <a title="Adicione este anúncio aos favoritos" href="/ad/${ad.id}">${ad.title}</a>
+                    </h4>
+                    <p><i class="fal fa-map-marker-alt"></i>${ad.address.country}, ${ad.address.city}</p>
+                    <div class="ads_price_date d-flex justify-content-between">
+                      <span class="price">${ad.price}€</span>
+                      <span class="date">${ad.pretty_date}</span>
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
-            
+            </__repeat>
           <div class="published_btn">
             <a href="/ads/search" class="main-btn">Mais Anúncios</a>
           </div>
