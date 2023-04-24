@@ -16,6 +16,7 @@ from models.ad_approval import ad_approval
 from models.subcategory import Subcategory
 from models.field_value import field_value
 from models.admin import AdminAccount
+from common.utils import image_formats, transform_image_from_url
 
 class Ad(Base):
     __tablename__ = 'Ad'
@@ -50,7 +51,11 @@ class Ad(Base):
 
     @property
     def main_image(self):
-        return self.images[0].image_path_url
+        return transform_image_from_url(self.images[0].image_path_url, image_formats["ad_main_image_landscape_small"])
+    
+    @property
+    def main_image_ad_page(self):
+        return transform_image_from_url(self.images[0].image_path_url, image_formats["ad_main_image_ad_page"])
 
     @property
     def pretty_date(self):
@@ -123,4 +128,8 @@ class AdImage(Base):
     updated_at: datetime = Column(DateTime, onupdate = datetime.now())
 
     ad = relationship('Ad', back_populates = 'images', uselist = False)
+    
+    @property
+    def image_ad_page(self):
+        return transform_image_from_url(self.image_path_url, image_formats["ad_main_image_ad_page"])
     

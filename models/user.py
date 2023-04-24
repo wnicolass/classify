@@ -14,6 +14,7 @@ from sqlalchemy.orm import relationship
 from config.database import Base
 from models.ad import Ad
 from services.ad_service import AdStatusEnum
+from common.utils import image_formats, transform_image_from_url
 
 class UserAccount(Base):
     __tablename__ = 'UserAccount'
@@ -59,6 +60,10 @@ class UserAccount(Base):
             if is_expired_ad or is_sold_ad:
                 inactive_ads.append(fav)
         return inactive_ads
+    
+    @property
+    def profile_image_squared(self) -> str:
+        return transform_image_from_url(self.profile_image_url, image_formats["square_fill"])
 
 class UserLoginData(Base):
     __tablename__ = 'UserLoginData'
