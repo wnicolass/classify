@@ -3,7 +3,16 @@ from typing import List
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
 from sqlalchemy.orm import joinedload
-from models.user import UserAccount, UserLoginData, UserLoginDataExt, UserAddress, Favourite, ExternalProvider, OpenIdConnectTokens
+from models.user import (
+    UserAccount, 
+    UserLoginData, 
+    UserLoginDataExt, 
+    UserAddress, 
+    Favourite,
+    FavouriteSearch,
+    ExternalProvider, 
+    OpenIdConnectTokens
+)
 
 # CREATE
 async def create_user(username: str, phone_number: str, birth_date: str, is_active: int, session: AsyncSession, image_url: str | None = None) -> UserAccount:
@@ -60,6 +69,21 @@ async def add_new_favourite(user_id: int, ad_id: int, session: AsyncSession) -> 
     await session.refresh(fav)
     
     return fav
+
+async def add_new_favourite_search(
+    user_id: int, 
+    search_url: str, 
+    session: AsyncSession
+) -> FavouriteSearch:
+    new_favourite_search = FavouriteSearch(
+        user_id = user_id,
+        search_url = search_url
+    )
+    session.add(new_favourite_search)
+    await session.commit()
+    await session.refresh(new_favourite_search)
+
+    return new_favourite_search
 
 async def create_user_address(
     new_country: str,
