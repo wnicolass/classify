@@ -1,0 +1,48 @@
+<div metal:use-macro="load: ../shared/_layout.pt">
+  <div metal:fill-slot="title" tal:omit-tag="True">
+    <title> Promover Anúncio | Classify</title>
+  </div>
+  <__additional_script__ metal:fill-slot="additional_script" tal:omit-tag="True">
+    <script src="/public/scripts/resend-email.js" defer></script>
+  </__additional_script__>
+  <div metal:fill-slot="content" tal:omit-tag="True">
+
+      <div
+        class="page_banner bg_cover"
+        style="background-image: url(/public/assets/images/page-banner.jpg)">
+        <div class="container">
+          <div class="page_banner_content">
+            <h3 class="title">Promover Anúncio</h3>
+            <ul class="breadcrumb">
+                <li><a href="/">Home</a></li>
+              <li>Promover Anúncio</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+    <!--====== HEADER PART ENDS ======-->
+
+    <!--====== ERROR 404 PART START ======-->
+
+    <section class="error_area pt-120 pb-120">
+      <div class="container">
+        <div class="row justify-content-center">
+          <div class="col-lg-6">
+            <div class="error_content text-center">
+              <span class="error" style="font-size: 54px; line-height: 57px;">Anúncio promovido com sucesso.</span>
+              <p>Agradecemos sua confiança em comprar e vender com Classify.</p>
+
+              <div class="error_search">
+                <img style="width: 15rem;" src="/public/assets/images/checkout_success.svg" />
+              </div>
+              <a href="/user/my-ads" class="main-btn" style="margin-top: 3rem;">Meus anúncios</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!--====== ERROR 404 PART ENDS ======-->
+  </div>
+</div>

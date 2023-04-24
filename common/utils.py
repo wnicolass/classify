@@ -7,6 +7,8 @@ from datetime import date
 from typing import List
 import regex
 
+from models.ad import Ad
+
 MIN_DATE = date.fromisoformat('1920-01-01')
 
 def get_min_max_price(ads: List):
@@ -63,6 +65,9 @@ def is_ascii(txt: str) -> bool:
         return False
     else:
         return True
+
+def filter_ads_by_status(ads_list: List[Ad], status_id: int) -> List[Ad]:
+    return [ad for ad in ads_list if ad.status_id == status_id]
 
 is_valid_email = make_test_regex_fn(
     r"[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*"
