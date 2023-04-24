@@ -23,7 +23,7 @@ class UserAccount(Base):
     phone_number: str = Column(String(12), nullable = True)
     birth_date: datetime = Column(Date, nullable = True)
     last_login: datetime = Column(DateTime, server_default = text('NOW()'))
-    profile_image_url: str = Column(String(500))
+    profile_image_url: str = Column(String(1000))
     is_active: int = Column(BIT, nullable = False)
 
     created_at: datetime = Column(DateTime, server_default = text('NOW()'))
