@@ -272,6 +272,8 @@ async def update_user_details(
     
     await session.commit()
     await session.refresh(db_user)
+
+    return db_user
     
 async def update_user_address(
     user_address: UserAddress,
