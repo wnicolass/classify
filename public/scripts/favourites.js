@@ -1,4 +1,5 @@
 const inFavsView = window.location.href.endsWith('favourite-ads');
+const currentURL = new URL(window.location.href);
 
 function addRedHeart(adId) {
     const heartIcons = document.querySelectorAll(`a[data-adid="${adId}"] i`);
@@ -39,7 +40,7 @@ async function addToFavourites({target: favBtn}) {
         }
         const data = await res.json();
         if (data.message === 'not logged in') {
-            window.location.replace('http://localhost:8000/auth/sign-in');
+            window.location.href = `${currentURL.origin}/auth/sign-in`;
             return;
         }
 
@@ -64,6 +65,23 @@ function removeTr(btn, responseData) {
     // document.getElementById('all-favs-tab').textContent = `Todos (${totalFavs})`;
     location.reload();
     return;
+}
+
+async function removeSearchFromFavs({currentTarget}) {
+    const favSearchId = currentTarget.dataset.searchid;
+    
+    try {
+        const res = await fetch(`/user/favourite/search/${favSearchId}`, {
+            method: 'DELETE'
+        });
+        if (!res.ok) {
+            alert('Something went wrong!');
+        }
+
+        location.reload();
+    } catch (err) {
+        console.error(err.message);
+    }
 }
 
 async function removeFromFavourites({currentTarget: favBtn}) {
@@ -96,12 +114,22 @@ function main() {
     const favButtons = document.querySelectorAll('a[data-adid] i:not(i.fa-heart.active)');
     const alreadyFavourites = document.querySelectorAll('.fa-heart.active'); 
     const trashBtns = document.querySelectorAll('.delete-fav');
+    const deleteFavSearchBtns = document.querySelectorAll('.delete-fav-search');
     
     if (!inFavsView) {
-        favButtons.forEach(favBtn => favBtn.addEventListener('click', addToFavourites));
-        alreadyFavourites.forEach(fav => fav.addEventListener('click', removeFromFavourites));
+        favButtons.forEach(favBtn => {
+            favBtn.addEventListener('click', addToFavourites)
+        });
+        alreadyFavourites.forEach(fav => {
+            fav.addEventListener('click', removeFromFavourites)
+        });
     }
-    inFavsView && trashBtns.forEach(btn => btn.addEventListener('click', removeFromFavourites));
+    inFavsView && trashBtns.forEach(btn => {
+        btn.addEventListener('click', removeFromFavourites)
+    });
+    inFavsView && deleteFavSearchBtns.forEach(btn => {
+        btn.addEventListener('click', removeSearchFromFavs)
+    });
 }
 
 window.addEventListener('load', main);
