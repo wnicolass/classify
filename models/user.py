@@ -11,6 +11,7 @@ from sqlalchemy import (
 )
 from sqlalchemy.dialects.mysql import BIT
 from sqlalchemy.orm import relationship
+from urllib.parse import unquote_plus
 from config.database import Base
 from models.ad import Ad
 from services.ad_service import AdStatusEnum
@@ -141,6 +142,22 @@ class FavouriteSearch(Base):
     fav_date: datetime = Column(DateTime, default = datetime.now())
 
     user = relationship('UserAccount', back_populates = 'favourite_searches', uselist = False)
+
+    @property
+    def search_title(self) -> str:
+        title = 'Pesquisa sem título'
+        equal_sign_index = self.search_url.index('=')
+        try:
+            if self.search_url[equal_sign_index + 1] != '&':
+                temp_title = []
+                for i in range(equal_sign_index + 1, len(self.search_url)):
+                    if self.search_url[i] == '&':
+                        break
+                    temp_title.append(self.search_url[i])
+                title = ''.join(temp_title)
+            return unquote_plus(title)
+        except IndexError:
+            return unquote_plus(title)
 
 class HashAlgo(Base):
     __tablename__ = 'HashAlgo'
