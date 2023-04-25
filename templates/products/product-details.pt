@@ -265,9 +265,10 @@
                   <h5 class="title">Contactar :</h5>
                 </div>
                 <div tal:condition="is_logged_in" class="sidebar_contact_form">
-                  <form action="#">
+                  <form method="POST" action="">
+                    <input Type="hidden" value="${adv.user.user_id}">
                     <div class="single_form">
-                      <textarea placeholder="Escreva aqui"></textarea>
+                      <textarea name="text_message" placeholder="Escreva aqui"></textarea>
                     </div>
                     <div class="single_form">
                       <button class="main-btn">
