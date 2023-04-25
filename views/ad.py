@@ -321,6 +321,14 @@ async def post_ad_viewmodel(request: Request, files: list[UploadFile], session: 
 
 
     if not vm.error:
+        vm.user = await user_service.update_user_details(
+            vm.user,
+            new_username = '',
+            new_birth_date = '',
+            new_phone_number = vm.phone,
+            new_profile_picture_link = '',
+            session = session
+        )
         vm.files = []
         for file in files:
             url = upload_image(file)
