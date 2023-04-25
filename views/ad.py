@@ -59,9 +59,23 @@ async def sort_ads_category(
 ):
     items_per_page = 9
     if subcategory_id and not category_id:
-        category_id = await category_service.get_category_by_subcategory_id(subcategory_id, session)
-    filtered_ads = await ad_service.get_ads_by_criteria(session, title, description, 
-                city, category_id, subcategory_id, order_by,  min_price, max_price,page, items_per_page)
+        category_id = (
+            await category_service.
+            get_category_by_subcategory_id(subcategory_id, session)
+        )
+    filtered_ads, total_ads = await ad_service.get_ads_by_criteria(
+        session, 
+        title, 
+        description, 
+        city, 
+        category_id, 
+        subcategory_id, 
+        order_by, 
+        min_price, 
+        max_price,
+        page, 
+        items_per_page
+    )
 
     vm = await ViewModel()
     
@@ -142,9 +156,39 @@ async def show_ads_category(request: Request, subcategory_id: int, session: Anno
 async def search_by_title(
     session: Annotated[AsyncSession, Depends(get_db_session)],
     title: str | None = '',
-    description: str | None = None
+    description: str | None = None,
+    city: str | None = '',
+    category_id: int | None = '',
+    subcategory_id: int | None = '',
+    order_by: str | None = '',
+    min_price: dec = 0,
+    max_price: dec = 0,
+    page: int = 0,
 ):
+    some_other_criteria = bool(
+        city or 
+        category_id or 
+        subcategory_id or 
+        order_by or 
+        min_price or 
+        max_price or 
+        page
+    )
     ads_found, total_ads_found = await ad_service.get_ads_by_title_or_description(session, title,description)
+    if some_other_criteria:
+        ads_found, total_ads_found = await ad_service.get_ads_by_criteria(
+        session, 
+        title, 
+        description, 
+        city, 
+        category_id, 
+        subcategory_id, 
+        order_by, 
+        min_price, 
+        max_price,
+        page, 
+        items_per_page = 9
+    )
     
     min, max = 0, 0
     if ads_found:
