@@ -95,6 +95,8 @@ async def show_ad(ad_id, session: Annotated[AsyncSession, Depends(get_db_session
     if not current_ad:
         raise HTTPException(status_code = status.HTTP_404_NOT_FOUND, detail = {'error_msg': 'Not found'})
 
+    current_ad = await ad_service.update_views_count(current_ad, session)
+
     return await ViewModel(
         adv = current_ad,
         get_3_ads = await ad_service.get_3_ads(current_ad, session)

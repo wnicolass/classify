@@ -438,6 +438,13 @@ async def update_promo_id(ad_id: int, new_promo_id: int, session: AsyncSession) 
     ad.promo_id = new_promo_id
     await session.commit()
 
+async def update_views_count(ad: ad.Ad, session: AsyncSession) -> ad.Ad:
+    ad.views += 1
+    await session.commit()
+    await session.refresh(ad)
+
+    return ad
+
 # DELETE
 async def set_deleted_status(ad_id: int, session: AsyncSession) -> ad.Ad:
     ad = await get_one_ad_without_criteria(session, ad_id)
