@@ -82,7 +82,7 @@
                       role="tab"
                       aria-controls="search-favs"
                       aria-selected="false"
-                      >Pesquisas (haha)</a
+                      >Pesquisas (${len(fav_searches)})</a
                     >
                   </li>
                 </ul>
@@ -307,21 +307,24 @@
                       </tr>
                     </thead>
                     <tbody>
-                      <td class="title">
-                        <div class="table_title">
-                          <h6 class="titles"><a href="#">${fav.ad.title]</a></h6>
-                          <p>Ad ID: ${fav.ad.id]</p>
-                        </div>
-                      </td>
-                      <td class="action">
-                        <div class="table_action">
-                          <ul style="text-align: center;">
-                            <li style="padding-right: 23px;">
-                              <a data-adid="${fav.ad.id]" class="delete-fav" style="cursor: pointer;width: 3rem;height: 3rem;display: flex;align-items: center;justify-content: center;"><i style="font-size: 1.5rem;" class="fal fa-trash-alt"></i></a>
-                            </li>
-                          </ul>
-                        </div>
-                      </td>
+                    <__repeat tal:repeat="search fav_searches" tal:omit-tag="True">
+                      <tr>
+                        <td class="title">
+                          <div class="table_title">
+                            <h6 class="titles"><a href="${search.search_url}">${search.search_title}</a></h6>
+                          </div>
+                        </td>
+                        <td class="action">
+                          <div class="table_action">
+                            <ul style="text-align: center;">
+                              <li style="padding-right: 23px;">
+                                <a data-searchid="${search.id}" class="delete-fav-search" style="cursor: pointer;width: 3rem;height: 3rem;display: flex;align-items: center;justify-content: center;"><i style="font-size: 1.5rem;" class="fal fa-trash-alt"></i></a>
+                              </li>
+                            </ul>
+                          </div>
+                        </td>
+                      </tr>
+                    </__repeat>
                     </tbody>
                   </table>
                 </div>
