@@ -9,6 +9,7 @@ from fastapi import (
     status,
     HTTPException
 )
+from urllib.parse import unquote_plus
 from fastapi_chameleon import template
 from uuid import uuid4
 
@@ -295,14 +296,16 @@ async def payments():
 
 @router.get('/user/favourite-ads', dependencies = [Depends(requires_authentication)])
 @template('user/favourite-ads.pt')
-async def favourite_ads():
+async def favourite_ads(session: Annotated[AsyncSession, Depends(get_db_session)]):
     """
         As the user model has properties that holds
         information about all favourites, just need
         to return the view model to make this information
         available on the template
     """
-    return await ViewModel()
+    return await ViewModel(
+        fav_searches = await user_service.get_user_fav_searches(session)
+    )
 
 @router.post('/user/favourite/{ad_id}')
 async def add_ad_to_favourites(
@@ -335,10 +338,16 @@ async def add_search_to_favourites(
             status_code = status.HTTP_400_BAD_REQUEST,
             detail = 'User must be logged in'
         )
+    
+    all_user_fav_searches = await user_service.get_fav_searches_by_user_id(user.user_id, session)
+    for fav_search in all_user_fav_searches:
+        if search_fav.url == fav_search.search_url:
+            return {'success': False}
+        
     new_favourite_search = await user_service.add_new_favourite_search(user.user_id, search_fav.url, session)
 
     if new_favourite_search:
-        return {'msg': 'Search added successfully'}
+        return {'success': True}
 
 
 @router.delete('/user/favourite/{ad_id}', dependencies = [Depends(requires_authentication)])
@@ -352,6 +361,17 @@ async def delete_from_fav(
             curr_user = await user_service.delete_user_favourite(vm.user, fav, session)
     
     return {'current_total_ads': len(curr_user.favourites)}
+
+@router.delete(
+    '/user/favourite/search/{fav_search_id}', 
+    dependencies = [Depends(requires_authentication)]
+)
+async def delete_fav_search(
+    fav_search_id: int, 
+    session: Annotated[AsyncSession, Depends(get_db_session)]
+):
+    if fav_search := await user_service.get_fav_search_by_id(fav_search_id, session):
+        await user_service.delete_user_fav_search(fav_search, session)
 
 @router.get('/user/privacy-setting', dependencies = [Depends(requires_authentication)])
 @template('user/privacy-setting.pt')
