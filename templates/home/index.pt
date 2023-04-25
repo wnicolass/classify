@@ -183,7 +183,8 @@
                   <div class="ads_card_content">
                     <div class="meta d-flex justify-content-between">
                       <p>${ad.subcategory.subcategory_name}</p>
-                      <a style="cursor: pointer;" class="like" data-adid="${ad.id}"><i class="fal fa-heart"></i></a>
+                      <a tal:condition="ad.id not in current_user_fav_ads" style="cursor: pointer;" class="like" data-adid="${ad.id}"><i class="fal fa-heart"></i></a>
+                      <a tal:condition="ad.id in current_user_fav_ads" style="cursor: pointer;" class="like" data-adid="${ad.id}"><i class="fal fa-heart active"></i></a>
                     </div>
                     <h4 class="title">
                       <a title="Adicione este anúncio aos favoritos" href="/ad/${ad.id}">${ad.title}</a>
