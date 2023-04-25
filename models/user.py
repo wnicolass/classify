@@ -1,5 +1,6 @@
 from datetime import datetime
 from typing import List
+from urllib.parse import unquote_plus
 from sqlalchemy import (
     Column,
     Integer,
@@ -15,6 +16,7 @@ from config.database import Base
 from models.ad import Ad
 from services.ad_service import AdStatusEnum
 from common.utils import image_formats, transform_image_from_url
+from models.chat import Message
 
 class UserAccount(Base):
     __tablename__ = 'UserAccount'
@@ -34,6 +36,10 @@ class UserAccount(Base):
     user_login_data = relationship('UserLoginData', back_populates = 'user', uselist = False)
     user_login_data_ext = relationship('UserLoginDataExt', back_populates = 'user')
     favourites = relationship('Favourite', back_populates = 'user')
+    favourite_searches = relationship('FavouriteSearch', back_populates = 'user')
+    
+    messages_received = relationship('Message', back_populates = 'receiver_user',foreign_keys = [Message.receiver_user_id])
+    messages_sent = relationship('Message', back_populates = 'sender_user', foreign_keys = [Message.sender_user_id])
 
     @property
     def pretty_created_at(self):
@@ -131,6 +137,32 @@ class Favourite(Base):
     user = relationship('UserAccount', back_populates = 'favourites', uselist = False)
     ad = relationship('Ad', back_populates = 'users_favourited', uselist = False, lazy = 'joined')
 
+class FavouriteSearch(Base):
+    __tablename__ = 'FavouriteSearch'
+
+    id: int = Column(Integer, primary_key = True, autoincrement = True)
+    user_id: int = Column(Integer, ForeignKey('UserAccount.user_id'), nullable = False)
+    search_url: str = Column(String(500), nullable = False)
+    fav_date: datetime = Column(DateTime, default = datetime.now())
+
+    user = relationship('UserAccount', back_populates = 'favourite_searches', uselist = False)
+
+    @property
+    def search_title(self) -> str:
+        title = 'Pesquisa sem título'
+        equal_sign_index = self.search_url.index('=')
+        try:
+            if self.search_url[equal_sign_index + 1] != '&':
+                temp_title = []
+                for i in range(equal_sign_index + 1, len(self.search_url)):
+                    if self.search_url[i] == '&':
+                        break
+                    temp_title.append(self.search_url[i])
+                title = ''.join(temp_title)
+            return unquote_plus(title)
+        except IndexError:
+            return unquote_plus(title)
+        
 class HashAlgo(Base):
     __tablename__ = 'HashAlgo'
 
