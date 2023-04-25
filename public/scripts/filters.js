@@ -3,6 +3,9 @@ const inCategoryView = /(http(s)?:\/\/).*\/ads\/category\/\d{1,2}/.test(queryFir
 const inSubcategoryView = /(http(s)?:\/\/).*\/ads\/subcategory\/\d{1,3}/.test(queryFirstPart);
 const pageNumber = document.querySelectorAll('.number');
 const currentURL = new URL(window.location.href);
+const toastTrigger = document.getElementById('liveToastBtn');
+const toastLiveExample = document.getElementById('liveToast');
+const closeBtn = document.getElementById('close-fav-toast');
 let activePage;
 let currentSearch = `${currentURL.pathname}${currentURL.search}`;
 
@@ -109,7 +112,7 @@ async function fetchData(queryParams) {
   try {
     const res = await fetch(URL);
     const data = await res.json();
-    renderAds(data);
+    data.ads.length > 0 && renderAds(data);
   } catch (err) {
     console.error(err);
   }
@@ -237,8 +240,27 @@ function prettyDate(date) {
     return `${day} ${month} ${year}`;
 }
 
+function execToast(success) {
+  if (success) {
+    if (toastLiveExample.classList.contains('hide')) {
+      toastLiveExample.classList.replace('hide', 'showing');
+    } else {
+      toastLiveExample.classList.add('showing');
+    }
+    setTimeout(() => toastLiveExample.classList.replace('showing', 'show'), 500);
+
+    closeBtn.addEventListener('click', () => {
+      toastLiveExample.classList.replace('show', 'hide');
+      clearTimeout(closingTimeout);
+    });
+
+    const closingTimeout = setTimeout(() => toastLiveExample.classList.replace('show', 'hide'), 10000);
+  }
+}
+
 async function addNewFavSearch() {
   if (currentSearch) {
+    currentSearch = currentSearch.replace('sort', 'search');
     try {
       const res = await fetch('/user/favourite-search', {
         method: 'POST',
@@ -249,9 +271,12 @@ async function addNewFavSearch() {
           url: currentSearch
         })
       });
+      const data = await res.json();
+      console.log(data);
       if (!res.ok) {
         window.location.href = `${currentURL.origin}/auth/sign-in`;
       }
+      execToast(data.success);
     } catch (err) {
       console.error(err.message);
     }
@@ -265,11 +290,12 @@ function addFavouriteSearchEvent() {
 }
 
 function main() {
+  const hasPagination = pageNumber.length > 0
   handleFilters();
   infinityEvent();
   getMinMaxPrice();
-  getActivePage();
-  setOneAsActive();
+  hasPagination && getActivePage();
+  hasPagination && setOneAsActive();
   addFavouriteSearchEvent();
 }   
 
