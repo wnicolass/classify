@@ -5,6 +5,7 @@
   <script src="/public/scripts/favourites.js" defer></script>
   <script tal:condition="not in_categories_view and not in_subcategories_view" src="/public/scripts/get-subcategories.js" defer></script>
   <script src="/public/scripts/filters.js" defer></script>
+  <script src="/public/scripts/handle-search-form.js" defer></script>
 </__additional_script__>
   <div metal:fill-slot="title" tal:omit-tag="True">
     <title> Anúncios | Classify</title>
