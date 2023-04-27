@@ -1,5 +1,5 @@
 const inFavsView = window.location.href.endsWith('favourite-ads');
-const currentURL = new URL(window.location.href);
+const pageURL = new URL(window.location.href);
 
 function addRedHeart(adId) {
     const heartIcons = document.querySelectorAll(`a[data-adid="${adId}"] i`);
@@ -40,7 +40,7 @@ async function addToFavourites({target: favBtn}) {
         }
         const data = await res.json();
         if (data.message === 'not logged in') {
-            window.location.href = `${currentURL.origin}/auth/sign-in`;
+            window.location.href = `${pageURL.origin}/auth/sign-in`;
             return;
         }
 
