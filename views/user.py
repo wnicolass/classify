@@ -344,7 +344,7 @@ async def add_search_to_favourites(
         if search_fav.url == fav_search.search_url:
             return {'success': False}
         
-    new_favourite_search = await user_service.add_new_favourite_search(user.user_id, search_fav.url, session)
+    new_favourite_search = await user_service.add_new_favourite_search(user.user_id, search_fav.url.strip(), session)
 
     if new_favourite_search:
         return {'success': True}

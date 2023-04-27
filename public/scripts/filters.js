@@ -260,7 +260,7 @@ function execToast(success) {
 
 async function addNewFavSearch() {
   if (currentSearch) {
-    currentSearch = currentSearch.replace('sort', 'search');
+    currentSearch = currentSearch.replace('sort', 'search').trim();
     try {
       const res = await fetch('/user/favourite-search', {
         method: 'POST',
@@ -268,7 +268,7 @@ async function addNewFavSearch() {
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-          url: currentSearch
+          url: currentSearch.trim()
         })
       });
       const data = await res.json();
