@@ -1,4 +1,4 @@
-const toastElement = document.querySelector(".toast");
+const toastElement = document.querySelector(".toast:not(.toast.products)");
 
 function removeToast() {
   toastElement.remove();
