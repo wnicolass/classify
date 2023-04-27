@@ -59,9 +59,23 @@ async def sort_ads_category(
 ):
     items_per_page = 9
     if subcategory_id and not category_id:
-        category_id = await category_service.get_category_by_subcategory_id(subcategory_id, session)
-    filtered_ads = await ad_service.get_ads_by_criteria(session, title, description, 
-                city, category_id, subcategory_id, order_by,  min_price, max_price,page, items_per_page)
+        category_id = (
+            await category_service.
+            get_category_by_subcategory_id(subcategory_id, session)
+        )
+    filtered_ads, total_ads = await ad_service.get_ads_by_criteria(
+        session, 
+        title, 
+        description, 
+        city, 
+        category_id, 
+        subcategory_id, 
+        order_by, 
+        min_price, 
+        max_price,
+        page, 
+        items_per_page
+    )
 
     vm = await ViewModel()
     
@@ -80,6 +94,8 @@ async def show_ad(ad_id, session: Annotated[AsyncSession, Depends(get_db_session
 
     if not current_ad:
         raise HTTPException(status_code = status.HTTP_404_NOT_FOUND, detail = {'error_msg': 'Not found'})
+
+    current_ad = await ad_service.update_views_count(current_ad, session)
 
     return await ViewModel(
         adv = current_ad,
@@ -143,10 +159,38 @@ async def search_by_title(
     session: Annotated[AsyncSession, Depends(get_db_session)],
     title: str | None = '',
     description: str | None = None,
-    page: int = 1,
-    items_per_page: int = 9,
+    city: str | None = '',
+    category_id: int | None = '',
+    subcategory_id: int | None = '',
+    order_by: str | None = '',
+    min_price: dec = 0,
+    max_price: dec = 0,
+    page: int = 0,
 ):
+    some_other_criteria = bool(
+        city or 
+        category_id or 
+        subcategory_id or 
+        order_by or 
+        min_price or 
+        max_price or 
+        page
+    )
     ads_found, total_ads_found = await ad_service.get_ads_by_title_or_description(session, title,description)
+    if some_other_criteria:
+        ads_found, total_ads_found = await ad_service.get_ads_by_criteria(
+        session, 
+        title, 
+        description, 
+        city, 
+        category_id, 
+        subcategory_id, 
+        order_by, 
+        min_price, 
+        max_price,
+        page, 
+        items_per_page = 9
+    )
     
     min, max = 0, 0
     if ads_found:
@@ -264,7 +308,9 @@ async def post_ad_viewmodel(request: Request, files: list[UploadFile], session: 
             if file_size_in_kb > 500:
                 vm.error, vm.error_msg = True, 'O tamanho limite das imagens é de 500kb.'
                 break
-            elif file.content_type not in ('image/jpg', 'image/png', 'image/jpeg') or file_ext not in ['.jpg', '.jpeg', '.png']:
+            elif (file.content_type not in ('image/jpg', 'image/png', 'image/jpeg') or
+                  file_ext not in ['.jpg', '.jpeg', '.png']
+                ):
                 vm.error, vm.error_msg = True, 'Apenas imagens do tipo ".png", ".jpg" ou ".jpeg".'
                 break
             await file.seek(0)
@@ -275,6 +321,14 @@ async def post_ad_viewmodel(request: Request, files: list[UploadFile], session: 
 
 
     if not vm.error:
+        vm.user = await user_service.update_user_details(
+            vm.user,
+            new_username = '',
+            new_birth_date = '',
+            new_phone_number = vm.phone,
+            new_profile_picture_link = '',
+            session = session
+        )
         vm.files = []
         for file in files:
             url = upload_image(file)

@@ -349,18 +349,18 @@ async def get_ads_by_criteria(
         .join(ad.Ad.subcategory)
         .join(Subcategory.category)
         .where(and_(*filters))
-        .offset(offset)
-        .limit(items_per_page)
     )
-
-    query = query.order_by(criteria)
+    query_with_offset = query.offset(offset).limit(items_per_page)
+    query_with_offset = query_with_offset.order_by(criteria)
     if not has_criteria:
-        query = query.order_by(ad.Ad.promo_id.desc(), ad.Ad.title.asc())
+        query_with_offset = query_with_offset.order_by(ad.Ad.promo_id.desc(), ad.Ad.title.asc())
 
-    partial_result = await session.execute(query)
+    partial_result = await session.execute(query_with_offset)
+    partial_count_result = await session.execute(query)
     ads_by_criteria = partial_result.unique().scalars().all()
+    total_ads_by_criteria = len(partial_count_result.unique().scalars().all())
 
-    return ads_by_criteria
+    return ads_by_criteria, total_ads_by_criteria
 
 async def get_locations_by_total_ads(session: AsyncSession) -> List[ad.AdAddress]:
     query = await session.execute(select(ad.AdAddress, func.count(ad.Ad.ad_address_id))
@@ -384,8 +384,10 @@ async def get_cities_with_ads_by_text(text: str, session: AsyncSession) -> List[
         select(ad.AdAddress.city)
         .where(
             and_(ad.Ad.status_id == AdStatusEnum.ACTIVE.value), 
-                ad.Ad.title.like(f'%{text}%')
+            or_(ad.Ad.title.like(f'%{text}%'),
+                ad.Ad.ad_description.like(f'%{text}%')
             )
+        )
         .join(ad.AdAddress.ads)
         .group_by(ad.AdAddress.city)
         .order_by(func.count(ad.Ad.ad_address_id).desc())
@@ -435,6 +437,13 @@ async def update_promo_id(ad_id: int, new_promo_id: int, session: AsyncSession) 
     ad = await get_ad_by_id(session, ad_id)
     ad.promo_id = new_promo_id
     await session.commit()
+
+async def update_views_count(ad: ad.Ad, session: AsyncSession) -> ad.Ad:
+    ad.views += 1
+    await session.commit()
+    await session.refresh(ad)
+
+    return ad
 
 # DELETE
 async def set_deleted_status(ad_id: int, session: AsyncSession) -> ad.Ad:
