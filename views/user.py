@@ -11,6 +11,8 @@ from fastapi import (
 )
 from fastapi_chameleon import template
 from uuid import uuid4
+
+from pydantic import BaseModel
 from common.viewmodel import ViewModel
 from common.auth import (
     requires_authentication,
@@ -283,8 +285,13 @@ async def my_ads(session: Annotated[AsyncSession, Depends(get_db_session)]):
 
 @router.get('/user/offermessages', dependencies = [Depends(requires_authentication)])
 @template()
-async def offermessages():
-    return await ViewModel()
+async def offermessages(session: Annotated[AsyncSession, Depends(get_db_session)]):
+    vm = await ViewModel()
+
+    seller_user_id = vm.user_id
+    
+    return vm
+    
 
 @router.get('/user/payments', dependencies = [Depends(requires_authentication)])
 @template()
@@ -335,3 +342,28 @@ async def delete_from_fav(
 @template('user/privacy-setting.pt')
 async def privacy_setting():
     return await ViewModel()
+
+class Message(BaseModel):
+    text_message: str
+    seller_id: int
+
+@router.post('/send_message/{adv_id}', dependencies = [Depends(requires_authentication)])
+async def send_message(
+    adv_id: int,
+    message: Message,
+    session: Annotated[AsyncSession, Depends(get_db_session)]
+):
+    vm = await ViewModel()
+
+    sender_user_id = vm.user_id
+
+    if message_info := await user_service.send_message(
+        sender_user_id,
+        message.seller_id,
+        adv_id,
+        message.text_message,
+        session
+    ):
+        return {'success': True}
+    
+    return {'success': False}

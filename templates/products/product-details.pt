@@ -6,6 +6,7 @@
     <script src="/public/scripts/change-image.js" defer></script>
     <script src="/public/scripts/show-seller-number.js" defer></script>
     <script src="/public/scripts/favourites.js" defer></script>
+    <script src="/public/scripts/message.js" defer></script>
   </__additional_script__>
   <__additional_stylesheet__ metal:fill-slot="additional_stylesheet" tal:omit-tag="True">
     <style>
@@ -52,6 +53,23 @@
     </div>
 
     <!--====== HEADER PART ENDS ======-->
+
+    <!-- TOAST -->
+    <div style="top: 85px;right: 0;z-index: 1000;" class="toast-container position-fixed top-0 end-0 p-3">
+      <div style="width: 22rem;" id="liveToast" class="toast products fade" role="alert">
+        <div style="padding: 0.75rem;justify-content: space-between;" class="toast-header">
+          <div style="display: flex; align-items:center;">
+            <i style="color: #36a136;font-size: 1.5rem;margin-right: 0.5rem;" class="fa-solid fa-circle-check"></i>
+            <strong class="me-auto">Mensagem enviada com sucesso!</strong>
+          </div>
+          <i id="close-msg-toast" style="font-size: 1.5rem;cursor: pointer;" class="fa-solid fa-xmark"></i>
+        </div>
+        <div class="toast-body">
+          Verifique nas suas Mensagens.
+        </div>
+      </div>
+    </div>
+    <!-- TOAST END -->
 
     <!--====== PRODUCT DETAILS PAGE PART START ======-->
 
@@ -265,13 +283,14 @@
                   <h5 class="title">Contactar :</h5>
                 </div>
                 <div tal:condition="is_logged_in" class="sidebar_contact_form">
-                  <form method="POST" action="">
-                    <input Type="hidden" value="${adv.user.user_id}">
+                  <form id="message_form" method="POST" action="/send_message/${adv.id}">
+                    <input Type="hidden" name="seller_id" value="${adv.user.user_id}">
+                    <input Type="hidden" name="adv_id" value="${adv.id}">
                     <div class="single_form">
                       <textarea name="text_message" placeholder="Escreva aqui"></textarea>
                     </div>
                     <div class="single_form">
-                      <button class="main-btn">
+                      <button id="liveToastBtn" class="main-btn">
                         <i class="fal fa-paper-plane"></i>Enviar Mensagem
                       </button>
                     </div>
