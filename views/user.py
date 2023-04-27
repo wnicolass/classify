@@ -303,9 +303,9 @@ async def favourite_ads(session: Annotated[AsyncSession, Depends(get_db_session)
         to return the view model to make this information
         available on the template
     """
-    return await ViewModel(
-        fav_searches = await user_service.get_user_fav_searches(session)
-    )
+    vm = await ViewModel()
+    vm.fav_searches = await user_service.get_fav_searches_by_user_id(vm.user_id, session)
+    return vm
 
 @router.post('/user/favourite/{ad_id}')
 async def add_ad_to_favourites(
