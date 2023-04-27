@@ -1,9 +1,11 @@
 from datetime import datetime
 from typing import List
+from sqlalchemy import and_
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
 from sqlalchemy.orm import joinedload
 from models.user import UserAccount, UserLoginData, UserLoginDataExt, UserAddress, Favourite, ExternalProvider, OpenIdConnectTokens
+from models.chat import Chatroom, Message
 
 # CREATE
 async def create_user(username: str, phone_number: str, birth_date: str, is_active: int, session: AsyncSession, image_url: str | None = None) -> UserAccount:
@@ -185,6 +187,51 @@ async def get_oauth_tokens(state_token: str, session: AsyncSession) -> OpenIdCon
     token_instance = query.scalar_one_or_none()
 
     return token_instance
+
+async def send_message(
+    buyer_user_id: int,
+    seller_user_id: int,
+    adv_id: int,
+    text_message: str,
+    session: AsyncSession
+):
+    chatroom = await get_chatroom_by_seller_and_buyer_id(seller_user_id, buyer_user_id, session)
+    if not chatroom:
+        chatroom = Chatroom(ad_id = adv_id)
+        session.add(chatroom)
+        await session.commit()
+        await session.refresh(chatroom)
+
+    message = Message(
+        text_message = text_message,
+        chatroom_id = chatroom.id,
+        sender_user_id = buyer_user_id,
+        receiver_user_id = seller_user_id,
+    )
+    session.add(message)
+    await session.commit()
+    await session.refresh(message)
+    return message
+
+async def get_chatroom_by_seller_and_buyer_id(
+    seller_user_id: int,
+    buyer_user_id: int,
+    session: AsyncSession
+) -> Chatroom | None:
+    query = await session.execute(
+        select(Chatroom)
+        .join(Chatroom.messages)
+        .where(
+            and_(
+                Message.sender_user_id == buyer_user_id,
+                Message.receiver_user_id == seller_user_id,
+            )
+        )
+        .limit(1)
+    )
+    chatroom = query.scalar_one_or_none()
+
+    return chatroom
 
 # UPDATE
 async def set_email_confirmation_token(user_id: int, token: str, expiration_time: datetime, session: AsyncSession):
