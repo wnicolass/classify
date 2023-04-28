@@ -1,7 +1,7 @@
 async function getFirstMessages() {
     const [firstChat,] = document.querySelectorAll('.single_chat');
     const isReadIcon = firstChat.querySelector('i');
-    isReadIcon.style.display = 'none';
+    isReadIcon ? isReadIcon.style.display = 'none' : null;
     const chatRoomId = firstChat.dataset.chatroomid;
     await fetchChatMessages(chatRoomId);
     firstChat.classList.add('current-chat');
@@ -34,7 +34,7 @@ function otherChatsHandler() {
         const isReadIcon = chat.querySelector('i');
         chat.addEventListener('click', async (event) => {
             otherChats.forEach((chat) => chat.classList.remove('current-chat'));
-            isReadIcon.style.display = 'none';
+            isReadIcon ? isReadIcon.style.display = 'none' : null;
             const chatRoomId = event.currentTarget.dataset.chatroomid;
             updateChatroomStatus(chatRoomId);
             event.currentTarget.classList.add('current-chat');
