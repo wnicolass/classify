@@ -10,8 +10,7 @@ async function sendMessage(event) {
     const formData = new FormData(form);
     const adv_id = formData.get('adv_id');
     const textMessage = formData.get('text_message'); 
-    const sellerId = formData.get('seller_id');
-    
+    const sellerId = formData.get('seller_id') ?? formData.get('user_id');
     try {
         const response = await fetch(`/send_message/${adv_id}`, {
             method: 'POST',
@@ -20,7 +19,7 @@ async function sendMessage(event) {
             },
             body: JSON.stringify({
                 text_message: textMessage,
-                seller_id: sellerId
+                receiver_id: sellerId
                 })
         });
         const data = await response.json();
