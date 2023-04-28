@@ -303,6 +303,10 @@
                     <thead>
                       <tr>
                         <th class="title">Título</th>
+                        <th class="desc">Procurar Descrição</th>
+                        <th class="category">Categoria</th>
+                        <th class="subcategory">Subcategoria</th>
+                        <th class="order">Ordem</th>
                         <th class="action" style="text-align: center; padding-right: 35px;">Ação</th>
                       </tr>
                     </thead>
@@ -312,6 +316,26 @@
                         <td class="title">
                           <div class="table_title">
                             <h6 class="titles"><a href="${search.search_url}">${search.search_title}</a></h6>
+                          </div>
+                        </td>
+                        <td class="title">
+                          <div class="table_desc">
+                            <p>${search.search_description_text}</p>
+                          </div>
+                        </td>
+                        <td class="title">
+                          <div class="table_category">
+                            <p>${search.category}</p>
+                          </div>
+                        </td>
+                        <td class="title">
+                          <div class="table_subcategory">
+                            <p>${search.subcategory}</p>
+                          </div>
+                        </td>
+                        <td class="title">
+                          <div class="table_order">
+                            <p>${search.order_type}</p>
                           </div>
                         </td>
                         <td class="action">
