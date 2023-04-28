@@ -360,7 +360,6 @@ async def get_senders_messages_by_current_user_id(
         )
     )
     chat_users = users.unique().scalars().all()
-    print(chat_users)
 
     return chat_users
 

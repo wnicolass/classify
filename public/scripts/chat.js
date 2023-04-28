@@ -11,7 +11,6 @@ async function fetchChatMessages(chatRoomId) {
     try {
         const response = await fetch(`/user/offermessages/${chatRoomId}`);
         const data = await response.json(); 
-        console.log(data);
         renderMessages(data.messages, data.user_id);
     }catch (err) {
         console.error(err.message);
@@ -127,13 +126,10 @@ async function sendNewMessage(event) {
         });
         const data = await response.json();
         buildOnGoingMessage(data);
-        console.log(data);
         textMessage.value = '';
     }catch (err) {
         console.error(err.message);
     }
-
-    console.log(currentChat);
 }
 
 async function main() {
