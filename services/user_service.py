@@ -205,6 +205,10 @@ async def send_message(
         session.add(chatroom)
         await session.commit()
         await session.refresh(chatroom)
+    chatroom.is_unread_receiver_user = 0
+    chatroom.is_unread_sender_user = 1
+    await session.commit()
+    await session.refresh(chatroom)
 
     message = Message(
         text_message = text_message,
