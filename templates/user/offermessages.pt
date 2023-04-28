@@ -56,7 +56,7 @@
                         <div
                           class="single_chat chat_online d-flex align-items-center" data-userid="${user.user_id}" data-chatroomid="${user.chatroom.id}"
                           style="cursor: pointer; position: relative; width: 15rem;">
-                          <i tal:condition="user.chatroom.starter_id == user.user_id and user.chatroom.is_unread_starter"
+                          <i tal:condition="user.chatroom.starter_id == user_id and user.chatroom.is_unread_starter == 1"
                             class="fal fa-envelope" style="
                                 position: absolute;
                                 color: #fff;
@@ -68,7 +68,7 @@
                                 border-radius: 50%;
                                 ">
                           </i>
-                           <i tal:condition="user.chatroom.starter_id != user.user_id and user.chatroom.is_unread_receiver"
+                           <i tal:condition="user.chatroom.starter_id != user_id and user.chatroom.is_unread_receiver == 1"
                             class="fal fa-envelope" style="
                                 position: absolute;
                                 color: #fff;
