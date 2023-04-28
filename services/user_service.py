@@ -336,14 +336,38 @@ async def get_senders_messages_by_current_user_id(
         current_user_id: int,
         session: AsyncSession
 ):
-    query = await session.execute(
-        select(UserAccount)
-        .join(Message.sender_user)
-        .where(Message.receiver_user_id == current_user_id)
+    messages_with_current_user = (
+        select(Message.receiver_user_id)
+        .where(
+            or_(
+                Message.receiver_user_id == current_user_id,
+                Message.sender_user_id == current_user_id,
+            )
+        )
+        .subquery()
     )
-    senders = query.unique().scalars().all()
 
-    return senders
+    users_ids = (
+        select(UserAccount.user_id)
+        .where(
+            UserAccount.user_id.in_(messages_with_current_user)
+        )
+        .subquery()
+    )
+
+    users = await session.execute(
+        select(UserAccount)
+        .where(
+            and_(
+                UserAccount.user_id.in_(users_ids),
+                UserAccount.user_id != current_user_id
+            )
+        )
+    )
+    chat_users = users.unique().scalars().all()
+    print(chat_users)
+    
+    return chat_users
 
 async def get_messages_by_chatroom_id(
     chatroom_id: int,
