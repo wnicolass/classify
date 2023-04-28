@@ -4,11 +4,26 @@ from sqlalchemy import and_, or_
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
 from sqlalchemy.orm import joinedload
-from models.user import UserAccount, UserLoginData, UserLoginDataExt, UserAddress, Favourite, ExternalProvider, OpenIdConnectTokens
+from models.user import (
+    UserAccount, 
+    UserLoginData, 
+    UserLoginDataExt, 
+    UserAddress, 
+    Favourite, 
+    ExternalProvider, 
+    OpenIdConnectTokens
+)
 from models.chat import Chatroom, Message
 
 # CREATE
-async def create_user(username: str, phone_number: str, birth_date: str, is_active: int, session: AsyncSession, image_url: str | None = None) -> UserAccount:
+async def create_user(
+    username: str, 
+    phone_number: str, 
+    birth_date: str, 
+    is_active: int, 
+    session: AsyncSession, 
+    image_url: str | None = None
+) -> UserAccount:
     user = UserAccount(
         username = username,
         phone_number = phone_number,
@@ -28,7 +43,11 @@ async def create_user_ext(
     session: AsyncSession,
     external_provider_id: int = 1 
 ):
-    external_data = UserLoginDataExt(external_provider_token = token, external_provider_id = external_provider_id, user_id = user.user_id)
+    external_data = UserLoginDataExt(
+        external_provider_token = token, 
+        external_provider_id = external_provider_id, 
+        user_id = user.user_id
+    )
     session.add(external_data)
     await session.commit()
     await session.refresh(user)
@@ -55,7 +74,11 @@ async def create_user_login_data(
     await session.refresh(user_login_data)
     return user_login_data
 
-async def add_new_favourite(user_id: int, ad_id: int, session: AsyncSession) -> Favourite:
+async def add_new_favourite(
+    user_id: int, 
+    ad_id: int,
+    session: AsyncSession
+) -> Favourite:
     fav = Favourite(user_id = user_id, ad_id = ad_id)
     session.add(fav)
     await session.commit()
@@ -102,7 +125,10 @@ async def get_user_by_email(email: str, session: AsyncSession) -> UserAccount:
 
     return user
 
-async def get_user_login_data_by_email(email: str, session: AsyncSession) -> UserLoginData:
+async def get_user_login_data_by_email(
+    email: str, 
+    session: AsyncSession
+) -> UserLoginData:
     query = await session.execute(
         select(UserLoginData)
         .where(UserLoginData.email_addr == email)
@@ -111,13 +137,22 @@ async def get_user_login_data_by_email(email: str, session: AsyncSession) -> Use
 
     return user
 
-async def get_user_login_data_by_id(id: int, session: AsyncSession) -> UserLoginData:
-    query = await session.execute(select(UserLoginData).where(UserLoginData.user_id == id))
+async def get_user_login_data_by_id(
+    id: int, 
+    session: AsyncSession
+) -> UserLoginData:
+    query = await session.execute(
+        select(UserLoginData).
+        where(UserLoginData.user_id == id)
+    )
     user = query.scalar_one_or_none()
     
     return user
 
-async def get_user_account_by_id(id: int, session: AsyncSession) -> UserAccount:
+async def get_user_account_by_id(
+    id: int, 
+    session: AsyncSession
+) -> UserAccount:
     query = await session.execute(select(UserAccount)
         .where(UserAccount.user_id == id)
         .options(joinedload(UserAccount.favourites))
@@ -126,7 +161,10 @@ async def get_user_account_by_id(id: int, session: AsyncSession) -> UserAccount:
     return user
 
 async def get_all_verified_users(session: AsyncSession) -> List[UserAccount]:
-    query = await session.execute(select(UserAccount).where(UserAccount.is_active == 1))
+    query = await session.execute(
+        select(UserAccount)
+        .where(UserAccount.is_active == 1)
+    )
     verified_users = query.unique().scalars().all()
 
     return verified_users
@@ -139,19 +177,35 @@ async def get_user_favs(user_id: int, session: AsyncSession) -> List[int]:
     return user_favs_ids
 
 
-async def get_user_by_recovery_token(token: str, session: AsyncSession)-> UserLoginData:
-    result = await session.execute(select(UserLoginData).where(UserLoginData.recovery_token == token))
+async def get_user_by_recovery_token(
+    token: str, 
+    session: AsyncSession
+)-> UserLoginData:
+    result = await session.execute(
+        select(UserLoginData)
+        .where(UserLoginData.recovery_token == token)
+    )
     user = result.scalar_one_or_none()
 
     return user
 
-async def get_user_by_email_token(token: str, session: AsyncSession) -> UserLoginData:
-    result = await session.execute(select(UserLoginData).where(UserLoginData.confirm_token == token))
+async def get_user_by_email_token(
+    token: str, 
+    session: AsyncSession
+) -> UserLoginData:
+    result = await session.execute(
+        select(UserLoginData)
+        .where(UserLoginData.confirm_token == token)
+    )
     user = result.scalar_one_or_none()
 
     return user
 
-async def get_user_by_hashed_sub(token: str, session: AsyncSession, ext_provider_id: int = 1) -> UserAccount:
+async def get_user_by_hashed_sub(
+    token: str, 
+    session: AsyncSession, 
+    ext_provider_id: int = 1
+) -> UserAccount:
     result = await session.execute(
         select(UserAccount)
         .join(UserLoginDataExt)
@@ -162,8 +216,14 @@ async def get_user_by_hashed_sub(token: str, session: AsyncSession, ext_provider
     user_ext_data = result.scalar_one_or_none()
     return user_ext_data
     
-async def get_user_address_by_user_id(user_id: int, session: AsyncSession) -> UserAddress:
-    result = await session.execute(select(UserAddress).where(UserAddress.user_id == user_id))
+async def get_user_address_by_user_id(
+    user_id: int, 
+    session: AsyncSession
+) -> UserAddress:
+    result = await session.execute(
+        select(UserAddress)
+        .where(UserAddress.user_id == user_id)
+    )
     user_address = result.scalar_one_or_none()
     return user_address
 
@@ -179,7 +239,10 @@ async def get_external_provider_by_id(
 
     return external_provider
 
-async def get_oauth_tokens(state_token: str, session: AsyncSession) -> OpenIdConnectTokens:
+async def get_oauth_tokens(
+    state_token: str, 
+    session: AsyncSession
+) -> OpenIdConnectTokens:
     query = await session.execute(
         select(OpenIdConnectTokens)
         .where(OpenIdConnectTokens.state == state_token)
@@ -195,7 +258,11 @@ async def send_message(
     text_message: str,
     session: AsyncSession
 ):
-    chatroom = await get_chatroom_by_seller_and_buyer_id(seller_user_id, buyer_user_id, session)
+    chatroom = await get_chatroom_by_seller_and_buyer_id(
+        seller_user_id, 
+        buyer_user_id, 
+        session
+    )
     if not chatroom:
         chatroom = Chatroom(
             ad_id = adv_id, 
@@ -292,22 +359,32 @@ async def get_messages_by_chatroom_id(
 
     return messages
 
+# UPDATE
 async def set_chatroom_as_read(
     chatroom_id: int,
     session: AsyncSession
 ):
-    chatroom= await get_chatroom_by_id(chatroom_id, session)
+    chatroom = await get_chatroom_by_id(chatroom_id, session)
     chatroom.is_unread_receiver_user = 0
     await session.commit()
 
-# UPDATE
-async def set_email_confirmation_token(user_id: int, token: str, expiration_time: datetime, session: AsyncSession):
+async def set_email_confirmation_token(
+    user_id: int, 
+    token: str, 
+    expiration_time: datetime, 
+    session: AsyncSession
+):
     user = await get_user_login_data_by_id(user_id, session)
     user.confirm_token = token
     user.confirm_token_time = expiration_time
     await session.commit()
 
-async def set_user_recovery_token(user: UserLoginData, recovery_token_hash: str, recovery_token_time: datetime, session: AsyncSession):
+async def set_user_recovery_token(
+    user: UserLoginData, 
+    recovery_token_hash: str, 
+    recovery_token_time: datetime, 
+    session: AsyncSession
+):
     user = await get_user_login_data_by_id(user.user_id, session)
     user.recovery_token = recovery_token_hash
     user.recovery_token_time = recovery_token_time
@@ -344,18 +421,30 @@ async def update_user_address(
 
     await session.commit()
 
-async def update_user_email_validation_status(user: UserLoginData, session: AsyncSession):
+async def update_user_email_validation_status(
+    user: UserLoginData, 
+    session: AsyncSession
+):
     user.email_validation_status_id = 3
     user.user.is_active = 1
     await session.commit()
 
-async def update_user_password(user: UserLoginData, new_hashed_password: str, new_password_salt: str, session: AsyncSession):
+async def update_user_password(
+    user: UserLoginData, 
+    new_hashed_password: str, 
+    new_password_salt: str, 
+    session: AsyncSession
+):
     user.password_hash = new_hashed_password
     user.password_salt = new_password_salt
     await session.commit()
     
 # DELETE
-async def delete_user_favourite(current_user: UserAccount, fav: Favourite, session: AsyncSession) -> None:
+async def delete_user_favourite(
+    current_user: UserAccount, 
+    fav: Favourite, 
+    session: AsyncSession
+) -> None:
     await session.delete(fav)
     await session.commit()
     current_user = await get_user_account_by_id(current_user.user_id, session)
