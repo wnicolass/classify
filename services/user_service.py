@@ -362,10 +362,14 @@ async def get_messages_by_chatroom_id(
 # UPDATE
 async def set_chatroom_as_read(
     chatroom_id: int,
+    current_user_id: int,
     session: AsyncSession
 ):
     chatroom = await get_chatroom_by_id(chatroom_id, session)
-    chatroom.is_unread_receiver_user = 0
+    if chatroom.starter_id == current_user_id:
+        chatroom.is_unread_starter = 0
+    else:
+        chatroom.is_unread_receiver = 0
     await session.commit()
 
 async def set_email_confirmation_token(

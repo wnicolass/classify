@@ -5,8 +5,6 @@ from fastapi import (
     Depends,
     UploadFile,
     Request,
-    responses,
-    status,
     HTTPException
 )
 from fastapi_chameleon import template
@@ -48,7 +46,7 @@ async def dashboard():
 
 @router.get('/user/profile-settings', dependencies = [Depends(requires_authentication)])
 @template('user/profile-settings.pt')
-async def profile_settings(request: Request, session: Annotated[AsyncSession, Depends(get_db_session)]):
+async def profile_settings(session: Annotated[AsyncSession, Depends(get_db_session)]):
     user = await get_current_user()
     address = await user_service.get_user_address_by_user_id(user.user_id, session)
     
@@ -303,8 +301,8 @@ async def offermessages_viewmodel(session: Annotated[AsyncSession, Depends(get_d
 
 @router.patch('/user/chatroom/{chatroom_id}', dependencies = [Depends(requires_authentication)])
 async def update_chatroom(chatroom_id: int, session: Annotated[AsyncSession, Depends(get_db_session)]):
-    
-    chatroom = await user_service.set_chatroom_as_read(chatroom_id, session)
+    current_user = await get_current_user()
+    await user_service.set_chatroom_as_read(chatroom_id, current_user.user_id, session)
 
 class ResponseChatroom(BaseModel):
     messages: List[ChatMessage]
