@@ -339,12 +339,12 @@ async def get_senders_messages_by_current_user_id(
     chats_users_ids = (
         select(Message.receiver_user_id)
         .where(
-            Message.receiver_user_id != current_user_id,
+            Message.sender_user_id == current_user_id,
         )
         .union(
             select(Message.sender_user_id)
             .where(
-                Message.sender_user_id != current_user_id,
+                Message.receiver_user_id == current_user_id,
             )
         )
         .subquery()
@@ -354,7 +354,8 @@ async def get_senders_messages_by_current_user_id(
         select(UserAccount)
         .where(
             and_(
-                UserAccount.user_id.in_(chats_users_ids)
+                UserAccount.user_id.in_(chats_users_ids),
+                UserAccount.user_id != current_user_id
             )
         )
     )
