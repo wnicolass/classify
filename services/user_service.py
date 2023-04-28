@@ -214,7 +214,7 @@ async def send_message(
         await session.refresh(chatroom)
     else:
         chatroom.is_unread_receiver = 0
-        chatroom.is_unread_sender_user = 1
+        chatroom.is_unread_starter = 1
         await session.commit()
         await session.refresh(chatroom)
 
