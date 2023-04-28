@@ -2,6 +2,20 @@
   <div metal:fill-slot="title" tal:omit-tag="True">
     <title> Mensagens | Classify</title>
   </div>
+  <__additional_script__ metal:fill-slot="additional_script" tal:omit-tag="True">
+    <script src="/public/scripts/chat.js" defer></script>
+  </__additional_script__>
+  <__additional_stylesheet__ metal:fill-slot="additional_stylesheet" tal:omit-tag="True">
+    <style>
+      .current-chat {
+        cursor: pointer;
+        background-color: #ff4367cf;
+        width: 15rem;
+        border-radius: 5px;
+        padding: 4px;
+      }
+    </style>
+  </__additional_stylesheet__>
   <div metal:fill-slot="content" tal:omit-tag="True">
 
     <div
@@ -38,21 +52,35 @@
                         <h5 class="title">User</h5>
                       </div>
                       <div class="inbox_chat_wrapper">
+                      <__repeat tal:repeat="user senders" tal:omit-tag="True">
                         <div
-                          class="single_chat chat_online d-flex align-items-center"
-                        >
+                          class="single_chat chat_online d-flex align-items-center" data-userid="${user.user_id}" data-chatroomid="${user.chatroom.id}"
+                          style="cursor: pointer; position: relative; width: 15rem;">
+                          <i tal:condition="user.chatroom.is_unread_receiver_user != 0" class="fal fa-envelope" style="
+                                position: absolute;
+                                color: #fff;
+                                z-index: 1;
+                                top: -9px;
+                                right: -5px;
+                                background-color: #463ce5;
+                                padding: 5px;
+                                border-radius: 50%;
+                                ">
+                          </i>
+                          
                           <div class="chat_author">
                             <img
-                              src="/public/assets/images/author-1.jpg"
-                              alt="author"
+                              tal:attributes="src user.profile_image_url if user.profile_image_url else '/public/assets/images/author-2.jpg'"
+                              alt="${user.username}"
                             />
                           </div>
                           <div class="chat_content media-body">
-                            <h6 class="name">James Miller</h6>
+                            <h6 class="name">${user.username}</h6>
+                            
                             <!-- <span class="sub_title">Online</span> -->
                           </div>
                         </div>
-                        
+                      </__repeat>
                       </div>
                     </div>
                   </div>
@@ -61,28 +89,17 @@
                       <div class="post_title">
                         <h5 class="title">Chat Classify</h5>
                       </div>
-                      <div class="inbox_massage_wrapper">
-                        <div class="incoming_msg d-flex">
-                          <div class="incoming_msg_img">
-                            <img
-                              src="/public/assets/images/author-1.jpg"
-                              alt="author"
-                            />
-                          </div>
-                          <div class="incoming_msg_content media-body">
-                            <p>
-                              Test which is a new approach to have all solutions
-                            </p>
-                            <span>11:01 AM | June 9</span>
-                          </div>
+                      <div class="inbox_massage_wrapper" style="overflow-x: hidden">
+                        
+                      </div>
+                      <form id="message_form">
+                        <div class="massage_type">
+                          <textarea
+                            name="text_message" placeholder="Escreva aqui"
+                          ></textarea>
+                          <button><i class="fal fa-paper-plane"></i></button>
                         </div>
-                      </div>
-                      <div class="massage_type">
-                        <textarea
-                          placeholder="Type Here & Press Enter"
-                        ></textarea>
-                        <button><i class="fal fa-paper-plane"></i></button>
-                      </div>
+                      </form>
                     </div>
                   </div>
                 </div>
