@@ -9,6 +9,7 @@ from sqlalchemy import (
     text
 )
 from sqlalchemy.orm import relationship
+from sqlalchemy.dialects.mysql import BIT
 
 class Message(Base):
     __tablename__ = 'Message'
@@ -25,20 +26,24 @@ class Message(Base):
         'UserAccount', 
         back_populates = 'messages_received',
         foreign_keys = [receiver_user_id],
-        uselist = False
+        uselist = False,
+        lazy = 'joined'
     )
     sender_user = relationship(
         'UserAccount', 
         back_populates = 'messages_sent',
         foreign_keys = [sender_user_id],
-        uselist = False
+        uselist = False,
+        lazy = 'joined'
     )
-    chatroom = relationship('Chatroom', back_populates = 'messages')
+    chatroom = relationship('Chatroom', back_populates = 'messages', lazy = 'joined')
 
 class Chatroom(Base):
     __tablename__ = 'Chatroom'
 
     id: int = Column(Integer, primary_key = True, autoincrement = True)
+    is_unread_receiver_user: bool = Column(BIT)
+    is_unread_sender_user: bool = Column(BIT)
     created_at: datetime = Column(DateTime, server_default = text('NOW()'))
 
     ad_id: int = Column(Integer, ForeignKey('Ad.id'))
