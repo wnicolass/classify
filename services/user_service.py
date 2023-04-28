@@ -199,16 +199,24 @@ async def send_message(
     if not chatroom:
         chatroom = Chatroom(
             ad_id = adv_id, 
-            is_unread_receiver_user = 1,
-            is_unread_sender_user = 0
+            starter_id = buyer_user_id,
+            is_unread_receiver = 1,
+            is_unread_starter = 0
         )
         session.add(chatroom)
         await session.commit()
         await session.refresh(chatroom)
-    chatroom.is_unread_receiver_user = 0
-    chatroom.is_unread_sender_user = 1
-    await session.commit()
-    await session.refresh(chatroom)
+        
+    if buyer_user_id == chatroom.starter_id:
+        chatroom.is_unread_receiver = 1
+        chatroom.is_unread_starter = 0
+        await session.commit()
+        await session.refresh(chatroom)
+    else:
+        chatroom.is_unread_receiver = 0
+        chatroom.is_unread_sender_user = 1
+        await session.commit()
+        await session.refresh(chatroom)
 
     message = Message(
         text_message = text_message,

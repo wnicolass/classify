@@ -40,6 +40,7 @@ class UserAccount(Base):
     
     messages_received = relationship('Message', back_populates = 'receiver_user',foreign_keys = [Message.receiver_user_id])
     messages_sent = relationship('Message', back_populates = 'sender_user', foreign_keys = [Message.sender_user_id])
+    chatrooms = relationship('Chatroom', back_populates = 'starter_user')
 
     @property
     def pretty_created_at(self):

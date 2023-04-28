@@ -42,11 +42,18 @@ class Chatroom(Base):
     __tablename__ = 'Chatroom'
 
     id: int = Column(Integer, primary_key = True, autoincrement = True)
-    is_unread_receiver_user: bool = Column(BIT)
-    is_unread_sender_user: bool = Column(BIT)
+    starter_id: int = Column(Integer, ForeignKey('UserAccount.user_id'), nullable = False)
+    is_unread_starter: bool = Column(BIT)
+    is_unread_receiver: bool = Column(BIT)
     created_at: datetime = Column(DateTime, server_default = text('NOW()'))
 
     ad_id: int = Column(Integer, ForeignKey('Ad.id'))
 
+    starter_user = relationship(
+        'UserAccount', 
+        back_populates = 'chatrooms',
+        uselist = False,
+        lazy = 'joined'
+    )
     messages = relationship('Message', back_populates = 'chatroom')
     ad = relationship('Ad', back_populates = 'chatrooms')
