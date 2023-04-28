@@ -1,5 +1,5 @@
 import os
-from typing import Annotated
+from typing import Annotated, List
 from fastapi import (
     APIRouter, 
     Depends,
@@ -24,6 +24,7 @@ from common.auth import (
 from common.fastapi_utils import get_db_session, form_field_as_str
 from sqlalchemy.ext.asyncio import AsyncSession
 from models.user import UserAccount, UserLoginData
+from models.chat import Message as ChatMessage
 from common.utils import (
     is_valid_birth_date, 
     is_valid_username,
@@ -286,12 +287,72 @@ async def my_ads(session: Annotated[AsyncSession, Depends(get_db_session)]):
 @router.get('/user/offermessages', dependencies = [Depends(requires_authentication)])
 @template()
 async def offermessages(session: Annotated[AsyncSession, Depends(get_db_session)]):
-    vm = await ViewModel()
+    return await offermessages_viewmodel(session)
 
-    seller_user_id = vm.user_id
+async def offermessages_viewmodel(session: Annotated[AsyncSession, Depends(get_db_session)]):
+    vm = await ViewModel()
     
+    vm.senders = await user_service.get_senders_messages_by_current_user_id(vm.user_id, session)
+
+    for sender in vm.senders:
+        chatroom = await user_service.get_chatroom_by_seller_and_buyer_id(vm.user_id, sender.user_id, session)
+        if chatroom:
+            setattr(sender, 'chatroom', chatroom)
+
     return vm
+
+@router.patch('/user/chatroom/{chatroom_id}', dependencies = [Depends(requires_authentication)])
+async def update_chatroom(chatroom_id: int, session: Annotated[AsyncSession, Depends(get_db_session)]):
     
+    chatroom = await user_service.set_chatroom_as_read(chatroom_id, session)
+
+class ResponseChatroom(BaseModel):
+    messages: List[ChatMessage]
+    user_id: int
+
+    class Config:
+        orm_mode = True
+        arbitrary_types_allowed = True
+
+class Message(BaseModel):
+    text_message: str
+    receiver_id: int
+
+@router.get('/user/offermessages/{chatroom_id}', dependencies = [Depends(requires_authentication)])
+async def chatroom_messages(
+    chatroom_id: int,
+    session: Annotated[AsyncSession, Depends(get_db_session)]
+):
+    """
+        This endpoint is used to get all messages
+        from a chatroom.
+    """
+    user = await get_current_user()
+    
+    response_chatroom =  ResponseChatroom(
+        messages = await user_service.get_messages_by_chatroom_id(chatroom_id, session),
+        user_id = user.user_id
+    )
+
+    return response_chatroom
+    
+@router.post('/user/chatroom/{chatroom_id}', dependencies = [Depends(requires_authentication)])
+async def send_ongoing_message(
+    chatroom_id: int,
+    message: Message,
+    session: Annotated[AsyncSession, Depends(get_db_session)]
+):
+    chatroom = await user_service.get_chatroom_by_id(chatroom_id, session)
+    user = await get_current_user()
+
+    message_info = await user_service.send_message(
+        user.user_id,
+        message.receiver_id,
+        chatroom.ad_id,
+        message.text_message,
+        session
+    )
+    return message_info
 
 @router.get('/user/payments', dependencies = [Depends(requires_authentication)])
 @template()
@@ -343,10 +404,6 @@ async def delete_from_fav(
 async def privacy_setting():
     return await ViewModel()
 
-class Message(BaseModel):
-    text_message: str
-    seller_id: int
-
 @router.post('/send_message/{adv_id}', dependencies = [Depends(requires_authentication)])
 async def send_message(
     adv_id: int,
@@ -359,7 +416,7 @@ async def send_message(
 
     if message_info := await user_service.send_message(
         sender_user_id,
-        message.seller_id,
+        message.receiver_id,
         adv_id,
         message.text_message,
         session
