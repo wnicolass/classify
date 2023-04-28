@@ -336,21 +336,16 @@ async def get_senders_messages_by_current_user_id(
         current_user_id: int,
         session: AsyncSession
 ):
-    messages_with_current_user = (
+    chats_users_ids = (
         select(Message.receiver_user_id)
         .where(
-            or_(
-                Message.receiver_user_id == current_user_id,
-                Message.sender_user_id == current_user_id,
-            )
+            Message.receiver_user_id != current_user_id,
         )
-        .subquery()
-    )
-
-    users_ids = (
-        select(UserAccount.user_id)
-        .where(
-            UserAccount.user_id.in_(messages_with_current_user)
+        .union(
+            select(Message.sender_user_id)
+            .where(
+                Message.sender_user_id != current_user_id,
+            )
         )
         .subquery()
     )
@@ -359,14 +354,13 @@ async def get_senders_messages_by_current_user_id(
         select(UserAccount)
         .where(
             and_(
-                UserAccount.user_id.in_(users_ids),
-                UserAccount.user_id != current_user_id
+                UserAccount.user_id.in_(chats_users_ids)
             )
         )
     )
     chat_users = users.unique().scalars().all()
     print(chat_users)
-    
+
     return chat_users
 
 async def get_messages_by_chatroom_id(
