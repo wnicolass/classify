@@ -72,12 +72,26 @@ async def add_new_favourite(user_id: int, ad_id: int, session: AsyncSession) -> 
 
 async def add_new_favourite_search(
     user_id: int, 
-    search_url: str, 
+    search_url: str,
+    search_description: bool,
+    category: str,
+    subcategory: str,
+    order_type: str,
     session: AsyncSession
 ) -> FavouriteSearch:
+    if category == "Categoria":
+        category = "Nenhuma"
+    if subcategory == "Subcategoria":
+        subcategory = "Nenhuma"
+    if order_type == "Ordenar Por":
+        order_type = "Nenhuma"
     new_favourite_search = FavouriteSearch(
         user_id = user_id,
-        search_url = search_url
+        search_url = search_url,
+        search_description = int(search_description),
+        category = category,
+        subcategory = subcategory,
+        order_type = order_type
     )
     session.add(new_favourite_search)
     await session.commit()
