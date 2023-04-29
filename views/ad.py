@@ -468,8 +468,8 @@ async def upgrade_ad_promo(
                 }
             ],
             mode='payment',
-            success_url='http://localhost:8000/ad/checkout/success',
-            cancel_url='http://localhost:8000/ad/checkout/failure',
+            success_url='https://classify.pt/ad/checkout/success',
+            cancel_url='https://classify.pt/ad/checkout/failure',
         )
         
         return checkout_session.url
