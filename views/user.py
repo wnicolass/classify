@@ -503,6 +503,10 @@ async def add_ad_to_favourites(
     
 class SearchFavourite(BaseModel):
     url: str
+    search_description: bool
+    category: str
+    subcategory: str
+    order_type: str
 
 @router.post('/user/favourite-search')
 async def add_search_to_favourites(
@@ -520,6 +524,7 @@ async def add_search_to_favourites(
         user.user_id, 
         session
     )
+    
     for fav_search in all_user_fav_searches:
         if search_fav.url == fav_search.search_url:
             return {'success': False}
@@ -527,6 +532,10 @@ async def add_search_to_favourites(
     new_favourite_search = await user_service.add_new_favourite_search(
         user.user_id, 
         search_fav.url.strip(), 
+        search_fav.search_description,
+        search_fav.category,
+        search_fav.subcategory,
+        search_fav.order_type,
         session
     )
 
