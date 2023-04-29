@@ -47,7 +47,12 @@ async def send_email(
     }
 
     token = create_email_token(payload)
-    await set_email_confirmation_token(user.user_id, token, expiration_time, session)
+    await set_email_confirmation_token(
+        user.user_id, 
+        token, 
+        expiration_time, 
+        session
+    )
 
     template = PageTemplateFile('./templates/auth/email.pt')
     content = template(
@@ -80,7 +85,11 @@ async def send_reset_password_email(
     recovery_token = secrets.token_urlsafe(64)
     recovery_token_time = datetime.now(tz = pt_tz) + timedelta(minutes = 60)
 
-    await set_user_recovery_token(user, hash_recovery_token(recovery_token), recovery_token_time, session)
+    await set_user_recovery_token(
+        user, 
+        hash_recovery_token(recovery_token), 
+        recovery_token_time, session
+    )
 
     template = PageTemplateFile('./templates/auth/email-password.pt')
     content = template(

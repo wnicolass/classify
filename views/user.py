@@ -5,9 +5,9 @@ from fastapi import (
     Depends,
     UploadFile,
     Request,
-    HTTPException
+    HTTPException,
+    status
 )
-from urllib.parse import unquote_plus
 from fastapi_chameleon import template
 from uuid import uuid4
 
@@ -40,16 +40,27 @@ from config.cloudinary import upload_image
 
 router = APIRouter()
 
-@router.get('/user/dashboard', dependencies = [Depends(requires_authentication)])
+@router.get(
+    '/user/dashboard', 
+    dependencies = [Depends(requires_authentication)]
+)
 @template()
 async def dashboard():
     return await ViewModel()
 
-@router.get('/user/profile-settings', dependencies = [Depends(requires_authentication)])
+@router.get(
+    '/user/profile-settings', 
+    dependencies = [Depends(requires_authentication)]
+)
 @template('user/profile-settings.pt')
-async def profile_settings(session: Annotated[AsyncSession, Depends(get_db_session)]):
+async def profile_settings(
+    session: Annotated[AsyncSession, Depends(get_db_session)]
+):
     user = await get_current_user()
-    address = await user_service.get_user_address_by_user_id(user.user_id, session)
+    address = await user_service.get_user_address_by_user_id(
+        user.user_id, 
+        session
+    )
     
     vm: ViewModel = await ViewModel()
         
@@ -65,7 +76,10 @@ async def profile_settings(session: Annotated[AsyncSession, Depends(get_db_sessi
         
     return vm
     
-@router.post('/user/profile-settings', dependencies = [Depends(requires_authentication_secure)])
+@router.post(
+    '/user/profile-settings', 
+    dependencies = [Depends(requires_authentication_secure)]
+)
 @template('user/profile-settings.pt')
 async def profile_settings(
     request: Request,
@@ -74,7 +88,10 @@ async def profile_settings(
 ):
     user = await get_current_user()
     vm = await profile_settings_viewmodel(request, session, user, file)
-    address = await user_service.get_user_address_by_user_id(user.user_id, session)
+    address = await user_service.get_user_address_by_user_id(
+        user.user_id, 
+        session
+    )
     
     vm.username = vm.new_username
     vm.phone_number = add_plus_sign_to_phone_number(vm.new_phone_number)
@@ -89,7 +106,10 @@ async def profile_settings(
     vm.all_countries = await fetch_countries()
         
     if vm.new_profile_picture_url != "":
-        vm.profile_image = transform_image_from_url(vm.new_profile_picture_url, image_formats["square_fill"])
+        vm.profile_image = transform_image_from_url(
+            vm.new_profile_picture_url, 
+            image_formats["square_fill"]
+        )
     
     return vm
 
@@ -112,9 +132,14 @@ async def profile_settings_viewmodel(
     
     if vm.new_username != '' and not is_valid_username(vm.new_username):
         vm.error, vm.error_msg = True, 'Username inválido!'
-    elif vm.new_phone_number != '' and not is_valid_phone_number(vm.new_phone_number):
-        vm.error, vm.error_msg = True, 'Número de telemóvel inválido!'    
-    elif vm.new_birth_date != '' and not is_valid_birth_date(vm.new_birth_date):
+    elif vm.new_phone_number != '' and not is_valid_phone_number(
+        vm.new_phone_number
+    ):
+        vm.error, vm.error_msg = True, 'Número de telemóvel inválido!'
+    elif (
+            vm.new_birth_date != '' and 
+            not is_valid_birth_date(vm.new_birth_date)
+        ):
         vm.error, vm.error_msg = True, 'Data de nascimento inválida!'
         
     if file is not None:
@@ -123,9 +148,17 @@ async def profile_settings_viewmodel(
         file_ext = os.path.splitext(file.filename)[-1]
         if file_ext != "":
             if file_size_in_kb > 500:
-                vm.error, vm.error_msg = True, 'O tamanho limite da imagem é de 500kb.'
-            elif file.content_type not in ('image/jpg', 'image/png', 'image/jpeg') or file_ext not in ['.jpg', '.jpeg', '.png']:
-                vm.error, vm.error_msg = True, 'Apenas imagens do tipo ".png", ".jpg" ou ".jpeg".'
+                vm.error, vm.error_msg = True, """
+                    O tamanho limite da imagem é de 500kb.
+                """
+            elif (
+                    file.content_type not in 
+                    ('image/jpg', 'image/png', 'image/jpeg') or 
+                    file_ext not in ['.jpg', '.jpeg', '.png']
+                ):
+                vm.error, vm.error_msg = True, """
+                    Apenas imagens do tipo ".png", ".jpg" ou ".jpeg".
+                """
             await file.seek(0)
     else:
         file_ext = ""         
@@ -159,7 +192,10 @@ async def profile_settings_viewmodel(
                 profile_picture_url,
                 session)
         if user and vm.new_country != '' and vm.new_city != '':
-            user_address = await user_service.get_user_address_by_user_id(vm.user_id, session)
+            user_address = await user_service.get_user_address_by_user_id(
+                vm.user_id, 
+                session
+            )
             if not user_address:
                 user_address = await user_service.create_user_address(
                     vm.new_country,
@@ -168,19 +204,34 @@ async def profile_settings_viewmodel(
                     session
                 )
             else:
-                await user_service.update_user_address(user_address, vm.new_country, vm.new_city, session)
+                await user_service.update_user_address(
+                    user_address, 
+                    vm.new_country, 
+                    vm.new_city, 
+                    session
+                )
                 
         if profile_picture_url:
             vm.new_profile_picture_url = profile_picture_url
-        vm.success, vm.success_msg = True, 'Dados da conta alterados com sucesso!'
+        vm.success, vm.success_msg = True, """
+            Dados da conta alterados com sucesso!
+        """
     
     return vm
 
-@router.get('/user/change-password', dependencies = [Depends(requires_authentication_secure)])
+@router.get(
+    '/user/change-password', 
+    dependencies = [Depends(requires_authentication_secure)]
+)
 @template('user/change-password.pt')
-async def change_password(session: Annotated[AsyncSession, Depends(get_db_session)]):
+async def change_password(
+    session: Annotated[AsyncSession, Depends(get_db_session)]
+):
     vm = await ViewModel()
-    user_login_data = await user_service.get_user_login_data_by_id(vm.user.user_id, session)
+    user_login_data = await user_service.get_user_login_data_by_id(
+        vm.user.user_id, 
+        session
+    )
     
     if not user_login_data:
         raise HTTPException(status_code=404, detail="User data not found")
@@ -196,17 +247,26 @@ async def change_password(session: Annotated[AsyncSession, Depends(get_db_sessio
     
     return await change_password_viewmodel(session, password_exists)
 
-async def change_password_viewmodel(session: Annotated[AsyncSession, Depends(get_db_session)], password_exists: str):
+async def change_password_viewmodel(password_exists: str):
     vm = await ViewModel()
     vm.password_exists = password_exists
     
     return vm
 
-@router.post('/user/change-password', dependencies = [Depends(requires_authentication_secure)])
+@router.post(
+    '/user/change-password', 
+    dependencies = [Depends(requires_authentication_secure)]
+)
 @template('user/change-password.pt')
-async def submit_password(request: Request, session: Annotated[AsyncSession, Depends(get_db_session)]):
+async def submit_password(
+    request: Request, 
+    session: Annotated[AsyncSession, Depends(get_db_session)]
+):
     vm = await ViewModel()
-    user_login_data = await user_service.get_user_login_data_by_id(vm.user.user_id, session)
+    user_login_data = await user_service.get_user_login_data_by_id(
+        vm.user.user_id, 
+        session
+    )
     
     if not user_login_data:
         raise HTTPException(status_code=404, detail="User data not found")
@@ -227,14 +287,18 @@ async def submit_password_viewmodel(
     form_data = await request.form()
     
     vm = await ViewModel(
-        current_password = form_field_as_str(form_data, 'current_password') if password_exists else '',
+        current_password = form_field_as_str(
+            form_data, 'current_password'
+        ) if password_exists else '',
         new_password = form_field_as_str(form_data, 'new_password'),
         confirm_password = form_field_as_str(form_data, 'confirm_password'),
     )
     vm.password_exists = password_exists
     
     if password_exists:
-        if not check_password(vm.current_password + user_login_data.password_salt, password_hash):
+        if not check_password(
+            vm.current_password + user_login_data.password_salt,
+            password_hash):
             vm.error, vm.error_msg = True, "A password atual está incorreta!"
         elif vm.new_password == vm.current_password:
             vm.error, vm.error_msg = True, "A password nova é igual á atual!"
@@ -251,7 +315,12 @@ async def submit_password_viewmodel(
         return vm
     
     if hashed_password and salt:
-        await user_service.update_user_password(user_login_data, hashed_password, salt, session)
+        await user_service.update_user_password(
+            user_login_data, 
+            hashed_password, 
+            salt, 
+            session
+        )
         vm.success, vm.success_msg = True, 'Password alterada com sucesso!'
     
     return vm
@@ -283,27 +352,51 @@ async def my_ads(session: Annotated[AsyncSession, Depends(get_db_session)]):
     
     return vm
 
-@router.get('/user/offermessages', dependencies = [Depends(requires_authentication)])
+@router.get(
+    '/user/offermessages', 
+    dependencies = [Depends(requires_authentication)]
+)
 @template()
-async def offermessages(session: Annotated[AsyncSession, Depends(get_db_session)]):
+async def offermessages(
+    session: Annotated[AsyncSession, Depends(get_db_session)]
+):
     return await offermessages_viewmodel(session)
 
-async def offermessages_viewmodel(session: Annotated[AsyncSession, Depends(get_db_session)]):
+async def offermessages_viewmodel(
+    session: Annotated[AsyncSession, Depends(get_db_session)]
+):
     vm = await ViewModel()
     
-    vm.senders = await user_service.get_senders_messages_by_current_user_id(vm.user_id, session)
+    vm.senders = await user_service.get_senders_messages_by_current_user_id(
+        vm.user_id, 
+        session
+    )
 
     for sender in vm.senders:
-        chatroom = await user_service.get_chatroom_by_seller_and_buyer_id(vm.user_id, sender.user_id, session)
+        chatroom = await user_service.get_chatroom_by_seller_and_buyer_id(
+            vm.user_id, 
+            sender.user_id, 
+            session
+        )
         if chatroom:
             setattr(sender, 'chatroom', chatroom)
 
     return vm
 
-@router.patch('/user/chatroom/{chatroom_id}', dependencies = [Depends(requires_authentication)])
-async def update_chatroom(chatroom_id: int, session: Annotated[AsyncSession, Depends(get_db_session)]):
+@router.patch(
+    '/user/chatroom/{chatroom_id}', 
+    dependencies = [Depends(requires_authentication)]
+)
+async def update_chatroom(
+    chatroom_id: int, 
+    session: Annotated[AsyncSession, Depends(get_db_session)]
+):
     current_user = await get_current_user()
-    await user_service.set_chatroom_as_read(chatroom_id, current_user.user_id, session)
+    await user_service.set_chatroom_as_read(
+        chatroom_id, 
+        current_user.user_id, 
+        session
+    )
 
 class ResponseChatroom(BaseModel):
     messages: List[ChatMessage]
@@ -317,7 +410,10 @@ class Message(BaseModel):
     text_message: str
     receiver_id: int
 
-@router.get('/user/offermessages/{chatroom_id}', dependencies = [Depends(requires_authentication)])
+@router.get(
+    '/user/offermessages/{chatroom_id}', 
+    dependencies = [Depends(requires_authentication)]
+)
 async def chatroom_messages(
     chatroom_id: int,
     session: Annotated[AsyncSession, Depends(get_db_session)]
@@ -329,13 +425,19 @@ async def chatroom_messages(
     user = await get_current_user()
     
     response_chatroom =  ResponseChatroom(
-        messages = await user_service.get_messages_by_chatroom_id(chatroom_id, session),
+        messages = await user_service.get_messages_by_chatroom_id(
+        chatroom_id, 
+        session
+    ),
         user_id = user.user_id
     )
 
     return response_chatroom
     
-@router.post('/user/chatroom/{chatroom_id}', dependencies = [Depends(requires_authentication)])
+@router.post(
+    '/user/chatroom/{chatroom_id}', 
+    dependencies = [Depends(requires_authentication)]
+)
 async def send_ongoing_message(
     chatroom_id: int,
     message: Message,
@@ -353,14 +455,22 @@ async def send_ongoing_message(
     )
     return message_info
 
-@router.get('/user/payments', dependencies = [Depends(requires_authentication)])
+@router.get(
+    '/user/payments', 
+    dependencies = [Depends(requires_authentication)]
+)
 @template()
 async def payments():
     return await ViewModel()
 
-@router.get('/user/favourite-ads', dependencies = [Depends(requires_authentication)])
+@router.get(
+    '/user/favourite-ads', 
+    dependencies = [Depends(requires_authentication)]
+)
 @template('user/favourite-ads.pt')
-async def favourite_ads(session: Annotated[AsyncSession, Depends(get_db_session)]):
+async def favourite_ads(
+    session: Annotated[AsyncSession, Depends(get_db_session)]
+):
     """
         As the user model has properties that holds
         information about all favourites, just need
@@ -368,7 +478,10 @@ async def favourite_ads(session: Annotated[AsyncSession, Depends(get_db_session)
         available on the template
     """
     vm = await ViewModel()
-    vm.fav_searches = await user_service.get_fav_searches_by_user_id(vm.user_id, session)
+    vm.fav_searches = await user_service.get_fav_searches_by_user_id(
+        vm.user_id, 
+        session
+    )
     return vm
 
 @router.post('/user/favourite/{ad_id}')
@@ -403,18 +516,28 @@ async def add_search_to_favourites(
             detail = 'User must be logged in'
         )
     
-    all_user_fav_searches = await user_service.get_fav_searches_by_user_id(user.user_id, session)
+    all_user_fav_searches = await user_service.get_fav_searches_by_user_id(
+        user.user_id, 
+        session
+    )
     for fav_search in all_user_fav_searches:
         if search_fav.url == fav_search.search_url:
             return {'success': False}
         
-    new_favourite_search = await user_service.add_new_favourite_search(user.user_id, search_fav.url.strip(), session)
+    new_favourite_search = await user_service.add_new_favourite_search(
+        user.user_id, 
+        search_fav.url.strip(), 
+        session
+    )
 
     if new_favourite_search:
         return {'success': True}
 
 
-@router.delete('/user/favourite/{ad_id}', dependencies = [Depends(requires_authentication)])
+@router.delete(
+    '/user/favourite/{ad_id}', 
+    dependencies = [Depends(requires_authentication)]
+)
 async def delete_from_fav(
     ad_id: int,
     session: Annotated[AsyncSession, Depends(get_db_session)]
@@ -422,7 +545,11 @@ async def delete_from_fav(
     vm = await ViewModel()
     for fav in vm.user.favourites:
         if fav.ad_id == ad_id and fav.user_id == vm.user_id:
-            curr_user = await user_service.delete_user_favourite(vm.user, fav, session)
+            curr_user = await user_service.delete_user_favourite(
+                vm.user, 
+                fav, 
+                session
+            )
     
     return {'current_total_ads': len(curr_user.favourites)}
 
@@ -434,15 +561,24 @@ async def delete_fav_search(
     fav_search_id: int, 
     session: Annotated[AsyncSession, Depends(get_db_session)]
 ):
-    if fav_search := await user_service.get_fav_search_by_id(fav_search_id, session):
+    if fav_search := await user_service.get_fav_search_by_id(
+        fav_search_id, 
+        session
+    ):
         await user_service.delete_user_fav_search(fav_search, session)
 
-@router.get('/user/privacy-setting', dependencies = [Depends(requires_authentication)])
+@router.get(
+    '/user/privacy-setting', 
+    dependencies = [Depends(requires_authentication)]
+)
 @template('user/privacy-setting.pt')
 async def privacy_setting():
     return await ViewModel()
 
-@router.post('/send_message/{adv_id}', dependencies = [Depends(requires_authentication)])
+@router.post(
+    '/send_message/{adv_id}', 
+    dependencies = [Depends(requires_authentication)]
+)
 async def send_message(
     adv_id: int,
     message: Message,

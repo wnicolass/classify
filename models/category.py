@@ -13,7 +13,12 @@ class Category(Base):
     category_name: str = Column(String(30), nullable = False, index = True)
     category_icon: str = Column(String(100), nullable = False)
 
-    subcategories = relationship('Subcategory', back_populates = 'category', cascade = 'delete', lazy = 'joined')
+    subcategories = relationship(
+        'Subcategory', 
+        back_populates = 'category', 
+        cascade = 'delete', 
+        lazy = 'joined'
+    )
 
     @property
     def count_total_ads(self) -> int:

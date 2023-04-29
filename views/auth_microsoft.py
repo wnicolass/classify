@@ -13,13 +13,11 @@ from fastapi import (
     Depends,
     Response,
     responses,
-    status,
-    HTTPException
+    status
 )
 from jose import jwt
 from services import user_service
 from common.auth import (
-    get_session,
     requires_unauthentication,
     ExternalLoginError,
     set_current_user,
@@ -41,13 +39,18 @@ router = APIRouter()
 
 MICROSOFT_CLIENT_ID = os.getenv('MICROSOFT_CLIENT_ID')
 MICROSOFT_REDIRECT_URI = os.getenv('MICROSOFT_REDIRECT_URI')
-MICROSOFT_CONFIGURATION_DOCUMENT_URL = os.getenv('MICROSOFT_CONFIGURATION_DOCUMENT_URL')
+MICROSOFT_CONFIGURATION_DOCUMENT_URL = os.getenv(
+    'MICROSOFT_CONFIGURATION_DOCUMENT_URL'
+)
 MICROSOFT_RESPONSE_MODE = os.getenv('MICROSOFT_RESPONSE_MODE')
 MICROSOFT_GRANT_TYPE = os.getenv('MICROSOFT_GRANT_TYPE')
 MICROSOFT_TOKEN_SECRET = os.getenv('MICROSOFT_TOKEN_SECRET')
 MICROSOFT_HASH_SECRET = os.getenv('MICROSOFT_HASH_SECRET')
 
-@router.get('/auth/microsoft', dependencies = [Depends(requires_unauthentication)])
+@router.get(
+    '/auth/microsoft', 
+    dependencies = [Depends(requires_unauthentication)]
+)
 async def microsoft_external_login(
     request: Request,
     session: Annotated[AsyncSession, Depends(get_db_session)],
@@ -126,7 +129,10 @@ async def microsoft_external_login_response(
     if decoded_id_token:
         await authenticate_user(decoded_id_token, session)
 
-    return responses.RedirectResponse(url = '/', status_code = status.HTTP_302_FOUND)
+    return responses.RedirectResponse(
+        url = '/', 
+        status_code = status.HTTP_302_FOUND
+    )
 
 async def validate_and_decode_token(
     client: httpx.AsyncClient,
@@ -164,7 +170,9 @@ async def validate_and_decode_token(
         expected_nonce = validation_tokens.nonce
         received_nonce = decoded_token['nonce']
         if received_nonce != expected_nonce:
-            raise ExternalLoginError(f'Invalid or missing nonce: {received_nonce}')
+            raise ExternalLoginError(
+                f'Invalid or missing nonce: {received_nonce}'
+            )
         await user_service.delete_token_instance(validation_tokens, session)
 
         sub = decoded_token['sub']
@@ -200,7 +208,10 @@ async def exchange_code_for_tokens(code: str, client: httpx.AsyncClient):
     }
 
 async def authenticate_user(id_token: dict, session: AsyncSession):
-    user_found_by_email = await user_service.get_user_by_email(id_token['email_address'], session)
+    user_found_by_email = await user_service.get_user_by_email(
+        id_token['email_address'], 
+        session
+    )
     hashed_sub = hash_sub(id_token['sub'], MICROSOFT_HASH_SECRET)
     
     """
@@ -208,7 +219,10 @@ async def authenticate_user(id_token: dict, session: AsyncSession):
         and is trying to sign in with the same email. Create
         external data for that user and then set session cookie.
     """
-    user_found_by_sub = await user_service.get_user_by_hashed_sub(hashed_sub, session)
+    user_found_by_sub = await user_service.get_user_by_hashed_sub(
+        hashed_sub, 
+        session
+    )
     if user_found_by_email:
         if not user_found_by_sub:
             await user_service.create_user_ext(
@@ -221,8 +235,8 @@ async def authenticate_user(id_token: dict, session: AsyncSession):
     
     """
         2. User was not found by email and not found by external login data.
-        Potentially is a new user, so create a new user account, and then associate
-        a external data to this created user.
+        Potentially is a new user, so create a new user account, and then 
+        associate a external data to this created user.
     """
     if not user_found_by_sub:
         new_user = await user_service.create_user(
