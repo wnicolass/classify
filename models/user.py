@@ -33,14 +33,37 @@ class UserAccount(Base):
     created_at: datetime = Column(DateTime, server_default = text('NOW()'))
 
     ads = relationship('Ad', back_populates = 'user', cascade = "delete")
-    user_address = relationship('UserAddress', back_populates = 'user', cascade = "delete", uselist = False)
-    user_login_data = relationship('UserLoginData', back_populates = 'user', uselist = False)
-    user_login_data_ext = relationship('UserLoginDataExt', back_populates = 'user')
+    user_address = relationship(
+        'UserAddress', 
+        back_populates = 'user', 
+        cascade = "delete", 
+        uselist = False
+    )
+    user_login_data = relationship(
+        'UserLoginData', 
+        back_populates = 'user', 
+        uselist = False
+    )
+    user_login_data_ext = relationship(
+        'UserLoginDataExt', 
+        back_populates = 'user'
+    )
     favourites = relationship('Favourite', back_populates = 'user')
-    favourite_searches = relationship('FavouriteSearch', back_populates = 'user')
+    favourite_searches = relationship(
+        'FavouriteSearch', 
+        back_populates = 'user'
+    )
     
-    messages_received = relationship('Message', back_populates = 'receiver_user',foreign_keys = [Message.receiver_user_id])
-    messages_sent = relationship('Message', back_populates = 'sender_user', foreign_keys = [Message.sender_user_id])
+    messages_received = relationship(
+        'Message', 
+        back_populates = 'receiver_user',
+        foreign_keys = [Message.receiver_user_id]
+    )
+    messages_sent = relationship(
+        'Message', 
+        back_populates = 'sender_user', 
+        foreign_keys = [Message.sender_user_id]
+    )
     chatrooms = relationship('Chatroom', back_populates = 'starter_user')
 
     @property
@@ -57,7 +80,10 @@ class UserAccount(Base):
     
     @property
     def active_favs(self) -> List['Favourite']:
-        return [fav for fav in self.favourites if fav.ad.status_id == AdStatusEnum.ACTIVE.value]
+        return [
+            fav for fav in self.favourites 
+            if fav.ad.status_id == AdStatusEnum.ACTIVE.value
+        ]
     
     @property
     def inactive_favs(self) -> List['Favourite']:
@@ -71,12 +97,19 @@ class UserAccount(Base):
     
     @property
     def profile_image_squared(self) -> str:
-        return transform_image_from_url(self.profile_image_url, image_formats["square_fill"])
+        return transform_image_from_url(
+            self.profile_image_url, 
+            image_formats["square_fill"]
+        )
 
 class UserLoginData(Base):
     __tablename__ = 'UserLoginData'
 
-    user_id: int = Column(Integer, ForeignKey('UserAccount.user_id'), primary_key = True)
+    user_id: int = Column(
+        Integer, 
+        ForeignKey('UserAccount.user_id'), 
+        primary_key = True
+    )
     password_hash: str = Column(String(300), nullable = True)
     password_salt: str = Column(String(300), nullable = True)
     email_addr: str = Column(String(320), nullable = False, unique = True)
@@ -85,12 +118,29 @@ class UserLoginData(Base):
     recovery_token: str = Column(String(200), nullable = True)
     recovery_token_time: str = Column(String(50), nullable = True)
 
-    hash_algo_id: int = Column(Integer, ForeignKey('HashAlgo.id'), nullable = True)
-    email_validation_status_id: int = Column(Integer, ForeignKey('EmailValidationStatus.id'), nullable = False)
+    hash_algo_id: int = Column(
+        Integer, 
+        ForeignKey('HashAlgo.id'), 
+        nullable = True
+    )
+    email_validation_status_id: int = Column(
+        Integer, 
+        ForeignKey('EmailValidationStatus.id'), 
+        nullable = False
+    )
 
-    user = relationship('UserAccount', back_populates = 'user_login_data', uselist = False, lazy = 'joined')
+    user = relationship(
+        'UserAccount', 
+        back_populates = 'user_login_data', 
+        uselist = False, 
+        lazy = 'joined'
+    )
     hash = relationship('HashAlgo', back_populates = 'users', uselist = False)
-    email_status = relationship('EmailValidationStatus', back_populates = 'users', uselist = False)
+    email_status = relationship(
+        'EmailValidationStatus', 
+        back_populates = 'users', 
+        uselist = False
+    )
 
     @property
     def is_active(self) -> int:
@@ -102,7 +152,11 @@ class UserAddress(Base):
     id: int = Column(Integer, primary_key = True, autoincrement = True)
     country: str = Column(String(50), nullable = False)
     city: str = Column(String(50), nullable = False, index = True)
-    user_id: int = Column(Integer, ForeignKey("UserAccount.user_id", ondelete = 'CASCADE'), nullable = False)
+    user_id: int = Column(
+        Integer, 
+        ForeignKey("UserAccount.user_id", ondelete = 'CASCADE'), 
+        nullable = False
+    )
     address_date: datetime = Column(DateTime, server_default = text('NOW()'))
     updated_at: datetime = Column(DateTime, onupdate = datetime.now())
 
@@ -115,35 +169,70 @@ class ExternalProvider(Base):
     ext_provider_name: str = Column(String(50), nullable = False)
     end_point_url: str = Column(String(100), nullable = False)
 
-    user_login_data_ext = relationship('UserLoginDataExt', back_populates = 'ext_provider')
+    user_login_data_ext = relationship(
+        'UserLoginDataExt', 
+        back_populates = 'ext_provider'
+    )
 
 class UserLoginDataExt(Base):
     __tablename__ = 'UserLoginDataExt'
     
     id: int = Column(Integer, primary_key = True, autoincrement = True)
     external_provider_token: str = Column(String(1200), nullable = False)
-    external_provider_id: int = Column(Integer, ForeignKey('ExternalProvider.id'), nullable = False)
-    user_id: int = Column(Integer, ForeignKey('UserAccount.user_id'), nullable = False)
+    external_provider_id: int = Column(
+        Integer, 
+        ForeignKey('ExternalProvider.id'), 
+        nullable = False
+    )
+    user_id: int = Column(
+        Integer, 
+        ForeignKey('UserAccount.user_id'), 
+        nullable = False
+    )
 
-    ext_provider = relationship('ExternalProvider', back_populates = 'user_login_data_ext')
-    user = relationship('UserAccount', back_populates = 'user_login_data_ext', lazy = 'joined')
+    ext_provider = relationship(
+        'ExternalProvider', 
+        back_populates = 'user_login_data_ext'
+    )
+    user = relationship(
+        'UserAccount', 
+        back_populates = 'user_login_data_ext', 
+        lazy = 'joined'
+    )
 
 class Favourite(Base):
     __tablename__ = 'Favourite'
 
     id: int = Column(Integer, primary_key = True, autoincrement = True)
-    user_id: int = Column(Integer, ForeignKey('UserAccount.user_id'), nullable = False)
+    user_id: int = Column(
+        Integer, 
+        ForeignKey('UserAccount.user_id'), 
+        nullable = False
+    )
     ad_id: int = Column(Integer, ForeignKey('Ad.id'), nullable = False)
     fav_date: datetime = Column(DateTime, default = datetime.now())
 
-    user = relationship('UserAccount', back_populates = 'favourites', uselist = False)
-    ad = relationship('Ad', back_populates = 'users_favourited', uselist = False, lazy = 'joined')
+    user = relationship(
+        'UserAccount', 
+        back_populates = 'favourites', 
+        uselist = False
+    )
+    ad = relationship(
+        'Ad', 
+        back_populates = 'users_favourited', 
+        uselist = False, 
+        lazy = 'joined'
+    )
 
 class FavouriteSearch(Base):
     __tablename__ = 'FavouriteSearch'
 
     id: int = Column(Integer, primary_key = True, autoincrement = True)
-    user_id: int = Column(Integer, ForeignKey('UserAccount.user_id'), nullable = False)
+    user_id: int = Column(
+        Integer, 
+        ForeignKey('UserAccount.user_id'), 
+        nullable = False
+    )
     search_url: str = Column(String(500), nullable = False)
     search_description: int = Column(BIT, default = 0)
     category: str = Column(String(100), default = "Nenhuma")
@@ -151,7 +240,11 @@ class FavouriteSearch(Base):
     order_type: str = Column(String(100), default = "Nenhuma")
     fav_date: datetime = Column(DateTime, default = datetime.now())
 
-    user = relationship('UserAccount', back_populates = 'favourite_searches', uselist = False)
+    user = relationship(
+        'UserAccount', 
+        back_populates = 'favourite_searches', 
+        uselist = False
+    )
 
     @property
     def search_title(self) -> str:

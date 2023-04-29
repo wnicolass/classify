@@ -148,7 +148,12 @@ async def validate_and_decode_token(
         }
     
 async def authenticate_user(id_token: dict, session: AsyncSession):
-    user_found_by_email = await user_service.get_user_by_email(id_token['email_address'], session)
+    user_found_by_email = (
+        await user_service.get_user_by_email(
+            id_token['email_address'], 
+            session
+        )
+    )
     hashed_sub = hash_sub(id_token['sub'], FACEBOOK_HASH_SECRET)
     
     """
@@ -156,7 +161,12 @@ async def authenticate_user(id_token: dict, session: AsyncSession):
         and is trying to sign in with the same email. Create
         external data for that user and then set session cookie.
     """
-    user_found_by_sub = await user_service.get_user_by_hashed_sub(hashed_sub, session)
+    user_found_by_sub = (
+        await user_service.get_user_by_hashed_sub(
+            hashed_sub, 
+            session
+        )
+    )
     if user_found_by_email:
         if not user_found_by_sub:
             await user_service.create_user_ext(
@@ -169,8 +179,9 @@ async def authenticate_user(id_token: dict, session: AsyncSession):
         return set_current_user(user_found_by_email.user_id)
     
     """
-        2. User was not found by email and not found by external login data.
-        Potentially is a new user, so create a new user account, and then associate
+        2. User was not found by email and not found by 
+        external login data. Potentially is a new user, 
+        so create a new user account, and then associate
         a external data to this created user.
     """
     if not user_found_by_sub:
@@ -212,7 +223,9 @@ async def exchange_code_for_tokens(
     query_string = generate_query_string(query_params)
 
     async with client() as async_client:
-        res = await async_client.post(f'{FACEBOOK_TOKEN_ENDPOINT}?{query_string}')
+        res = await async_client.post(
+            f'{FACEBOOK_TOKEN_ENDPOINT}?{query_string}'
+        )
         data = res.json()
 
     return {

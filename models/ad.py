@@ -29,35 +29,94 @@ class Ad(Base):
     views: int = Column(Integer, default = 0, nullable = False)
     is_negotiable: int = Column(BIT, nullable = False)
     
-    status_id: str = Column(Integer, ForeignKey('AdStatus.id'), nullable = False)
-    feature_id: int = Column(Integer, ForeignKey('Feature.id'), nullable = False)
-    user_id: int = Column(Integer, ForeignKey('UserAccount.user_id', ondelete = 'CASCADE'), nullable = False)
-    ad_address_id: int = Column(Integer, ForeignKey('AdAddress.id'), nullable = False)
-    subcategory_id: int = Column(Integer, ForeignKey('Subcategory.id'), nullable = False)
+    status_id: str = Column(
+        Integer, 
+        ForeignKey('AdStatus.id'), 
+        nullable = False
+    )
+    feature_id: int = Column(
+        Integer, 
+        ForeignKey('Feature.id'), 
+        nullable = False
+    )
+    user_id: int = Column(
+        Integer, 
+        ForeignKey('UserAccount.user_id', ondelete = 'CASCADE'), 
+        nullable = False
+    )
+    ad_address_id: int = Column(
+        Integer, 
+        ForeignKey('AdAddress.id'), 
+        nullable = False
+    )
+    subcategory_id: int = Column(
+        Integer, 
+        ForeignKey('Subcategory.id'), 
+        nullable = False
+    )
     promo_id: int = Column(Integer, ForeignKey('Promo.id'), default = 1)
     
     created_at: datetime = Column(DateTime, server_default = text('NOW()'))
     updated_at: datetime = Column(DateTime, onupdate = datetime.now())
 
-    address = relationship('AdAddress', back_populates = 'ads', uselist = False, lazy = 'joined')
+    address = relationship(
+        'AdAddress', 
+        back_populates = 'ads', 
+        uselist = False, 
+        lazy = 'joined'
+    )
     user = relationship('UserAccount', back_populates = 'ads', lazy = 'joined')
-    feature = relationship('Feature', back_populates = 'ad', uselist = False, lazy = 'joined')
-    subcategory = relationship('Subcategory', back_populates = 'ads', lazy = 'joined')
-    field_definitions = relationship('FieldDefinition', secondary = field_value, back_populates = 'ads')
-    admin = relationship('AdminAccount', secondary = ad_approval, back_populates = 'ads', uselist = False)
-    ad_status = relationship('AdStatus', back_populates = 'ads', uselist = False, lazy = 'joined')
-    images = relationship('AdImage', back_populates = 'ad', cascade = 'delete', lazy = 'joined')
+    feature = relationship(
+        'Feature', 
+        back_populates = 'ad', 
+        uselist = False, 
+        lazy = 'joined'
+    )
+    subcategory = relationship(
+        'Subcategory', 
+        back_populates = 'ads', 
+        lazy = 'joined'
+    )
+    field_definitions = relationship(
+        'FieldDefinition', 
+        secondary = field_value, 
+        back_populates = 'ads'
+    )
+    admin = relationship(
+        'AdminAccount', 
+        secondary = ad_approval, 
+        back_populates = 'ads', 
+        uselist = False
+    )
+    ad_status = relationship(
+        'AdStatus', 
+        back_populates = 'ads', 
+        uselist = False, 
+        lazy = 'joined'
+    )
+    images = relationship(
+        'AdImage', 
+        back_populates = 'ad', 
+        cascade = 'delete', 
+        lazy = 'joined'
+    )
     users_favourited = relationship('Favourite', back_populates = 'ad')
     promo = relationship('Promo', back_populates = 'ads', uselist = False)
     chatrooms = relationship('Chatroom', back_populates = 'ad')
 
     @property
     def main_image(self):
-        return transform_image_from_url(self.images[0].image_path_url, image_formats["ad_main_image_landscape_small"])
+        return transform_image_from_url(
+            self.images[0].image_path_url, 
+            image_formats["ad_main_image_landscape_small"]
+        )
     
     @property
     def main_image_ad_page(self):
-        return transform_image_from_url(self.images[0].image_path_url, image_formats["ad_main_image_ad_page"])
+        return transform_image_from_url(
+            self.images[0].image_path_url, 
+            image_formats["ad_main_image_ad_page"]
+        )
 
     @property
     def pretty_date(self):
@@ -73,9 +132,18 @@ class Feature(Base):
     id: int = Column(Integer, primary_key = True, autoincrement = True)
     brand: str = Column(String(30), nullable = False, index = True)
     authenticity: str = Column(String(50), nullable = False)
-    condition_id: str = Column(Integer, ForeignKey('AdCondition.id'), nullable = False)
+    condition_id: str = Column(
+        Integer, 
+        ForeignKey('AdCondition.id'), 
+        nullable = False
+    )
 
-    condition = relationship('AdCondition', back_populates = 'features', uselist = False, lazy = 'joined')
+    condition = relationship(
+        'AdCondition', 
+        back_populates = 'features', 
+        uselist = False, 
+        lazy = 'joined'
+    )
     ad = relationship('Ad', back_populates = 'feature', uselist = False)
 
 class Promo(Base):
@@ -96,7 +164,11 @@ class AdCondition(Base):
     condition_name: str = Column(String(30), nullable = False)
     condition_description: str = Column(String(200), nullable = False)
 
-    features = relationship('Feature', back_populates = 'condition', lazy = 'joined')
+    features = relationship(
+        'Feature', 
+        back_populates = 'condition', 
+        lazy = 'joined'
+    )
 
 class AdAddress(Base):
     __tablename__ = "AdAddress"
@@ -133,5 +205,7 @@ class AdImage(Base):
     
     @property
     def image_ad_page(self):
-        return transform_image_from_url(self.image_path_url, image_formats["ad_main_image_ad_page"])
-    
+        return transform_image_from_url(
+            self.image_path_url, 
+            image_formats["ad_main_image_ad_page"]
+        )

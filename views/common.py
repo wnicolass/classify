@@ -13,7 +13,10 @@ async def get_subcategories(
     category_id: int,
     session: Annotated[AsyncSession, Depends(get_db_session)]
 ):
-    subcategories = await category_service.get_subcategory_by_category_id(category_id, session)
+    subcategories = await category_service.get_subcategory_by_category_id(
+        category_id, 
+        session
+    )
 
     return subcategories
 

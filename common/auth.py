@@ -32,11 +32,16 @@ def hash_sub(sub: str, secret: str) -> str:
     return sha512(f'{sub}{secret}'.encode('utf-8')).hexdigest()
 
 def hash_recovery_token(token: str) -> str:
-    return sha512(f'{token}{RECOVERY_TOKEN_SECRET}'.encode('utf-8')).hexdigest()
+    return sha512(f'{token}{RECOVERY_TOKEN_SECRET}'
+    .encode('utf-8')).hexdigest()
 
 class HTTPUnauthorizedAccess(HTTPException):
     def __init__(self, *args, **kwargs):
-        super().__init__(status_code = status.HTTP_401_UNAUTHORIZED, *args, **kwargs)
+        super().__init__(
+            status_code = status.HTTP_401_UNAUTHORIZED, 
+            *args, 
+            **kwargs
+        )
 
 class HTTPUnauthenticatedOnly(HTTPUnauthorizedAccess):
     pass
@@ -46,11 +51,17 @@ class InvalidToken(Exception):
         self.user_id = user_id
 class ExternalLoginError(HTTPException):
     def __init__(self, *args, **kargs):
-        super().__init__(status_code = status.HTTP_401_UNAUTHORIZED, *args, **kargs)
+        super().__init__(
+            status_code = status.HTTP_401_UNAUTHORIZED, 
+            *args, 
+            **kargs
+        )
 
 async def requires_unauthentication():
     if await get_current_user():
-        raise HTTPUnauthenticatedOnly(detail = 'This area requires unauthentication')
+        raise HTTPUnauthenticatedOnly(
+            detail = 'This area requires unauthentication'
+        )
     
 async def requires_authentication():
     if not await get_current_user():
@@ -60,7 +71,9 @@ async def requires_authentication():
     
 async def requires_authentication_secure():
     if not await get_current_user():
-        raise HTTPUnauthorizedAccess(detail = 'This area requires authentication')
+        raise HTTPUnauthorizedAccess(
+            detail = 'This area requires authentication'
+        )
 
 """
     The following lines of code were taken from:
@@ -70,7 +83,9 @@ def get_session(session_attr = 'session') -> Any:
     request = global_request.get()
     return getattr(request, session_attr)
 
-async def get_current_user(request: Request | None = None) -> UserAccount | None:
+async def get_current_user(
+    request: Request | None = None
+) -> UserAccount | None:
     if request is None:
         request  = global_request.get()
     user_id = request.session.get('user_id')
