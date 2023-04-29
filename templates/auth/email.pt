@@ -50,15 +50,15 @@
       <div class="container">
         <div class="header_search" style="text-align: center">
           <div class="content_wrapper mb-10">
-            <h3 class="title">Classify Account Verification</h3>
+            <h3 class="title">Classify | Verificação da Conta</h3>
             <p>
-              Thanks for choosing
-              <strong style="color: #fb4fae">Classify</strong>. <br />Please,
-              click on the button below to verify your account.
+              Obrigado por escolher
+              <strong style="color: #fb4fae">Classify</strong>. <br />Por favor,
+              clique no botão abaixo para verificar a sua conta.
             </p>
           </div>
-          <a class="main-btn" href="http://localhost:8000/verification/?token=${token}"
-            >Verify Account</a
+          <a class="main-btn" href="https://classify.pt/verification/?token=${token}"
+            >Verificar Conta</a
           >
         </div>
       </div>
