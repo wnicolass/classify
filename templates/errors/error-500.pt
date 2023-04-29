@@ -28,7 +28,7 @@
           <div class="col-lg-6">
             <div class="error_content text-center">
               <span class="error">500</span>
-              <p>Ooooops! Something Went Wrong... We're working on to fix the issue, come back later.</p>
+              <p>Ooooops! Algo deu errado. Estamos a trabalhar para corrigir o problema, volte mais tarde.</p>
 
               <div class="error_search">
                 <img src="/public/assets/images/undraw_server_down_s-4-lk.svg" />

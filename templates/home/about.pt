@@ -36,18 +36,11 @@
           </div>
           <div class="col-lg-8">
             <div class="about_content mt-40">
-              <h3 class="title">We Can Changes Your <span>Business.</span></h3>
+              <h3 class="title">Nós podemos mudar o vosso <span>Negócio.</span></h3>
               <p>
-                Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed
-                diam nonumy eirmod tempor invidunt ut labore et dolore magna
-                aliquyam erat, sed diam voluptua. At vero eos et accusam. et
-                justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea
-                takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum
-                dolor sit amet. <br />
+                Na Classify, acreditamos que a interação humana é fundamental para um negócio bem-sucedido. É por isso que, além de permitir que venda os seus produtos online, também incentivamos a criação de relações de negócios mais pessoais. Quando um comprador estiver interessado em comprar o seu produto, pode combinar um encontro com ele para fazer a venda em pessoa. <br />
                 <br />
-                nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam
-                erat, sed diam voluptua. At vero eos et accusam et justo duo
-                dolores et ea rebum. Stet clita kasd gubergren, no sea takimata.
+                Estamos empenhados em criar uma experiência de vendas online fácil, segura e eficaz para os nossos utilizadores. Se tiver alguma dúvida ou precisar de ajuda em qualquer momento, a nossa equipa de suporte está sempre disponível para ajudar. Basta contactar-nos através do nosso formulário de contacto e teremos todo o prazer em ajudar.
               </p>
               <div class="signechar">
                 <h6 class="name">John Smith Doe</h6>
@@ -72,28 +65,23 @@
           <div class="col-lg-6">
             <div class="about_content_2 mt-40">
               <h3 class="title">
-                Classified Advertisement <span>Platform.</span>
+                Classify Plataforma de <span>Anúncios.</span>
               </h3>
               <p>
-                Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed
-                diam nonumy eirmod tempor invidunt ut labore.
+                A nossa missão é ajudá-lo a vender com sucesso.
               </p>
 
               <div class="about_items">
-                <h4 class="items_title">Seller List Business</h4>
+                <h4 class="items_title">Pesquisas</h4>
                 <p>
-                  Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed
-                  diam nonumy eirmod tempor invidunt ut labore et dolore magna.
-                  Aliquyam erat, sed diam voluptua. At vero eos et accusam.
+                  Com a nossa ferramenta de pesquisa avançada, os compradores podem encontrar facilmente o que procuram e entrar em contacto diretamente consigo para marcar um encontro e comprar o seu produto.
                 </p>
               </div>
 
               <div class="about_items">
-                <h4 class="items_title">Seller List Business</h4>
+                <h4 class="items_title">Obrigado</h4>
                 <p>
-                  Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed
-                  diam nonumy eirmod tempor invidunt ut labore et dolore magna.
-                  Aliquyam erat, sed diam voluptua. At vero eos et accusam.
+                  Agradecemos por escolher a Classify como a sua plataforma de vendas online e estamos ansiosos para ajudá-lo a vender com sucesso!
                 </p>
               </div>
             </div>
@@ -146,7 +134,7 @@
                   </div>
                   <div class="counter_count media-body">
                     <span class="count"
-                      ><span class="counter">5000</span>+</span
+                      ><span class="counter">${total_ads}</span>+</span
                     >
                   </div>
                 </div>
@@ -161,7 +149,7 @@
                     />
                   </div>
                   <div class="counter_count media-body">
-                    <span class="count"><span class="counter">300</span>+</span>
+                    <span class="count"><span class="counter">${total_verified_users}</span>+</span>
                   </div>
                 </div>
                 <p>Usuários Verificados</p>
@@ -175,7 +163,7 @@
                     />
                   </div>
                   <div class="counter_count media-body">
-                    <span class="count"><span class="counter">200</span>+</span>
+                    <span class="count"><span class="counter">${sold_ads}</span>+</span>
                   </div>
                 </div>
                 <p>Vendas Realizadas</p>
@@ -202,27 +190,27 @@
             </div>
           </div>
         </div>
-        <div class="row">
+        <div class="row justify-content-center">
           <div class="col-lg-3 col-sm-6">
             <div class="single_team text-center mt-30">
               <div class="team_image">
-                <img src="/public/assets/images/team-1.jpg" alt="team" />
+                <img src="/public/assets/images/random-v2.png" alt="team" />
               </div>
               <div class="team_content">
-                <h6 class="team_name"><a href="#">Haven Somerville Byrd</a></h6>
-                <p>Web Designer</p>
+                <h6 class="team_name">Daniel Mendes</h6>
+                <p>Programador Java</p>
                 <ul class="social">
                   <li>
-                    <a href="#"><i class="fab fa-facebook-f"></i></a>
+                    <i class="fab fa-facebook-f"></i>
                   </li>
                   <li>
-                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <i class="fab fa-twitter"></i>
                   </li>
                   <li>
-                    <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                    <i class="fab fa-linkedin-in"></i>
                   </li>
                   <li>
-                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <i class="fab fa-instagram"></i>
                   </li>
                 </ul>
               </div>
@@ -231,23 +219,23 @@
           <div class="col-lg-3 col-sm-6">
             <div class="single_team text-center mt-30">
               <div class="team_image">
-                <img src="/public/assets/images/team-2.jpg" alt="team" />
+                <img src="/public/assets/images/random-v2.png" alt="team" />
               </div>
               <div class="team_content">
-                <h6 class="team_name"><a href="#">Haven Somerville Byrd</a></h6>
-                <p>Web Designer</p>
+                <h6 class="team_name">Diamantino Moura</h6>
+                <p>Programdor Python</p>
                 <ul class="social">
                   <li>
-                    <a href="#"><i class="fab fa-facebook-f"></i></a>
+                    <i class="fab fa-facebook-f"></i>
                   </li>
                   <li>
-                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <i class="fab fa-twitter"></i>
                   </li>
                   <li>
-                    <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                    <i class="fab fa-linkedin-in"></i>
                   </li>
                   <li>
-                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <i class="fab fa-instagram"></i>
                   </li>
                 </ul>
               </div>
@@ -256,48 +244,23 @@
           <div class="col-lg-3 col-sm-6">
             <div class="single_team text-center mt-30">
               <div class="team_image">
-                <img src="/public/assets/images/team-3.jpg" alt="team" />
+                <img src="/public/assets/images/random-v2.png" alt="team" />
               </div>
               <div class="team_content">
-                <h6 class="team_name"><a href="#">Haven Somerville Byrd</a></h6>
-                <p>Web Designer</p>
+                <h6 class="team_name">Nicolas Lima</h6>
+                <p>Amante do Javascript</p>
                 <ul class="social">
                   <li>
-                    <a href="#"><i class="fab fa-facebook-f"></i></a>
+                    <i class="fab fa-facebook-f"></i>
                   </li>
                   <li>
-                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <i class="fab fa-twitter"></i>
                   </li>
                   <li>
-                    <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                    <i class="fab fa-linkedin-in"></i>
                   </li>
                   <li>
-                    <a href="#"><i class="fab fa-instagram"></i></a>
-                  </li>
-                </ul>
-              </div>
-            </div>
-          </div>
-          <div class="col-lg-3 col-sm-6">
-            <div class="single_team text-center mt-30">
-              <div class="team_image">
-                <img src="/public/assets/images/team-4.jpg" alt="team" />
-              </div>
-              <div class="team_content">
-                <h6 class="team_name"><a href="#">Haven Somerville Byrd</a></h6>
-                <p>Web Designer</p>
-                <ul class="social">
-                  <li>
-                    <a href="#"><i class="fab fa-facebook-f"></i></a>
-                  </li>
-                  <li>
-                    <a href="#"><i class="fab fa-twitter"></i></a>
-                  </li>
-                  <li>
-                    <a href="#"><i class="fab fa-linkedin-in"></i></a>
-                  </li>
-                  <li>
-                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <i class="fab fa-instagram"></i>
                   </li>
                 </ul>
               </div>
@@ -335,9 +298,7 @@
                   </div>
                   <div class="testimonial_content media-body">
                     <p>
-                      To ability copy the since the may concepts success and,
-                      put frequency, harmonics. Then not it's the and entire.
-                      the small a box.
+                      Eu confio no Classify.
                     </p>
                     <h5 class="author_name">Angel Grantham</h5>
                     <span class="sub_title">Managing Director, DevignEdge</span>
@@ -353,9 +314,7 @@
                   </div>
                   <div class="testimonial_content media-body">
                     <p>
-                      To ability copy the since the may concepts success and,
-                      put frequency, harmonics. Then not it's the and entire.
-                      the small a box.
+                      Classify é muito bom.
                     </p>
                     <h5 class="author_name">Angel Grantham</h5>
                     <span class="sub_title">Managing Director, DevignEdge</span>
@@ -371,9 +330,7 @@
                   </div>
                   <div class="testimonial_content media-body">
                     <p>
-                      To ability copy the since the may concepts success and,
-                      put frequency, harmonics. Then not it's the and entire.
-                      the small a box.
+                      Vendi 500 anúncios em 3 dias.
                     </p>
                     <h5 class="author_name">Angel Grantham</h5>
                     <span class="sub_title">Managing Director, DevignEdge</span>
