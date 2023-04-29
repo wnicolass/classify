@@ -390,6 +390,10 @@ async def add_ad_to_favourites(
     
 class SearchFavourite(BaseModel):
     url: str
+    search_description: bool
+    category: str
+    subcategory: str
+    order_type: str
 
 @router.post('/user/favourite-search')
 async def add_search_to_favourites(
@@ -402,14 +406,20 @@ async def add_search_to_favourites(
             status_code = status.HTTP_400_BAD_REQUEST,
             detail = 'User must be logged in'
         )
-    
+        
     all_user_fav_searches = await user_service.get_fav_searches_by_user_id(user.user_id, session)
     for fav_search in all_user_fav_searches:
         if search_fav.url == fav_search.search_url:
             return {'success': False}
         
-    new_favourite_search = await user_service.add_new_favourite_search(user.user_id, search_fav.url.strip(), session)
-
+    new_favourite_search = await user_service.add_new_favourite_search(
+        user.user_id, 
+        search_fav.url.strip(), 
+        search_fav.search_description,
+        search_fav.category,
+        search_fav.subcategory,
+        search_fav.order_type,
+        session)
     if new_favourite_search:
         return {'success': True}
 
