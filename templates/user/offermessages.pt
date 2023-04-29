@@ -2,6 +2,20 @@
   <div metal:fill-slot="title" tal:omit-tag="True">
     <title> Mensagens | Classify</title>
   </div>
+  <__additional_script__ metal:fill-slot="additional_script" tal:omit-tag="True">
+    <script src="/public/scripts/chat.js" defer></script>
+  </__additional_script__>
+  <__additional_stylesheet__ metal:fill-slot="additional_stylesheet" tal:omit-tag="True">
+    <style>
+      .current-chat {
+        cursor: pointer;
+        background-color: #ff4367cf;
+        width: 15rem;
+        border-radius: 5px;
+        padding: 4px;
+      }
+    </style>
+  </__additional_stylesheet__>
   <div metal:fill-slot="content" tal:omit-tag="True">
 
     <div
@@ -30,176 +44,7 @@
           </div>
           <div class="col-lg-9">
             <div class="offers_messages_content mt-50">
-              <div class="post_title">
-                <h5 class="title">Ofertas</h5>
-              </div>
-
-              <div class="ads_table table-responsive mt-30">
-                <table class="table">
-                  <thead>
-                    <tr>
-                      <th class="checkbox">
-                        <div class="table_checkbox">
-                          <input type="checkbox" id="checkbox1" />
-                          <label for="checkbox1"></label>
-                        </div>
-                      </th>
-                      <th class="photo">Foto</th>
-                      <th class="title">Título</th>
-                      <th class="category">Categoria</th>
-                      <th class="price">Preço</th>
-                      <th class="action">Ação</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr>
-                      <td class="checkbox">
-                        <div class="table_checkbox">
-                          <input type="checkbox" id="checkbox2" />
-                          <label for="checkbox2"></label>
-                        </div>
-                      </td>
-                      <td class="photo">
-                        <div class="table_photo">
-                          <img
-                            src="/public/assets/images/ads-1.png"
-                            alt="ads"
-                          />
-                        </div>
-                      </td>
-                      <td class="title">
-                        <div class="table_title">
-                          <h6 class="titles">8 GB DDR4 Ram, 4th Gen</h6>
-                          <p>Ad ID: ng3D5hAMHPajQrM</p>
-                        </div>
-                      </td>
-                      <td class="category">
-                        <div class="table_category">
-                          <p>Ram & Laptop</p>
-                        </div>
-                      </td>
-                      <td class="price">
-                        <div class="table_price">
-                          <span>$299.00</span>
-                        </div>
-                      </td>
-                      <td class="action">
-                        <div class="table_action">
-                          <ul>
-                            <li>
-                              <a href="#"><i class="fal fa-eye"></i></a>
-                            </li>
-                            <li>
-                              <a href="#"><i class="fal fa-pencil"></i></a>
-                            </li>
-                            <li>
-                              <a href="#"><i class="fal fa-trash-alt"></i></a>
-                            </li>
-                          </ul>
-                        </div>
-                      </td>
-                    </tr>
-
-                    <tr>
-                      <td class="checkbox">
-                        <div class="table_checkbox">
-                          <input type="checkbox" id="checkbox3" />
-                          <label for="checkbox3"></label>
-                        </div>
-                      </td>
-                      <td class="photo">
-                        <div class="table_photo">
-                          <img
-                            src="/public/assets/images/ads-2.png"
-                            alt="ads"
-                          />
-                        </div>
-                      </td>
-                      <td class="title">
-                        <div class="table_title">
-                          <h6 class="titles">8 GB DDR4 Ram, 4th Gen</h6>
-                          <p>Ad ID: ng3D5hAMHPajQrM</p>
-                        </div>
-                      </td>
-                      <td class="category">
-                        <div class="table_category">
-                          <p>Ram & Laptop</p>
-                        </div>
-                      </td>
-                      <td class="price">
-                        <div class="table_price">
-                          <span>$299.00</span>
-                        </div>
-                      </td>
-                      <td class="action">
-                        <div class="table_action">
-                          <ul>
-                            <li>
-                              <a href="#"><i class="fal fa-eye"></i></a>
-                            </li>
-                            <li>
-                              <a href="#"><i class="fal fa-pencil"></i></a>
-                            </li>
-                            <li>
-                              <a href="#"><i class="fal fa-trash-alt"></i></a>
-                            </li>
-                          </ul>
-                        </div>
-                      </td>
-                    </tr>
-
-                    <tr>
-                      <td class="checkbox">
-                        <div class="table_checkbox">
-                          <input type="checkbox" id="checkbox4" />
-                          <label for="checkbox4"></label>
-                        </div>
-                      </td>
-                      <td class="photo">
-                        <div class="table_photo">
-                          <img
-                            src="/public/assets/images/ads-3.png"
-                            alt="ads"
-                          />
-                        </div>
-                      </td>
-                      <td class="title">
-                        <div class="table_title">
-                          <h6 class="titles">8 GB DDR4 Ram, 4th Gen</h6>
-                          <p>Ad ID: ng3D5hAMHPajQrM</p>
-                        </div>
-                      </td>
-                      <td class="category">
-                        <div class="table_category">
-                          <p>Ram & Laptop</p>
-                        </div>
-                      </td>
-                      <td class="price">
-                        <div class="table_price">
-                          <span>$299.00</span>
-                        </div>
-                      </td>
-                      <td class="action">
-                        <div class="table_action">
-                          <ul>
-                            <li>
-                              <a href="#"><i class="fal fa-eye"></i></a>
-                            </li>
-                            <li>
-                              <a href="#"><i class="fal fa-pencil"></i></a>
-                            </li>
-                            <li>
-                              <a href="#"><i class="fal fa-trash-alt"></i></a>
-                            </li>
-                          </ul>
-                        </div>
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-
-              <div class="offers_messages_inbox pt-20">
+              <div class="offers_messages_inbox">
                 <div class="row no-gutters">
                   <div class="col-md-4">
                     <div class="inbox_chat">
@@ -207,104 +52,48 @@
                         <h5 class="title">User</h5>
                       </div>
                       <div class="inbox_chat_wrapper">
+                      <__repeat tal:repeat="user senders" tal:omit-tag="True">
                         <div
-                          class="single_chat chat_online d-flex align-items-center"
-                        >
+                          class="single_chat chat_online d-flex align-items-center" data-userid="${user.user_id}" data-chatroomid="${user.chatroom.id}"
+                          style="cursor: pointer; position: relative; width: 15rem;">
+                          <i tal:condition="user.chatroom.starter_id == user_id and user.chatroom.is_unread_starter == 1"
+                            class="fal fa-envelope" style="
+                                position: absolute;
+                                color: #fff;
+                                z-index: 1;
+                                top: -9px;
+                                right: -5px;
+                                background-color: #463ce5;
+                                padding: 5px;
+                                border-radius: 50%;
+                                ">
+                          </i>
+                           <i tal:condition="user.chatroom.starter_id != user_id and user.chatroom.is_unread_receiver == 1"
+                            class="fal fa-envelope" style="
+                                position: absolute;
+                                color: #fff;
+                                z-index: 1;
+                                top: -9px;
+                                right: -5px;
+                                background-color: #463ce5;
+                                padding: 5px;
+                                border-radius: 50%;
+                                ">
+                          </i>
+                          
                           <div class="chat_author">
                             <img
-                              src="/public/assets/images/author-1.jpg"
-                              alt="author"
+                              tal:attributes="src user.profile_image_url if user.profile_image_url else '/public/assets/images/author-2.jpg'"
+                              alt="${user.username}"
                             />
                           </div>
                           <div class="chat_content media-body">
-                            <h6 class="name">James Miller</h6>
-                            <span class="sub_title">Online</span>
+                            <h6 class="name">${user.username}</h6>
+                            
+                            <!-- <span class="sub_title">Online</span> -->
                           </div>
                         </div>
-                        <div
-                          class="single_chat chat_online d-flex align-items-center"
-                        >
-                          <div class="chat_author">
-                            <img
-                              src="/public/assets/images/author-1.jpg"
-                              alt="author"
-                            />
-                          </div>
-                          <div class="chat_content media-body">
-                            <h6 class="name">James Miller</h6>
-                            <span class="sub_title">Online</span>
-                          </div>
-                        </div>
-                        <div
-                          class="single_chat chat_online d-flex align-items-center"
-                        >
-                          <div class="chat_author">
-                            <img
-                              src="/public/assets/images/author-1.jpg"
-                              alt="author"
-                            />
-                          </div>
-                          <div class="chat_content media-body">
-                            <h6 class="name">James Miller</h6>
-                            <span class="sub_title">Online</span>
-                          </div>
-                        </div>
-                        <div
-                          class="single_chat chat_online d-flex align-items-center"
-                        >
-                          <div class="chat_author">
-                            <img
-                              src="/public/assets/images/author-1.jpg"
-                              alt="author"
-                            />
-                          </div>
-                          <div class="chat_content media-body">
-                            <h6 class="name">James Miller</h6>
-                            <span class="sub_title">Online</span>
-                          </div>
-                        </div>
-                        <div
-                          class="single_chat chat_online d-flex align-items-center"
-                        >
-                          <div class="chat_author">
-                            <img
-                              src="/public/assets/images/author-1.jpg"
-                              alt="author"
-                            />
-                          </div>
-                          <div class="chat_content media-body">
-                            <h6 class="name">James Miller</h6>
-                            <span class="sub_title">Online</span>
-                          </div>
-                        </div>
-                        <div
-                          class="single_chat chat_online d-flex align-items-center"
-                        >
-                          <div class="chat_author">
-                            <img
-                              src="/public/assets/images/author-1.jpg"
-                              alt="author"
-                            />
-                          </div>
-                          <div class="chat_content media-body">
-                            <h6 class="name">James Miller</h6>
-                            <span class="sub_title">Online</span>
-                          </div>
-                        </div>
-                        <div
-                          class="single_chat chat_online d-flex align-items-center"
-                        >
-                          <div class="chat_author">
-                            <img
-                              src="/public/assets/images/author-1.jpg"
-                              alt="author"
-                            />
-                          </div>
-                          <div class="chat_content media-body">
-                            <h6 class="name">James Miller</h6>
-                            <span class="sub_title">Online</span>
-                          </div>
-                        </div>
+                      </__repeat>
                       </div>
                     </div>
                   </div>
@@ -313,83 +102,17 @@
                       <div class="post_title">
                         <h5 class="title">Chat Classify</h5>
                       </div>
-                      <div class="inbox_massage_wrapper">
-                        <div class="incoming_msg d-flex">
-                          <div class="incoming_msg_img">
-                            <img
-                              src="/public/assets/images/author-1.jpg"
-                              alt="author"
-                            />
-                          </div>
-                          <div class="incoming_msg_content media-body">
-                            <p>
-                              Test which is a new approach to have all solutions
-                            </p>
-                            <span>11:01 AM | June 9</span>
-                          </div>
-                        </div>
-
-                        <div class="outgoing_msg clearfix">
-                          <div class="outgoing_msg_content">
-                            <p>
-                              Test which is a new approach to have all solutions
-                            </p>
-                            <span>11:01 AM | June 9</span>
-                          </div>
-                        </div>
-                        <div class="incoming_msg d-flex">
-                          <div class="incoming_msg_img">
-                            <img
-                              src="/public/assets/images/author-1.jpg"
-                              alt="author"
-                            />
-                          </div>
-                          <div class="incoming_msg_content media-body">
-                            <p>
-                              Test which is a new approach to have all solutions
-                            </p>
-                            <span>11:01 AM | June 9</span>
-                          </div>
-                        </div>
-
-                        <div class="outgoing_msg clearfix">
-                          <div class="outgoing_msg_content">
-                            <p>
-                              Test which is a new approach to have all solutions
-                            </p>
-                            <span>11:01 AM | June 9</span>
-                          </div>
-                        </div>
-                        <div class="incoming_msg d-flex">
-                          <div class="incoming_msg_img">
-                            <img
-                              src="/public/assets/images/author-1.jpg"
-                              alt="author"
-                            />
-                          </div>
-                          <div class="incoming_msg_content media-body">
-                            <p>
-                              Test which is a new approach to have all solutions
-                            </p>
-                            <span>11:01 AM | June 9</span>
-                          </div>
-                        </div>
-
-                        <div class="outgoing_msg clearfix">
-                          <div class="outgoing_msg_content">
-                            <p>
-                              Test which is a new approach to have all solutions
-                            </p>
-                            <span>11:01 AM | June 9</span>
-                          </div>
-                        </div>
+                      <div class="inbox_massage_wrapper" style="overflow-x: hidden">
+                        
                       </div>
-                      <div class="massage_type">
-                        <textarea
-                          placeholder="Type Here & Press Enter"
-                        ></textarea>
-                        <button><i class="fal fa-paper-plane"></i></button>
-                      </div>
+                      <form id="message_form">
+                        <div class="massage_type">
+                          <textarea
+                            name="text_message" placeholder="Escreva aqui"
+                          ></textarea>
+                          <button><i class="fal fa-paper-plane"></i></button>
+                        </div>
+                      </form>
                     </div>
                   </div>
                 </div>

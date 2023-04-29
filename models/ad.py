@@ -17,6 +17,7 @@ from models.subcategory import Subcategory
 from models.field_value import field_value
 from models.admin import AdminAccount
 from common.utils import image_formats, transform_image_from_url
+from models.chat import Chatroom
 
 class Ad(Base):
     __tablename__ = 'Ad'
@@ -48,6 +49,7 @@ class Ad(Base):
     images = relationship('AdImage', back_populates = 'ad', cascade = 'delete', lazy = 'joined')
     users_favourited = relationship('Favourite', back_populates = 'ad')
     promo = relationship('Promo', back_populates = 'ads', uselist = False)
+    chatrooms = relationship('Chatroom', back_populates = 'ad')
 
     @property
     def main_image(self):

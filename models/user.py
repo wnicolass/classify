@@ -1,5 +1,6 @@
 from datetime import datetime
 from typing import List
+from urllib.parse import unquote_plus
 from sqlalchemy import (
     Column,
     Integer,
@@ -16,6 +17,7 @@ from config.database import Base
 from models.ad import Ad
 from services.ad_service import AdStatusEnum
 from common.utils import image_formats, transform_image_from_url
+from models.chat import Message
 
 class UserAccount(Base):
     __tablename__ = 'UserAccount'
@@ -36,6 +38,10 @@ class UserAccount(Base):
     user_login_data_ext = relationship('UserLoginDataExt', back_populates = 'user')
     favourites = relationship('Favourite', back_populates = 'user')
     favourite_searches = relationship('FavouriteSearch', back_populates = 'user')
+    
+    messages_received = relationship('Message', back_populates = 'receiver_user',foreign_keys = [Message.receiver_user_id])
+    messages_sent = relationship('Message', back_populates = 'sender_user', foreign_keys = [Message.sender_user_id])
+    chatrooms = relationship('Chatroom', back_populates = 'starter_user')
 
     @property
     def pretty_created_at(self):
