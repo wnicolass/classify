@@ -6,6 +6,13 @@ const currentURL = new URL(window.location.href);
 const toastTrigger = document.getElementById('liveToastBtn');
 const toastLiveExample = document.getElementById('liveToast');
 const closeBtn = document.getElementById('close-fav-toast');
+
+const descriptionSearchFilter = document.getElementById("checkbox");
+const locationFilter = document.getElementById("city-select");
+const categoryFilter = document.getElementById("category-select");
+// Subcategory is assessed during run-time via its nice-select due to how its options are generated
+const orderType = document.getElementById("recency-select");
+
 let activePage;
 let currentSearch = `${currentURL.pathname}${currentURL.search}`;
 
@@ -268,11 +275,14 @@ async function addNewFavSearch() {
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-          url: currentSearch.trim()
+          url: currentSearch.trim(),
+          search_description: descriptionSearchFilter.checked,
+          category: categoryFilter.options[categoryFilter.selectedIndex].text,
+          subcategory: document.getElementsByClassName("current")[2].outerText,
+          order_type: orderType.options[orderType.selectedIndex].text
         })
       });
       const data = await res.json();
-      console.log(data);
       if (!res.ok) {
         window.location.href = `${currentURL.origin}/auth/sign-in`;
       }

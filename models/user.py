@@ -139,6 +139,10 @@ class FavouriteSearch(Base):
     id: int = Column(Integer, primary_key = True, autoincrement = True)
     user_id: int = Column(Integer, ForeignKey('UserAccount.user_id'), nullable = False)
     search_url: str = Column(String(500), nullable = False)
+    search_description: int = Column(BIT, default = 0)
+    category: str = Column(String(100), default = "Nenhuma")
+    subcategory: str = Column(String(100), default = "Nenhuma")
+    order_type: str = Column(String(100), default = "Nenhuma")
     fav_date: datetime = Column(DateTime, default = datetime.now())
 
     user = relationship('UserAccount', back_populates = 'favourite_searches', uselist = False)
@@ -158,6 +162,12 @@ class FavouriteSearch(Base):
             return unquote_plus(title)
         except IndexError:
             return unquote_plus(title)
+        
+    @property
+    def search_description_text(self) -> str:
+        if self.search_description == 1:
+            return "Sim"
+        return "Não"
 
 class HashAlgo(Base):
     __tablename__ = 'HashAlgo'
