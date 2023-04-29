@@ -3,7 +3,7 @@ from typing import List
 from sqlalchemy import and_, or_
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
-from sqlalchemy.orm import joinedload
+from sqlalchemy.orm import joinedload, aliased
 from models.user import (
     UserAccount, 
     UserLoginData, 
@@ -347,17 +347,21 @@ async def get_senders_messages_by_current_user_id(
                 Message.receiver_user_id == current_user_id,
             )
         )
-        .subquery()
+        
     )
-
+    messages = aliased(Message) # for join
+    
     users = await session.execute(
         select(UserAccount)
+        .join(Message, UserAccount.user_id == Message.sender_user_id)
+        .outerjoin(messages, UserAccount.user_id == messages.receiver_user_id)
         .where(
             and_(
                 UserAccount.user_id.in_(chats_users_ids),
                 UserAccount.user_id != current_user_id
             )
         )
+        .order_by(Message.send_at.desc()) # recent = desc
     )
     chat_users = users.unique().scalars().all()
 
