@@ -9,7 +9,8 @@ from models.user import (
     UserLoginData, 
     UserLoginDataExt, 
     UserAddress, 
-    Favourite, 
+    Favourite,
+    FavouriteSearch,
     ExternalProvider, 
     OpenIdConnectTokens
 )
@@ -85,6 +86,21 @@ async def add_new_favourite(
     await session.refresh(fav)
     
     return fav
+
+async def add_new_favourite_search(
+    user_id: int, 
+    search_url: str, 
+    session: AsyncSession
+) -> FavouriteSearch:
+    new_favourite_search = FavouriteSearch(
+        user_id = user_id,
+        search_url = search_url
+    )
+    session.add(new_favourite_search)
+    await session.commit()
+    await session.refresh(new_favourite_search)
+
+    return new_favourite_search
 
 async def create_user_address(
     new_country: str,
@@ -176,6 +192,35 @@ async def get_user_favs(user_id: int, session: AsyncSession) -> List[int]:
     user_favs_ids = query.unique().scalars().all()
     return user_favs_ids
 
+async def get_user_fav_searches(session: AsyncSession) -> List[FavouriteSearch]:
+    query = await session.execute(select(FavouriteSearch))
+    fav_searches = query.unique().scalars().all()
+
+    return fav_searches
+
+async def get_fav_search_by_id(
+    fav_search_id: int, 
+    session: AsyncSession
+) -> FavouriteSearch:
+    query = await session.execute(
+        select(FavouriteSearch)
+        .where(FavouriteSearch.id == fav_search_id)
+    )
+    favourite_search = query.scalar_one_or_none()
+
+    return favourite_search
+
+async def get_fav_searches_by_user_id(
+    user_id: int, 
+    session: AsyncSession
+) -> List[FavouriteSearch]:
+    query = await session.execute(
+        select(FavouriteSearch)
+        .where(FavouriteSearch.user_id == user_id)
+    )
+    fav_searches_by_user = query.unique().scalars().all()
+
+    return fav_searches_by_user
 
 async def get_user_by_recovery_token(
     token: str, 
@@ -436,6 +481,8 @@ async def update_user_details(
     
     await session.commit()
     await session.refresh(db_user)
+
+    return db_user
     
 async def update_user_address(
     user_address: UserAddress,
@@ -481,4 +528,11 @@ async def delete_token_instance(
     session: AsyncSession
 ) -> None:
     await session.delete(token_instance)
+    await session.commit()
+
+async def delete_user_fav_search(
+    fav_search: FavouriteSearch, 
+    session: AsyncSession
+) -> None:
+    await session.delete(fav_search)
     await session.commit()

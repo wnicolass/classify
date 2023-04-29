@@ -5,6 +5,7 @@
   <script src="/public/scripts/favourites.js" defer></script>
   <script tal:condition="not in_categories_view and not in_subcategories_view" src="/public/scripts/get-subcategories.js" defer></script>
   <script src="/public/scripts/filters.js" defer></script>
+  <script src="/public/scripts/handle-search-form.js" defer></script>
 </__additional_script__>
   <div metal:fill-slot="title" tal:omit-tag="True">
     <title> Anúncios | Classify</title>
@@ -63,6 +64,15 @@
         -ms-transform: rotate(45deg) scale(1);
         transform: rotate(45deg) scale(1);
       }
+
+      .fav-search {
+        transition: all .3s ease;
+      }
+
+      .fav-search:hover {
+        background-color: #ff4367 !important;
+        color: #fff !important;
+      }
     </style>
   </__additional_stylesheet__>
   <div metal:fill-slot="content" tal:omit-tag="True">
@@ -81,6 +91,21 @@
       </div>
     </div>
 
+    <div style="top: 85px;right: 0;z-index: 1000;" class="toast-container position-fixed top-0 end-0 p-3">
+      <div style="width: 22rem;" id="liveToast" class="toast products fade" role="alert">
+        <div style="padding: 0.75rem;justify-content: space-between;" class="toast-header">
+          <div style="display: flex; align-items:center;">
+            <i style="color: #36a136;font-size: 1.5rem;margin-right: 0.5rem;" class="fa-solid fa-circle-check"></i>
+            <strong class="me-auto">Pesquisa guardada com sucesso 💓</strong>
+          </div>
+          <i id="close-fav-toast" style="font-size: 1.5rem;cursor: pointer;" class="fa-solid fa-xmark"></i>
+        </div>
+        <div class="toast-body">
+          A pesquisa foi salva em seus favoritos.
+        </div>
+      </div>
+    </div>
+
     <div class="container">
       <div class="header_search" style="padding-bottom: 13px; background-color: #fff;">
         <form action="/ads/search" method="GET">
@@ -95,11 +120,15 @@
               </div>
             </div>
           </div>
-          <div class="single_form d-sm-flex mt-10">
+          <div class="single_form d-sm-flex justify-content-between mt-10">
             <div class="sign_checkbox" style="display: flex; align-items: center; gap: .3rem; margin-left: .7rem;">
               <input type="checkbox" id="checkbox" name="description"/>
               <label id="search-label" for="checkbox" style="color: #565656;margin: 0 0 0 12px;">Também pesquisar por descrição</label>
             </div>
+            <button id="liveToastBtn" type="button" style="height: 30px; line-height: 0px; padding: 0rem 1rem;border: 1px solid #ff4367;background-color: transparent;color: #ff4367;margin-right: 9px;" class="main-btn fav-search">
+              <i class="fa-regular fa-star"></i>
+              Guardar Pesquisa
+            </button>
           </div>
         </form>
       </div>

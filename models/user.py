@@ -12,6 +12,7 @@ from sqlalchemy import (
 )
 from sqlalchemy.dialects.mysql import BIT
 from sqlalchemy.orm import relationship
+from urllib.parse import unquote_plus
 from config.database import Base
 from models.ad import Ad
 from services.ad_service import AdStatusEnum
@@ -163,7 +164,7 @@ class FavouriteSearch(Base):
             return unquote_plus(title)
         except IndexError:
             return unquote_plus(title)
-        
+            
 class HashAlgo(Base):
     __tablename__ = 'HashAlgo'
 

@@ -81,10 +81,10 @@
               <div class="product_image">
                 <div class="tab-content" id="myTabContent">
                   <div tal:condition="is_logged_in" tal:omit-tag="True">
-                   <a tal:condition="adv.id not in user.fav_ads_id" style='cursor: pointer; position: absolute; top: 85px;right: 65px;z-index: 1;font-size: 2rem;color: #fff;' class="like" data-adid="${adv.id}"><i class="fa-solid fa-heart"></i></a>
+                    <a tal:condition="adv.id not in user.fav_ads_id" style='cursor: pointer; position: absolute; top: 85px;right: 65px;z-index: 1;font-size: 2rem;color: #fff;' class="like" data-adid="${adv.id}"><i class="fa-solid fa-heart"></i></a>
                     <a tal:condition="adv.id in user.fav_ads_id" style='cursor: pointer; position: absolute; top: 85px;right: 65px;z-index: 1;font-size: 2rem;color: #fff;' class="like" data-adid="${adv.id}"><i class="fa-solid fa-heart active"></i></a>
                   </div>
-                  <a style='cursor: pointer; position: absolute; top: 85px;right: 65px;z-index: 1;font-size: 2rem;color: #fff;' class="like" data-adid="${adv.id}"><i class="fa-solid fa-heart"></i></a>
+                  <a tal:condition="not is_logged_in" style='cursor: pointer; position: absolute; top: 85px;right: 65px;z-index: 1;font-size: 2rem;color: #fff;' class="like" data-adid="${adv.id}"><i class="fa-solid fa-heart"></i></a>
                   <div
                     class="tab-pane fade show active"
                     id="rejected"
@@ -207,11 +207,11 @@
                     <div class="ads_card_content">
                       <div class="meta d-flex justify-content-between">
                         <p>${ad.subcategory.subcategory_name}</p>
-                        <a class="like" data-adid="${ad.id}"><i class="fa-solid fa-heart"></i></a>
                         <div tal:condition="is_logged_in" tal:omit-tag="True">
                           <a tal:condition="ad.id not in user.fav_ads_id" style='cursor: pointer;' class="like" data-adid="${ad.id}"><i class="fal fa-heart"></i></a>
-                          <a tal:condition="ad.id in user.fav_ads_id" style="cursor: pointer;" class="like" data-adid="${ad.id}"><i class="fal fa-heart active"></i></a>   
+                          <a tal:condition="ad.id in user.fav_ads_id" style="cursor: pointer;" class="like" data-adid="${ad.id}"><i class="fal fa-heart active"></i></a>
                         </div>
+                        <a tal:condition="not is_logged_in" style="cursor: pointer;" class="like" data-adid="${ad.id}"><i class="fal fa-heart"></i></a>
                       </div>
                       <h4 class="title">
                         <a href="/ad/${ad.id}"
@@ -320,7 +320,7 @@
                       <a tal:condition="adv.id not in user.fav_ads_id" style='cursor: pointer;' class="like" data-adid="${adv.id}"><i class="fal fa-heart"></i><span>Fav</span></a>
                       <a tal:condition="adv.id in user.fav_ads_id" style="cursor: pointer; " class="like" data-adid="${adv.id}"><i class="fal fa-heart active"></i><span>Fav</span></a>
                     </div>
-                    <a style='cursor: pointer;' class="like" data-adid="${adv.id}"><i class="fal fa-heart"></i><span>Fav</span></a>
+                    <a tal:condition="not is_logged_in" style="cursor: pointer;" class="like" data-adid="${adv.id}"><i class="fal fa-heart"></i><span>Fav</span></a>
                   </div>
 
                   <div class="single_action">
