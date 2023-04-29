@@ -45,8 +45,18 @@ async def index_viewmodel(
 
 @router.get('/about')
 @template()
-async def about():
-    return await ViewModel()
+async def about(
+    session: Annotated[AsyncSession, Depends(get_db_session)]
+):
+    total_ads = await ad_service.get_all_ads(session)
+    
+    return await ViewModel(
+        total_ads = len(total_ads),
+        total_verified_users = len(
+        await user_service.get_all_verified_users(session)
+    ),
+        sold_ads = len(await ad_service.get_ads_by_status(session, 'vendido'))
+    )
 
 @router.get('/contact')
 @template()
