@@ -236,7 +236,7 @@
                   </div>
                   <div class="single_form">
                     <div class="sign_checkbox">
-                      <input type="checkbox" id="checkbox" required/>
+                      <input name="terms" type="checkbox" id="checkbox" required/>
                       <label for="checkbox"></label>
                       <span>
                         Concordo com os Termos e Condições de Serviço.
