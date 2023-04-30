@@ -34,7 +34,11 @@ from common.utils import (
     image_formats,
     transform_image_from_url
 )
-from services import ad_service, user_service
+from services import (
+    ad_service, 
+    user_service,
+    chat_service
+)
 from views.ad import fetch_countries
 from config.cloudinary import upload_image
 
@@ -367,13 +371,13 @@ async def offermessages_viewmodel(
 ):
     vm = await ViewModel()
     
-    vm.senders = await user_service.get_senders_messages_by_current_user_id(
+    vm.senders = await chat_service.get_senders_messages_by_current_user_id(
         vm.user_id, 
         session
     )
 
     for sender in vm.senders:
-        chatroom = await user_service.get_chatroom_by_seller_and_buyer_id(
+        chatroom = await chat_service.get_chatroom_by_seller_and_buyer_id(
             vm.user_id, 
             sender.user_id, 
             session
@@ -392,7 +396,7 @@ async def update_chatroom(
     session: Annotated[AsyncSession, Depends(get_db_session)]
 ):
     current_user = await get_current_user()
-    await user_service.set_chatroom_as_read(
+    await chat_service.set_chatroom_as_read(
         chatroom_id, 
         current_user.user_id, 
         session
@@ -425,7 +429,7 @@ async def chatroom_messages(
     user = await get_current_user()
     
     response_chatroom =  ResponseChatroom(
-        messages = await user_service.get_messages_by_chatroom_id(
+        messages = await chat_service.get_messages_by_chatroom_id(
         chatroom_id, 
         session
     ),
@@ -443,10 +447,10 @@ async def send_ongoing_message(
     message: Message,
     session: Annotated[AsyncSession, Depends(get_db_session)]
 ):
-    chatroom = await user_service.get_chatroom_by_id(chatroom_id, session)
+    chatroom = await chat_service.get_chatroom_by_id(chatroom_id, session)
     user = await get_current_user()
 
-    message_info = await user_service.send_message(
+    message_info = await chat_service.send_message(
         user.user_id,
         message.receiver_id,
         chatroom.ad_id,
