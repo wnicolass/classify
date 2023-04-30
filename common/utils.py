@@ -87,18 +87,11 @@ def transform_image_from_url(url: str, formatString: str) -> str:
     return url
 
 is_valid_email = make_test_regex_fn(
-    r"""[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9]
-    (?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?
-    (?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*"""
+    r"[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*"
 )
 
 is_valid_password = make_test_regex_fn(
-     r"""
-        (?=.*[a-z])
-        (?=.*[A-Z])
-        (?=.*\d)
-        (?=.*[~`!@#$%^&*()_\-+={[}\]|\\:;"\'<,>.?/]).{8,20}
-    """
+     r'(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[~`!@#$%^&*()_\-+={[}\]|\\:;"\'<,>.?/]).{8,20}'
 )
 
 is_valid_username = make_test_regex_fn(

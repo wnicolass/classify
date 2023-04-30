@@ -81,6 +81,7 @@ async def post_sign_up_viewmodel(
     file: UploadFile | None = None
 ):
     form_data = await request.form()
+    
     vm = await ViewModel(
         username = form_field_as_str(form_data, 'username'),
         email = form_field_as_str(form_data, 'email'),
@@ -88,6 +89,10 @@ async def post_sign_up_viewmodel(
         phone_number = form_field_as_str(form_data, 'phone-number'),
         password = form_field_as_str(form_data, 'new-password'),
         confirm_password = form_field_as_str(form_data, 'confirm-password'),
+        terms = (
+            form_field_as_str(form_data, 'terms') 
+            if 'terms' in form_data._dict else None
+        ),
         min_date = MIN_DATE,
         max_date = date.today()
     )
@@ -109,6 +114,8 @@ async def post_sign_up_viewmodel(
         vm.error, vm.error_msg = True, f'Endereço de email {vm.email} já existe'
     elif vm.password != vm.confirm_password:
         vm.error, vm.error_msg = True, 'Senhas não correspondem!'
+    elif not vm.terms:
+        vm.error, vm.error_msg = True, 'É preciso aceitar os termos de serviço.'
     else:
         vm.error, vm.error_msg = False, ''
 
