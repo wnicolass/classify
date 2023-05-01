@@ -47,9 +47,6 @@
                 </p>
                 <span class="price">FREE</span>
               </div>
-              <div class="pricing_btn">
-                <a href="#" class="main-btn">Ver Mais</a>
-              </div>
             </div>
           </div>
           <div class="col-lg-4 col-md-7 col-sm-9">
@@ -72,9 +69,6 @@
                 </p>
                 <span class="price">€10.99</span>
               </div>
-              <div class="pricing_btn">
-                <a href="#" class="main-btn main-btn-2">Ver Mais</a>
-              </div>
             </div>
           </div>
           <div class="col-lg-4 col-md-7 col-sm-9">
@@ -96,9 +90,6 @@
                   as suas hipóteses de vendas.
                 </p>
                 <span class="price">€5.99</span>
-              </div>
-              <div class="pricing_btn">
-                <a href="#" class="main-btn">Ver Mais</a>
               </div>
             </div>
           </div>

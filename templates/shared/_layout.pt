@@ -250,7 +250,6 @@
                     <!-- <li><a href="#">Mission and Strategy</a></li> -->
                     <li><a href="/contact">Contacto</a></li>
                     <li><a href="/faq">Perguntas Frequentes</a></li>
-                    <li><a href="/posts/blog">Blog</a></li>
                     </ul>
                 </div>
                 </div>
@@ -264,8 +263,6 @@
                     <li><a href="#">Banner Advertising</a></li>
                     <li><a href="#">Promote Your Ad</a></li> -->
                     <li><a href="/pricing">Pacotes de Anúncios</a></li>
-                    <li><a href="#">Pesquisas populares</a></li>
-                    <li><a href="#">App Classify</a></li>
                     </ul>
                 </div>
                 </div>
@@ -304,7 +301,7 @@
             >
                 <div class="copyright mt-15">
                 <p>
-                    Designed and Developed by
+                    Designed by
                     <a href="https://graygrids.com" rel="nofollow">GrayGrids</a>
                 </p>
                 </div>

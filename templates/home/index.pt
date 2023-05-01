@@ -441,7 +441,7 @@
 
     <!--====== LOCATIONS PART START ======-->
 
-    <section class="locations_area pt-115" tal:condition="len(top_locations) >= 3" >
+    <section class="locations_area pt-115 mb-30" tal:condition="len(top_locations) >= 3" >
       <div class="container">
         <div class="row">
           <div class="col-lg-6">
@@ -529,7 +529,7 @@
 
     <!--====== BLOG PART START ======-->
 
-    <section class="blog_area pt-115 pb-120">
+    <!-- <section class="blog_area pt-115 pb-120">
       <div class="container">
         <div class="row justify-content-center">
           <div class="col-lg-6">
@@ -616,7 +616,7 @@
           <a href="/posts/blog" class="main-btn">Ver Mais</a>
         </div>
       </div>
-    </section>
+    </section> -->
 
     <!--====== BLOG PART ENDS ======-->
 
