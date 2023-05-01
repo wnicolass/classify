@@ -13,12 +13,6 @@
                 <div class="user_list">
                   <ul>
                     <li>
-                      <a href="/user/dashboard">
-                        <i class="fal fa-tachometer-alt-average"></i>
-                        Dashboard
-                      </a>
-                    </li>
-                    <li>
                       <a href="/user/offermessages">
                         <i class="fal fa-envelope"></i>
                         Mensagens
@@ -34,12 +28,6 @@
                       <a href="/user/favourite-ads">
                         <i class="fal fa-heart"></i>
                         Favoritos
-                      </a>
-                    </li>
-                    <li>
-                      <a href="/user/payments">
-                        <i class="fal fa-wallet"></i>
-                        Pagamentos
                       </a>
                     </li>
                     <li>

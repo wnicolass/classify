@@ -45,14 +45,6 @@ from config.cloudinary import upload_image
 router = APIRouter()
 
 @router.get(
-    '/user/dashboard', 
-    dependencies = [Depends(requires_authentication)]
-)
-@template()
-async def dashboard():
-    return await ViewModel()
-
-@router.get(
     '/user/profile-settings', 
     dependencies = [Depends(requires_authentication)]
 )
@@ -460,14 +452,6 @@ async def send_ongoing_message(
     return message_info
 
 @router.get(
-    '/user/payments', 
-    dependencies = [Depends(requires_authentication)]
-)
-@template()
-async def payments():
-    return await ViewModel()
-
-@router.get(
     '/user/favourite-ads', 
     dependencies = [Depends(requires_authentication)]
 )
@@ -601,7 +585,7 @@ async def send_message(
 
     sender_user_id = vm.user_id
 
-    if message_info := await user_service.send_message(
+    if message_info := await chat_service.send_message(
         sender_user_id,
         message.receiver_id,
         adv_id,
