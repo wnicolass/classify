@@ -241,7 +241,7 @@ async def change_password(
     if vm.error:
         return vm
     
-    return await change_password_viewmodel(session, password_exists)
+    return await change_password_viewmodel(password_exists)
 
 async def change_password_viewmodel(password_exists: str):
     vm = await ViewModel()

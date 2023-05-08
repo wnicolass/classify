@@ -518,9 +518,6 @@
               </div>
             </div>
           </div>
-          <div class="locations_btn text-center">
-            <a class="main-btn" href="#">Mais Localizações</a> <!--Remove this? Create another template?-->
-          </div>
         </div>
       </div>
     </section>

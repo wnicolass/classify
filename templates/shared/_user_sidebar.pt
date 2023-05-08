@@ -43,12 +43,6 @@
                       </a>
                     </li>
                     <li>
-                      <a href="/user/privacy-setting">
-                        <i class="fal fa-star"></i>
-                        Definições de Privacidade
-                      </a>
-                    </li>
-                    <li>
                       <a href="/auth/logout">
                         <i class="fal fa-sign-out"></i>
                         Sair

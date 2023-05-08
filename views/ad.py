@@ -189,7 +189,7 @@ async def search_by_title(
     order_by: str | None = '',
     min_price: dec = 0,
     max_price: dec = 0,
-    page: int = 0,
+    page: int = 1,
 ):
     some_other_criteria = bool(
         city or 

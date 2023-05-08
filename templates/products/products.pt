@@ -188,8 +188,8 @@
                     <input type="text" class="js-range-slider" value="" />
                   </div>
                   <div class="extra-controls">
-                    <input type="text" class="js-input-from outra-class" value="0" />
-                    <input type="text" class="js-input-to outra-class" value="0" />
+                    <input type="text" disabled class="js-input-from outra-class" value="0" />
+                    <input type="text" disabled class="js-input-to outra-class" value="0" />
                   </div>
                   <input id="min-price" type="hidden" value="${min_price}" />
                   <input id="max-price" type="hidden" value="${max_price}" />
