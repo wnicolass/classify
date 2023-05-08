@@ -1,3 +1,4 @@
+import { addToFavourites, removeFromFavourites } from "./favourites.js";
 const queryFirstPart = window.location.href.split('?').at(-1);
 const inCategoryView = /(http(s)?:\/\/).*\/ads\/category\/\d{1,2}/.test(queryFirstPart);
 const inSubcategoryView = /(http(s)?:\/\/).*\/ads\/subcategory\/\d{1,3}/.test(queryFirstPart);
@@ -119,7 +120,7 @@ async function fetchData(queryParams) {
   try {
     const res = await fetch(URL);
     const data = await res.json();
-    data.ads.length > 0 && renderAds(data);
+    data.ads.length > 0 && await renderAds(data);
   } catch (err) {
     console.error(err);
   }
@@ -170,11 +171,23 @@ function transform_image_from_url(url, formatString) {
   return url;
 }
 
-function renderAds(data) {
+async function getUserData() {
+  const userId = document.getElementById('dropdownMenuLink').dataset.userid;
+  try {
+    const res = await fetch(`/user/${userId}`);
+    const { favourites } = await res.json();
+    return favourites.map(fav => fav.ad_id);
+  } catch (err) {
+    console.error(err);
+  }
+}
+
+async function renderAds(data) {
     const allAds = data.ads;
     const adsContainer = document.getElementById('ads-container');
     adsContainer.innerHTML = '';
-  
+    const userFavourites = await getUserData();
+
     allAds.forEach((ad) => {
         const adCard = document.createElement('div');
         adCard.className = 'col-xl-4 col-sm-6';
@@ -189,9 +202,13 @@ function renderAds(data) {
         const sticker = document.createElement('p');
         sticker.classList.add('sticker');
         sticker.textContent = 'Promovido';
+        const aImage = document.createElement('a');
+        aImage.href = `/ad/${ad.id}`;
+        aImage.style.cursor = 'pointer';
         image.src = transform_image_from_url(ad.images[0].image_path_url, "c_fill,h_200,w_250");
         image.alt = ad.title;
-        adCardImage.appendChild(image);
+        aImage.appendChild(image);
+        adCardImage.appendChild(aImage);
         ad.promo_id != 1 && adCardImage.appendChild(sticker);
 
         const adCardContent = document.createElement('div');
@@ -206,11 +223,21 @@ function renderAds(data) {
         aHeart.style.cursor = 'pointer';
         aHeart.className = 'like';
         aHeart.setAttribute('data-adid', ad.id);
+        // !userFavourites.includes(ad.id) && aHeart.addEventListener('click', addToFavourites);
         
         const heart = document.createElement('i');
         heart.className = 'fal fa-heart';
         aHeart.appendChild(heart);
         adsFirstPart.append(p, aHeart);
+
+        if(userFavourites.includes(ad.id)) {
+          heart.classList.add('active');
+          aHeart.removeEventListener('click', addToFavourites);
+          aHeart.addEventListener('click', removeFromFavourites);
+        } else {
+          aHeart.removeEventListener('click', removeFromFavourites);
+          aHeart.addEventListener('click', addToFavourites);
+        }
 
         const adTitle = document.createElement('h4');
         adTitle.className = 'title';
@@ -307,6 +334,7 @@ function main() {
   hasPagination && getActivePage();
   hasPagination && setOneAsActive();
   addFavouriteSearchEvent();
+  // getUserData();
 }   
 
 window.addEventListener('load', main);

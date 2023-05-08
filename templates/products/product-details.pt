@@ -5,7 +5,7 @@
   <__additional_script__ metal:fill-slot="additional_script" tal:omit-tag="True">
     <script src="/public/scripts/change-image.js" defer></script>
     <script src="/public/scripts/show-seller-number.js" defer></script>
-    <script src="/public/scripts/favourites.js" defer></script>
+    <script src="/public/scripts/favourites.js" type="module" defer></script>
     <script src="/public/scripts/message.js" defer></script>
   </__additional_script__>
   <__additional_stylesheet__ metal:fill-slot="additional_stylesheet" tal:omit-tag="True">

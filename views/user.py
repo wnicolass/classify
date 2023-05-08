@@ -45,6 +45,16 @@ from config.cloudinary import upload_image
 router = APIRouter()
 
 @router.get(
+    '/user/{user_id}',
+    dependencies = [Depends(requires_authentication)]
+)
+async def user_profile(
+    user_id: int,
+    session: Annotated[AsyncSession, Depends(get_db_session)]
+):
+    return await user_service.get_user_account_by_id(user_id, session)
+
+@router.get(
     '/user/profile-settings', 
     dependencies = [Depends(requires_authentication)]
 )

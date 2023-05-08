@@ -122,7 +122,7 @@
                 <ul tal:condition="is_logged_in" style="margin-left: .8rem;">
                     <li>
                     <div class="dropdown">
-                        <a
+                        <a data-userid="${user_id}"
                         href="#"
                         class="dropdown-toggle"
                         id="dropdownMenuLink"
