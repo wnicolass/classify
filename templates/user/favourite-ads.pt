@@ -1,7 +1,7 @@
 <div metal:use-macro="load: ../shared/_layout.pt">
   <__additional_script__ metal:fill-slot="additional_script" tal:omit-tag="True">
     <script src="/public/scripts/switch-fav-tables.js" defer></script>
-    <script src="/public/scripts/favourites.js" defer></script>
+    <script src="/public/scripts/favourites.js" type="module" defer></script>
   </__additional_script__>
   <div metal:fill-slot="title" tal:omit-tag="True">
     <title> Favoritos | Classify</title>
