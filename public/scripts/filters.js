@@ -2,6 +2,14 @@ import { addToFavourites, removeFromFavourites } from "./favourites.js";
 const queryFirstPart = window.location.href.split('?').at(-1);
 const inCategoryView = /(http(s)?:\/\/).*\/ads\/category\/\d{1,2}/.test(queryFirstPart);
 const inSubcategoryView = /(http(s)?:\/\/).*\/ads\/subcategory\/\d{1,3}/.test(queryFirstPart);
+const [categoryId,] = inCategoryView ? 
+  location.href.match(/(?<=.*\/category\/)\d{1,}$/) :
+  [null];
+const [subcategoryId,] = inSubcategoryView ?
+  location.href.match(/(?<=.*\/subcategory\/)\d{1,}$/) :
+  [null]
+;
+
 const pageNumber = document.querySelectorAll('.number');
 const currentURL = new URL(window.location.href);
 const toastTrigger = document.getElementById('liveToastBtn');
@@ -11,11 +19,17 @@ const closeBtn = document.getElementById('close-fav-toast');
 const descriptionSearchFilter = document.getElementById("checkbox");
 const locationFilter = document.getElementById("city-select");
 const categoryFilter = document.getElementById("category-select");
+const subcategoryFromFilter = document.getElementsByClassName("current")[2];
 // Subcategory is assessed during run-time via its nice-select due to how its options are generated
 const orderType = document.getElementById("recency-select");
 
 let activePage;
-let currentSearch = `${currentURL.pathname}${currentURL.search}`;
+let currentSearch = inCategoryView ? 
+`/ads/search?category_id=${categoryId}` : 
+`${currentURL.pathname}${currentURL.search}`
+;
+let userFavourites;
+let searchURL;
 
 function setOneAsActive() {
   const pageOneIcon = document.querySelector('a[data-value="1"]');
@@ -106,21 +120,21 @@ function handleFilters() {
 }
 
 async function fetchData(queryParams) {
-  let URL = `/ads/sort?${queryFirstPart}${queryParams}`;
+  searchURL = `/ads/sort?${queryFirstPart}${queryParams}`;
   if (inSubcategoryView) {
     const newUrl = queryFirstPart.split('/');
     const subcategoryId = newUrl.at(-1);
-    URL = `/ads/sort?${newUrl.at(-2)}_id=${subcategoryId}${queryParams}`;
+    searchURL = `/ads/sort?${newUrl.at(-2)}_id=${subcategoryId}${queryParams}`;
   } else if (inCategoryView) {
     const newUrl = queryFirstPart.split('/');
     const categoryId = newUrl.at(-1);
-    URL = `/ads/sort?${newUrl.at(-2)}_id=${categoryId}${queryParams}`;
+    searchURL = `/ads/sort?${newUrl.at(-2)}_id=${categoryId}${queryParams}`;
   }
-  currentSearch = URL;
+  currentSearch = searchURL;
   try {
-    const res = await fetch(URL);
+    const res = await fetch(searchURL);
     const data = await res.json();
-    data.ads.length > 0 && await renderAds(data);
+    await renderAds(data);
   } catch (err) {
     console.error(err);
   }
@@ -174,7 +188,7 @@ function transform_image_from_url(url, formatString) {
 async function getUserData() {
   const userId = document.getElementById('dropdownMenuLink').dataset.userid;
   try {
-    const res = await fetch(`/user/${userId}`);
+    const res = await fetch(`/user/profile/${userId}`);
     const { favourites } = await res.json();
     return favourites.map(fav => fav.ad_id);
   } catch (err) {
@@ -186,7 +200,23 @@ async function renderAds(data) {
     const allAds = data.ads;
     const adsContainer = document.getElementById('ads-container');
     adsContainer.innerHTML = '';
-    const userFavourites = await getUserData();
+    adsContainer.style.justifyContent = 'start';
+
+    if (!allAds.length) {
+      adsContainer.style.justifyContent = 'center';
+      adsContainer.innerHTML = `
+      <p style="margin-block: 2rem;">
+        Ooops! Parece que nossos anúncios foram abduzidos! 
+        Que tal desapegar e começar a anunciar agora mesmo? 👽
+      </p>
+      <img 
+        style="width: 30rem;" 
+        src="/public/assets/images/empty-result.svg" 
+        alt="Resultado vazio"
+      >
+      `
+      return;
+    }
 
     allAds.forEach((ad) => {
         const adCard = document.createElement('div');
@@ -223,7 +253,6 @@ async function renderAds(data) {
         aHeart.style.cursor = 'pointer';
         aHeart.className = 'like';
         aHeart.setAttribute('data-adid', ad.id);
-        // !userFavourites.includes(ad.id) && aHeart.addEventListener('click', addToFavourites);
         
         const heart = document.createElement('i');
         heart.className = 'fal fa-heart';
@@ -232,11 +261,9 @@ async function renderAds(data) {
 
         if(userFavourites.includes(ad.id)) {
           heart.classList.add('active');
-          aHeart.removeEventListener('click', addToFavourites);
-          aHeart.addEventListener('click', removeFromFavourites);
+          heart.addEventListener('click', removeFromFavourites);
         } else {
-          aHeart.removeEventListener('click', removeFromFavourites);
-          aHeart.addEventListener('click', addToFavourites);
+          heart.addEventListener('click', addToFavourites);
         }
 
         const adTitle = document.createElement('h4');
@@ -292,22 +319,60 @@ function execToast(success) {
   }
 }
 
+async function fetchCategoryName(categoryId) {
+  try {
+    const res = await fetch(`/categories/${categoryId}`);
+    const {
+      category_name: categoryName
+    } = await res.json();
+    return categoryName;
+  } catch (err) {
+    console.error(err);
+  }
+}
+
+async function fetchSubcategoryData(subcategoryId) {
+  try {
+    const res = await fetch(`/subcategories/${subcategoryId}`);
+    const subcategory = await res.json();
+    return subcategory;
+  } catch (err) {
+    console.error(err);
+  }
+}
+
 async function addNewFavSearch() {
+  const hasDescription = /.*description=on.*/.test(location.href);
+  let categoryName;
+  let subcategoryName;
   if (currentSearch) {
     currentSearch = currentSearch.replace('sort', 'search').trim();
+    const requestOptions = {
+      url: currentSearch.trim(),
+      search_description: hasDescription,
+      order_type: orderType.options[orderType.selectedIndex].text,
+    }
+    if (!inCategoryView && !inSubcategoryView) {
+      requestOptions['category'] = categoryFilter.options[categoryFilter.selectedIndex].text;
+      requestOptions['subcategory'] = document.getElementsByClassName("current")[2].outerText;
+    }
+    if (inCategoryView) {
+      categoryName = await fetchCategoryName(categoryId);
+      requestOptions['category'] = categoryName;
+    }
+    if (inSubcategoryView) {
+      const subcategory = await fetchSubcategoryData(subcategoryId);
+      requestOptions['category'] = subcategory.category.category_name;
+      requestOptions['subcategory'] = subcategory.subcategory_name;
+    }
+    
     try {
       const res = await fetch('/user/favourite-search', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify({
-          url: currentSearch.trim(),
-          search_description: descriptionSearchFilter.checked,
-          category: categoryFilter.options[categoryFilter.selectedIndex].text,
-          subcategory: document.getElementsByClassName("current")[2].outerText,
-          order_type: orderType.options[orderType.selectedIndex].text
-        })
+        body: JSON.stringify(requestOptions)
       });
       const data = await res.json();
       if (!res.ok) {
@@ -326,7 +391,17 @@ function addFavouriteSearchEvent() {
   favSearchBtn.addEventListener('click', addNewFavSearch);
 }
 
-function main() {
+async function checkIfSubcategoryView() {
+  if (inSubcategoryView) {
+    const subcategory = await fetchSubcategoryData(subcategoryId);
+    currentSearch = `
+      /ads/search?category_id=${subcategory.category_id}
+      &subcategory_id=${subcategoryId}
+    `.replace(/\s/g, '').trim();
+  }
+}
+
+async function main() {
   const hasPagination = pageNumber.length > 0
   handleFilters();
   infinityEvent();
@@ -334,7 +409,8 @@ function main() {
   hasPagination && getActivePage();
   hasPagination && setOneAsActive();
   addFavouriteSearchEvent();
-  // getUserData();
+  userFavourites = await getUserData()
+  checkIfSubcategoryView();
 }   
 
 window.addEventListener('load', main);
