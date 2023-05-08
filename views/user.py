@@ -45,7 +45,7 @@ from config.cloudinary import upload_image
 router = APIRouter()
 
 @router.get(
-    '/user/{user_id}',
+    '/user/profile/{user_id}',
     dependencies = [Depends(requires_authentication)]
 )
 async def user_profile(
@@ -502,8 +502,8 @@ async def add_ad_to_favourites(
 class SearchFavourite(BaseModel):
     url: str
     search_description: bool
-    category: str
-    subcategory: str
+    category: str | None = None
+    subcategory: str | None = None
     order_type: str
 
 @router.post('/user/favourite-search')
