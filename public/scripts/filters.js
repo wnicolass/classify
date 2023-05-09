@@ -186,7 +186,10 @@ function transform_image_from_url(url, formatString) {
 }
 
 async function getUserData() {
-  const userId = document.getElementById('dropdownMenuLink').dataset.userid;
+  const userId = document.getElementById('dropdownMenuLink')?.dataset.userid || null;
+  if (!userId) {
+    return userId;
+  }
   try {
     const res = await fetch(`/user/profile/${userId}`);
     const { favourites } = await res.json();
@@ -259,7 +262,7 @@ async function renderAds(data) {
         aHeart.appendChild(heart);
         adsFirstPart.append(p, aHeart);
 
-        if(userFavourites.includes(ad.id)) {
+        if(userFavourites && userFavourites.includes(ad.id)) {
           heart.classList.add('active');
           heart.addEventListener('click', removeFromFavourites);
         } else {
@@ -409,7 +412,7 @@ async function main() {
   hasPagination && getActivePage();
   hasPagination && setOneAsActive();
   addFavouriteSearchEvent();
-  userFavourites = await getUserData()
+  userFavourites = await getUserData();
   checkIfSubcategoryView();
 }   
 
