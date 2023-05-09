@@ -178,8 +178,10 @@
               <div class="col-lg-3 col-sm-6">
                 <div class="single_ads_card mt-30">
                   <div class="ads_card_image">
-                    <img src="${ad.main_image}" alt="ads" />
-                    <p class="sticker">Promovido</p>
+                    <a href="/ad/${ad.id}">
+                      <img src="${ad.main_image}" alt="ads" />
+                      <p class="sticker">Promovido</p>
+                    </a>
                   </div>
                   <div class="ads_card_content">
                     <div class="meta d-flex justify-content-between">
@@ -304,8 +306,10 @@
                   <div class="col-lg-3 col-sm-6">
                     <div class="single_ads_card mt-30">
                       <div class="ads_card_image">
-                        <img src="${ad.main_image}" alt="${ad.title}" />
-                        <p class="sticker sticker_color-2">Popular</p>
+                        <a href="/ad/${ad.id}">
+                          <img src="${ad.main_image}" alt="${ad.title}" />
+                          <p class="sticker sticker_color-2">Popular</p>
+                        </a>
                       </div>
                       <div class="ads_card_content">
                         <div class="meta d-flex justify-content-between">
@@ -341,8 +345,10 @@
                   <div class="col-lg-3 col-sm-6">
                     <div class="single_ads_card mt-30">
                       <div class="ads_card_image">
-                        <img src="${ad.main_image}" alt="${ad.title}" />
-                        <p class="sticker sticker_color-1">Novo</p>
+                        <a href="/ad/${ad.id}">
+                          <img src="${ad.main_image}" alt="${ad.title}" />
+                          <p class="sticker sticker_color-1">Novo</p>
+                        </a>
                       </div>
                       <div class="ads_card_content">
                         <div class="meta d-flex justify-content-between">

@@ -192,7 +192,7 @@
               </div>
             </div>
 
-<!-- ADS RELATED -->
+            <!-- ADS RELATED -->
             <div class="related_product mt-45">
               <div class="section_title">
                 <h3 class="title">Anúncios relacionados</h3>
@@ -202,7 +202,9 @@
                 <div class="col-md-4">
                   <div class="single_ads_card mt-30">
                     <div class="ads_card_image">
-                      <img src="${ad.main_image}" alt="ads" />
+                      <a href="/ad/${ad.id}">
+                        <img src="${ad.main_image}" alt="ads" />
+                      </a>
                     </div>
                     <div class="ads_card_content">
                       <div class="meta d-flex justify-content-between">
