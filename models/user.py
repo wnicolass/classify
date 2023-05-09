@@ -257,7 +257,9 @@ class FavouriteSearch(Base):
                     if self.search_url[i] == '&':
                         break
                     temp_title.append(self.search_url[i])
-                title = ''.join(temp_title)
+                temp_title = ''.join(temp_title)
+                if not temp_title.isdigit():
+                    title = temp_title
             return unquote_plus(title)
         except IndexError:
             return unquote_plus(title)

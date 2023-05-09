@@ -4,7 +4,7 @@
   </div>
     <__additional_script__ metal:fill-slot="additional_script" tal:omit-tag="True">
     <script src="/public/scripts/limit-select-size.js" defer></script>
-    <script src="/public/scripts/favourites.js" defer></script>
+    <script src="/public/scripts/favourites.js" type="module" defer></script>
     <script src="/public/scripts/handle-search-form.js" defer></script>
   </__additional_script__>
   <__additional_stylesheet__ metal:fill-slot="additional_stylesheet" tal:omit-tag="True">
@@ -178,8 +178,10 @@
               <div class="col-lg-3 col-sm-6">
                 <div class="single_ads_card mt-30">
                   <div class="ads_card_image">
-                    <img src="${ad.main_image}" alt="ads" />
-                    <p class="sticker">Promovido</p>
+                    <a href="/ad/${ad.id}">
+                      <img src="${ad.main_image}" alt="ads" />
+                      <p class="sticker">Promovido</p>
+                    </a>
                   </div>
                   <div class="ads_card_content">
                     <div class="meta d-flex justify-content-between">
@@ -304,8 +306,10 @@
                   <div class="col-lg-3 col-sm-6">
                     <div class="single_ads_card mt-30">
                       <div class="ads_card_image">
-                        <img src="${ad.main_image}" alt="${ad.title}" />
-                        <p class="sticker sticker_color-2">Popular</p>
+                        <a href="/ad/${ad.id}">
+                          <img src="${ad.main_image}" alt="${ad.title}" />
+                          <p class="sticker sticker_color-2">Popular</p>
+                        </a>
                       </div>
                       <div class="ads_card_content">
                         <div class="meta d-flex justify-content-between">
@@ -341,8 +345,10 @@
                   <div class="col-lg-3 col-sm-6">
                     <div class="single_ads_card mt-30">
                       <div class="ads_card_image">
-                        <img src="${ad.main_image}" alt="${ad.title}" />
-                        <p class="sticker sticker_color-1">Novo</p>
+                        <a href="/ad/${ad.id}">
+                          <img src="${ad.main_image}" alt="${ad.title}" />
+                          <p class="sticker sticker_color-1">Novo</p>
+                        </a>
                       </div>
                       <div class="ads_card_content">
                         <div class="meta d-flex justify-content-between">
@@ -517,9 +523,6 @@
                 </div>
               </div>
             </div>
-          </div>
-          <div class="locations_btn text-center">
-            <a class="main-btn" href="#">Mais Localizações</a> <!--Remove this? Create another template?-->
           </div>
         </div>
       </div>

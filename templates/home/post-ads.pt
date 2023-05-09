@@ -101,7 +101,7 @@
                     <span>Arrasta imagens aqui</span>
                     <span>Ou</span>
                     <span class="main-btn">Seleciona Imagens</span>
-                    <span>Máximo tamanho de upload: 500 KB</span>
+                    <span>Máximo tamanho de upload: 5MB</span>
                     <input type="file" name="files" id="upload" accept="image/jpg,/image/png" multiple="multiple"/>
                   </label>
                 </div>

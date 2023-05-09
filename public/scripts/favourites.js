@@ -27,7 +27,7 @@ function swapEvents(adId, criteria) {
     });
 }
 
-async function addToFavourites({target: favBtn}) {
+export async function addToFavourites({target: favBtn}) {
     const adId = favBtn.closest('a').dataset.adid;
     
     try {
@@ -84,7 +84,7 @@ async function removeSearchFromFavs({currentTarget}) {
     }
 }
 
-async function removeFromFavourites({currentTarget: favBtn}) {
+export async function removeFromFavourites({currentTarget: favBtn}) {
     const adId = favBtn.closest('a').dataset.adid ?? favBtn.dataset.adid;
     
     try {

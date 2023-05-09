@@ -35,6 +35,25 @@ async def categories_viewmodel(
     vm.all_categories = await category_service.get_all_categories(session)
     return vm
 
+@router.get('/categories/{category_id}')
+async def category_by_id(
+    category_id: int,
+    session: Annotated[AsyncSession, Depends(get_db_session)]
+):
+    return await category_service.get_category_by_id(
+        category_id,
+        session
+    )
+
+@router.get('/subcategories/{subcategory_id}')
+async def category_by_id(
+    subcategory_id: int,
+    session: Annotated[AsyncSession, Depends(get_db_session)]
+):
+    return await category_service.get_subcategory_by_id(
+        subcategory_id,
+        session
+    )
 
 @router.get('/pricing')
 @template(template_file= 'common/pricing.pt')

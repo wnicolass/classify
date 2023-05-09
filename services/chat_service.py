@@ -112,7 +112,7 @@ async def get_senders_messages_by_current_user_id(
     
     users = await session.execute(
         select(UserAccount)
-        .join(Message, UserAccount.user_id == Message.sender_user_id)
+        .outerjoin(Message, UserAccount.user_id == Message.sender_user_id)
         .outerjoin(messages, UserAccount.user_id == messages.receiver_user_id)
         .where(
             and_(

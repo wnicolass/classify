@@ -45,6 +45,16 @@ from config.cloudinary import upload_image
 router = APIRouter()
 
 @router.get(
+    '/user/profile/{user_id}',
+    dependencies = [Depends(requires_authentication)]
+)
+async def user_profile(
+    user_id: int,
+    session: Annotated[AsyncSession, Depends(get_db_session)]
+):
+    return await user_service.get_user_account_by_id(user_id, session)
+
+@router.get(
     '/user/profile-settings', 
     dependencies = [Depends(requires_authentication)]
 )
@@ -143,9 +153,9 @@ async def profile_settings_viewmodel(
         file_size_in_kb = file_size_in_bytes / 1024
         file_ext = os.path.splitext(file.filename)[-1]
         if file_ext != "":
-            if file_size_in_kb > 500:
+            if file_size_in_kb > 5120:
                 vm.error, vm.error_msg = True, """
-                    O tamanho limite da imagem é de 500kb.
+                    O tamanho limite da imagem é de 5MB.
                 """
             elif (
                     file.content_type not in 
@@ -241,7 +251,7 @@ async def change_password(
     if vm.error:
         return vm
     
-    return await change_password_viewmodel(session, password_exists)
+    return await change_password_viewmodel(password_exists)
 
 async def change_password_viewmodel(password_exists: str):
     vm = await ViewModel()
@@ -492,8 +502,8 @@ async def add_ad_to_favourites(
 class SearchFavourite(BaseModel):
     url: str
     search_description: bool
-    category: str
-    subcategory: str
+    category: str | None = None
+    subcategory: str | None = None
     order_type: str
 
 @router.post('/user/favourite-search')

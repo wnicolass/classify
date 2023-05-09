@@ -189,7 +189,7 @@ async def search_by_title(
     order_by: str | None = '',
     min_price: dec = 0,
     max_price: dec = 0,
-    page: int = 0,
+    page: int = 1,
 ):
     some_other_criteria = bool(
         city or 
@@ -370,9 +370,9 @@ async def post_ad_viewmodel(
             file_size_in_bytes = len(await file.read())
             file_size_in_kb = file_size_in_bytes / 1024
             file_ext = os.path.splitext(file.filename)[-1]
-            if file_size_in_kb > 500:
+            if file_size_in_kb > 5120:
                 vm.error, vm.error_msg = True, """
-                    O tamanho limite das imagens é de 500kb.
+                    O tamanho limite das imagens é de 5MB.
                 """
                 break
             elif (file.content_type not in 

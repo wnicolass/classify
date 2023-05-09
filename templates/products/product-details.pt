@@ -5,7 +5,7 @@
   <__additional_script__ metal:fill-slot="additional_script" tal:omit-tag="True">
     <script src="/public/scripts/change-image.js" defer></script>
     <script src="/public/scripts/show-seller-number.js" defer></script>
-    <script src="/public/scripts/favourites.js" defer></script>
+    <script src="/public/scripts/favourites.js" type="module" defer></script>
     <script src="/public/scripts/message.js" defer></script>
   </__additional_script__>
   <__additional_stylesheet__ metal:fill-slot="additional_stylesheet" tal:omit-tag="True">
@@ -45,7 +45,7 @@
           <h3 class="title">${adv.title}</h3>
           <ul class="breadcrumb">
             <li><a href="/">Home</a></li>
-            <li><a href="/ads">Todos os anúncios</a></li>
+            <li><a href="/ads/search">Todos os anúncios</a></li>
             <li>${adv.title}</li>
           </ul>
         </div>
@@ -172,13 +172,13 @@
                     <h6 class="features_title">Autenticidade:</h6>
                     <p>${adv.feature.authenticity}</p>
                   </div>
-                  <div class="single_features d-flex">
+                  <!-- <div class="single_features d-flex">
                     <h6 class="features_title">Outros:</h6>
                     <p class="media-body">
                       Camera, Touch Screen, 3G, 4G, Bluetooth, Dual Sim, Dual
                       Lens Camera, Expandable Memory, Fingerprint Sensor
                     </p>
-                  </div>
+                  </div> -->
                 </div>
               </div>
 
@@ -192,7 +192,7 @@
               </div>
             </div>
 
-<!-- ADS RELATED -->
+            <!-- ADS RELATED -->
             <div class="related_product mt-45">
               <div class="section_title">
                 <h3 class="title">Anúncios relacionados</h3>
@@ -202,7 +202,9 @@
                 <div class="col-md-4">
                   <div class="single_ads_card mt-30">
                     <div class="ads_card_image">
-                      <img src="${ad.main_image}" alt="ads" />
+                      <a href="/ad/${ad.id}">
+                        <img src="${ad.main_image}" alt="ads" />
+                      </a>
                     </div>
                     <div class="ads_card_content">
                       <div class="meta d-flex justify-content-between">
