@@ -124,9 +124,9 @@ async def post_sign_up_viewmodel(
         file_size_in_kb = file_size_in_bytes / 1024
         file_ext = os.path.splitext(file.filename)[-1]
         if file_ext != "":
-            if file_size_in_kb > 500:
+            if file_size_in_kb > 5120:
                 vm.error, vm.error_msg = True, """
-                    O tamanho limite da imagem é de 500kb.
+                    O tamanho limite da imagem é de 5MB.
                 """
             elif (file.content_type not in 
                 ('image/jpg', 'image/png', 'image/jpeg') or 
