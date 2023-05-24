@@ -1,6 +1,6 @@
 # Classify
 
-## 💻 Project:
+## 💻 Project
 
 Classify is a classifieds creation and management system, where potential sellers announce the items they have for sale. All registered users can buy and sell items and, when interested, they contact the sellers through the internal messaging system of the application.
 
@@ -11,7 +11,7 @@ Administrators will have access to a special backoffice desktop application, whe
 The proposal for this project consists in the creation and modeling of a database, software development via web and a mobile app, a backoffice desktop app, as well as maintaining the project's version control in this Github repository and writing a technical report of the project.
 
 
-## 🚀 Languages/Technologies Used:
+## 🚀 Languages/Technologies Used
 
 | Part Name  | Description | Language/Technology |
 | :-------------: | :-------------: | :-------------: |
@@ -19,9 +19,11 @@ The proposal for this project consists in the creation and modeling of a databas
 | Part A  | Web server   | Python + FastAPI + SQLAlchemy |
 | Part B  | Main DB server  | Linux + MySQL |
 | Part C  | Web API for requests  | Node.js + Express + Sequelize |
-| Part D  | Classifieds Server  | (Undecided) |
+| Part D  | Classifieds Server  | To Do |
 | Part E  | Backoffice  | Electron |
 
-## 🔖 Layout:
+## 🔖 Layout
+You can see the layout by visiting [Classify](https://classify.pt).
 
-## 📝 License:
+## 📝 License
+This project is licensed under the MIT license. See the [LICENSE](./LICENSE.md) file for more details.
